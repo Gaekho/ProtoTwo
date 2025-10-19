@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef94ee1e6f62abb4588b12b992677049, type: 3}
+  m_Name: Sita
+  m_EditorClassIdentifier: 
+  characterName: Sita
+  characterDescription: 
+  maxHealth: 100
+  baseAttack: 4
+  baseShield: 2
+  baseSpeed: 3
+  characterSprite: {fileID: -1600454761, guid: 1bf60d3ab3a9e324bba57ea68d7a21f1, type: 3}
+  animatorController: {fileID: 9100000, guid: 136b6274822449440bf85e88b2913292, type: 2}
