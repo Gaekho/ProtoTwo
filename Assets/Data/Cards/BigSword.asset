@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
+  m_Name: BigSword
+  m_EditorClassIdentifier: 
+  id: 0
+  cardName: Big Swrod
+  type: 1
+  color: 1
+  cardSprite: {fileID: 21300000, guid: 102126e33b660d1458d91e93e961509e, type: 3}
+  dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
+  actionTargetType: 2
+  activeConditionList:
+  - condition: 2
+    value: 4
+  usableWithoutTarget: 0
+  cardActionDataList:
+  - cardActionType: 0
+    actionValue: 14

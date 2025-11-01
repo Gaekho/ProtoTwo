@@ -4,18 +4,22 @@ using UnityEngine;
 using Proto2.Enums;
 using System;
 
-[CreateAssetMenu(fileName = "Card Data", menuName = "Proto2/Card", order = 0)]
+[CreateAssetMenu(fileName = "Card Data", menuName = "Proto2/Card/baseCard", order = 0)]
 
 public class CardData : ScriptableObject
 {
     [Header("Card Profile")]
-    [SerializeField] private string id;
+    [SerializeField] private int id;
     [SerializeField] private string cardName;
     [SerializeField] private CardType type;
     [SerializeField] private CardColor color;
+
+    [Header("visual")]
     [SerializeField] private Sprite cardSprite;
+    [SerializeField] private Sprite dragIcon;
 
     [Header("Active Condition")]
+    [SerializeField] private ActionTargetType actionTargetType;
     [SerializeField] private List<ActiveConditionData> activeConditionList;
 
     [Header("Action Settings")]
@@ -23,11 +27,13 @@ public class CardData : ScriptableObject
     [SerializeField] private List<CardActionData> cardActionDataList;
 
     #region Cache
-    public string Id => id;
+    public int Id => id;
     public string CardName => cardName;
     public CardType Type => type;
     public CardColor Color => color;
     public Sprite CardSprite => cardSprite;
+    public Sprite DragIcon => dragIcon;
+    public ActionTargetType ActionTargetType => actionTargetType;
     public List<ActiveConditionData> ActiveConditionList => activeConditionList;
     public bool UsableWithoutTarget => usableWithoutTarget;
     public List<CardActionData> CarActionDataList => cardActionDataList;
@@ -38,11 +44,11 @@ public class CardData : ScriptableObject
 public class CardActionData
 {
     [SerializeField] private CardActionType cardActionType;
-    [SerializeField] private ActionTargetType actionTargetType;
+    //[SerializeField] private ActionTargetType actionTargetType;
     [SerializeField] private float actionValue;
 
     public CardActionType CardActionType => cardActionType;
-    public ActionTargetType ActionTargetType => actionTargetType; 
+    //public ActionTargetType ActionTargetType => actionTargetType; 
     public float ActionValue => actionValue;
 }
 
@@ -51,4 +57,9 @@ public class ActiveConditionData
 {
     [SerializeField] private ConditionType condition;
     [SerializeField] private float value;
+
+    #region cache
+    public ConditionType Condition => condition;
+    public float Value => value;
+    #endregion
 }
