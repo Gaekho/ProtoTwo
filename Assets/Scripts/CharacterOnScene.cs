@@ -33,14 +33,24 @@ public class CharacterOnScene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.H))
+        if(Input.GetKeyDown(KeyCode.A))
         {
             animator.SetTrigger("New Trigger");
         }
 
-        else if(Input.GetKeyDown(KeyCode.V))
+        else if(Input.GetKeyDown(KeyCode.S))
         {
             animator.SetTrigger("CardUse");
         }
+
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            animator.SetTrigger("Attack");
+        }
+    }
+
+    public void AttackAnim()
+    {
+        animator.SetTrigger("Attack");
     }
 }

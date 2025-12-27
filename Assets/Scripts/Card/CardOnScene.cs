@@ -17,6 +17,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     [SerializeField] private float radius = 0.3f;
     public CharacterOnScene temp;
+    public GameObject target;
 
     private Vector2 originalOffsetMin;
     private Vector2 originalOffsetMax;
@@ -29,6 +30,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         myImage = GetComponent<Image>();
         canvas = GetComponentInParent<Canvas>();
         SetCard(data);
+
     }
 
     public void SetCard(CardData cardData)
@@ -48,7 +50,10 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public void Use()
     {
-
+        foreach (var actionData in data.CarActionDataList)
+        {
+            CardActionProcessor.GetAction(actionData.CardActionType).DoAction(new CardActionParameters(actionData.ActionValue, temp, target.GetComponent<EnemyOnScene>(), data, this));
+        }
     }
 
     public void Discard()
@@ -121,6 +126,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Collider2D hit = Physics2D.OverlapCircle(mouseWorldPos, radius);
+        target = hit.gameObject;
 
         if (data.UsableWithoutTarget) return true;
         
@@ -201,6 +207,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             {
                 if (CheckTarget(data))
                 {
+                    Use();
                     Debug.Log("Card Used Successfull");
                     BackToHand();
                 }
