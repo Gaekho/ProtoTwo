@@ -24,7 +24,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     #endregion
 
     #region methods
-    public void Start()
+    public void Awake()
     {
         mainCamera = Camera.main;
         originalTransform = new Vector3 (transform.localScale.x, transform.localScale.y, transform.localScale.z);

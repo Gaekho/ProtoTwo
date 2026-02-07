@@ -37,6 +37,7 @@ public class HandController : MonoBehaviour
     public void SetUp()
     {
         currentDeck = new List<CardData>(deckData.DeckList);
+        Debug.Log("Deck Ready");
         DrawCard(5);
     }
 
@@ -46,16 +47,18 @@ public class HandController : MonoBehaviour
         {
             if(currentDeck.Count == 0)
             {
+                Debug.Log("No Deck. Shuffle Graveyard");
                 ShuffleCard();
-                if (currentDeck.Count == 0) break;   //덱과 묘지 모두 빈 경우
+                if (currentDeck.Count == 0) { Debug.Log("No Cards in Deck & Graveyard"); break; }   //덱과 묘지 모두 빈 경우
             }
 
-            CardData data = currentDeck[0];
-            currentDeck.RemoveAt(0);
-            currentDeck.Add(data);
+            CardData data = currentDeck[0]; Debug.Log("Cloned card on Top :" + data.name);
+            currentDeck.RemoveAt(0);    Debug.Log("Remove from current Deck. Now Deck count :" + currentDeck.Count);
+            currentHand.Add(data);      Debug.Log("Add to Hand List. Now Hand count :" + currentHand.Count);
 
             GameObject cardGO = Instantiate(basicCard, transform);
             cardGO.GetComponent<CardOnScene>().SetCard(data);
+            Debug.Log("Draw a Card");
 
             SortCard();
         }
