@@ -12,23 +12,24 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private CardData data;
     [SerializeField] private bool isPlayable = true;
     [SerializeField] private Image myImage;
-    [SerializeField] private RectTransform rectTransform;
+    [SerializeField] private Vector3 originalTransform;
     [SerializeField] private Canvas canvas;
+    [SerializeField] private Camera mainCamera;
 
     [SerializeField] private float radius = 0.3f;
     public CharacterOnScene temp;
     public GameObject target;
 
-    private Vector2 originalOffsetMin;
-    private Vector2 originalOffsetMax;
+   
     #endregion
 
     #region methods
     public void Start()
     {
-        rectTransform = GetComponent<RectTransform>();
-        myImage = GetComponent<Image>();
-        canvas = GetComponentInParent<Canvas>();
+        mainCamera = Camera.main;
+        originalTransform = new Vector3 (transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        canvas = GetComponentInChildren<Canvas>();
+        myImage = canvas.GetComponentInChildren<Image>();
         SetCard(data);
 
     }
@@ -41,12 +42,12 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void CardsizeBig()
     {
-        rectTransform.localScale = new Vector3(1.5f, 1.5f);
+        transform.localScale = new Vector3(0.5f, 0.5f, 1f);
     }
 
     public void CardsizeSmall()
     {
-        rectTransform.localScale = new Vector3(1f, 1f);
+        transform.localScale = new Vector3(0.2f, 0.2f, 1f);
     }
     public void Use()
     {
@@ -63,9 +64,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void BackToHand()
     {
-        rectTransform.offsetMax = originalOffsetMax;
-        rectTransform.offsetMin = originalOffsetMin;
-        rectTransform.localScale = new Vector3(1, 1, 1);
+        transform.position = originalTransform;
+       CardsizeSmall();
 
         //Color color = Color.white;
         //color.a = 1f;
@@ -124,7 +124,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public bool CheckTarget(CardData data)
     {
-        Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+       
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Collider2D hit = Physics2D.OverlapCircle(mouseWorldPos, radius);
         target = hit.gameObject;
 
@@ -176,8 +177,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnBeginDrag(PointerEventData eventdata)
     {
         CardsizeSmall();
-        originalOffsetMax = rectTransform.offsetMax;
-        originalOffsetMin = rectTransform.offsetMin;
+        originalTransform = transform.position;
         myImage.sprite = data.DragIcon;
     }
 
@@ -190,17 +190,17 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
          * UI를 투명화 한 뒤 게임뷰에서 기즈모처럼 레이캐스트 범위를 시각화해서 타겟 아이콘을 만들고 싶었다.
          * 그러나 LineRenderer 컴포넌트를 넣기 싫고 코드만으로는 어떻게 하는지 모르겠어서 그냥 이미지 변경으로 타혐했다. 
          * 그 결과 카드 귀퉁이를 잡으면 타겟 아이콘과 실제 레이캐스트 범위가 차이난다는 큰 단점이 발생했다.*/
-       rectTransform.anchoredPosition += eventdata.delta / canvas.scaleFactor;
         /*이론상 ancor stretch 상태라 offset 기반으로 움직이는게 좋지만 귀찮아서 예전에 쓰던거 그대로 가져왔다.
          *따라서 발동 조건이랑 일치하지 않아서 약간 애매모호하다.
          *나중에 핸드를 자동으로 정렬시킬 때 문제가 될 수 있음. */
-        
-     
+        Vector3 worldPoint = mainCamera.ScreenToWorldPoint(new Vector3(eventdata.position.x, eventdata.position.y, 10f));
+        transform.position = new Vector3(worldPoint.x, worldPoint.y, originalTransform.z);
+
     }
 
     public void OnEndDrag(PointerEventData eventdata)
     {
-        if(rectTransform.offsetMin.y >= 370f)
+        if(transform.position.y >= -0.8f)
         {
             //Debug.Log("used");
             if(CheckCondition(data, temp))
@@ -219,7 +219,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         else
             BackToHand();
         
-        Debug.Log(rectTransform.offsetMin.y);
+        Debug.Log(transform.position.y);
     }
     #endregion
 }

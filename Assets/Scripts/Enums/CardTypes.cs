@@ -47,4 +47,12 @@ namespace Proto2.Enums
         AllCharacter,
         RandomEnemy
     }
+
+    public enum EnemyPatternType
+    {
+        Attack, 
+        Block, 
+        Dodgem, 
+        Buff
+    }
 }

@@ -4,15 +4,90 @@ using UnityEngine;
 
 public class HandController : MonoBehaviour
 {
+    //private HandController() { }
+    public static HandController Instance { get; private set; }
+
+    [Header("Card Prefab")]
+    public GameObject basicCard;
+
+    [Header("Hand Position")]
+    public Vector3 startPoint;
+    public Vector3 endPoint;
+
+    [Header("Deck Data")]
+    public DeckData deckData;
+
+    [Header("List of cards on Battle")]
+    public List<CardData> currentDeck;
+    public List<CardData> currentHand;
+    public List<CardData> currentGraveyard;
+    public List<CardData> currentBanished;
+
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
+        Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        SetUp();
+    }
+
+    public void SetUp()
+    {
+        currentDeck = new List<CardData>(deckData.DeckList);
+        DrawCard(5);
+    }
+
+    public void DrawCard(int value)
+    {
+        for(int i = 0; i < value; i++)
+        {
+            if(currentDeck.Count == 0)
+            {
+                ShuffleCard();
+                if (currentDeck.Count == 0) break;   //덱과 묘지 모두 빈 경우
+            }
+
+            CardData data = currentDeck[0];
+            currentDeck.RemoveAt(0);
+            currentDeck.Add(data);
+
+            GameObject cardGO = Instantiate(basicCard, transform);
+            cardGO.GetComponent<CardOnScene>().SetCard(data);
+
+            SortCard();
+        }
+    }
+
+    public void ShuffleCard()
+    {
+        currentDeck.AddRange(currentGraveyard);
+        currentGraveyard.Clear();
+        ShuffleDeck();
+    }
+
+    public void ShuffleDeck()
+    {
+        for(int i =0; i<currentDeck.Count; i++)
+        {
+            int randIndex = Random.Range(i, currentDeck.Count);
+            (currentDeck[i], currentDeck[randIndex]) = (currentDeck[randIndex], currentDeck[i]);
+        }
+    }
+
+    public void SortCard()
+    {
+        int count = currentHand.Count;
+        if (count == 0) return;
+
+        for(int i = 0; i<transform.childCount; i++)
+        {
+            Transform card = transform.GetChild(i);
+            float t = count == 1 ? 0.5f : (float)i / (count - 1);
+            Vector3 targetPosition = Vector3.Lerp(startPoint, endPoint, t);
+            card.localPosition = targetPosition;
+        }
     }
 }

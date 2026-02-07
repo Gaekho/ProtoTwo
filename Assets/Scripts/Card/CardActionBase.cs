@@ -25,6 +25,8 @@ public abstract class CardActionBase
     public CardActionBase() { }
     public abstract CardActionType ActionType { get; }
     public abstract void DoAction(CardActionParameters actionParameters);
+
+    protected HandController HandController => HandController.Instance;
 }
 
 public class AttackAction : CardActionBase
@@ -34,5 +36,15 @@ public class AttackAction : CardActionBase
     {
         actionParameters.characterOnScene.AttackAnim();
         actionParameters.enemyOnScene.GetDamage(actionParameters.value);
+    }
+}
+
+public class DrawAction : CardActionBase
+{
+    public override CardActionType ActionType => CardActionType.Draw;
+
+    public override void DoAction(CardActionParameters actionParameters)
+    {
+        HandController.Instance.DrawCard( (int) actionParameters.value);
     }
 }
