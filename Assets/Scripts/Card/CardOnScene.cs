@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     #region field
+    [Header("Own Field")]
     [SerializeField] private CardData data;
     [SerializeField] private bool isPlayable = true;
     [SerializeField] private Image myImage;
@@ -16,11 +17,13 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private Canvas canvas;
     [SerializeField] private Camera mainCamera;
 
-    [SerializeField] private float radius = 0.3f;
+    [Header("Raycast Radius")]
+    [SerializeField] private float radius = 0.25f;
+
+    [Header("For Debug")]
     public CharacterOnScene temp;
     public GameObject target;
 
-   
     #endregion
 
     #region methods
@@ -31,7 +34,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         canvas = GetComponentInChildren<Canvas>();
         myImage = canvas.GetComponentInChildren<Image>();
         SetCard(data);
-
+   
     }
 
     public void SetCard(CardData cardData)

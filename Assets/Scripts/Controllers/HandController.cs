@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class HandController : MonoBehaviour
 {
-    //private HandController() { }
+    #region Singlton
+    private HandController() { }
     public static HandController Instance { get; private set; }
+    #endregion
 
     [Header("Card Prefab")]
     public GameObject basicCard;

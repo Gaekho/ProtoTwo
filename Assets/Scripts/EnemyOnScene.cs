@@ -9,7 +9,8 @@ public class EnemyOnScene : MonoBehaviour
     [SerializeField] private EnemyData enemyData;
     [SerializeField] private float currentHealth;
     [SerializeField] private float maxHealth;
-    [SerializeField] private Sprite mySprite;
+    [SerializeField] private SpriteRenderer mySprite;
+    [SerializeField] private Canvas myCanvas;
     [SerializeField] private Animator myAnimator;
     [SerializeField] private Slider mySlider;
 
@@ -17,13 +18,14 @@ public class EnemyOnScene : MonoBehaviour
     private void Start()
     {
         Transform parent = transform.parent;
-        Canvas canvasTransform = parent.GetComponentInChildren<Canvas>();
+        myCanvas = parent.GetComponentInChildren<Canvas>();
+        mySprite = GetComponent<SpriteRenderer>();
+        mySlider = myCanvas.GetComponentInChildren<Slider>();
+        myAnimator = GetComponent<Animator>();
 
         maxHealth = enemyData.MaxHealth;
         currentHealth = enemyData.MaxHealth;
-        mySprite = enemyData.CharacterSprite;
-        mySlider = canvasTransform.GetComponentInChildren<Slider>();
-        myAnimator = GetComponent<Animator>();
+        mySprite.sprite = enemyData.CharacterSprite;
     }
 
     public void Update()

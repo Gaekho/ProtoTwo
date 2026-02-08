@@ -29,7 +29,8 @@ public class BattleManager : MonoBehaviour
     {
         Instance = this;
         CardActionProcessor.Initialize();
-        
+        SetAlly();
+        SetEnemy();
     }
 
     private void SetAlly()
@@ -39,7 +40,18 @@ public class BattleManager : MonoBehaviour
 
         foreach(GameObject go in allies)
         {
-            
+            playerParty.Add(go.GetComponentInChildren<CharacterOnScene>());
+        }
+    }
+
+    private void SetEnemy()
+    {
+        enemyList.Clear();
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach(GameObject go in enemies)
+        {
+            enemyList.Add(go.GetComponentInChildren<EnemyOnScene>());
         }
     }
     // Start is called before the first frame update
