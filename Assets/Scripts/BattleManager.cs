@@ -13,7 +13,7 @@ public class BattleManager : MonoBehaviour
     [Header("Setting")]
     [SerializeField] private GameObject characterPrefab;
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private HandController hc;
+    [SerializeField] private HandController handContoller;
 
     [Header("Characters On Scene")]
     [SerializeField] private List<CharacterOnScene> playerParty;
@@ -24,7 +24,6 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     public IReadOnlyList<CharacterOnScene> PlayerParty => playerParty;
-
     private void Awake()
     {
         Instance = this;

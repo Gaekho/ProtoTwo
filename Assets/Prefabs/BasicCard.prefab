@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 102126e33b660d1458d91e93e961509e, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -357,12 +357,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42d667a41a9abdb47a895baa9420353d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 58690a32ed8924e46be245d4acbd5520, type: 2}
+  data: {fileID: 0}
   isPlayable: 1
   myImage: {fileID: 0}
   originalTransform: {x: 0, y: 0, z: 0}
   canvas: {fileID: 0}
   mainCamera: {fileID: 0}
-  radius: 0.3
+  radius: 0.25
   temp: {fileID: 0}
   target: {fileID: 0}

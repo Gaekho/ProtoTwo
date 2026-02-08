@@ -1,3 +1,4 @@
+using Proto2.Enums;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Animations;
@@ -10,6 +11,7 @@ public class CharacterData : ScriptableObject
     [Header("Character Profile")]
     [SerializeField] private string characterName;
     [SerializeField] private string characterDescription;
+    [SerializeField] private CardColor cardColor;
     [SerializeField] private float maxHealth;
     [SerializeField] private float baseAttack;
     [SerializeField] private float baseShield;
@@ -22,6 +24,7 @@ public class CharacterData : ScriptableObject
     #region cache
     public string CharacterName => characterName;
     public string CharacterDescription => characterDescription;
+    public CardColor CardColor => cardColor;
     public float MaxHealth => maxHealth;
     public float BaseAttack => baseAttack;
     public float BaseShield => baseShield;

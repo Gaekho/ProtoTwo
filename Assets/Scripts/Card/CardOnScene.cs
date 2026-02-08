@@ -30,10 +30,10 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void Awake()
     {
         mainCamera = Camera.main;
-        originalTransform = new Vector3 (transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        originalTransform = transform.position;
         canvas = GetComponentInChildren<Canvas>();
         myImage = canvas.GetComponentInChildren<Image>();
-        SetCard(data);
+        // How to Search Owner Character of this Card?
    
     }
 
@@ -41,6 +41,13 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         data = cardData;
         myImage.sprite =  data.CardSprite;
+        foreach(CharacterOnScene ch in BattleManager.Instance.PlayerParty)
+        {
+           if(ch.CharacterData.CardColor == data.Color)
+            {
+               temp = ch; break;
+            }
+        }
     }
 
     public void CardsizeBig()
@@ -68,13 +75,13 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void BackToHand()
     {
         transform.position = originalTransform;
-       CardsizeSmall();
-
+        CardsizeSmall();
+        myImage.sprite = data.CardSprite;
         //Color color = Color.white;
         //color.a = 1f;
         //myImage.color = color;           OnDrag 참조
 
-        SetCard(data);
+        //SetCard(data);
     }
     public bool CheckCondition(CardData myData, CharacterOnScene character)
     {

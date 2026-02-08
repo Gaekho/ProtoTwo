@@ -9,6 +9,7 @@ public class CharacterOnScene : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Animator animator;
 
+    public CharacterData CharacterData => characterData;
     public float currentHealth;
     public float currentGnosis;
     public float currentSpeed;
