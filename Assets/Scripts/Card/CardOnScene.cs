@@ -137,29 +137,38 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
        
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Collider2D hit = Physics2D.OverlapCircle(mouseWorldPos, radius);
-        target = hit.gameObject;
+        /*if (hit != null)
+        {
+            target = hit.gameObject;
+            Debug.Log(hit.gameObject.name);
+        }*/
 
         if (data.UsableWithoutTarget) return true;
-        
-        if(hit != null)
-        {
-                if (data.ActionTargetType.ToString() == hit.tag)
-                {
 
-                    Debug.Log("valid target");
-                    return true;
-                }
-                else
-                {
-                    Debug.Log("invalid target");
-                    return false;
-                }
+        if (hit != null)
+        {
+            target = hit.gameObject;
+            Debug.Log(hit.gameObject.name);
+            if (data.ActionTargetType.ToString() == hit.tag)
+            {
+
+                Debug.Log("valid target");
+                return true;
+            }
+            else
+            {
+                Debug.Log("invalid target");
+                Debug.Log("target : " + hit.tag + ", data : " + data.ActionTargetType);
+                return false;
+            }
         }
-        else
+        else if (hit == null)
         {
             Debug.Log("Nothing detected");
             return false;
         }
+
+        else Debug.Log("else");  return false;
     }
 
     void OnDrawGizmos()

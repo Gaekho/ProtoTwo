@@ -33,7 +33,7 @@ public class HandController : MonoBehaviour
 
     private void Start()
     {
-        SetUp();
+        //SetUp();
     }
 
     public void SetUp()
@@ -54,9 +54,9 @@ public class HandController : MonoBehaviour
                 if (currentDeck.Count == 0) { Debug.Log("No Cards in Deck & Graveyard"); break; }   //덱과 묘지 모두 빈 경우
             }
 
-            CardData data = currentDeck[0]; Debug.Log("Cloned card on Top :" + data.name);
-            currentDeck.RemoveAt(0);    Debug.Log("Remove from current Deck. Now Deck count :" + currentDeck.Count);
-            currentHand.Add(data);      Debug.Log("Add to Hand List. Now Hand count :" + currentHand.Count);
+            CardData data = currentDeck[0]; //Debug.Log("Cloned card on Top :" + data.name);
+            currentDeck.RemoveAt(0);    //Debug.Log("Remove from current Deck. Now Deck count :" + currentDeck.Count);
+            currentHand.Add(data);      //Debug.Log("Add to Hand List. Now Hand count :" + currentHand.Count);
 
             GameObject cardGO = Instantiate(basicCard, transform);
             cardGO.GetComponent<CardOnScene>().SetCard(data);

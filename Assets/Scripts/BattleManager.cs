@@ -29,7 +29,9 @@ public class BattleManager : MonoBehaviour
         Instance = this;
         CardActionProcessor.Initialize();
         SetAlly();
+        Debug.Log(PlayerParty[0].CharacterData.name);
         SetEnemy();
+        HandController.Instance.SetUp();
     }
 
     private void SetAlly()
