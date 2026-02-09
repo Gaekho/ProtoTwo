@@ -25,7 +25,7 @@ public class EnemyOnScene : MonoBehaviour
 
         maxHealth = enemyData.MaxHealth;
         currentHealth = enemyData.MaxHealth;
-        mySprite.sprite = enemyData.CharacterSprite;
+        mySprite.sprite = enemyData.EnemySprite;
     }
 
     public void Update()
@@ -51,5 +51,10 @@ public class EnemyOnScene : MonoBehaviour
     public void DoAttack()
     {
         myAnimator.SetTrigger("attack");
+    }
+
+    public void UseRandomPattern()
+    {
+        int index = Random.Range(0, enemyData.PatternList.Count);
     }
 }

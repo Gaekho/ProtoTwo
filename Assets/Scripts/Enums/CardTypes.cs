@@ -48,11 +48,23 @@ namespace Proto2.Enums
         RandomEnemy
     }
 
+    public enum PatternTargetType
+    {
+        Self,
+        RandomMob,
+        RandomHero,
+        FrontHero,
+        MiddleHero,
+        BackHero,
+        AllHero
+    }
+
     public enum EnemyPatternType
     {
         Attack, 
         Block, 
-        Dodgem, 
-        Buff
+        Dodge, 
+        Buff,
+        DeBuff
     }
 }

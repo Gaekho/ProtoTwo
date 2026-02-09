@@ -16,9 +16,10 @@ MonoBehaviour:
   enemyDescription: 
   maxHealth: 100
   baseSpeed: 1
-  characterSprite: {fileID: 21300000, guid: e121017a3d39f154baa32bae672a6413, type: 3}
+  enemySprite: {fileID: 21300000, guid: e121017a3d39f154baa32bae672a6413, type: 3}
   animatorController: {fileID: 9100000, guid: 3d98b1882e4ee624ebd575e8cf8edcfc, type: 2}
   patternList:
-  - patternName: 
+  - patternName: Axe Attack
     patternType: 0
-    value: 0
+    patternTargetType: 0
+    value: 20
