@@ -24,6 +24,7 @@ public class CardData : ScriptableObject
 
     [Header("Action Settings")]
     [SerializeField] private bool usableWithoutTarget;
+    [SerializeField] private bool banishAfterUsed;
     [SerializeField] private List<CardActionData> cardActionDataList;
 
     #region Cache
@@ -36,6 +37,7 @@ public class CardData : ScriptableObject
     public ActionTargetType ActionTargetType => actionTargetType;
     public List<ActiveConditionData> ActiveConditionList => activeConditionList;
     public bool UsableWithoutTarget => usableWithoutTarget;
+    public bool BanishAfterUsed => banishAfterUsed;
     public List<CardActionData> CarActionDataList => cardActionDataList;
     #endregion
 }

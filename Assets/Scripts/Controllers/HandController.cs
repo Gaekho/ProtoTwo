@@ -59,7 +59,7 @@ public class HandController : MonoBehaviour
             currentHand.Add(data);      //Debug.Log("Add to Hand List. Now Hand count :" + currentHand.Count);
 
             GameObject cardGO = Instantiate(basicCard, transform);
-            cardGO.GetComponent<CardOnScene>().SetCard(data);
+            cardGO.GetComponent<CardOnScene>().SetCard(data, currentHand.Count);
             Debug.Log("Draw a Card");
 
             SortCard();
