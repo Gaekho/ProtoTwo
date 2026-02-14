@@ -24,6 +24,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public int handIndex;
     public CharacterOnScene temp;
     public GameObject target;
+    public CardInstance cardInstance;
 
     #endregion
 
@@ -38,10 +39,11 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
    
     }
 
-    public void SetCard(CardData cardData, int index)
+    public void SetCard(CardData cardData, int index, CardInstance inst)
     {
         data = cardData;
         handIndex = index;
+        cardInstance = inst;
         myImage.sprite =  data.CardSprite;
         foreach(CharacterOnScene ch in BattleManager.Instance.PlayerParty)
         {
@@ -68,20 +70,21 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             CardActionProcessor.GetAction(actionData.CardActionType).DoAction(new CardActionParameters(actionData.ActionValue, temp, target.GetComponent<EnemyOnScene>(), data, this));
         }
 
-        AfterUsed();
+        //AfterUsed();
+        HandController.Instance.AfterCardUse(this);
     }
 
     public void AfterUsed()
     {
         if (data.BanishAfterUsed)
         {
-            HandController.Instance.currentBanished.Add(this.data);
-            HandController.Instance.currentHand.RemoveAt(handIndex);
+            //HandController.Instance.currentBanished.Add(this.data);
+            //HandController.Instance.currentHand.RemoveAt(handIndex);
         }
         else
         {
-            HandController.Instance.currentGraveyard.Add(this.data);
-            HandController.Instance.currentHand.RemoveAt(handIndex);
+            //HandController.Instance.currentGraveyard.Add(this.data);
+            //HandController.Instance.currentHand.RemoveAt(handIndex);
         }
         
         Destroy(this.gameObject);
