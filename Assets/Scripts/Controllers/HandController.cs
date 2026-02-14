@@ -9,22 +9,25 @@ public class HandController : MonoBehaviour
     public static HandController Instance { get; private set; }
     #endregion
 
+    #region Field
     [Header("Card Prefab")]
-    public GameObject basicCard;
+    [SerializeField] private GameObject basicCard;
 
     [Header("Hand Position")]
-    public Vector3 startPoint;
-    public Vector3 endPoint;
+    [SerializeField] private Transform spawnParent;
+    [SerializeField] private Vector3 startPoint;
+    [SerializeField] private Vector3 endPoint;
 
     [Header("Deck Data")]
-    public DeckData deckData;
+    [SerializeField] private DeckData deckData;
 
     [Header("List of cards on Battle")]
-    public List<CardData> currentDeck;
-    public List<CardData> currentHand;
-    public List<CardData> currentGraveyard;
-    public List<CardData> currentBanished;
+    [SerializeField] private List<CardData> currentDeck;
+    [SerializeField] private List<CardData> currentHand;
+    [SerializeField] private List<CardData> currentGraveyard;
+    [SerializeField] private List<CardData> currentBanished;
 
+    #endregion
     // Start is called before the first frame update
     private void Awake()
     {
@@ -58,8 +61,8 @@ public class HandController : MonoBehaviour
             currentDeck.RemoveAt(0);    //Debug.Log("Remove from current Deck. Now Deck count :" + currentDeck.Count);
             currentHand.Add(data);      //Debug.Log("Add to Hand List. Now Hand count :" + currentHand.Count);
 
-            GameObject cardGO = Instantiate(basicCard, transform);
-            cardGO.GetComponent<CardOnScene>().SetCard(data, currentHand.Count);
+            GameObject cardGO = Instantiate(basicCard, spawnParent);
+            cardGO.GetComponent<CardOnScene>().SetCard(data);
             Debug.Log("Draw a Card");
 
             SortCard();
@@ -87,9 +90,9 @@ public class HandController : MonoBehaviour
         int count = currentHand.Count;
         if (count == 0) return;
 
-        for(int i = 0; i<transform.childCount; i++)
+        for(int i = 0; i<spawnParent.childCount; i++)
         {
-            Transform card = transform.GetChild(i);
+            Transform card = spawnParent.GetChild(i);
             float t = count == 1 ? 0.5f : (float)i / (count - 1);
             Vector3 targetPosition = Vector3.Lerp(startPoint, endPoint, t);
             card.localPosition = targetPosition;
