@@ -23,4 +23,7 @@ MonoBehaviour:
   - condition: 0
     value: 30
   usableWithoutTarget: 1
-  cardActionDataList: []
+  banishAfterUsed: 0
+  cardActionDataList:
+  - cardActionType: 3
+    actionValue: 2

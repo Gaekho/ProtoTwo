@@ -11,6 +11,7 @@ public static class CardActionProcessor
     {
         CardActionDict.Clear();
         CardActionDict.Add(CardActionType.Attack, new AttackAction());
+        CardActionDict.Add(CardActionType.Draw, new DrawAction());
 
     }
 

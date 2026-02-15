@@ -15,7 +15,7 @@ MonoBehaviour:
   deckName: "\uB098\uB9CC\uC758 XX \uB371"
   deckList:
   - {fileID: 11400000, guid: 58690a32ed8924e46be245d4acbd5520, type: 2}
-  - {fileID: 11400000, guid: 58690a32ed8924e46be245d4acbd5520, type: 2}
+  - {fileID: 11400000, guid: fecb8f49f60e1554795d458c16dc997d, type: 2}
   - {fileID: 11400000, guid: 58690a32ed8924e46be245d4acbd5520, type: 2}
   - {fileID: 11400000, guid: 58690a32ed8924e46be245d4acbd5520, type: 2}
   - {fileID: 11400000, guid: 58690a32ed8924e46be245d4acbd5520, type: 2}
