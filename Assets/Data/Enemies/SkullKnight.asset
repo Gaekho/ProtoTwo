@@ -21,5 +21,9 @@ MonoBehaviour:
   patternList:
   - patternName: Axe Attack
     patternType: 0
-    patternTargetType: 0
+    patternTargetType: 5
     value: 20
+  - patternName: Head Hit
+    patternType: 4
+    patternTargetType: 5
+    value: 2

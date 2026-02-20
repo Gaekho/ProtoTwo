@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 public class CharacterOnScene : MonoBehaviour
@@ -15,13 +16,17 @@ public class CharacterOnScene : MonoBehaviour
     public float currentSpeed;
     public float currentAttack;
     public float currentShield;
-    public bool isTurn = false;
+    public bool isTurn;
+    public Transform myTransform;
 
-    // Start is called before the first frame update
-    void Start()
+    
+    public void SetCharacter(CharacterData chData)
     {
+        characterData = chData;
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        myTransform = transform.parent.GetComponent<Transform>();
 
         spriteRenderer.sprite = characterData.CharacterSprite;
         animator.runtimeAnimatorController = characterData.AnimatorController;
@@ -29,9 +34,21 @@ public class CharacterOnScene : MonoBehaviour
         currentSpeed = characterData.BaseSpeed;
         currentAttack = characterData.BaseAttack;
         currentShield = characterData.BaseShield;
+        isTurn = false;
+        
     }
 
-    // Update is called once per frame
+    public void EnterTurn()
+    {
+        isTurn = true;
+        myTransform.localScale = new Vector3(1.2f, 1.2f, 1f);
+    }
+
+    public void ExitTurn()
+    {
+        isTurn = false;
+        myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
+    }
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.A))
@@ -42,6 +59,7 @@ public class CharacterOnScene : MonoBehaviour
         else if(Input.GetKeyDown(KeyCode.S))
         {
             animator.SetTrigger("CardUse");
+            myTransform.localScale = new Vector3(1.2f, 1.2f, 1f);
         }
 
         else if (Input.GetKeyDown(KeyCode.D))
@@ -54,4 +72,6 @@ public class CharacterOnScene : MonoBehaviour
     {
         animator.SetTrigger("Attack");
     }
+
+
 }

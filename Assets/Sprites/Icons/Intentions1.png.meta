@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 654359899cc01364489bd089e5dc9016
+guid: 0c7ac0fc980114145bfb90927911fecf
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 80
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -93,30 +93,80 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Sulphur_IDLE-Sheet_0
+      name: Intentions1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b6fe42e8f7cd8f4bb6175a5df530f22
+      internalID: 997859787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Intentions1_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86090496a4652eb42864cd37066c0209
+      internalID: -497449512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Intentions1_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91b32e05095f2774da78558962853cae
+      internalID: -568681366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Intentions1_3
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 80
-        height: 120
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7a83b1c2f591f5d47b59b3c4cb155b0b
-      internalID: -962739781
+      spriteID: 3f31d037b7e40bc4e94f7c55556b29ad
+      internalID: -640635409
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sulphur_IDLE-Sheet_1
+      name: Intentions1_4
       rect:
         serializedVersion: 2
-        x: 80
+        x: 128
         y: 0
-        width: 80
-        height: 120
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,20 +195,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ce5fe549c8be65c4d8de82457b4f9ee4
-      internalID: -2142895826
+      spriteID: 1bb6026c25ee30a4590b17e9d9a40800
+      internalID: -1271357597
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sulphur_IDLE-Sheet_2
+      name: Intentions1_5
       rect:
         serializedVersion: 2
-        x: 160
+        x: 256
         y: 0
-        width: 80
-        height: 120
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,50 +216,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a9758f6adc85aab4484505f6580a9927
-      internalID: 681648046
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sulphur_IDLE-Sheet_3
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 0
-        width: 80
-        height: 120
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 466c92ce93656c943b073060028b7b1b
-      internalID: 740777234
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sulphur_IDLE-Sheet_4
-      rect:
-        serializedVersion: 2
-        x: 320
-        y: 0
-        width: 80
-        height: 120
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 50d55affe85f62342afc9509b149d44d
-      internalID: 232215350
+      spriteID: b2e59c7f163b7824a9443a30337be431
+      internalID: -1800394545
       vertices: []
       indices: 
       edges: []
@@ -225,11 +233,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Sulphur_IDLE-Sheet_0: -962739781
-      Sulphur_IDLE-Sheet_1: -2142895826
-      Sulphur_IDLE-Sheet_2: 681648046
-      Sulphur_IDLE-Sheet_3: 740777234
-      Sulphur_IDLE-Sheet_4: 232215350
+      Intentions1_0: 997859787
+      Intentions1_1: -497449512
+      Intentions1_2: -568681366
+      Intentions1_3: -640635409
+      Intentions1_4: -1271357597
+      Intentions1_5: -1800394545
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

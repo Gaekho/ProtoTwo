@@ -113,10 +113,10 @@ TextureImporter:
       name: Sita_Damage-Sheet_0
       rect:
         serializedVersion: 2
-        x: 10
+        x: 0
         y: 0
-        width: 63
-        height: 118
+        width: 80
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,9 +134,9 @@ TextureImporter:
       name: Sita_Damage-Sheet_1
       rect:
         serializedVersion: 2
-        x: 83
+        x: 80
         y: 0
-        width: 63
+        width: 80
         height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -155,9 +155,9 @@ TextureImporter:
       name: Sita_Damage-Sheet_2
       rect:
         serializedVersion: 2
-        x: 163
+        x: 160
         y: 0
-        width: 63
+        width: 80
         height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -178,7 +178,7 @@ TextureImporter:
         serializedVersion: 2
         x: 240
         y: 0
-        width: 63
+        width: 80
         height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -197,9 +197,9 @@ TextureImporter:
       name: Sita_Damage-Sheet_4
       rect:
         serializedVersion: 2
-        x: 330
+        x: 320
         y: 0
-        width: 63
+        width: 80
         height: 120
       alignment: 0
       pivot: {x: 0, y: 0}

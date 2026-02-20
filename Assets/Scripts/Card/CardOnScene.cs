@@ -67,7 +67,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         foreach (var actionData in data.CarActionDataList)
         {
-            CardActionProcessor.GetAction(actionData.CardActionType).DoAction(new CardActionParameters(actionData.ActionValue, temp, target.GetComponent<EnemyOnScene>(), data, this));
+            CardActionProcessor.GetAction(actionData.CardActionType).DoAction(new CardActionParameters(actionData.ActionValue, temp, target ? target.GetComponent<EnemyOnScene>() : null, data, this));
         }
 
         //AfterUsed();

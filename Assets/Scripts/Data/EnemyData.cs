@@ -42,9 +42,11 @@ public class EnemyPatternData
     [SerializeField] private EnemyPatternType patternType;
     [SerializeField] private PatternTargetType patternTargetType;
     [SerializeField] private float value;
+    [SerializeField] private Sprite patternImage;
 
     public string PatternName => patternName;
     public EnemyPatternType PatternType => patternType;
     public PatternTargetType PatternTargetType => patternTargetType;
     public float Value => value;
+    public Sprite PatternImage => patternImage;
 }

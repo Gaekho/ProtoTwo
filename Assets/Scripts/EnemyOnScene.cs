@@ -53,8 +53,12 @@ public class EnemyOnScene : MonoBehaviour
         myAnimator.SetTrigger("attack");
     }
 
-    public void UseRandomPattern()
+    public void SetRandomPattern()
     {
         int index = Random.Range(0, enemyData.PatternList.Count);
+    }
+    public void UsePattern()
+    {
+
     }
 }

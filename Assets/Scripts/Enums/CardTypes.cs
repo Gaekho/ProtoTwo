@@ -52,10 +52,10 @@ namespace Proto2.Enums
     {
         Self,
         RandomMob,
-        RandomHero,
         FrontHero,
         MiddleHero,
         BackHero,
+        TurnHero,
         AllHero
     }
 

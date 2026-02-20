@@ -14,8 +14,11 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private GameObject characterPrefab;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private HandController handContoller;
+    [SerializeField] private DeckData deckData;
 
     [Header("Characters On Scene")]
+    [SerializeField] private GameObject basicCharacter;
+    [SerializeField] private Transform allyContainer;
     [SerializeField] private List<CharacterOnScene> playerParty;
     [SerializeField] private List<EnemyOnScene> enemyList;
 
@@ -24,6 +27,7 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     public IReadOnlyList<CharacterOnScene> PlayerParty => playerParty;
+    
     private void Awake()
     {
         Instance = this;
@@ -37,11 +41,12 @@ public class BattleManager : MonoBehaviour
     private void SetAlly()
     {
         playerParty.Clear();
-        GameObject[] allies = GameObject.FindGameObjectsWithTag("Ally");
+        CharacterOnScene [] allies = allyContainer.GetComponentsInChildren<CharacterOnScene>(); 
 
-        foreach(GameObject go in allies)
+        for(int i=0; i<allies.Length; i++)
         {
-            playerParty.Add(go.GetComponentInChildren<CharacterOnScene>());
+            playerParty.Add(allies[i]);
+            allies[i].SetCharacter(deckData.Characters[i]);
         }
     }
 

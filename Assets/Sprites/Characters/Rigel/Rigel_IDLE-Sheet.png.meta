@@ -113,10 +113,10 @@ TextureImporter:
       name: Rigel_IDLE-Sheet_0
       rect:
         serializedVersion: 2
-        x: 7
+        x: 0
         y: 0
-        width: 66
-        height: 119
+        width: 80
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,9 +134,9 @@ TextureImporter:
       name: Rigel_IDLE-Sheet_1
       rect:
         serializedVersion: 2
-        x: 79
+        x: 80
         y: 0
-        width: 81
+        width: 80
         height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -155,10 +155,10 @@ TextureImporter:
       name: Rigel_IDLE-Sheet_2
       rect:
         serializedVersion: 2
-        x: 169
+        x: 160
         y: 0
-        width: 64
-        height: 118
+        width: 80
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -176,9 +176,9 @@ TextureImporter:
       name: Rigel_IDLE-Sheet_3
       rect:
         serializedVersion: 2
-        x: 239
+        x: 240
         y: 0
-        width: 74
+        width: 80
         height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -197,10 +197,10 @@ TextureImporter:
       name: Rigel_IDLE-Sheet_4
       rect:
         serializedVersion: 2
-        x: 319
+        x: 320
         y: 0
-        width: 81
-        height: 119
+        width: 80
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

@@ -7,7 +7,7 @@ public class CardActionParameters
 {
     public readonly float value;
     public readonly CharacterOnScene characterOnScene;
-    public readonly EnemyOnScene enemyOnScene;
+    public readonly EnemyOnScene enemyOnScene;          //nullable
     public readonly CardData cardData;
     public readonly CardOnScene cardOnScene;
 
@@ -15,7 +15,7 @@ public class CardActionParameters
     {
         this.value = value;
         this.characterOnScene = characterOnScene;
-        this.enemyOnScene = enemyOnScene;
+        this.enemyOnScene = enemyOnScene;           //nullable
         this.cardData = cardData;
         this.cardOnScene = cardOnScene;
     }

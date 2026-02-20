@@ -113,9 +113,9 @@ TextureImporter:
       name: Sita_UseCard-Sheet_0
       rect:
         serializedVersion: 2
-        x: 9
+        x: 0
         y: 0
-        width: 63
+        width: 80
         height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -134,9 +134,9 @@ TextureImporter:
       name: Sita_UseCard-Sheet_1
       rect:
         serializedVersion: 2
-        x: 90
+        x: 80
         y: 0
-        width: 63
+        width: 80
         height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -155,9 +155,9 @@ TextureImporter:
       name: Sita_UseCard-Sheet_2
       rect:
         serializedVersion: 2
-        x: 170
+        x: 160
         y: 0
-        width: 67
+        width: 80
         height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -176,9 +176,9 @@ TextureImporter:
       name: Sita_UseCard-Sheet_3
       rect:
         serializedVersion: 2
-        x: 250
+        x: 240
         y: 0
-        width: 67
+        width: 80
         height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
