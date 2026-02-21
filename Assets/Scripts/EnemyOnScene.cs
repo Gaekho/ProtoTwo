@@ -13,6 +13,7 @@ public class EnemyOnScene : MonoBehaviour
     [SerializeField] private Canvas myCanvas;
     [SerializeField] private Animator myAnimator;
     [SerializeField] private Slider mySlider;
+    [SerializeField] private EnemyPatternData currentPattern;
 
     //Transform parent;
     private void Start()
@@ -26,6 +27,7 @@ public class EnemyOnScene : MonoBehaviour
         maxHealth = enemyData.MaxHealth;
         currentHealth = enemyData.MaxHealth;
         mySprite.sprite = enemyData.EnemySprite;
+        SetRandomPattern();
     }
 
     public void Update()
@@ -56,6 +58,8 @@ public class EnemyOnScene : MonoBehaviour
     public void SetRandomPattern()
     {
         int index = Random.Range(0, enemyData.PatternList.Count);
+        currentPattern = enemyData.PatternList[index];
+        myCanvas.GetComponentInChildren<Image>().sprite = currentPattern.PatternImage;
     }
     public void UsePattern()
     {

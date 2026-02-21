@@ -414,8 +414,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 9040604409102302003}
   - {fileID: 5057878745975482521}
+  - {fileID: 9040604409102302003}
   m_Father: {fileID: 2540947067194005748}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -627,6 +627,12 @@ MonoBehaviour:
   myCanvas: {fileID: 0}
   myAnimator: {fileID: 0}
   mySlider: {fileID: 0}
+  currentPattern:
+    patternName: 
+    patternType: 0
+    patternTargetType: 0
+    value: 0
+    patternImage: {fileID: 0}
 --- !u!95 &1615341680267107253
 Animator:
   serializedVersion: 5
