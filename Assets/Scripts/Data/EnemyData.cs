@@ -39,14 +39,24 @@ public class EnemyData : ScriptableObject
 public class EnemyPatternData
 {
     [SerializeField] private string patternName;
-    [SerializeField] private EnemyPatternType patternType;
+    [SerializeField] private EnemyPatternType patternType;  //for Animation
     [SerializeField] private PatternTargetType patternTargetType;
-    [SerializeField] private float value;
     [SerializeField] private Sprite patternImage;
+    [SerializeField] private List<EnemyPatternAction> actionList;
 
     public string PatternName => patternName;
-    public EnemyPatternType PatternType => patternType;
+    public EnemyPatternType PatternType => patternType; //for Animation of a pattern.
     public PatternTargetType PatternTargetType => patternTargetType;
-    public float Value => value;
     public Sprite PatternImage => patternImage;
+    public List<EnemyPatternAction> ActionList => actionList;
+}
+
+[Serializable]
+public class EnemyPatternAction
+{
+    [SerializeField] private EnemyPatternType patternType;
+    [SerializeField] private float patternValue;
+
+    public EnemyPatternType PatternType => patternType;
+    public float PatternValue => patternValue;
 }

@@ -22,10 +22,14 @@ MonoBehaviour:
   - patternName: Axe Attack
     patternType: 0
     patternTargetType: 5
-    value: 20
     patternImage: {fileID: 136862768, guid: ea7de6defccb7054e830650d2736518a, type: 3}
+    actionList:
+    - patternType: 0
+      patternValue: 20
   - patternName: Head Hit
     patternType: 4
     patternTargetType: 5
-    value: 2
     patternImage: {fileID: -1669946452, guid: ea7de6defccb7054e830650d2736518a, type: 3}
+    actionList:
+    - patternType: 4
+      patternValue: 2

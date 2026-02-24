@@ -56,7 +56,8 @@ namespace Proto2.Enums
         MiddleHero,
         BackHero,
         TurnHero,
-        AllHero
+        AllHero,
+        RandomTwoHero
     }
 
     public enum EnemyPatternType

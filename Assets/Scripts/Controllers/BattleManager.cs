@@ -24,14 +24,17 @@ public class BattleManager : MonoBehaviour
 
     [Header("Turn")]
     [SerializeField] private int turn = 0;
+    [SerializeField] private CharacterOnScene turnCharacter;
     #endregion
 
     public IReadOnlyList<CharacterOnScene> PlayerParty => playerParty;
+    public CharacterOnScene TurnCharatcer { private set;  get; }
     
     private void Awake()
     {
         Instance = this;
         CardActionProcessor.Initialize();
+        EnemyPatternProcessor.Initialize();
         SetAlly();
         Debug.Log(PlayerParty[0].CharacterData.name);
         SetEnemy();
