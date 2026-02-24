@@ -6,14 +6,14 @@ using UnityEngine;
 public class EnemyActionParameters
 {
     public readonly float value;
-    public readonly CharacterOnScene characterOnScene;
-    public readonly EnemyOnScene enemyOnScene;
+    public readonly List<CharacterOnScene> charactersOnScene;
+    public readonly List<EnemyOnScene> enemiesOnScene;
 
-    public EnemyActionParameters(float value, CharacterOnScene characterOnScene, EnemyOnScene enemyOnScene) //Creater
+    public EnemyActionParameters(float value, List<CharacterOnScene> charactersOnScene, List<EnemyOnScene> enemiesOnScene) //Creater
     {
         this.value = value;
-        this.characterOnScene = characterOnScene;
-        this.enemyOnScene = enemyOnScene;
+        this.charactersOnScene = charactersOnScene;
+        this.enemiesOnScene = enemiesOnScene;
     }
 }
 public abstract class EnemyActionBase
@@ -30,7 +30,17 @@ public class AttackPattern : EnemyActionBase
     public override EnemyPatternType PatternType => EnemyPatternType.Attack;
     public override void DoAction(EnemyActionParameters patternParameters)
     {
-        patternParameters.enemyOnScene.DoAttack();
-        patternParameters.characterOnScene.currentHealth -= patternParameters.value;
+        //patternParameters.enemyOnScene.DoAttack();
+        //patternParameters.charactersOnScene[0].currentHealth -= patternParameters.value;
+        Debug.Log("Attack Action Done");
+    }
+}
+
+public class DeBuffPattern : EnemyActionBase
+{
+    public override EnemyPatternType PatternType => EnemyPatternType.DeBuff;
+    public override void DoAction(EnemyActionParameters patternParameters)
+    {
+        Debug.Log("Debuff Action Done");
     }
 }

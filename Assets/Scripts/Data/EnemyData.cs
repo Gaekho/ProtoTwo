@@ -40,13 +40,13 @@ public class EnemyPatternData
 {
     [SerializeField] private string patternName;
     [SerializeField] private EnemyPatternType patternType;  //for Animation
-    [SerializeField] private PatternTargetType patternTargetType;
+    //[SerializeField] private PatternTargetType patternTargetType;
     [SerializeField] private Sprite patternImage;
     [SerializeField] private List<EnemyPatternAction> actionList;
 
     public string PatternName => patternName;
     public EnemyPatternType PatternType => patternType; //for Animation of a pattern.
-    public PatternTargetType PatternTargetType => patternTargetType;
+    //public PatternTargetType PatternTargetType => patternTargetType;
     public Sprite PatternImage => patternImage;
     public List<EnemyPatternAction> ActionList => actionList;
 }
@@ -54,9 +54,11 @@ public class EnemyPatternData
 [Serializable]
 public class EnemyPatternAction
 {
-    [SerializeField] private EnemyPatternType patternType;
+    [SerializeField] private EnemyPatternType patternActionType;
     [SerializeField] private float patternValue;
+    [SerializeField] private PatternTargetType actionTargetType;
 
-    public EnemyPatternType PatternType => patternType;
+    public EnemyPatternType PatternActionType => patternActionType;
     public float PatternValue => patternValue;
+    public PatternTargetType ActionTargetType => actionTargetType;
 }

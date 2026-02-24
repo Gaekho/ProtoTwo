@@ -16,6 +16,7 @@ public class EnemyOnScene : MonoBehaviour
     [SerializeField] private Slider mySlider;
     [SerializeField] private EnemyPatternData currentPattern;
     [SerializeField] private List<CharacterOnScene> targetHero;
+    [SerializeField] private List<EnemyOnScene> targetEnemy;
 
     //Transform parent;
     private void Start()
@@ -41,7 +42,7 @@ public class EnemyOnScene : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.L)) 
         {
-           DoAttack();
+            UsePattern();
         }
     }
     public void GetDamage(float damage)
@@ -57,16 +58,30 @@ public class EnemyOnScene : MonoBehaviour
         myAnimator.SetTrigger("Attack");
     }
 
-    public void GetTarget()
+    public void GetTarget(EnemyPatternAction patternAction )
     {
-        switch (currentPattern.PatternTargetType)
+        targetHero.Clear();
+        targetEnemy.Clear();
+
+        switch (patternAction.ActionTargetType)
         {
+            case PatternTargetType.Self:
+                targetEnemy.Add(this);
+                break;
+
+            case PatternTargetType.RandomMob:
+                break;
+
             case PatternTargetType.TurnHero:
                 targetHero.Add(BattleManager.Instance.TurnCharatcer);                 //need to catch TurnHero for BattleManager.Instance.PlayerParty
                 break;
 
             case PatternTargetType.AllHero:
                 targetHero.AddRange(BattleManager.Instance.PlayerParty);
+                break;
+
+            case PatternTargetType.RandomTwoHero:
+                targetHero.Add(BattleManager.Instance.TurnCharatcer);
                 break;
         }
         
@@ -78,13 +93,17 @@ public class EnemyOnScene : MonoBehaviour
         currentPattern = enemyData.PatternList[index];
         myCanvas.GetComponentInChildren<Image>().sprite = currentPattern.PatternImage;
     }
-    public void UsePattern(EnemyPatternData patternData)
+    public void UsePattern()
     {
-        myAnimator.SetTrigger(patternData.PatternType.ToString());  //Only one Animation for a pattern
+        myAnimator.SetTrigger(currentPattern.PatternType.ToString());  //Only one Animation for a pattern
 
-        foreach(EnemyPatternAction action in patternData.ActionList)
+        foreach(EnemyPatternAction action in currentPattern.ActionList)
         {
-            EnemyPatternProcessor.GetPattern(action.PatternType).DoAction(new EnemyActionParameters(action.PatternValue, targetHero[0],this));
+            Debug.Log(action.PatternActionType.ToString());
+            GetTarget(action);
+            //Debug.Log(enemyData.EnemyName + "'s Target : " + targetHero[0].CharacterData.CharacterName);
+            //Debug.Log(enemyData.EnemyName + "'s Target : " + targetEnemy[0].enemyData.EnemyName);
+            EnemyPatternProcessor.GetPattern(action.PatternActionType).DoAction(new EnemyActionParameters(action.PatternValue, targetHero, targetEnemy));
         }
     }
 }

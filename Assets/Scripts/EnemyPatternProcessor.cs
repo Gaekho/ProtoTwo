@@ -11,6 +11,7 @@ public static class EnemyPatternProcessor
     {
         enemyActionDict.Clear();
         enemyActionDict.Add(EnemyPatternType.Attack, new AttackPattern());
+        enemyActionDict.Add(EnemyPatternType.DeBuff, new DeBuffPattern());
 
         // Add additional PatternType here whenever developed New Pattern Actions
     }
