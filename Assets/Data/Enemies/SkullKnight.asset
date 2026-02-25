@@ -26,6 +26,20 @@ MonoBehaviour:
     - patternActionType: 0
       patternValue: 20
       actionTargetType: 2
-    - patternActionType: 4
+    - patternActionType: 3
       patternValue: 20
       actionTargetType: 0
+  - patternName: Buff Self
+    patternType: 3
+    patternImage: {fileID: 485272125, guid: ea7de6defccb7054e830650d2736518a, type: 3}
+    actionList:
+    - patternActionType: 3
+      patternValue: 20
+      actionTargetType: 0
+  - patternName: Debuff Enemies
+    patternType: 4
+    patternImage: {fileID: -1669946452, guid: ea7de6defccb7054e830650d2736518a, type: 3}
+    actionList:
+    - patternActionType: 4
+      patternValue: 20
+      actionTargetType: 2

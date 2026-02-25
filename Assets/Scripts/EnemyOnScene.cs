@@ -35,9 +35,14 @@ public class EnemyOnScene : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.J))
         {
             GetDamage(10f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            SetRandomPattern();
         }
 
         if (Input.GetKeyDown(KeyCode.L)) 
@@ -73,7 +78,7 @@ public class EnemyOnScene : MonoBehaviour
                 break;
 
             case PatternTargetType.TurnHero:
-                targetHero.Add(BattleManager.Instance.TurnCharatcer);                 //need to catch TurnHero for BattleManager.Instance.PlayerParty
+                targetHero.Add(BattleManager.Instance.TurnCharacter);                 //need to catch TurnHero for BattleManager.Instance.PlayerParty
                 break;
 
             case PatternTargetType.AllHero:
@@ -81,7 +86,7 @@ public class EnemyOnScene : MonoBehaviour
                 break;
 
             case PatternTargetType.RandomTwoHero:
-                targetHero.Add(BattleManager.Instance.TurnCharatcer);
+                targetHero.Add(BattleManager.Instance.TurnCharacter);
                 break;
         }
         
@@ -101,8 +106,9 @@ public class EnemyOnScene : MonoBehaviour
         {
             Debug.Log(action.PatternActionType.ToString());
             GetTarget(action);
-            //Debug.Log(enemyData.EnemyName + "'s Target : " + targetHero[0].CharacterData.CharacterName);
-            //Debug.Log(enemyData.EnemyName + "'s Target : " + targetEnemy[0].enemyData.EnemyName);
+            Debug.Log(enemyData.EnemyName + "'s Target Hero : " + targetHero.Count);
+            //Debug.Log(enemyData.EnemyName + "'s Target : " + targetHero[0]== null ? "List[0] is null" : targetHero[0].CharacterData.name);
+            Debug.Log(enemyData.EnemyName + "'s Target Enemy : " + targetEnemy.Count);
             EnemyPatternProcessor.GetPattern(action.PatternActionType).DoAction(new EnemyActionParameters(action.PatternValue, targetHero, targetEnemy));
         }
     }

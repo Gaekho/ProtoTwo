@@ -1980,6 +1980,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyPos (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4519629398761043965, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5057878745975482521, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0.35
@@ -1994,11 +1998,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5937372730945844386, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5937372730945844386, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6038483788159762219, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
       propertyPath: m_Sprite

@@ -31,7 +31,7 @@ public class AttackPattern : EnemyActionBase
     public override void DoAction(EnemyActionParameters patternParameters)
     {
         //patternParameters.enemyOnScene.DoAttack();
-        //patternParameters.charactersOnScene[0].currentHealth -= patternParameters.value;
+        patternParameters.charactersOnScene[0].currentHealth -= patternParameters.value;
         Debug.Log("Attack Action Done");
     }
 }
@@ -42,5 +42,14 @@ public class DeBuffPattern : EnemyActionBase
     public override void DoAction(EnemyActionParameters patternParameters)
     {
         Debug.Log("Debuff Action Done");
+    }
+}
+
+public class BuffPattern : EnemyActionBase
+{
+    public override EnemyPatternType PatternType => EnemyPatternType.Buff;
+    public override void DoAction(EnemyActionParameters patternParameters)
+    {
+        Debug.Log("Buff Action Done");
     }
 }

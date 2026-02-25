@@ -24,11 +24,11 @@ public class BattleManager : MonoBehaviour
 
     [Header("Turn")]
     [SerializeField] private int turn = 0;
-    [SerializeField] private CharacterOnScene turnCharacter;
+    [SerializeField] public CharacterOnScene TurnCharacter { private set; get; }
     #endregion
 
     public IReadOnlyList<CharacterOnScene> PlayerParty => playerParty;
-    public CharacterOnScene TurnCharatcer { private set;  get; }
+    //public CharacterOnScene TurnCharatcer;
     
     private void Awake()
     {
@@ -37,6 +37,7 @@ public class BattleManager : MonoBehaviour
         EnemyPatternProcessor.Initialize();
         SetAlly();
         Debug.Log(PlayerParty[0].CharacterData.name);
+        TurnCharacter = PlayerParty[0];
         SetEnemy();
         HandController.Instance.SetUp();
     }
