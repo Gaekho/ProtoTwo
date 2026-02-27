@@ -74,21 +74,6 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         HandController.Instance.AfterCardUse(this);
     }
 
-    public void AfterUsed()
-    {
-        if (data.BanishAfterUsed)
-        {
-            //HandController.Instance.currentBanished.Add(this.data);
-            //HandController.Instance.currentHand.RemoveAt(handIndex);
-        }
-        else
-        {
-            //HandController.Instance.currentGraveyard.Add(this.data);
-            //HandController.Instance.currentHand.RemoveAt(handIndex);
-        }
-        
-        Destroy(this.gameObject);
-    }
 
     public void BackToHand()
     {
@@ -106,7 +91,11 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         float val = 0f; 
         float currentStat = 0f;
         bool lastCheck = false;
-
+        if(character != BattleManager.Instance.TurnCharacter)
+        {
+            Debug.Log("Not Turn Character");
+            return false;
+        }
         for(int i=0; i<myData.ActiveConditionList.Count; i++)
         {
             val = myData.ActiveConditionList[i].Value;
@@ -149,7 +138,6 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //Debug.Log("checked");
         return lastCheck;
     }
-
     public bool CheckTarget(CardData data)
     {
        

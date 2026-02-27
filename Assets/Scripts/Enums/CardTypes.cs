@@ -65,4 +65,12 @@ namespace Proto2.Enums
         Buff,
         DeBuff
     }
+
+    public enum TurnState
+    {
+        None,
+        AllyTurn,
+        EnemyTurn,
+        End
+    }
 }

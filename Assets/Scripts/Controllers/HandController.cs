@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HandController : MonoBehaviour
 {
-    #region Singlton
+    #region Singleton
     private HandController() { }
     public static HandController Instance { get; private set; }
     #endregion
@@ -114,7 +114,7 @@ public class HandController : MonoBehaviour
 
     public void SortCard()
     {
-        int count = currentHand.Count;  Debug.Log("Now Card Count in Hand" + spawnParent.childCount);
+        int count = currentHand.Count;  //Debug.Log("Now Card Count in Hand" + spawnParent.childCount);
         if (count == 0) return;
 
         for(int i = 0; i<spawnParent.childCount; i++)
