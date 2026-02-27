@@ -9,7 +9,7 @@ public class BossNode : NodeBase
         nodeButton.onClick.AddListener(OnClick);
     }
 
-    void OnClick()
+    public void OnClick()
     {
         Debug.Log("Boss Node Access");
     }

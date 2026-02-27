@@ -9,7 +9,7 @@ public class EliteBattleNode : NodeBase
         nodeButton.onClick.AddListener(OnClick);
     }
 
-    void OnClick()
+    public void OnClick()
     {
         Debug.Log("Elite Node Access");
     }

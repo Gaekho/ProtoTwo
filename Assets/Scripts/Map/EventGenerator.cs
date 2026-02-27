@@ -17,6 +17,8 @@ public class EventGenerator : MonoBehaviour
     [SerializeField] private EssentialNode essential;
     //노드 정보
     [SerializeField] private NodeBase[] nodes;
+    //특수 노드 수(엘리트, 보스 등)
+    [SerializeField] private int specialNodes = 2;
 
     [Header("Map Data")]
     //노드를 배치할 좌표 기준점
@@ -28,39 +30,44 @@ public class EventGenerator : MonoBehaviour
 
     public void GenerateMap()
     {
+        Vector3 basePosition = buttonTestTransform.position;
         //필수 노드 지정 층과 맞추기 위해 1부터 시작
         for (int i = 1; i <= floors; i++)
         {
-            GenerateFloor(i, buttonTestTransform);
+            GenerateFloor(i, buttonTestTransform,basePosition);
             buttonTestTransform.position += new Vector3(0, floorGap, 0);
         }
     }
 
-    private void GenerateFloor(int currentFloor, Transform pivot)
+    private void GenerateFloor(int currentFloor, Transform pivot, Vector3 basePosition)
     {
         int nodeAmount = Random.Range(minRoom, maxRoom);
 
         if(currentFloor == essential.GetFloor())
         {
-            GenerateNode(essential.GetNodeType(), nodeAmount, pivot);
+            GenerateNode(essential.GetNodeType(), nodeAmount, pivot, basePosition);
         }
         else
         {
-            int randomNode = Random.Range(0, 3);
-
+            int nodeTypes = nodes.Length - specialNodes;
+            int randomNode = Random.Range(0, nodeTypes);
+            GenerateNode((NodeType)randomNode, nodeAmount, pivot, basePosition);
         }
     }
 
-    private void GenerateNode(NodeType nodeType, int nodeAmount, Transform pivot)
+    private void GenerateNode(NodeType nodeType, int nodeAmount, Transform pivot, Vector3 basePosition)
     {
         for (int i = 0; i < nodeAmount; i++)
         {
             NodeBase makingNode = MatchNode(nodeType);
             if(makingNode != null)
             {
-                Instantiate(makingNode, pivot);
+                
+                NodeBase NewNode = Instantiate(makingNode, pivot);
+                NewNode.transform.position = basePosition;
+                Debug.Log("Node Generated");
             }
-            pivot.position += new Vector3(nodeGap, 0, 0);
+            basePosition += new Vector3(nodeGap, 0, 0);
         }
     }
 

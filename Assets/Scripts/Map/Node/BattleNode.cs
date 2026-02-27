@@ -9,7 +9,7 @@ public class NewBehaviourScript : NodeBase
         nodeButton.onClick.AddListener(OnClick);
     }
 
-    void OnClick()
+    public void OnClick()
     {
         Debug.Log("Battle Button Access");
         //차후 씬 연결 공부해서 여기에 넣을 예정

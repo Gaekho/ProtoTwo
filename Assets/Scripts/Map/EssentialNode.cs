@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "EssentialNode", menuName = "ScriptableObjects/EssentialNode")]
 public class EssentialNode : ScriptableObject
 {
     [Header("Node Type")]

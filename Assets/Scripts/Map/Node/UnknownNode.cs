@@ -10,7 +10,7 @@ public class UnknownNode : NodeBase
         nodeButton.onClick.AddListener(OnClick);
     }
 
-    void OnClick()
+    public void OnClick()
     {
         Debug.Log("Unknown Node Access");
     }

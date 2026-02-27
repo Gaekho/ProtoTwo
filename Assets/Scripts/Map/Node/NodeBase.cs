@@ -12,4 +12,12 @@ public class NodeBase : MonoBehaviour
     [SerializeField] public Button nodeButton;
 
     public NodeType GetNodeType() { return nodetype; }
+
+    private void Awake()
+    {
+        if (nodeButton == null)
+        {
+            nodeButton = GetComponent<Button>();
+        }
+    }
 }
