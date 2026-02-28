@@ -281,7 +281,7 @@ Transform:
   m_GameObject: {fileID: 428350658}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -337.671, y: -198.66667, z: -1}
+  m_LocalPosition: {x: -200, y: -150, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -404,8 +404,8 @@ MonoBehaviour:
   - {fileID: -1185414134551820846, guid: 77794707f5aa6734887aee66e3e54c1a, type: 3}
   specialNodes: 2
   buttonTestTransform: {fileID: 428350659}
-  nodeGap: 2
-  floorGap: 2
+  nodeGap: 150
+  floorGap: 50
 --- !u!4 &670114731
 Transform:
   m_ObjectHideFlags: 0

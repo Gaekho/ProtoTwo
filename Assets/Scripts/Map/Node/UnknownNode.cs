@@ -7,10 +7,9 @@ public class UnknownNode : NodeBase
     // Start is called before the first frame update
     void Start()
     {
-        nodeButton.onClick.AddListener(OnClick);
     }
 
-    public void OnClick()
+    public override void OnClick(string sceneName)
     {
         Debug.Log("Unknown Node Access");
     }

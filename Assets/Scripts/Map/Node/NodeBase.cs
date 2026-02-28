@@ -2,6 +2,7 @@ using Proto2.Enums;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NodeBase : MonoBehaviour
@@ -13,6 +14,11 @@ public class NodeBase : MonoBehaviour
 
     public NodeType GetNodeType() { return nodetype; }
 
+    public virtual void OnClick(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
     private void Awake()
     {
         if (nodeButton == null)
@@ -20,6 +26,5 @@ public class NodeBase : MonoBehaviour
             nodeButton = GetComponent<Button>();
         }
         Debug.Log("Node Generated");
-
     }
 }

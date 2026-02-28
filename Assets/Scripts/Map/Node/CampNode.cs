@@ -6,10 +6,9 @@ public class CampNode : NodeBase
 {
     void Start()
     {
-        nodeButton.onClick.AddListener(OnClick);
     }
 
-    public void OnClick()
+    public override void OnClick(string sceneName)
     {
         Debug.Log("Camp Node Access");
     }
