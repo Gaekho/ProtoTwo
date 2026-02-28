@@ -11,6 +11,7 @@ public class UnknownNode : NodeBase
 
     public override void OnClick(string sceneName)
     {
+        base.OnClick(sceneName);
         Debug.Log("Unknown Node Access");
     }
 }

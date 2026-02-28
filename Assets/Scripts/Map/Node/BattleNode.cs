@@ -10,6 +10,7 @@ public class BattleNode : NodeBase
 
     public override void OnClick(string sceneName)
     {
+        base.OnClick(sceneName);
         Debug.Log("Battle Button Access");
     }
 }

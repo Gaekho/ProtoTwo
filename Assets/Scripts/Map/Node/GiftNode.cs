@@ -10,6 +10,7 @@ public class GiftNode : NodeBase
 
     public override void OnClick(string sceneName)
     {
+        base.OnClick(sceneName);
         Debug.Log("Gift Node Access");
     }
 }

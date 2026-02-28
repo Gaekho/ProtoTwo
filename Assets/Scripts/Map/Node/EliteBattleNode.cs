@@ -10,6 +10,7 @@ public class EliteBattleNode : NodeBase
 
     public override void OnClick(string sceneName)
     {
+        base.OnClick(sceneName);
         Debug.Log("Elite Node Access");
     }
 }

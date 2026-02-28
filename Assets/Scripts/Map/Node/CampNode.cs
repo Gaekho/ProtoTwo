@@ -10,6 +10,7 @@ public class CampNode : NodeBase
 
     public override void OnClick(string sceneName)
     {
+        base.OnClick(sceneName);
         Debug.Log("Camp Node Access");
     }
 }

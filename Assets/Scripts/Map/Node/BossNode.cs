@@ -10,6 +10,7 @@ public class BossNode : NodeBase
 
     public override void OnClick(string sceneName)
     {
+        base.OnClick(sceneName);
         Debug.Log("Boss Node Access");
     }
 }

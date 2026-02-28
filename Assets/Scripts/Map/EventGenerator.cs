@@ -28,6 +28,11 @@ public class EventGenerator : MonoBehaviour
     //類除 除問
     [SerializeField] private float floorGap = 10.0f;
 
+    private void Awake()
+    {
+        GenerateMap();
+    }
+
     public void GenerateMap()
     {
         Vector3 basePosition = buttonTestTransform.position;
