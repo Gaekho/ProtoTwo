@@ -1,6 +1,7 @@
 using Proto2.Enums;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +29,13 @@ public class EventGenerator : MonoBehaviour
     //Ãþ°£ °£°Ý
     [SerializeField] private float floorGap = 10.0f;
 
+    //À­Ãþ ³ëµå °¹¼ö
+    private int numOfNextFloorNode = 0;
+    //¾Æ·§Ãþ ³ëµåµé
+    private List<NodeBase> lastFloorNode = new List<NodeBase>();
+    //ÇöÀç Ãþ ³ëµåµé. ¾Ë°í¸®Áò»ó ÀÓ½Ã ÀúÀå¿ë
+    private List<NodeBase> currenNode = new List<NodeBase>();
+
     private void Awake()
     {
         GenerateMap();
@@ -46,18 +54,26 @@ public class EventGenerator : MonoBehaviour
 
     private void GenerateFloor(int currentFloor, Transform pivot, Vector3 basePosition)
     {
-        int nodeAmount = Random.Range(minRoom, maxRoom);
+        numOfNextFloorNode = Random.Range(minRoom, maxRoom);
 
         if(currentFloor == essential.GetFloor())
         {
-            GenerateNode(essential.GetNodeType(), nodeAmount, pivot, basePosition);
+            GenerateNode(essential.GetNodeType(), numOfNextFloorNode, pivot, basePosition);
         }
         else
         {
             int nodeTypes = nodes.Length - specialNodes;
             int randomNode = Random.Range(0, nodeTypes);
-            GenerateNode((NodeType)randomNode, nodeAmount, pivot, basePosition);
+            GenerateNode((NodeType)randomNode, numOfNextFloorNode, pivot, basePosition);
         }
+
+        foreach (NodeBase node in lastFloorNode)
+        {
+            ConnectNode(node);
+        }
+
+        lastFloorNode.Clear();
+        lastFloorNode = currenNode;
     }
 
     private void GenerateNode(NodeType nodeType, int nodeAmount, Transform pivot, Vector3 basePosition)
@@ -67,9 +83,9 @@ public class EventGenerator : MonoBehaviour
             NodeBase makingNode = MatchNode(nodeType);
             if(makingNode != null)
             {
-                
-                NodeBase NewNode = Instantiate(makingNode, pivot);
-                NewNode.transform.position = basePosition;
+                NodeBase newNode = Instantiate(makingNode, pivot);
+                newNode.transform.position = basePosition;
+                currenNode.Add(newNode);
             }
             basePosition += new Vector3(nodeGap, 0, 0);
         }
@@ -85,5 +101,40 @@ public class EventGenerator : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private void ConnectNode(NodeBase node)
+    {
+        int numOfNodeToConnect = Random.Range(1, numOfNextFloorNode);
+        int index = node.GetNodeIndex();
+        int changeIndex = 0;
+        bool bIsNeighobrChecked = false;
+
+        for(int i = 0; i < numOfNodeToConnect; i++)
+        {
+            if (bIsNeighobrChecked)
+            {
+                changeIndex++;
+            }
+            else
+            {
+                changeIndex *= -1;
+            }
+
+            int indexToConnect = index + changeIndex;
+
+            if (indexToConnect >= 0)
+            {
+                node.ConnectNode(currenNode[indexToConnect]);
+                bIsNeighobrChecked = !bIsNeighobrChecked;
+            }
+            else
+            {
+                indexToConnect *= -1;
+                node.ConnectNode(currenNode[indexToConnect]);
+                bIsNeighobrChecked = true;
+            }
+            i++;
+        }
     }
 }
