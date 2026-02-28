@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -280,11 +281,11 @@ Transform:
   m_GameObject: {fileID: 428350658}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.171, y: -10, z: -1}
+  m_LocalPosition: {x: -337.671, y: -198.66667, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1809103477}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &535773641
 GameObject:
@@ -320,7 +321,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 7.200012, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &535773643
@@ -395,12 +396,12 @@ MonoBehaviour:
   maxRoom: 4
   essential: {fileID: 11400000, guid: 7acc92c6b4daebe4d85c9d8049f041c9, type: 2}
   nodes:
-  - {fileID: -1216047465418982121, guid: f97f4c692a4f26743b6b4d3952449a9d, type: 3}
-  - {fileID: -6898527058509007822, guid: e1e0b6f691a0ff340853dd738ef7130f, type: 3}
-  - {fileID: 2530689968823954466, guid: 5e5407eded02d7f4a804f3dcc77328f2, type: 3}
-  - {fileID: 2660426616493599186, guid: 974012361429f394db52122cd64602ac, type: 3}
-  - {fileID: 6156401861203258651, guid: 147e0a5054928604cbe13b13429b37fe, type: 3}
-  - {fileID: 6529428666051582996, guid: eea15c322eb34424dbf0eed51acc59aa, type: 3}
+  - {fileID: -2178507785916407125, guid: d5806271c96471b4183486e552dde467, type: 3}
+  - {fileID: -7654278118587436594, guid: 328c6cbf93befd74b8e1af1e98a59bdb, type: 3}
+  - {fileID: -6941827101426666324, guid: 27951962be1c8a446ba826dab6da2f8a, type: 3}
+  - {fileID: 3161368144530395488, guid: 59b19f30837c8784088d53d95a116961, type: 3}
+  - {fileID: 147628389622489810, guid: 78c5d718708bb6943bbf93b307b2cc0e, type: 3}
+  - {fileID: -1185414134551820846, guid: 77794707f5aa6734887aee66e3e54c1a, type: 3}
   specialNodes: 2
   buttonTestTransform: {fileID: 428350659}
   nodeGap: 2
@@ -760,6 +761,7 @@ RectTransform:
   m_Children:
   - {fileID: 535773642}
   - {fileID: 380663537}
+  - {fileID: 428350659}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -851,7 +853,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 47.35
+  m_fontSize: 33.75
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -910,4 +912,3 @@ SceneRoots:
   - {fileID: 1809103477}
   - {fileID: 1498022799}
   - {fileID: 670114731}
-  - {fileID: 428350659}

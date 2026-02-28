@@ -65,7 +65,6 @@ public class EventGenerator : MonoBehaviour
                 
                 NodeBase NewNode = Instantiate(makingNode, pivot);
                 NewNode.transform.position = basePosition;
-                Debug.Log("Node Generated");
             }
             basePosition += new Vector3(nodeGap, 0, 0);
         }

@@ -104,7 +104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodetype: 4
   buttonImage: {fileID: 585115608, guid: ea7de6defccb7054e830650d2736518a, type: 3}
-  nodeButton: {fileID: 0}
+  nodeButton: {fileID: 7552612251687735025}
 --- !u!212 &7068257570371772591
 SpriteRenderer:
   m_ObjectHideFlags: 0

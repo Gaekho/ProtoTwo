@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodetype: 0
   buttonImage: {fileID: 211616418, guid: 6c5a73fb83667634fb238c1e3c366194, type: 3}
-  nodeButton: {fileID: 0}
+  nodeButton: {fileID: 7552612251687735025}
 --- !u!114 &7552612251687735025
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -19,5 +19,7 @@ public class NodeBase : MonoBehaviour
         {
             nodeButton = GetComponent<Button>();
         }
+        Debug.Log("Node Generated");
+
     }
 }

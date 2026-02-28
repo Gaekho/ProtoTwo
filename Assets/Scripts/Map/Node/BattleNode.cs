@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NewBehaviourScript : NodeBase
 {
     void Start()
     {
-        nodeButton.onClick.AddListener(OnClick);
     }
 
-    public void OnClick()
+    public void OnClick(string sceneName)
     {
         Debug.Log("Battle Button Access");
-        //차후 씬 연결 공부해서 여기에 넣을 예정
+       
+        SceneManager.LoadScene(sceneName);
     }
 }
