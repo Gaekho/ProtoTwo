@@ -16,8 +16,8 @@ MonoBehaviour:
   characterDescription: 
   cardColor: 1
   maxHealth: 100
-  baseAttack: 4
-  baseShield: 2
-  baseSpeed: 3
+  baseAttack: 3
+  baseShield: 3
+  baseSpeed: 2
   characterSprite: {fileID: -1600454761, guid: 1bf60d3ab3a9e324bba57ea68d7a21f1, type: 3}
   animatorController: {fileID: 9100000, guid: 136b6274822449440bf85e88b2913292, type: 2}

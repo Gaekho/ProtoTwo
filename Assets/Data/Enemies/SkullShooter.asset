@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: skullShooter
   enemyDescription: 
-  maxHealth: 150
+  maxHealth: 25
   baseSpeed: 3
   enemySprite: {fileID: 21300000, guid: b5acd26a45acfa846a693e987ab3e691, type: 3}
   animatorController: {fileID: 9100000, guid: 3d98b1882e4ee624ebd575e8cf8edcfc, type: 2}

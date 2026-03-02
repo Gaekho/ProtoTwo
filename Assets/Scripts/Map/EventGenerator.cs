@@ -8,35 +8,35 @@ using UnityEngine.UI;
 public class EventGenerator : MonoBehaviour
 {
     [Header("Level Data")]
-    //ÃÑ Ãþ¼ö
+    //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private int floors = 10;
-    //Ãþ´ç ÃÖ¼Ò ¹æ °¹¼ö
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private int minRoom = 1;
-    //Ãþ´ç ÃÖ´ë ¹æ °¹¼ö
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private int maxRoom = 4;
-    //ÇÊ¼ö ³ëµå
+    //ï¿½Ê¼ï¿½ ï¿½ï¿½ï¿½
     [SerializeField] private EssentialNode essential;
-    //³ëµå Á¤º¸
+    //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private NodeBase[] nodes;
-    //Æ¯¼ö ³ëµå ¼ö(¿¤¸®Æ®, º¸½º µî)
+    //Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½Æ®, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½)
     [SerializeField] private int specialNodes = 2;
 
     [Header("Map Data")]
-    //³ëµå¸¦ ¹èÄ¡ÇÒ ÁÂÇ¥ ±âÁØÁ¡
+    //ï¿½ï¿½å¸¦ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private Transform buttonPivot;
-    //°°Àº Ãþ ³ëµå°£ÀÇ °£°Ý
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½å°£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private float nodeGap = 10.0f;
-    //Ãþ°£ °£°Ý
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private float floorGap = 10.0f;
 
-    //À­Ãþ ³ëµå °¹¼ö
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private int numOfNextFloorNode = 0;
-    //¾Æ·§Ãþ ³ëµåµé
+    //ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private List<NodeBase> lastFloorNode = new List<NodeBase>();
-    //ÇöÀç Ãþ ³ëµåµé. ¾Ë°í¸®Áò»ó ÀÓ½Ã ÀúÀå¿ë
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½Ë°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
     private List<NodeBase> currentNodes = new List<NodeBase>();
 
-    //¸Ê¿¡ ¼³Ä¡µÈ ³ëµå
+    //ï¿½Ê¿ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½
     private List<NodeBase>[] nodeTiles;
     private List<Vector2Int>[] nodeEdges;
 
@@ -47,16 +47,16 @@ public class EventGenerator : MonoBehaviour
 
     public void GenerateMap()
     {
-        //Vector3 basePosition = buttonTestTransform.position;
-        ////ÇÊ¼ö ³ëµå ÁöÁ¤ Ãþ°ú ¸ÂÃß±â À§ÇØ 1ºÎÅÍ ½ÃÀÛ
-        //for (int i = 1; i <= floors; i++)
-        //{
-        //    GenerateFloor(i, buttonTestTransform,basePosition);
-        //    basePosition.y += floorGap;
-        //}
+        Vector3 basePosition = buttonPivot.position;
+        //ï¿½Ê¼ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß±ï¿½ ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        for (int i = 1; i <= floors; i++)
+        {
+            GenerateFloor(i, buttonPivot,basePosition);
+            basePosition.y += floorGap;
+        }
 
-        InitializeMap();
-        GeneratePaths();
+        //InitializeMap();
+        //GeneratePaths();
     }
 
     private void InitializeMap()
@@ -105,13 +105,13 @@ public class EventGenerator : MonoBehaviour
                 List<int> validNextX = new List<int>();
                 int nodeX = (int)currentNode.GetPosition().x;
 
-                // À§ÃþÀÇ ÀÎÁ¢ÇÑ 3°³ ³ëµå (x-1, x, x+1) Å½»ö
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ (x-1, x, x+1) Å½ï¿½ï¿½
                 for (int dx = -1; dx <= 1; dx++)
                 {
                     int nextX = nodeX + dx;
                     if (nextX >= 0 && nextX < floors)
                     {
-                        // ±ÔÄ¢: °æ·Î(¼±)´Â ¼­·Î ±³Â÷ÇÒ ¼ö ¾øÀ½
+                        // ï¿½ï¿½Ä¢: ï¿½ï¿½ï¿½(ï¿½ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                         if (!IsCrossing(f, nodeX, nextX))
                         {
                             validNextX.Add(nextX);
@@ -120,12 +120,12 @@ public class EventGenerator : MonoBehaviour
                 }
 
                 if (validNextX.Count == 0)
-                    validNextX.Add(nodeX); // ±³Âø »óÅÂ ¹æÁö¿ë ¾ÈÀüÀåÄ¡ (Á÷Áø)
+                    validNextX.Add(nodeX); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ (ï¿½ï¿½ï¿½ï¿½)
 
                 int chosenX = validNextX[Random.Range(0, validNextX.Count)];
                 NodeBase nextNode = nodeTiles[f + 1][chosenX];
 
-                // ³ëµå ¿¬°á
+                // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 if (!currentNode.nextNodes.Contains(nextNode))
                 {
                     currentNode.nextNodes.Add(nextNode);
@@ -173,7 +173,7 @@ public class EventGenerator : MonoBehaviour
 
     
 
-    // --- ¿¡µðÅÍ ½Ã°¢È­¿ë ÄÚµå ---
+    // --- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½È­ï¿½ï¿½ ï¿½Úµï¿½ ---
     private void OnDrawGizmos()
     {
         if (nodeTiles == null) return;
@@ -189,7 +189,7 @@ public class EventGenerator : MonoBehaviour
 
                 Vector3 pos = new Vector3(node.GetPosition().x * spacingX - (floors * spacingX / 2f), f * spacingY, 0);
 
-                // ¿¬°á¼± ±×¸®±â
+                // ï¿½ï¿½ï¿½á¼± ï¿½×¸ï¿½ï¿½ï¿½
                 Gizmos.color = Color.white;
                 foreach (var next in node.nextNodes)
                 {
@@ -202,51 +202,51 @@ public class EventGenerator : MonoBehaviour
 
     private void GenerateFloor(int currentFloor, Transform pivot, Vector3 basePosition)
     {
-        //numOfNextFloorNode = Random.Range(minRoom, maxRoom);
+        numOfNextFloorNode = Random.Range(minRoom, maxRoom);
 
-        //if(currentFloor == essential.GetFloor())
-        //{
-        //    GenerateNode(essential.GetNodeType(), numOfNextFloorNode, pivot, basePosition);
-        //}
-        //else
-        //{
-        //    int nodeTypes = nodes.Length - specialNodes;
-        //    int randomNode = Random.Range(0, nodeTypes);
-        //    GenerateNode((NodeType)randomNode, numOfNextFloorNode, pivot, basePosition);
-        //}
+        if (currentFloor == essential.GetFloor())
+        {
+            GenerateNode(essential.GetNodeType(), numOfNextFloorNode, pivot, basePosition);
+        }
+        else
+        {
+            int nodeTypes = nodes.Length - specialNodes;
+            int randomNode = Random.Range(0, nodeTypes);
+            GenerateNode((NodeType)randomNode, numOfNextFloorNode, pivot, basePosition);
+        }
 
-        //foreach (NodeBase node in lastFloorNode)
-        //{
-        //    ConnectNode(node);
-        //}
+        foreach (NodeBase node in lastFloorNode)
+        {
+            ConnectNode(node);
+        }
 
-        ////Ã¹Ãþ ³ëµåµé È°¼ºÈ­
-        //if(currentFloor == 1)
-        //{
-        //    foreach(NodeBase node in currentNodes)
-        //    {
-        //        node.SetActivate();
-        //    }
-        //}
+        //Ã¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­
+        if (currentFloor == 1)
+        {
+            foreach (NodeBase node in currentNodes)
+            {
+                node.SetActivate();
+            }
+        }
 
-        //lastFloorNode.Clear();
-        //lastFloorNode = currentNodes;
-        //currentNodes.Clear();
+        lastFloorNode.Clear();
+        lastFloorNode = currentNodes;
+        currentNodes.Clear();
     }
 
     private void GenerateNode(NodeType nodeType, int nodeAmount, Transform pivot, Vector3 basePosition)
     {
-        //for (int i = 0; i < nodeAmount; i++)
-        //{
-        //    NodeBase makingNode = MatchNode(nodeType);
-        //    if(makingNode != null)
-        //    {
-        //        NodeBase newNode = Instantiate(makingNode, pivot);
-        //        newNode.transform.position = basePosition;
-        //        currentNodes.Add(newNode);
-        //    }
-        //    basePosition += new Vector3(nodeGap, 0, 0);
-        //}
+        for (int i = 0; i < nodeAmount; i++)
+        {
+            NodeBase makingNode = MatchNode(nodeType);
+            if (makingNode != null)
+            {
+                NodeBase newNode = Instantiate(makingNode, pivot);
+                newNode.transform.position = basePosition;
+                currentNodes.Add(newNode);
+            }
+            basePosition += new Vector3(nodeGap, 0, 0);
+        }
     }
 
     private NodeBase MatchNode(NodeType nodeType)

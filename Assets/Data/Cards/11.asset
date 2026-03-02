@@ -12,15 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
   m_Name: 11
   m_EditorClassIdentifier: 
-  id: 0
-  cardName: 
-  type: 0
-  color: 0
-  cardText: 
-  cardSprite: {fileID: 0}
-  dragIcon: {fileID: 0}
-  actionTargetType: 0
-  activeConditionList: []
+  id: 11
+  cardName: "\uD5E4\uB4DC \uC0F7"
+  type: 1
+  color: 2
+  cardText: "\uB300\uC0C1\uC5D0\uAC8C \uD53C\uD574\uB97C 15 \uC785\uD78C\uB2E4."
+  cardSprite: {fileID: -1508921690, guid: 98e4d5c83b01593468e20276456118f1, type: 3}
+  dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
+  actionTargetType: 2
+  activeConditionList:
+  - condition: 0
+    value: 5
   usableWithoutTarget: 0
   banishAfterUsed: 0
-  cardActionDataList: []
+  cardActionDataList:
+  - cardActionType: 0
+    actionValue: 12

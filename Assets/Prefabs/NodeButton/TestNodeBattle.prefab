@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -255.5, y: -173.66667}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5879103163297591978
 CanvasRenderer:
@@ -148,3 +148,5 @@ MonoBehaviour:
   nodetype: 0
   buttonImage: {fileID: 211616418, guid: 6c5a73fb83667634fb238c1e3c366194, type: 3}
   nodeButton: {fileID: 7258014136978318456}
+  nextNodes: []
+  prevNodes: []

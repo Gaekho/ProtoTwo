@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: skullKnight
   enemyDescription: 
-  maxHealth: 100
+  maxHealth: 35
   baseSpeed: 1
   enemySprite: {fileID: 21300000, guid: e121017a3d39f154baa32bae672a6413, type: 3}
   animatorController: {fileID: 9100000, guid: 3d98b1882e4ee624ebd575e8cf8edcfc, type: 2}

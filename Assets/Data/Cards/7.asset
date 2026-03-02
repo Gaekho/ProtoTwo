@@ -13,14 +13,17 @@ MonoBehaviour:
   m_Name: 7
   m_EditorClassIdentifier: 
   id: 7
-  cardName: 
+  cardName: "\uB3C5 \uBC14\uB974\uAE30"
   type: 1
   color: 3
-  cardText: 
-  cardSprite: {fileID: 0}
-  dragIcon: {fileID: 0}
-  actionTargetType: 0
-  activeConditionList: []
+  cardText: "\uB300\uC0C1 \uC544\uAD70\uC758 \uACF5\uACA9\uB825\uC744 1\uD134\uAC04
+    1 \uC99D\uAC00\uC2DC\uD0A8\uB2E4."
+  cardSprite: {fileID: 662112569, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
+  dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
+  actionTargetType: 1
+  activeConditionList:
+  - condition: 0
+    value: 0
   usableWithoutTarget: 0
   banishAfterUsed: 0
   cardActionDataList: []
