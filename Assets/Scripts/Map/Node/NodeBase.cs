@@ -12,34 +12,40 @@ public class NodeBase : MonoBehaviour
     [SerializeField] public Sprite buttonImage;
     [SerializeField] public Button nodeButton;
 
-    private List<NodeBase> connectedNode = new List<NodeBase>();
     private int nodeIndex = -1;
     private bool bIsPlayerOn = false;
     private bool bIsConnected = false;
+    private bool bIsActive = false;
+
+    public List<NodeBase> nextNodes;
+    public List<NodeBase> prevNodes;
+
+    private Vector2 position = Vector2.zero;
 
     public NodeType GetNodeType() { return nodetype; }
     public int GetNodeIndex() { return nodeIndex; }
+    public bool IsActivated() { return bIsActive; }
+    public bool IsConnected() { return bIsConnected; }
+
+    public Vector2 GetPosition() { return position; }
+    
+
     public void SetNodeIndex(int newIndex) { nodeIndex = newIndex; }
-    public void ConnectNode(NodeBase node) {  connectedNode.Add(node); }
-    public void SetActivate() { bIsConnected = true; }
+    public void SetConnected() { bIsConnected = true; }
+    public void SetActivate() { bIsActive = true; }
+
+    public void SetPosition(int inX, int inY)
+    {
+        position.x = inX;
+        position.y = inY;
+    }
 
     public virtual void OnClick(string sceneName)
     {
-        if (bIsConnected)
+        if (bIsActive)
         {
             bIsPlayerOn = true;
             SceneManager.LoadScene(sceneName);
-        }
-    }
-
-    void Update()
-    {
-        if(bIsPlayerOn)
-        {
-            foreach (NodeBase node in connectedNode)
-            {
-                node.SetActivate();
-            }
         }
     }
 
