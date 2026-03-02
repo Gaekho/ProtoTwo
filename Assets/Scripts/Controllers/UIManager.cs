@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Canvas screenCanvas;
     [SerializeField] private GameObject turnChangePanel;
     [SerializeField] private GameObject characterSelectPanel;
+    [SerializeField] private GameObject rewardPanel;
     #endregion
     // Start is called before the first frame update
 
@@ -25,6 +26,7 @@ public class UIManager : MonoBehaviour
         Instance = this;
         turnChangePanel.SetActive(false);
         characterSelectPanel.SetActive(false);
+        rewardPanel.SetActive(false);
     }
 
     public IEnumerator TurnStart(int turn, string who)
@@ -50,6 +52,14 @@ public class UIManager : MonoBehaviour
         }
         //yield return new WaitForSeconds(0.5f);
         characterSelectPanel.SetActive(false);
+        yield break;
+    }
+
+    public IEnumerator BattleEnd(string winLose)
+    {
+        rewardPanel.SetActive(true);
+        TMP_Text wl = GetComponentInChildren<TMP_Text>();
+        wl.text = "전투 " + winLose + "!";
         yield break;
     }
 

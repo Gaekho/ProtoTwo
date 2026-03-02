@@ -40,11 +40,13 @@ public class HandController : MonoBehaviour
         //SetUp();
     }
 
-    public void SetUp()
+    public void SetUp(DeckData deck)
     {
+        deckData = deck;
         currentDeck = new List<CardData>(deckData.DeckList);
         Debug.Log("Deck Ready");
-        DrawCard(5);
+        ShuffleDeck();
+        DrawCard(3);
     }
 
     public void DrawCard(int value)

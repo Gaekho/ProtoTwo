@@ -9,7 +9,6 @@ public class EnemyOnScene : MonoBehaviour
 {
     [SerializeField] private EnemyData enemyData;
     [SerializeField] private float currentHealth;
-    [SerializeField] private float maxHealth;
     [SerializeField] private SpriteRenderer mySprite;
     [SerializeField] private Canvas myCanvas;
     [SerializeField] private Animator myAnimator;
@@ -27,7 +26,6 @@ public class EnemyOnScene : MonoBehaviour
         mySlider = myCanvas.GetComponentInChildren<Slider>();
         myAnimator = GetComponent<Animator>();
 
-        maxHealth = enemyData.MaxHealth;
         currentHealth = enemyData.MaxHealth;
         mySprite.sprite = enemyData.EnemySprite;
         SetRandomPattern();
@@ -38,6 +36,8 @@ public class EnemyOnScene : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J))
         {
             GetDamage(10f);
+            //Die();
+            StartCoroutine(DieRoutine());
         }
 
         if (Input.GetKeyDown(KeyCode.K))
@@ -52,10 +52,24 @@ public class EnemyOnScene : MonoBehaviour
     }
     public void GetDamage(float damage)
     {
+        myAnimator.SetTrigger("Damaged");
         currentHealth -= damage;
-        mySlider.value = currentHealth/maxHealth;
-        myAnimator.SetTrigger("damaged");
+        mySlider.value = currentHealth/enemyData.MaxHealth;
         
+        if(currentHealth < 0)
+        {
+            StartCoroutine (DieRoutine());
+        }
+    }
+
+    public IEnumerator DieRoutine()
+    {
+
+        BattleManager.Instance.EnemyDead(this);
+        myAnimator.SetTrigger("Die");
+        yield return new WaitForSeconds(2f);
+        Destroy(transform.parent.gameObject);
+
     }
 
     public void DoAttack()
@@ -78,7 +92,7 @@ public class EnemyOnScene : MonoBehaviour
                 break;
 
             case PatternTargetType.TurnHero:
-                targetHero.Add(BattleManager.Instance.TurnCharacter);                 //need to catch TurnHero for BattleManager.Instance.PlayerParty
+                targetHero.Add(BattleManager.Instance.TurnCharacter);        //need to catch TurnHero for BattleManager.Instance.PlayerParty
                 break;
 
             case PatternTargetType.AllHero:
@@ -111,5 +125,11 @@ public class EnemyOnScene : MonoBehaviour
             Debug.Log(enemyData.EnemyName + "'s Target Enemy : " + targetEnemy.Count);
             EnemyPatternProcessor.GetPattern(action.PatternActionType).DoAction(new EnemyActionParameters(action.PatternValue, targetHero, targetEnemy));
         }
+    }
+
+    public IEnumerator UsePatternRoutine()
+    {
+        UsePattern();
+        yield return new WaitForSeconds(0.7f);
     }
 }

@@ -25,7 +25,7 @@ MonoBehaviour:
     actionList:
     - patternActionType: 0
       patternValue: 10
-      actionTargetType: 2
+      actionTargetType: 3
   - patternName: Reload Shot
     patternType: 3
     patternImage: {fileID: 485272125, guid: ea7de6defccb7054e830650d2736518a, type: 3}

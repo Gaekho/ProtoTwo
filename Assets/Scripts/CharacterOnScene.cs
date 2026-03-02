@@ -5,21 +5,30 @@ using UnityEngine;
 
 public class CharacterOnScene : MonoBehaviour
 {
+    [Header("Field")]
     [SerializeField] private CharacterData characterData;
+    [SerializeField] private float currentHealth;
+    [SerializeField] private float currentAttack;
+    [SerializeField] private float currentShield;
+    [SerializeField] private float currentSpeed;
+    [SerializeField] private Transform myTransform;
+    [SerializeField] private bool isTurn;
+    [SerializeField] private float currentArmor;
 
-    private SpriteRenderer spriteRenderer;
-    private Animator animator;
+    [Header("Visual Componenets")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Animator animator;
 
+    #region Cache
     public CharacterData CharacterData => characterData;
-    public float currentHealth;
-    public float currentGnosis;
-    public float currentSpeed;
-    public float currentAttack;
-    public float currentShield;
-    public bool isTurn;
-    public Transform myTransform;
+    public float CurrentHealth => currentHealth;
+    public float CurrentAttack => currentAttack;
+    public float CurrentShield => currentShield;
+    public float CurrentSpeed => currentSpeed;
+    public bool IsTurn => isTurn;
+    public float CurrentArmor => currentArmor;
+    #endregion
 
-    
     public void SetCharacter(CharacterData chData)
     {
         characterData = chData;
@@ -72,6 +81,14 @@ public class CharacterOnScene : MonoBehaviour
     {
         animator.SetTrigger("Attack");
     }
-
+    public void GetArmor(float value)
+    {
+        currentArmor = value;
+    }
+    public void GetDamage(float value)
+    {
+        currentHealth -= value;
+        animator.SetTrigger("Damaged");
+    }
 
 }

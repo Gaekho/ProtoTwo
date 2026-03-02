@@ -31,7 +31,11 @@ public class AttackPattern : EnemyActionBase
     public override void DoAction(EnemyActionParameters patternParameters)
     {
         //patternParameters.enemyOnScene.DoAttack();
-        patternParameters.charactersOnScene[0].currentHealth -= patternParameters.value;
+        //patternParameters.charactersOnScene[0].GetDamage(patternParameters.value);
+        foreach(CharacterOnScene ch in patternParameters.charactersOnScene)
+        {
+            ch.GetDamage(patternParameters.value);
+        }
         Debug.Log("Attack Action Done");
     }
 }

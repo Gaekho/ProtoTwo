@@ -48,3 +48,13 @@ public class DrawAction : CardActionBase
         HandController.Instance.DrawCard( (int) actionParameters.value);
     }
 }
+
+public class HealAction : CardActionBase
+{
+    public override CardActionType ActionType => CardActionType.Buff;
+
+    public override void DoAction(CardActionParameters actionParameters)
+    {
+        //actionParameters.characterOnScene.CurrentHealth += actionParameters.value;
+    }
+}

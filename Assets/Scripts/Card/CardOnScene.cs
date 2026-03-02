@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using Proto2.Enums;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using TMPro;
 
 public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
@@ -12,29 +13,36 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [Header("Own Field")]
     [SerializeField] private CardData data;
     [SerializeField] private bool isPlayable = true;
-    [SerializeField] private Image myImage;
     [SerializeField] private Vector3 originalTransform;
     [SerializeField] private Canvas canvas;
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private CharacterOnScene owner;
+
+    [Header("Visual UI Field")]
+    [SerializeField] private Image myImage;
+    [SerializeField] private TMP_Text[] textList;
+    [SerializeField] private Text[] conditionList;
 
     [Header("Raycast Radius")]
     [SerializeField] private float radius = 0.25f;
 
     [Header("For Debug")]
     public int handIndex;
-    public CharacterOnScene temp;
     public GameObject target;
     public CardInstance cardInstance;
 
     #endregion
-
+    
     #region methods
     public void Awake()
     {
+        //비주얼 컴포넌트들 연결
         mainCamera = Camera.main;
         originalTransform = transform.position;
         canvas = GetComponentInChildren<Canvas>();
         myImage = canvas.GetComponentInChildren<Image>();
+        textList = canvas.GetComponentsInChildren<TMP_Text>();  //카드 이름, 카드 텍스트 순으로 가져온다.
+        conditionList = canvas.GetComponentsInChildren<Text>(); //ATK, DEF, SPD 순으로 가져온다.
         // How to Search Owner Character of this Card?
    
     }
@@ -44,12 +52,45 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         data = cardData;
         handIndex = index;
         cardInstance = inst;
+
+        //비주얼 세팅
         myImage.sprite =  data.CardSprite;
+        textList[0].text = data.CardName;
+        textList[1].text = data.CardText;
+
+        //조건 텍스트 세팅
+        foreach(ActiveConditionData conditionData in data.ActiveConditionList)
+        {
+            switch (conditionData.Condition)
+            {
+                case ConditionType.Attack:
+                    {
+                        conditionList[0].text = conditionData.Value.ToString();
+                        break;
+                    }
+                case ConditionType.Shield:
+                    {
+                        conditionList[1].text = conditionData.Value.ToString(); 
+                        break;
+                    }
+                case ConditionType.Speed:
+                    {
+                        conditionList[2].text = conditionData.Value.ToString();
+                        break;
+                    }
+            }
+        }
+
+        //주인 찾기
         foreach(CharacterOnScene ch in BattleManager.Instance.PlayerParty)
         {
            if(ch.CharacterData.CardColor == data.Color)
             {
-               temp = ch; break;
+               owner = ch; break;
+            }
+           else if(data.Color == CardColor.Gray)
+            {
+                owner = BattleManager.Instance.TurnCharacter;
             }
         }
     }
@@ -67,13 +108,12 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         foreach (var actionData in data.CarActionDataList)
         {
-            CardActionProcessor.GetAction(actionData.CardActionType).DoAction(new CardActionParameters(actionData.ActionValue, temp, target ? target.GetComponent<EnemyOnScene>() : null, data, this));
+            CardActionProcessor.GetAction(actionData.CardActionType).DoAction(new CardActionParameters(actionData.ActionValue, owner, target ? target.GetComponent<EnemyOnScene>() : null, data, this));
         }
 
         //AfterUsed();
         HandController.Instance.AfterCardUse(this);
     }
-
 
     public void BackToHand()
     {
@@ -88,9 +128,17 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public bool CheckCondition(CardData myData, CharacterOnScene character)
     {
-        float val = 0f; 
+        float val; 
         float currentStat = 0f;
         bool lastCheck = false;
+        
+        //중립 카드 사용 시 참고할 캐릭터
+        if(data.Color == CardColor.Gray)
+        {
+            character = BattleManager.Instance.TurnCharacter;
+        }
+
+        //턴 캐릭터 체크
         if(character != BattleManager.Instance.TurnCharacter)
         {
             Debug.Log("Not Turn Character");
@@ -103,23 +151,15 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             switch (myData.ActiveConditionList[i].Condition)
             {
                 case ConditionType.Attack:
-                    currentStat = character.currentAttack;
-                    break;
-
-                case ConditionType.Health: 
-                    currentStat = character.currentHealth; 
-                    break;
-
-                case ConditionType.Gnosis:
-                    currentStat = character.currentGnosis;
+                    currentStat = character.CurrentAttack;
                     break;
 
                 case ConditionType.Speed: 
-                    currentStat = character.currentSpeed;
+                    currentStat = character.CurrentSpeed;
                     break;
 
                 case ConditionType.Shield: 
-                    currentStat = character.currentShield;
+                    currentStat = character.CurrentShield;
                     break;
             }
             //Debug.Log("val" + val);
@@ -132,6 +172,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             else
             {
                 lastCheck = false;
+                break;
                 //Debug.Log(lastCheck);
             }
         }
@@ -228,7 +269,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if(transform.position.y >= -0.8f)
         {
             //Debug.Log("used");
-            if(CheckCondition(data, temp))
+            if(CheckCondition(data, owner))
             {
                 if (CheckTarget(data))
                 {

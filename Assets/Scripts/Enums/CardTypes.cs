@@ -10,8 +10,6 @@ namespace Proto2.Enums
 
     public enum ConditionType
     {
-        Health,
-        Gnosis,
         Attack,
         Shield,
         Speed
@@ -22,7 +20,8 @@ namespace Proto2.Enums
         None = 0,
         Red, 
         Blue, 
-        Green
+        Green,
+        Gray
     }
 
     public enum CardActionType

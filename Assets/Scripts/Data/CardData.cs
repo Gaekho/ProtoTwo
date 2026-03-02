@@ -13,6 +13,7 @@ public class CardData : ScriptableObject
     [SerializeField] private string cardName;
     [SerializeField] private CardType type;
     [SerializeField] private CardColor color;
+    [SerializeField] private string cardText;
 
     [Header("visual")]
     [SerializeField] private Sprite cardSprite;
@@ -32,6 +33,7 @@ public class CardData : ScriptableObject
     public string CardName => cardName;
     public CardType Type => type;
     public CardColor Color => color;
+    public string CardText => cardText;
     public Sprite CardSprite => cardSprite;
     public Sprite DragIcon => dragIcon;
     public ActionTargetType ActionTargetType => actionTargetType;

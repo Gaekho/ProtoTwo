@@ -10,19 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
-  m_Name: BigSword
+  m_Name: 19
   m_EditorClassIdentifier: 
   id: 0
-  cardName: Big Swrod
-  type: 1
-  color: 1
-  cardSprite: {fileID: 21300000, guid: 102126e33b660d1458d91e93e961509e, type: 3}
-  dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
-  actionTargetType: 2
-  activeConditionList:
-  - condition: 2
-    value: 4
+  cardName: 
+  type: 0
+  color: 0
+  cardText: 
+  cardSprite: {fileID: 0}
+  dragIcon: {fileID: 0}
+  actionTargetType: 0
+  activeConditionList: []
   usableWithoutTarget: 0
-  cardActionDataList:
-  - cardActionType: 0
-    actionValue: 14
+  banishAfterUsed: 0
+  cardActionDataList: []

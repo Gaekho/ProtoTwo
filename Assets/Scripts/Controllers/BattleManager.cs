@@ -2,6 +2,7 @@ using Proto2.Enums;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BattleManager : MonoBehaviour
 {
@@ -20,17 +21,20 @@ public class BattleManager : MonoBehaviour
     [Header("Characters On Scene")]
     [SerializeField] private GameObject basicCharacter;
     [SerializeField] private Transform allyContainer;
+    [SerializeField] private Transform enemyContainer;
     [SerializeField] private List<CharacterOnScene> playerParty;
     [SerializeField] private List<EnemyOnScene> enemyList;
 
     [Header("Turn")]
     [SerializeField] private int turn = 0;
-    [SerializeField] public CharacterOnScene TurnCharacter { private set; get; }
-    [SerializeField] public TurnState CurrentState { private set; get; }
+    [SerializeField] private Queue<CharacterOnScene> turnQ;
     #endregion
 
+    public CharacterOnScene TurnCharacter { private set; get; }
+    public TurnState CurrentState { private set; get; }
     public IReadOnlyList<CharacterOnScene> PlayerParty => playerParty;
-    //public CharacterOnScene TurnCharatcer;
+    public IReadOnlyList<EnemyOnScene > EnemyList => enemyList;
+    public UnityEvent onTurnStart;
     
     private void Awake()
     {
@@ -38,11 +42,15 @@ public class BattleManager : MonoBehaviour
         CardActionProcessor.Initialize();
         EnemyPatternProcessor.Initialize();
         SetAlly();
-        Debug.Log(PlayerParty[0].CharacterData.name);
-        TurnCharacter = PlayerParty[0];
+        Debug.Log(playerParty[0].CharacterData.name);
+        TurnCharacter = playerParty[0];
         SetEnemy();
-        HandController.Instance.SetUp();
+        HandController.Instance.SetUp(deckData);
         turn = 0;
+    }
+    private void Start()
+    {
+        StartCoroutine(BattleRoutine());
     }
 
     private void SetAlly()
@@ -60,47 +68,66 @@ public class BattleManager : MonoBehaviour
     private void SetEnemy()
     {
         enemyList.Clear();
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        EnemyOnScene [] eees = enemyContainer.GetComponentsInChildren<EnemyOnScene>();
 
-        foreach(GameObject go in enemies)
+        for(int i= 0; i<eees.Length; i++)
         {
-            enemyList.Add(go.GetComponentInChildren<EnemyOnScene>());
+            enemyList.Add(eees[i]);
+        }
+    }
+
+    public void EnemyDead(EnemyOnScene dead)
+    {
+        int idx = enemyList.FindIndex(x => x.gameObject == dead.gameObject);
+        enemyList.RemoveAt(idx);
+
+        if(enemyList.Count == 0)
+        {
+            StartCoroutine(UIManager.Instance.BattleEnd("승리"));
         }
     }
 
     private IEnumerator BattleRoutine()
     {
+        //메인 전투 반복문 시작
         while (true)
         {
-            //Ally Turn Start
+            //아군 턴 시작 페이즈
             turn++;
             CurrentState = TurnState.AllyTurn;
             yield return UIManager.Instance.StartCoroutine(UIManager.Instance.TurnStart(turn, "Ally"));
+            HandController.Instance.DrawCard(3);
 
+            //플레이어 카드 사용 페이즈
             while (CurrentState == TurnState.AllyTurn)
             {
+
                 yield return null;
             }
-            //Ally Turn End
+
+            //아군 턴 엔드 페이즈
             yield return UIManager.Instance.StartCoroutine(UIManager.Instance.TurnEnd());
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.5f);  //캐릭터 교체 후 딜레이
+
             
-            //Enemy Turn Start
+            //적 턴 시작 페이즈
             turn++;
             yield return UIManager.Instance.StartCoroutine(UIManager.Instance.TurnStart(turn, "Enemy"));
+
+            //적 패턴 플레이 페이즈
             foreach (EnemyOnScene enemy in enemyList)
             {
-                yield return new WaitForSeconds(0.7f);
-                enemy.UsePattern();
+                yield return new WaitForSeconds(0.5f);
+                yield return enemy.StartCoroutine(enemy.UsePatternRoutine());
                 enemy.SetRandomPattern();
             }
-
-            //Enemy Turn End
+            yield return new WaitForSeconds(0.7f);  //모든 패턴 사용 후 딜레이
+            
+            //적 턴 종료 (이후 작업 x)
         }
-        yield break;
     }
 
-    //Button OnClick Functions on Screen Canvas.
+    //Button OnClick 함수들. ScreenCanvas의 버튼에서 참조.
     public void ChangeState(int state)
     {
         CurrentState = (TurnState)state;
@@ -112,11 +139,7 @@ public class BattleManager : MonoBehaviour
         TurnCharacter = playerParty[i];
         TurnCharacter.EnterTurn();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        StartCoroutine(BattleRoutine());
-    }
+
 
     // Update is called once per frame
     void Update()
