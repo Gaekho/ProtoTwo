@@ -1,5 +1,11 @@
 namespace Proto2.Enums
 {
+    public enum UnitTeam
+    {
+        Ally, 
+        Enemy, 
+        Neutral
+    }
     public enum CardType
     {
         None = 0,
