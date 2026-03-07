@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Proto2.Enums;
 
-//v0.01 / 2026.03.06 / 04:41
+//v0.01 / 2026.03.06 / 16:41
 public abstract class BattleUnitBase : MonoBehaviour
 {
     [Header("Battle Unit")]
