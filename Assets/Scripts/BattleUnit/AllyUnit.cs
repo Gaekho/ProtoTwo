@@ -12,7 +12,7 @@ public class AllyUnit : BattleUnitBase
     [SerializeField] private float currentShield;
     [SerializeField] private float currentSpeed;
     [SerializeField] private bool isTurn;
-    [SerializeField] private Transform myTransform;     //ÅÏ ±³Ã¼ ½Ã Å©±â º¯°æ¿ë
+    [SerializeField] private Transform myTransform;     //í„´ êµì²´ ì‹œ í¬ê¸° ë³€ê²½ìš©
 
 
     #region Cache
@@ -29,12 +29,12 @@ public class AllyUnit : BattleUnitBase
         base.SetProfile(UnitTeam.Ally, characterData.MaxHealth);
         mySprite.sprite = characterData.CharacterSprite;
         
-        //½ºÅÈ ÀúÀå
+        //ìŠ¤íƒ¯ ì €ì¥
         currentAttack = characterData.BaseAttack;
         currentShield = characterData.BaseShield;
         currentSpeed = characterData.BaseSpeed;
         
-        //ÅÏ ¼¼ÆÃ
+        //í„´ ì„¸íŒ…
         isTurn = false;
         myTransform = transform.parent;
         myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
@@ -44,7 +44,7 @@ public class AllyUnit : BattleUnitBase
     {
         float previousHealth = currentHealth;     
         base.GetDamage(value);
-        if (!isDead && previousHealth > currentHealth)       //ÇÔ¼ö ¹ßµ¿ Àü Ã¼·Â°ú ¹ßµ¿ ÈÄ Ã¼·Â ºñ±³¸¦ ÅëÇØ ½ÇÁ¦ Ã¼·Â ¼Õ½ÇÀÌ ÀÖÀ»¶§¸¸ ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı.
+        if (!isDead && previousHealth > currentHealth)       //í•¨ìˆ˜ ë°œë™ ì „ ì²´ë ¥ê³¼ ë°œë™ í›„ ì²´ë ¥ ë¹„êµë¥¼ í†µí•´ ì‹¤ì œ ì²´ë ¥ ì†ì‹¤ì´ ìˆì„ë•Œë§Œ í”¼ê²© ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ.
         {
             myAnimator.SetTrigger("Damaged");
         }
@@ -62,7 +62,7 @@ public class AllyUnit : BattleUnitBase
     }
     protected override IEnumerator Die()
     {
-        //¾ÆÁ÷ ¹Ì±¸Çö. ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı ¹× ÀÚ±â ÀÚ½Å ÆÄ±«, BattleManagerÀÇ AllyList¿¡¼­ »èÁ¦ µîÀÇ ÀÛ¾÷ Ãß°¡.
+        //ì•„ì§ ë¯¸êµ¬í˜„. ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ ë° ìê¸° ìì‹  íŒŒê´´, BattleManagerì˜ AllyListì—ì„œ ì‚­ì œ ë“±ì˜ ì‘ì—… ì¶”ê°€.
         yield break;
     }
 }

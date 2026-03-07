@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//v0.01 / 2026.03.07 / 21:43
+//변경 요약 : CardInstance 클래스 삭제(CardOnScene 아래로 이동)
 public class HandController : MonoBehaviour
 {
     #region Singleton
@@ -126,19 +128,5 @@ public class HandController : MonoBehaviour
             Vector3 targetPosition = Vector3.Lerp(startPoint, endPoint, t);
             card.localPosition = targetPosition;
         }
-    }
-}
-
-
-[System.Serializable]
-public class CardInstance
-{
-    public int id;
-    public CardData cardData;
-
-    public CardInstance(int id, CardData cardData)
-    {
-        this.id = id;
-        this.cardData = cardData;
     }
 }

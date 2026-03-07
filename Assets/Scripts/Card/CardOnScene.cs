@@ -6,6 +6,7 @@ using Proto2.Enums;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 
 public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
@@ -16,10 +17,10 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private Vector3 originalTransform;
     [SerializeField] private Canvas canvas;
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private CharacterOnScene owner;
+    [SerializeField] private AllyUnit owner;
 
     [Header("Visual UI Field")]
-    [SerializeField] private Image myImage;
+    [SerializeField] private SpriteRenderer mySprite;
     [SerializeField] private TMP_Text[] textList;
     [SerializeField] private Text[] conditionList;
 
@@ -28,7 +29,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     [Header("For Debug")]
     public int handIndex;
-    public GameObject target;
+    public BattleUnitBase target;
     public CardInstance cardInstance;
 
     #endregion
@@ -40,7 +41,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         mainCamera = Camera.main;
         originalTransform = transform.position;
         canvas = GetComponentInChildren<Canvas>();
-        myImage = canvas.GetComponentInChildren<Image>();
+        mySprite = canvas.GetComponent<SpriteRenderer>();
         textList = canvas.GetComponentsInChildren<TMP_Text>();  //카드 이름, 카드 텍스트 순으로 가져온다.
         conditionList = canvas.GetComponentsInChildren<Text>(); //ATK, DEF, SPD 순으로 가져온다.
         // How to Search Owner Character of this Card?
@@ -54,7 +55,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         cardInstance = inst;
 
         //비주얼 세팅
-        myImage.sprite =  data.CardSprite;
+        mySprite.sprite =  data.CardSprite;
         textList[0].text = data.CardName;
         textList[1].text = data.CardText;
 
@@ -82,11 +83,11 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
 
         //주인 찾기
-        foreach(CharacterOnScene ch in BattleManager.Instance.PlayerParty)
+        foreach(AllyUnit ally in BattleManager.Instance.PlayerParty)
         {
-           if(ch.CharacterData.CardColor == data.Color)
+           if(ally.CharacterData.CardColor == data.Color)
             {
-               owner = ch; break;
+               owner = ally; break;
             }
            else if(data.Color == CardColor.Gray)
             {
@@ -106,9 +107,9 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public void Use()
     {
-        foreach (var actionData in data.CarActionDataList)
+        foreach (var actionData in data.CarActionList)
         {
-            CardActionProcessor.GetAction(actionData.CardActionType).DoAction(new CardActionParameters(actionData.ActionValue, owner, target ? target.GetComponent<EnemyOnScene>() : null, data, this));
+            actionData.DoAction(new CardActionParameters(owner, target, data, cardInstance, this));
         }
 
         //AfterUsed();
@@ -119,14 +120,14 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         transform.position = originalTransform;
         CardsizeSmall();
-        myImage.sprite = data.CardSprite;
+        mySprite.sprite = data.CardSprite;
         //Color color = Color.white;
         //color.a = 1f;
         //myImage.color = color;           OnDrag 참조
 
         //SetCard(data);
     }
-    public bool CheckCondition(CardData myData, CharacterOnScene character)
+    public bool CheckCondition(CardData myData, AllyUnit owner)
     {
         float val; 
         float currentStat = 0f;
@@ -135,11 +136,11 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //중립 카드 사용 시 참고할 캐릭터
         if(data.Color == CardColor.Gray)
         {
-            character = BattleManager.Instance.TurnCharacter;
+            owner = BattleManager.Instance.TurnCharacter;
         }
 
         //턴 캐릭터 체크
-        if(character != BattleManager.Instance.TurnCharacter)
+        if(owner != BattleManager.Instance.TurnCharacter)
         {
             Debug.Log("Not Turn Character");
             return false;
@@ -151,15 +152,15 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             switch (myData.ActiveConditionList[i].Condition)
             {
                 case ConditionType.Attack:
-                    currentStat = character.CurrentAttack;
+                    currentStat = owner.CurrentAttack;
                     break;
 
                 case ConditionType.Speed: 
-                    currentStat = character.CurrentSpeed;
+                    currentStat = owner.CurrentSpeed;
                     break;
 
                 case ConditionType.Shield: 
-                    currentStat = character.CurrentShield;
+                    currentStat = owner.CurrentShield;
                     break;
             }
             //Debug.Log("val" + val);
@@ -181,41 +182,26 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public bool CheckTarget(CardData data)
     {
-       
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Collider2D hit = Physics2D.OverlapCircle(mouseWorldPos, radius);
-        /*if (hit != null)
-        {
-            target = hit.gameObject;
-            Debug.Log(hit.gameObject.name);
-        }*/
-
         if (data.UsableWithoutTarget) return true;
 
-        if (hit != null)
-        {
-            target = hit.gameObject;
-            Debug.Log(hit.gameObject.name);
-            if (data.ActionTargetType.ToString() == hit.tag)
-            {
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Collider2D hit = Physics2D.OverlapCircle(mouseWorldPos, radius);
 
-                Debug.Log("valid target");
-                return true;
-            }
-            else
-            {
-                Debug.Log("invalid target");
-                Debug.Log("target : " + hit.tag + ", data : " + data.ActionTargetType);
-                return false;
-            }
-        }
-        else if (hit == null)
+        if (hit == null) return false;
+
+        target = hit.gameObject.GetComponent<BattleUnitBase>();
+        if (target == null) return false;
+
+        switch (data.CardTarget)
         {
-            Debug.Log("Nothing detected");
-            return false;
+            case CardTargetType.Ally:
+                return target.Team == UnitTeam.Ally;
+
+            case CardTargetType.Enemy:
+                return target.Team == UnitTeam.Enemy;
         }
 
-        else Debug.Log("else");  return false;
+        return false;
     }
 
     void OnDrawGizmos()
@@ -244,7 +230,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         CardsizeSmall();
         originalTransform = transform.position;
-        myImage.sprite = data.DragIcon;
+        mySprite.sprite = data.DragIcon;
     }
 
     public void OnDrag(PointerEventData eventdata)
@@ -289,4 +275,17 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         Debug.Log(transform.position.y);
     }
     #endregion
+}
+
+[System.Serializable]
+public class CardInstance
+{
+    public int id;
+    public CardData cardData;
+
+    public CardInstance(int id, CardData cardData)
+    {
+        this.id = id;
+        this.cardData = cardData;
+    }
 }

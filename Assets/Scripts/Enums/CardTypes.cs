@@ -1,3 +1,4 @@
+//v0.02 / 2026.03.07 / 21:07
 namespace Proto2.Enums
 {
     public enum UnitTeam
@@ -45,6 +46,18 @@ namespace Proto2.Enums
     public enum ActionTargetType
     {
         None = 0,
+        Owner,
+        SelectedTarget,
+        AllAllies,
+        AllEnemies,
+        AllUnits,
+        RandomEnemy,
+        RandomAlly
+    }
+
+    public enum CardTargetType
+    {
+        None = 0,
         Ally,
         Enemy,
         AllAlly,
@@ -52,7 +65,6 @@ namespace Proto2.Enums
         AllCharacter,
         RandomEnemy
     }
-
     public enum PatternTargetType
     {
         Self,
@@ -78,4 +90,5 @@ namespace Proto2.Enums
         EnemyTurn,
         End
     }
+
 }

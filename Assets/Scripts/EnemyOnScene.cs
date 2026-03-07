@@ -14,7 +14,7 @@ public class EnemyOnScene : MonoBehaviour
     [SerializeField] private Animator myAnimator;
     [SerializeField] private Slider mySlider;
     [SerializeField] private EnemyPatternData currentPattern;
-    [SerializeField] private List<CharacterOnScene> targetHero;
+    [SerializeField] private List<AllyUnit> targetHero;
     [SerializeField] private List<EnemyOnScene> targetEnemy;
 
     //Transform parent;
@@ -123,7 +123,7 @@ public class EnemyOnScene : MonoBehaviour
             Debug.Log(enemyData.EnemyName + "'s Target Hero : " + targetHero.Count);
             //Debug.Log(enemyData.EnemyName + "'s Target : " + targetHero[0]== null ? "List[0] is null" : targetHero[0].CharacterData.name);
             Debug.Log(enemyData.EnemyName + "'s Target Enemy : " + targetEnemy.Count);
-            EnemyPatternProcessor.GetPattern(action.PatternActionType).DoAction(new EnemyActionParameters(action.PatternValue, targetHero, targetEnemy));
+            //EnemyPatternProcessor.GetPattern(action.PatternActionType).DoAction(new EnemyActionParameters(action.PatternValue, targetHero, targetEnemy));
         }
     }
 

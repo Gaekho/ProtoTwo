@@ -4,6 +4,8 @@ using UnityEngine;
 using Proto2.Enums;
 using System;
 
+//v0.02 / 2026.03.07 / 22:53
+//변경 요약: 카드 타겟, 액션 타겟 분리, SerializeReference CardActionBase 리스트
 [CreateAssetMenu(fileName = "Card Data", menuName = "Proto2/Card/baseCard", order = 0)]
 
 public class CardData : ScriptableObject
@@ -20,13 +22,14 @@ public class CardData : ScriptableObject
     [SerializeField] private Sprite dragIcon;
 
     [Header("Active Condition")]
-    [SerializeField] private ActionTargetType actionTargetType;
+    [SerializeField] private CardTargetType cardTarget;
     [SerializeField] private List<ActiveConditionData> activeConditionList;
 
     [Header("Action Settings")]
     [SerializeField] private bool usableWithoutTarget;
     [SerializeField] private bool banishAfterUsed;
-    [SerializeField] private List<CardActionData> cardActionDataList;
+    [SerializeReference] 
+    private List<CardActionBase> cardActionList;
 
     #region Cache
     public int Id => id;
@@ -36,25 +39,25 @@ public class CardData : ScriptableObject
     public string CardText => cardText;
     public Sprite CardSprite => cardSprite;
     public Sprite DragIcon => dragIcon;
-    public ActionTargetType ActionTargetType => actionTargetType;
+    public CardTargetType CardTarget => cardTarget;
     public List<ActiveConditionData> ActiveConditionList => activeConditionList;
     public bool UsableWithoutTarget => usableWithoutTarget;
     public bool BanishAfterUsed => banishAfterUsed;
-    public List<CardActionData> CarActionDataList => cardActionDataList;
+    public List<CardActionBase> CarActionList => cardActionList;
     #endregion
 }
 
-[Serializable]
-public class CardActionData
-{
-    [SerializeField] private CardActionType cardActionType;
-    //[SerializeField] private ActionTargetType actionTargetType;
-    [SerializeField] private float actionValue;
+//[Serializable]
+//public class CardActionData
+//{
+//    [SerializeField] private CardActionType cardActionType;
+//    //[SerializeField] private ActionTargetType actionTargetType;
+//    [SerializeField] private float actionValue;
 
-    public CardActionType CardActionType => cardActionType;
-    //public ActionTargetType ActionTargetType => actionTargetType; 
-    public float ActionValue => actionValue;
-}
+//    public CardActionType CardActionType => cardActionType;
+//    //public ActionTargetType ActionTargetType => actionTargetType; 
+//    public float ActionValue => actionValue;
+//}
 
 [Serializable]
 public class ActiveConditionData
