@@ -43,6 +43,15 @@ namespace Proto2.Enums
         Debuff
     }
 
+    public enum CardAnimTrigger
+    {
+        Attack,
+        AddArmor,
+        Draw,
+        ApplyBuff,
+        ApplyDeBuff
+    }
+
     public enum ActionTargetType
     {
         None = 0,

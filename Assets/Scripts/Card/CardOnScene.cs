@@ -8,6 +8,8 @@ using Unity.VisualScripting;
 using TMPro;
 using UnityEditor.Experimental.GraphView;
 
+//v0.04 /2026.03.08 / 15:35
+//변경 요약 : layermask 기반 충돌 감지 추가, 드래그 중 canvas 비활성화.
 public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     #region field
@@ -24,7 +26,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private TMP_Text[] textList;
     [SerializeField] private Text[] conditionList;
 
-    [Header("Raycast Radius")]
+    [Header("Raycast")]
+    [SerializeField] private LayerMask layerMask;
     [SerializeField] private float radius = 0.25f;
 
     [Header("For Debug")]
@@ -41,7 +44,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         mainCamera = Camera.main;
         originalTransform = transform.position;
         canvas = GetComponentInChildren<Canvas>();
-        mySprite = canvas.GetComponent<SpriteRenderer>();
+        mySprite = GetComponent<SpriteRenderer>();
         textList = canvas.GetComponentsInChildren<TMP_Text>();  //카드 이름, 카드 텍스트 순으로 가져온다.
         conditionList = canvas.GetComponentsInChildren<Text>(); //ATK, DEF, SPD 순으로 가져온다.
         // How to Search Owner Character of this Card?
@@ -107,6 +110,17 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public void Use()
     {
+        switch (data.CardAnimTrigger)
+        {
+            case CardAnimTrigger.Attack:
+                owner.DoAttackAnim(); break;
+
+            case CardAnimTrigger.AddArmor:
+                owner.DoArmorAnim(); break;
+            
+            case CardAnimTrigger.ApplyBuff: 
+                owner.DoApplyBuffAnim(); break;
+        }
         foreach (var actionData in data.CarActionList)
         {
             actionData.DoAction(new CardActionParameters(owner, target, data, cardInstance, this));
@@ -121,6 +135,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         transform.position = originalTransform;
         CardsizeSmall();
         mySprite.sprite = data.CardSprite;
+        canvas.gameObject.SetActive(true);
         //Color color = Color.white;
         //color.a = 1f;
         //myImage.color = color;           OnDrag 참조
@@ -185,12 +200,20 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (data.UsableWithoutTarget) return true;
 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Collider2D hit = Physics2D.OverlapCircle(mouseWorldPos, radius);
+        Collider2D hit = Physics2D.OverlapCircle(mouseWorldPos, radius, layerMask);
 
-        if (hit == null) return false;
+        if (hit == null) { Debug.Log("Nothing Detected"); return false; }
 
-        target = hit.gameObject.GetComponent<BattleUnitBase>();
-        if (target == null) return false;
+        target = hit.gameObject.GetComponentInParent<BattleUnitBase>();
+        if (target == null) 
+        { 
+            Debug.Log("target is null");  
+            Debug.Log($"hit = {hit.name}");
+            Debug.Log($"parent battle unit = {hit.GetComponentInParent<BattleUnitBase>()}");
+            Debug.Log($"self battle unit = {hit.GetComponent<BattleUnitBase>()}");
+            return false; 
+        }
+
 
         switch (data.CardTarget)
         {
@@ -231,6 +254,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         CardsizeSmall();
         originalTransform = transform.position;
         mySprite.sprite = data.DragIcon;
+        canvas.gameObject.SetActive(false);
     }
 
     public void OnDrag(PointerEventData eventdata)
@@ -247,7 +271,6 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
          *나중에 핸드를 자동으로 정렬시킬 때 문제가 될 수 있음. */
         Vector3 worldPoint = mainCamera.ScreenToWorldPoint(new Vector3(eventdata.position.x, eventdata.position.y, 10f));
         transform.position = new Vector3(worldPoint.x, worldPoint.y, originalTransform.z);
-
     }
 
     public void OnEndDrag(PointerEventData eventdata)

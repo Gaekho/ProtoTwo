@@ -10,22 +10,23 @@ using System;
 
 public class CardData : ScriptableObject
 {
-    [Header("Card Profile")]
+    //[Header("Card Profile")]
     [SerializeField] private int id;
     [SerializeField] private string cardName;
     [SerializeField] private CardType type;
     [SerializeField] private CardColor color;
     [SerializeField] private string cardText;
 
-    [Header("visual")]
+    //[Header("visual")]
     [SerializeField] private Sprite cardSprite;
     [SerializeField] private Sprite dragIcon;
+    [SerializeField] private CardAnimTrigger cardAnimTrigger;
 
-    [Header("Active Condition")]
+    //[Header("Active Condition")]
     [SerializeField] private CardTargetType cardTarget;
     [SerializeField] private List<ActiveConditionData> activeConditionList;
 
-    [Header("Action Settings")]
+    //[Header("Action Settings")]
     [SerializeField] private bool usableWithoutTarget;
     [SerializeField] private bool banishAfterUsed;
     [SerializeReference] 
@@ -39,6 +40,7 @@ public class CardData : ScriptableObject
     public string CardText => cardText;
     public Sprite CardSprite => cardSprite;
     public Sprite DragIcon => dragIcon;
+    public CardAnimTrigger CardAnimTrigger => cardAnimTrigger;
     public CardTargetType CardTarget => cardTarget;
     public List<ActiveConditionData> ActiveConditionList => activeConditionList;
     public bool UsableWithoutTarget => usableWithoutTarget;

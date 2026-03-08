@@ -42,12 +42,7 @@ public class AllyUnit : BattleUnitBase
 
     public override void GetDamage(float value)
     {
-        float previousHealth = currentHealth;     
         base.GetDamage(value);
-        if (!isDead && previousHealth > currentHealth)       //함수 발동 전 체력과 발동 후 체력 비교를 통해 실제 체력 손실이 있을때만 피격 애니메이션 재생.
-        {
-            myAnimator.SetTrigger("Damaged");
-        }
     }
     public void EnterTurn()
     {
@@ -65,4 +60,11 @@ public class AllyUnit : BattleUnitBase
         //아직 미구현. 애니메이션 재생 및 자기 자신 파괴, BattleManager의 AllyList에서 삭제 등의 작업 추가.
         yield break;
     }
+
+    #region Animation Triggers
+    public void DoApplyBuffAnim()
+    {
+        myAnimator.SetTrigger("CardUse");
+    }
+    #endregion
 }

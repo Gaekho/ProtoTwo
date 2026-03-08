@@ -29,7 +29,10 @@ public class BattleManager : MonoBehaviour
 
     [Header("Turn")]
     [SerializeField] private int turn = 0;
-    [SerializeField] private Queue<CharacterOnScene> turnQ;
+    [SerializeField] private Queue<AllyUnit> turnQ;
+
+    [Header("Temporary Fields")]
+    [SerializeField] private List<EnemyData> tempEnemies;
     #endregion
 
     public AllyUnit TurnCharacter { private set; get; }
@@ -41,11 +44,11 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        CardActionProcessor.Initialize();
         EnemyPatternProcessor.Initialize();
         SetAlly();
         Debug.Log(playerParty[0].CharacterData.name);
         TurnCharacter = playerParty[0];
+        TurnCharacter.EnterTurn();
         SetEnemy();
         HandController.Instance.SetUp(deckData);
         turn = 0;
@@ -75,11 +78,11 @@ public class BattleManager : MonoBehaviour
         for(int i= 0; i<enemies.Length; i++)
         {
             enemyList.Add(enemies[i]);
-            //enemies[i].SetProfile()???        //레벨 데이터를 통한 에너미 데이터 전달 시 기능하도록 구현.
+            enemies[i].SetProfile(tempEnemies[i]);        //레벨 데이터를 통한 에너미 데이터 전달 시 기능하도록 구현.
         }
     }
 
-    public void EnemyDead(EnemyOnScene dead)
+    public void EnemyDead(EnemyUnit dead)
     {
         int idx = enemyList.FindIndex(x => x.gameObject == dead.gameObject);
         enemyList.RemoveAt(idx);

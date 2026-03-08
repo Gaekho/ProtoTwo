@@ -65,7 +65,7 @@ public class EnemyOnScene : MonoBehaviour
     public IEnumerator DieRoutine()
     {
 
-        BattleManager.Instance.EnemyDead(this);
+        //BattleManager.Instance.EnemyDead(this);
         myAnimator.SetTrigger("Die");
         yield return new WaitForSeconds(2f);
         Destroy(transform.parent.gameObject);

@@ -27,17 +27,12 @@ public class EnemyUnit : BattleUnitBase
     }
     public override void GetDamage(float value)
     {
-        float previousHealth = currentHealth;
         base.GetDamage(value);
-        if (!isDead && previousHealth > currentHealth)       //함수 발동 전 체력과 발동 후 체력 비교를 통해 실제 체력 손실이 있을때만 피격 애니메이션 재생.
-        {
-            myAnimator.SetTrigger("Damaged");
-        }
         healthSlider.value = currentHealth / enemyData.MaxHealth;
     }
     protected override IEnumerator Die()
     {
-        //BattleManager.Instance.EnemyDead(this);       //에러 발생으로 잠시 주석처리. EnemhDead 수정 후 다시 사용.
+        BattleManager.Instance.EnemyDead(this);       //에러 발생으로 잠시 주석처리. EnemyDead 수정 후 다시 사용.
         myAnimator.SetTrigger("Die");
         yield return new WaitForSeconds(2f);
         Destroy(transform.parent.gameObject);

@@ -46,6 +46,8 @@ public abstract class BattleUnitBase : MonoBehaviour
 
     public virtual void GetDamage(float value)
     {
+        float previousHealth = currentHealth;           //데미지 받기 전 체력 저장.
+
         if (value <= 0) return;
         float remainDamage = value;
 
@@ -67,7 +69,26 @@ public abstract class BattleUnitBase : MonoBehaviour
             isDead = true;
             StartCoroutine(Die());
         }
+
+        if (!isDead && previousHealth > currentHealth)       //함수 발동 전 체력과 발동 후 체력 비교를 통해 실제 체력 손실이 있을때만 피격 애니메이션 재생.
+        {
+            DoDamagedAnim();
+        }
     }
 
+    #region Animation Trigger
+    public virtual void DoAttackAnim()
+    {
+        myAnimator.SetTrigger("Attack");
+    }
+    public virtual void DoDamagedAnim()
+    {
+        myAnimator.SetTrigger("Damaged");
+    }
+    public virtual void DoArmorAnim()
+    {
+        myAnimator.SetTrigger("AddArmor");
+    }
+    #endregion
     protected abstract IEnumerator Die();
 }

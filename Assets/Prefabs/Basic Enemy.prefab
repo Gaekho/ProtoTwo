@@ -497,9 +497,9 @@ GameObject:
   - component: {fileID: 2006902921191159013}
   - component: {fileID: 6038483788159762219}
   - component: {fileID: 4838725535690957409}
-  - component: {fileID: 5442143252698517704}
   - component: {fileID: 1615341680267107253}
-  m_Layer: 0
+  - component: {fileID: 168115284827398791}
+  m_Layer: 7
   m_Name: GameObject
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -608,32 +608,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 1.5}
   m_Direction: 0
---- !u!114 &5442143252698517704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6664599254556529243}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfee62d40ce71a54d8ad1ca5e49ede73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyData: {fileID: 11400000, guid: f272231a9cde82c4186c5eabdaa28688, type: 2}
-  currentHealth: 0
-  maxHealth: 0
-  mySprite: {fileID: 0}
-  myCanvas: {fileID: 0}
-  myAnimator: {fileID: 0}
-  mySlider: {fileID: 0}
-  currentPattern:
-    patternName: 
-    patternType: 0
-    patternImage: {fileID: 0}
-    actionList: []
-  targetHero: []
-  targetEnemy: []
 --- !u!95 &1615341680267107253
 Animator:
   serializedVersion: 5
@@ -655,3 +629,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &168115284827398791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6664599254556529243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e49b9862c4c4e045ab8166d71d5cc08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 1
+  currentHealth: 0
+  currentArmor: 0
+  isDead: 0
+  mySprite: {fileID: 0}
+  myAnimator: {fileID: 0}
+  enemyData: {fileID: 0}
+  myCanvas: {fileID: 0}
+  healthSlider: {fileID: 0}
