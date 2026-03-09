@@ -47,9 +47,18 @@ namespace Proto2.Enums
     {
         Attack,
         AddArmor,
-        Draw,
         ApplyBuff,
-        ApplyDeBuff
+        ApplyDebuff,
+        //이 아래로는 카드 고유
+        Draw
+    }
+
+    public enum EnemyPatternAnimTrigger
+    {
+        Attack,
+        AddArmor,
+        ApplyBuff,
+        ApplyDebuff
     }
 
     public enum ActionTargetType
@@ -62,6 +71,7 @@ namespace Proto2.Enums
         AllUnits,
         RandomEnemy,
         RandomAlly
+        //Random two? 추가 할 수도 있음.
     }
 
     public enum CardTargetType
@@ -73,14 +83,6 @@ namespace Proto2.Enums
         AllEnemy,
         AllCharacter,
         RandomEnemy
-    }
-    public enum PatternTargetType
-    {
-        Self,
-        RandomMob,
-        TurnHero,
-        AllHero,
-        RandomTwoHero
     }
 
     public enum EnemyPatternType

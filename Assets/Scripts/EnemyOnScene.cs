@@ -28,27 +28,12 @@ public class EnemyOnScene : MonoBehaviour
 
         currentHealth = enemyData.MaxHealth;
         mySprite.sprite = enemyData.EnemySprite;
-        SetRandomPattern();
+        //SetRandomPattern();
     }
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            GetDamage(10f);
-            //Die();
-            StartCoroutine(DieRoutine());
-        }
 
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            SetRandomPattern();
-        }
-
-        if (Input.GetKeyDown(KeyCode.L)) 
-        {
-            UsePattern();
-        }
     }
     public void GetDamage(float damage)
     {
@@ -72,64 +57,64 @@ public class EnemyOnScene : MonoBehaviour
 
     }
 
-    public void DoAttack()
-    {
-        myAnimator.SetTrigger("Attack");
-    }
+    //public void DoAttack()
+    //{
+    //    myAnimator.SetTrigger("Attack");
+    //}
 
-    public void GetTarget(EnemyPatternAction patternAction )
-    {
-        targetHero.Clear();
-        targetEnemy.Clear();
+    //public void GetTarget(EnemyPatternAction patternAction )
+    //{
+    //    targetHero.Clear();
+    //    targetEnemy.Clear();
 
-        switch (patternAction.ActionTargetType)
-        {
-            case PatternTargetType.Self:
-                targetEnemy.Add(this);
-                break;
+    //    switch (patternAction.ActionTargetType)
+    //    {
+    //        case PatternTargetType.Self:
+    //            targetEnemy.Add(this);
+    //            break;
 
-            case PatternTargetType.RandomMob:
-                break;
+    //        case PatternTargetType.RandomMob:
+    //            break;
 
-            case PatternTargetType.TurnHero:
-                targetHero.Add(BattleManager.Instance.TurnCharacter);        //need to catch TurnHero for BattleManager.Instance.PlayerParty
-                break;
+    //        case PatternTargetType.TurnHero:
+    //            targetHero.Add(BattleManager.Instance.TurnCharacter);        //need to catch TurnHero for BattleManager.Instance.PlayerParty
+    //            break;
 
-            case PatternTargetType.AllHero:
-                targetHero.AddRange(BattleManager.Instance.PlayerParty);
-                break;
+    //        case PatternTargetType.AllHero:
+    //            targetHero.AddRange(BattleManager.Instance.PlayerParty);
+    //            break;
 
-            case PatternTargetType.RandomTwoHero:
-                targetHero.Add(BattleManager.Instance.TurnCharacter);
-                break;
-        }
+    //        case PatternTargetType.RandomTwoHero:
+    //            targetHero.Add(BattleManager.Instance.TurnCharacter);
+    //            break;
+    //    }
         
-    }
+    //}
 
-    public void SetRandomPattern()
-    {
-        int index = Random.Range(0, enemyData.PatternList.Count);
-        currentPattern = enemyData.PatternList[index];
-        myCanvas.GetComponentInChildren<Image>().sprite = currentPattern.PatternImage;
-    }
-    public void UsePattern()
-    {
-        myAnimator.SetTrigger(currentPattern.PatternType.ToString());  //Only one Animation for a pattern
+    //public void SetRandomPattern()
+    //{
+    //    int index = Random.Range(0, enemyData.PatternList.Count);
+    //    currentPattern = enemyData.PatternList[index];
+    //    myCanvas.GetComponentInChildren<Image>().sprite = currentPattern.PatternImage;
+    //}
+    //public void UsePattern()
+    //{
+    //    myAnimator.SetTrigger(currentPattern.PatternType.ToString());  //Only one Animation for a pattern
 
-        foreach(EnemyPatternAction action in currentPattern.ActionList)
-        {
-            Debug.Log(action.PatternActionType.ToString());
-            GetTarget(action);
-            Debug.Log(enemyData.EnemyName + "'s Target Hero : " + targetHero.Count);
-            //Debug.Log(enemyData.EnemyName + "'s Target : " + targetHero[0]== null ? "List[0] is null" : targetHero[0].CharacterData.name);
-            Debug.Log(enemyData.EnemyName + "'s Target Enemy : " + targetEnemy.Count);
-            //EnemyPatternProcessor.GetPattern(action.PatternActionType).DoAction(new EnemyActionParameters(action.PatternValue, targetHero, targetEnemy));
-        }
-    }
+    //    foreach(EnemyPatternAction action in currentPattern.ActionList)
+    //    {
+    //        Debug.Log(action.PatternActionType.ToString());
+    //        GetTarget(action);
+    //        Debug.Log(enemyData.EnemyName + "'s Target Hero : " + targetHero.Count);
+    //        //Debug.Log(enemyData.EnemyName + "'s Target : " + targetHero[0]== null ? "List[0] is null" : targetHero[0].CharacterData.name);
+    //        Debug.Log(enemyData.EnemyName + "'s Target Enemy : " + targetEnemy.Count);
+    //        //EnemyPatternProcessor.GetPattern(action.PatternActionType).DoAction(new EnemyActionParameters(action.PatternValue, targetHero, targetEnemy));
+    //    }
+    //}
 
-    public IEnumerator UsePatternRoutine()
-    {
-        UsePattern();
-        yield return new WaitForSeconds(0.7f);
-    }
+    //public IEnumerator UsePatternRoutine()
+    //{
+    //    UsePattern();
+    //    yield return new WaitForSeconds(0.7f);
+    //}
 }

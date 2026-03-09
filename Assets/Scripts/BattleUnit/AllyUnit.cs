@@ -6,6 +6,7 @@ using UnityEngine;
 //V0.01 / 2026.03.07 / 18:31
 public class AllyUnit : BattleUnitBase
 {
+    #region Field
     [Header("Ally Unit")]
     [SerializeField] private CharacterData characterData;
     [SerializeField] private float currentAttack;
@@ -13,7 +14,7 @@ public class AllyUnit : BattleUnitBase
     [SerializeField] private float currentSpeed;
     [SerializeField] private bool isTurn;
     [SerializeField] private Transform myTransform;     //턴 교체 시 크기 변경용
-
+    #endregion
 
     #region Cache
     public CharacterData CharacterData => characterData;
@@ -40,31 +41,37 @@ public class AllyUnit : BattleUnitBase
         myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
     }
 
+    #region Overrides
     public override void GetDamage(float value)
     {
         base.GetDamage(value);
-    }
-    public void EnterTurn()
-    {
-        isTurn = true;
-        myTransform.localScale = new Vector3(1.2f, 1.2f, 1f);
-    }
-
-    public void ExitTurn()
-    {
-        isTurn = false;
-        myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
+        //UIManager 연결 후에 슬라이더 표시 기능 구현
     }
     protected override IEnumerator Die()
     {
         //아직 미구현. 애니메이션 재생 및 자기 자신 파괴, BattleManager의 AllyList에서 삭제 등의 작업 추가.
         yield break;
     }
+    #endregion
 
-    #region Animation Triggers
-    public void DoApplyBuffAnim()
+    #region Methods
+    public void EnterTurn()
     {
-        myAnimator.SetTrigger("CardUse");
+        isTurn = true;
+        myTransform.localScale = new Vector3(1.2f, 1.2f, 1f);
+    }
+    
+    public void ExitTurn()
+    {
+        isTurn = false;
+        myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
+    }
+    #endregion
+
+    #region Original Animation Triggers
+    public void DoDrawAnim()
+    {
+        myAnimator.SetTrigger("Draw");
     }
     #endregion
 }

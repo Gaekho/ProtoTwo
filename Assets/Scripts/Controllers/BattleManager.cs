@@ -44,7 +44,7 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        EnemyPatternProcessor.Initialize();
+        //EnemyPatternProcessor.Initialize();
         SetAlly();
         Debug.Log(playerParty[0].CharacterData.name);
         TurnCharacter = playerParty[0];

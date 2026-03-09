@@ -6,6 +6,7 @@ using Proto2.Enums;
 //v0.01 / 2026.03.06 / 16:41
 public abstract class BattleUnitBase : MonoBehaviour
 {
+    #region Field
     [Header("Battle Unit")]
     [SerializeField] protected UnitTeam team;
     [SerializeField] protected float currentHealth;
@@ -15,6 +16,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     [Header("Visual Components")]
     [SerializeField] protected SpriteRenderer mySprite;
     [SerializeField] protected Animator myAnimator;
+    #endregion
 
     #region Cache
     public UnitTeam Team => team;
@@ -23,6 +25,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     public bool IsDead => isDead;
     #endregion
 
+    #region Virtual Methods
     public virtual void SetProfile(UnitTeam myTeam, float maxHealth)
     {
         team = myTeam;
@@ -75,20 +78,41 @@ public abstract class BattleUnitBase : MonoBehaviour
             DoDamagedAnim();
         }
     }
+    #endregion
+
+    #region Abstract Methods
+    protected abstract IEnumerator Die();
+    #endregion
 
     #region Animation Trigger
     public virtual void DoAttackAnim()
     {
         myAnimator.SetTrigger("Attack");
     }
-    public virtual void DoDamagedAnim()
-    {
-        myAnimator.SetTrigger("Damaged");
-    }
+ 
     public virtual void DoArmorAnim()
     {
         myAnimator.SetTrigger("AddArmor");
     }
+
+    public virtual void DoBuffAnim()
+    {
+        myAnimator.SetTrigger("ApplyBuff");
+    }
+
+    public virtual void DoDebuffAnim()
+    {
+        myAnimator.SetTrigger("ApplyDebuff");
+    }
+ 
+    public virtual void DoDamagedAnim()
+    {
+        myAnimator.SetTrigger("Damaged");
+    }
+
+    protected virtual void DoDieAnim()
+    {
+        myAnimator.SetTrigger("Die");
+    }
     #endregion
-    protected abstract IEnumerator Die();
 }

@@ -11,17 +11,17 @@ using Proto2.Enums;
 
 public class EnemyData : ScriptableObject
 {
-    [Header("Character Profile")]
+    //[Header("Character Profile")]
     [SerializeField] private string enemyName;
     [SerializeField] private string enemyDescription;
     [SerializeField] private float maxHealth;
     [SerializeField] private float baseSpeed;
 
-    [Header("Visual")]
+    //[Header("Visual")]
     [SerializeField] private Sprite enemySprite;
     [SerializeField] private AnimatorController animatorController;
 
-    [Header("Patterns")]
+    //[Header("Patterns")]
     [SerializeField] private List<EnemyPatternData> patternList = new();
 
     #region cache
@@ -39,15 +39,15 @@ public class EnemyData : ScriptableObject
 public class EnemyPatternData
 {
     [SerializeField] private string patternName;
-    [SerializeField] private EnemyPatternType patternType;  //¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı¿ë
+    [SerializeField] private EnemyPatternAnimTrigger patternType;  //ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒìš©
     [SerializeField] private Sprite intentIcon;
 
     [SerializeReference] 
-    private List<PatternActionBase> patternActionList;
+    private List<PatternActionBase> patternActionList = new();
 
     #region Cache
     public string PatternName => patternName;
-    public EnemyPatternType PatternType => patternType; //¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı¿ë
+    public EnemyPatternAnimTrigger PatternType => patternType; //ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒìš©
     public Sprite IntentIcon => intentIcon;
     public List<PatternActionBase> PatternActionList => patternActionList;
     #endregion

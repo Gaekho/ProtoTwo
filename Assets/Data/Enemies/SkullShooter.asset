@@ -19,17 +19,26 @@ MonoBehaviour:
   enemySprite: {fileID: 21300000, guid: b5acd26a45acfa846a693e987ab3e691, type: 3}
   animatorController: {fileID: 9100000, guid: 3d98b1882e4ee624ebd575e8cf8edcfc, type: 2}
   patternList:
-  - patternName: Bolt Shot
+  - patternName: "\uB79C\uB364 \uD0C0\uACA9"
     patternType: 0
-    patternImage: {fileID: 54223421, guid: ea7de6defccb7054e830650d2736518a, type: 3}
-    actionList:
-    - patternActionType: 0
-      patternValue: 10
-      actionTargetType: 3
-  - patternName: Reload Shot
-    patternType: 3
-    patternImage: {fileID: 485272125, guid: ea7de6defccb7054e830650d2736518a, type: 3}
-    actionList:
-    - patternActionType: 3
-      patternValue: 5
-      actionTargetType: 0
+    intentIcon: {fileID: 164540345, guid: ea7de6defccb7054e830650d2736518a, type: 3}
+    patternActionList:
+    - rid: 283199232281411588
+  - patternName: "\uD654\uC0B4 \uB09C\uC0AC"
+    patternType: 0
+    intentIcon: {fileID: 54223421, guid: ea7de6defccb7054e830650d2736518a, type: 3}
+    patternActionList:
+    - rid: 283199232281411589
+  references:
+    version: 2
+    RefIds:
+    - rid: 283199232281411588
+      type: {class: AttackPatternAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 7
+        damage: 5
+    - rid: 283199232281411589
+      type: {class: AttackPatternAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 4
+        damage: 1

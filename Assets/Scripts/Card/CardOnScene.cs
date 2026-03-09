@@ -119,7 +119,13 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 owner.DoArmorAnim(); break;
             
             case CardAnimTrigger.ApplyBuff: 
-                owner.DoApplyBuffAnim(); break;
+                owner.DoBuffAnim(); break;
+
+            case CardAnimTrigger.ApplyDebuff: 
+                owner.DoDebuffAnim(); break;
+
+            case CardAnimTrigger.Draw: 
+                owner.DoDrawAnim(); break;
         }
         foreach (var actionData in data.CarActionList)
         {

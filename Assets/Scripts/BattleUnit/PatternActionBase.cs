@@ -11,7 +11,12 @@ public class PatternActionParameters
 
     public readonly EnemyPatternData patternData;
 
-    
+    public PatternActionParameters(EnemyUnit owner, BattleUnitBase target, EnemyPatternData patternData)
+    {
+        this.owner = owner;
+        this.target = target;
+        this.patternData = patternData;
+    }
 }
 
 [Serializable]
@@ -57,7 +62,7 @@ public abstract class PatternActionBase
 
             case ActionTargetType.RandomAlly:
                 int i = UnityEngine.Random.Range(0, BattleManager.Instance.PlayerParty.Count);
-                result.Add(BattleManager.Instance.PlayerParty[i]);        //ÇÑÁÙ·Î ¾²¸é °¡µ¶¼º °³¶³¾îÁú±îºÁ µÎÁÙ·Î ¾¸.
+                result.Add(BattleManager.Instance.PlayerParty[i]);        //í•œì¤„ë¡œ ì“°ë©´ ê°€ë…ì„± ê°œë–¨ì–´ì§ˆê¹Œë´ ë‘ì¤„ë¡œ ì”€.
                 break;
 
             case ActionTargetType.RandomEnemy:
@@ -69,3 +74,32 @@ public abstract class PatternActionBase
     }
 }
 
+[Serializable]
+public class AttackPatternAction : PatternActionBase
+{
+    [SerializeField] private float damage = 1f;
+
+    public override void DoAction(PatternActionParameters actionParameters)
+    {
+        foreach (BattleUnitBase target in ActionTargets(actionParameters))
+        {
+            if(target == null) continue;
+            target.GetDamage(damage);
+        }
+    }
+}
+
+[Serializable]
+public class AddArmorPatternAction : PatternActionBase
+{
+    [SerializeField] private float armorAmount = 1f;
+
+    public override void DoAction(PatternActionParameters actionParameters)
+    {
+        foreach(BattleUnitBase target in ActionTargets(actionParameters))
+        {
+            if(target == null) continue;
+            target.AddArmor(armorAmount);
+        }
+    }
+}

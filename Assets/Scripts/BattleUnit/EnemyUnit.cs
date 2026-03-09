@@ -7,10 +7,12 @@ using Proto2.Enums;
 //v0.01 / 2026.03.07 / 07:29
 public class EnemyUnit : BattleUnitBase
 {
+    #region Field
     [Header("Enemy Unit")]
     [SerializeField] private EnemyData enemyData;
     [SerializeField] private Canvas myCanvas;
     [SerializeField] private Slider healthSlider;
+    #endregion
 
     public void SetProfile(EnemyData enemyData)
     {
@@ -18,13 +20,15 @@ public class EnemyUnit : BattleUnitBase
         base.SetProfile(UnitTeam.Enemy, enemyData.MaxHealth);
         mySprite.sprite = enemyData.EnemySprite;
 
-        //UI Canvas ¼¼ÆÃ
+        //UI Canvas ì„¸íŒ…
         myCanvas = transform.parent.GetComponentInChildren<Canvas>();
         healthSlider = myCanvas.GetComponentInChildren<Slider>();
         healthSlider.value = 1f;
 
-        //ÆĞÅÏ ¼¼ÆÃ
+        //íŒ¨í„´ ì„¸íŒ…
     }
+
+    #region Overrides
     public override void GetDamage(float value)
     {
         base.GetDamage(value);
@@ -32,13 +36,13 @@ public class EnemyUnit : BattleUnitBase
     }
     protected override IEnumerator Die()
     {
-        BattleManager.Instance.EnemyDead(this);       //¿¡·¯ ¹ß»ıÀ¸·Î Àá½Ã ÁÖ¼®Ã³¸®. EnemyDead ¼öÁ¤ ÈÄ ´Ù½Ã »ç¿ë.
-        myAnimator.SetTrigger("Die");
+        BattleManager.Instance.EnemyDead(this);       //ì—ëŸ¬ ë°œìƒìœ¼ë¡œ ì ì‹œ ì£¼ì„ì²˜ë¦¬. EnemyDead ìˆ˜ì • í›„ ë‹¤ì‹œ ì‚¬ìš©.
+        DoDieAnim();
         yield return new WaitForSeconds(2f);
         Destroy(transform.parent.gameObject);
     }
 
-    //Gpt°¡ Â¥ÁØ Die ·çÆ¾. WaitUntilÀ» »ç¿ëÇØ¼­ ¾Ö´Ï¸ŞÀÌ¼Ç Á¾·á¸¦ °¨ÁöÇÑ´Ù.
+    //Gptê°€ ì§œì¤€ Die ë£¨í‹´. WaitUntilì„ ì‚¬ìš©í•´ì„œ ì• ë‹ˆë©”ì´ì…˜ ì¢…ë£Œë¥¼ ê°ì§€í•œë‹¤.
     //protected override IEnumerator Die()
     //{
     //    if (myAnimator != null)
@@ -60,4 +64,8 @@ public class EnemyUnit : BattleUnitBase
     //    else
     //        Destroy(gameObject);
     //}
+    #endregion
+
+    #region Methods
+    #endregion
 }
