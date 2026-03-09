@@ -49,7 +49,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 
     public virtual void GetDamage(float value)
     {
-        float previousHealth = currentHealth;           //µ¥¹ÌÁö ¹Ş±â Àü Ã¼·Â ÀúÀå.
+        float previousHealth = currentHealth;           //ë°ë¯¸ì§€ ë°›ê¸° ì „ ì²´ë ¥ ì €ì¥.
 
         if (value <= 0) return;
         float remainDamage = value;
@@ -73,7 +73,7 @@ public abstract class BattleUnitBase : MonoBehaviour
             StartCoroutine(Die());
         }
 
-        if (!isDead && previousHealth > currentHealth)       //ÇÔ¼ö ¹ßµ¿ Àü Ã¼·Â°ú ¹ßµ¿ ÈÄ Ã¼·Â ºñ±³¸¦ ÅëÇØ ½ÇÁ¦ Ã¼·Â ¼Õ½ÇÀÌ ÀÖÀ»¶§¸¸ ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı.
+        if (!isDead && previousHealth > currentHealth)       //í•¨ìˆ˜ ë°œë™ ì „ ì²´ë ¥ê³¼ ë°œë™ í›„ ì²´ë ¥ ë¹„êµë¥¼ í†µí•´ ì‹¤ì œ ì²´ë ¥ ì†ì‹¤ì´ ìˆì„ë•Œë§Œ í”¼ê²© ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ.
         {
             DoDamagedAnim();
         }
