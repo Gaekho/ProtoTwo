@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//v0.01 / 2026.03.07 / 21:43
-//변경 요약 : CardInstance 클래스 삭제(CardOnScene 아래로 이동)
+//v0.02 / 2026.03.09 / 14:31
+//변경 요약 : BanishAfterUsed 참조 추가로 소멸 구현.
 public class HandController : MonoBehaviour
 {
     #region Singleton
@@ -90,7 +90,14 @@ public class HandController : MonoBehaviour
         CardInstance removed = currentHand[idx];
         currentHand.RemoveAt(idx);
 
-        currentGraveyard.Add(removed);
+        if (removed.cardData.BanishAfterUsed)
+        {
+            currentBanished.Add(removed);
+        }
+        else
+        {
+            currentGraveyard.Add(removed);
+        }
 
         Destroy(view.gameObject);
         SortCard();

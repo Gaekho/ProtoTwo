@@ -8,8 +8,8 @@ using Unity.VisualScripting;
 using TMPro;
 using UnityEditor.Experimental.GraphView;
 
-//v0.04 /2026.03.08 / 15:35
-//변경 요약 : layermask 기반 충돌 감지 추가, 드래그 중 canvas 비활성화.
+//v0.04 /2026.03.09 / 14:46
+//변경 요약 : layermask 기반 충돌 감지 추가, 드래그 중 canvas 비활성화. 중립카드 사용 시도 시 주인을 턴 캐릭터로 변경.
 public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     #region field
@@ -152,6 +152,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if(data.Color == CardColor.Gray)
         {
             owner = BattleManager.Instance.TurnCharacter;
+            this.owner = BattleManager.Instance.TurnCharacter;
         }
 
         //턴 캐릭터 체크

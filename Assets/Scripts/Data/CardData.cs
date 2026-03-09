@@ -23,12 +23,13 @@ public class CardData : ScriptableObject
     [SerializeField] private CardAnimTrigger cardAnimTrigger;
 
     //[Header("Active Condition")]
+    [SerializeField] private bool usableWithoutTarget;
     [SerializeField] private CardTargetType cardTarget;
     [SerializeField] private List<ActiveConditionData> activeConditionList;
 
-    //[Header("Action Settings")]
-    [SerializeField] private bool usableWithoutTarget;
+    //[Header("After Used")]
     [SerializeField] private bool banishAfterUsed;
+    //[Header("Action List")]
     [SerializeReference] 
     private List<CardActionBase> cardActionList;
 

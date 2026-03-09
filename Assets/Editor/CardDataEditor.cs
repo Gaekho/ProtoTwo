@@ -19,10 +19,10 @@ public class CardDataEditor : Editor
     private SerializedProperty dragIconProp;
     private SerializedProperty cardAnimTriggerProp;
 
+    private SerializedProperty usableWithoutTargetProp;
     private SerializedProperty cardTargetProp;
     private SerializedProperty activeConditionListProp;
 
-    private SerializedProperty usableWithoutTargetProp;
     private SerializedProperty banishAfterUsedProp;
     private SerializedProperty cardActionListProp;
 
@@ -41,10 +41,10 @@ public class CardDataEditor : Editor
         dragIconProp = serializedObject.FindProperty("dragIcon");
         cardAnimTriggerProp = serializedObject.FindProperty("cardAnimTrigger");
 
+        usableWithoutTargetProp = serializedObject.FindProperty("usableWithoutTarget");
         cardTargetProp = serializedObject.FindProperty("cardTarget");
         activeConditionListProp = serializedObject.FindProperty("activeConditionList");
 
-        usableWithoutTargetProp = serializedObject.FindProperty("usableWithoutTarget");
         banishAfterUsedProp = serializedObject.FindProperty("banishAfterUsed");
         cardActionListProp = serializedObject.FindProperty("cardActionList");
 
@@ -84,12 +84,12 @@ public class CardDataEditor : Editor
 
         EditorGUILayout.Space(6);
         EditorGUILayout.LabelField("Active Condition", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(usableWithoutTargetProp);
         EditorGUILayout.PropertyField(cardTargetProp);
         EditorGUILayout.PropertyField(activeConditionListProp, true);
 
         EditorGUILayout.Space(6);
-        EditorGUILayout.LabelField("Action Settings", EditorStyles.boldLabel);
-        EditorGUILayout.PropertyField(usableWithoutTargetProp);
+        EditorGUILayout.LabelField("After Used", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(banishAfterUsedProp);
     }
 
