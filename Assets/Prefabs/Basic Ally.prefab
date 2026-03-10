@@ -43,9 +43,9 @@ GameObject:
   - component: {fileID: 5202983149974829260}
   - component: {fileID: 4650463370419993619}
   - component: {fileID: 4552175770712804687}
-  - component: {fileID: 3955029158685564219}
   - component: {fileID: 8918624736718687719}
-  m_Layer: 0
+  - component: {fileID: 8146428128565617106}
+  m_Layer: 7
   m_Name: TestCharacter
   m_TagString: Ally
   m_Icon: {fileID: 0}
@@ -140,26 +140,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3955029158685564219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7629767225023370684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3ad7af5488d8704dbe5a1c7c778057b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: f66711e8d1f9e7042b8847eb35dd74dc, type: 2}
-  currentHealth: 0
-  currentGnosis: 0
-  currentSpeed: 0
-  currentAttack: 0
-  currentShield: 0
-  isTurn: 1
-  myTransform: {fileID: 0}
 --- !u!70 &8918624736718687719
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -195,3 +175,27 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.8, y: 1.5}
   m_Direction: 0
+--- !u!114 &8146428128565617106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7629767225023370684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cf469a2aa26ed145bef5e526ed9dcd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
+  currentHealth: 0
+  currentArmor: 0
+  isDead: 0
+  mySprite: {fileID: 0}
+  myAnimator: {fileID: 0}
+  characterData: {fileID: 0}
+  currentAttack: 0
+  currentShield: 0
+  currentSpeed: 0
+  isTurn: 0
+  myTransform: {fileID: 0}

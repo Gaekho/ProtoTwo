@@ -6,23 +6,23 @@ using UnityEngine.UIElements;
 using System;
 using Proto2.Enums;
 
+//v0.02 / 2026.03.09 / 16:01
 [CreateAssetMenu(fileName = "Enemy Data", menuName = "Proto2/Enemy", order = 0)]
-
 
 public class EnemyData : ScriptableObject
 {
-    [Header("Character Profile")]
+    //[Header("Character Profile")]
     [SerializeField] private string enemyName;
     [SerializeField] private string enemyDescription;
     [SerializeField] private float maxHealth;
     [SerializeField] private float baseSpeed;
 
-    [Header("Visual")]
+    //[Header("Visual")]
     [SerializeField] private Sprite enemySprite;
     [SerializeField] private AnimatorController animatorController;
 
-    [Header("Patterns")]
-    [SerializeField] private List<EnemyPatternData> patternList;
+    //[Header("Patterns")]
+    [SerializeField] private List<EnemyPatternData> patternList = new();
 
     #region cache
     public string EnemyName => enemyName;
@@ -39,26 +39,28 @@ public class EnemyData : ScriptableObject
 public class EnemyPatternData
 {
     [SerializeField] private string patternName;
-    [SerializeField] private EnemyPatternType patternType;  //for Animation
-    //[SerializeField] private PatternTargetType patternTargetType;
-    [SerializeField] private Sprite patternImage;
-    [SerializeField] private List<EnemyPatternAction> actionList;
+    [SerializeField] private EnemyPatternAnimTrigger patternType;  //애니메이션 재생용
+    [SerializeField] private Sprite intentIcon;
 
+    [SerializeReference] 
+    private List<PatternActionBase> patternActionList = new();
+
+    #region Cache
     public string PatternName => patternName;
-    public EnemyPatternType PatternType => patternType; //for Animation of a pattern.
-    //public PatternTargetType PatternTargetType => patternTargetType;
-    public Sprite PatternImage => patternImage;
-    public List<EnemyPatternAction> ActionList => actionList;
+    public EnemyPatternAnimTrigger PatternType => patternType; //애니메이션 재생용
+    public Sprite IntentIcon => intentIcon;
+    public List<PatternActionBase> PatternActionList => patternActionList;
+    #endregion
 }
 
-[Serializable]
-public class EnemyPatternAction
-{
-    [SerializeField] private EnemyPatternType patternActionType;
-    [SerializeField] private float patternValue;
-    [SerializeField] private PatternTargetType actionTargetType;
+//[Serializable]
+//public class EnemyPatternAction
+//{
+//    [SerializeField] private EnemyPatternType patternActionType;
+//    [SerializeField] private float patternValue;
+//    [SerializeField] private PatternTargetType actionTargetType;
 
-    public EnemyPatternType PatternActionType => patternActionType;
-    public float PatternValue => patternValue;
-    public PatternTargetType ActionTargetType => actionTargetType;
-}
+//    public EnemyPatternType PatternActionType => patternActionType;
+//    public float PatternValue => patternValue;
+//    public PatternTargetType ActionTargetType => actionTargetType;
+//}

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+//v0.02 / 2026.03.07 / 09:58
+//변경 요약 : CharacterOnScene, EnemyOnScene을 AllyUnit, EnemyUnit으로 변경하는 작업 진행.
 public class BattleManager : MonoBehaviour
 {
     #region Singleton
@@ -22,28 +24,31 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private GameObject basicCharacter;
     [SerializeField] private Transform allyContainer;
     [SerializeField] private Transform enemyContainer;
-    [SerializeField] private List<CharacterOnScene> playerParty;
-    [SerializeField] private List<EnemyOnScene> enemyList;
+    [SerializeField] private List<AllyUnit> playerParty;
+    [SerializeField] private List<EnemyUnit> enemyList;
 
     [Header("Turn")]
     [SerializeField] private int turn = 0;
-    [SerializeField] private Queue<CharacterOnScene> turnQ;
+    [SerializeField] private Queue<AllyUnit> turnQ;
+
+    [Header("Temporary Fields")]
+    [SerializeField] private List<EnemyData> tempEnemies;
     #endregion
 
-    public CharacterOnScene TurnCharacter { private set; get; }
+    public AllyUnit TurnCharacter { private set; get; }
     public TurnState CurrentState { private set; get; }
-    public IReadOnlyList<CharacterOnScene> PlayerParty => playerParty;
-    public IReadOnlyList<EnemyOnScene > EnemyList => enemyList;
+    public IReadOnlyList<AllyUnit> PlayerParty => playerParty;
+    public IReadOnlyList<EnemyUnit > EnemyList => enemyList;
     public UnityEvent onTurnStart;
     
     private void Awake()
     {
         Instance = this;
-        CardActionProcessor.Initialize();
-        EnemyPatternProcessor.Initialize();
+        //EnemyPatternProcessor.Initialize();
         SetAlly();
         Debug.Log(playerParty[0].CharacterData.name);
         TurnCharacter = playerParty[0];
+        TurnCharacter.EnterTurn();
         SetEnemy();
         HandController.Instance.SetUp(deckData);
         turn = 0;
@@ -56,27 +61,28 @@ public class BattleManager : MonoBehaviour
     private void SetAlly()
     {
         playerParty.Clear();
-        CharacterOnScene [] allies = allyContainer.GetComponentsInChildren<CharacterOnScene>(); 
+        AllyUnit [] allies = allyContainer.GetComponentsInChildren<AllyUnit>(); 
 
         for(int i=0; i<allies.Length; i++)
         {
             playerParty.Add(allies[i]);
-            allies[i].SetCharacter(deckData.Characters[i]);
+            allies[i].SetProfile(deckData.Characters[i]);
         }
     }
 
     private void SetEnemy()
     {
         enemyList.Clear();
-        EnemyOnScene [] eees = enemyContainer.GetComponentsInChildren<EnemyOnScene>();
+        EnemyUnit [] enemies = enemyContainer.GetComponentsInChildren<EnemyUnit>();
 
-        for(int i= 0; i<eees.Length; i++)
+        for(int i= 0; i<enemies.Length; i++)
         {
-            enemyList.Add(eees[i]);
+            enemyList.Add(enemies[i]);
+            enemies[i].SetProfile(tempEnemies[i]);        //레벨 데이터를 통한 에너미 데이터 전달 시 기능하도록 구현.
         }
     }
 
-    public void EnemyDead(EnemyOnScene dead)
+    public void EnemyDead(EnemyUnit dead)
     {
         int idx = enemyList.FindIndex(x => x.gameObject == dead.gameObject);
         enemyList.RemoveAt(idx);
@@ -115,10 +121,10 @@ public class BattleManager : MonoBehaviour
             yield return UIManager.Instance.StartCoroutine(UIManager.Instance.TurnStart(turn, "Enemy"));
 
             //적 패턴 플레이 페이즈
-            foreach (EnemyOnScene enemy in enemyList)
+            foreach (EnemyUnit enemy in enemyList)
             {
                 yield return new WaitForSeconds(0.5f);
-                yield return enemy.StartCoroutine(enemy.UsePatternRoutine());
+                yield return enemy.StartCoroutine(enemy.UsePatternRoutine());         //적 패턴 기능 EnemyUnit에 구현 후에 다시 주석 해제.
                 enemy.SetRandomPattern();
             }
             yield return new WaitForSeconds(0.7f);  //모든 패턴 사용 후 딜레이

@@ -10,35 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30b576987f6a9b34292963a88d6e3f13, type: 3}
-  m_Name: SkullKnight
+  m_Name: Test2
   m_EditorClassIdentifier: 
-  enemyName: skullKnight
+  enemyName: 
   enemyDescription: 
-  maxHealth: 35
-  baseSpeed: 1
-  enemySprite: {fileID: 21300000, guid: e121017a3d39f154baa32bae672a6413, type: 3}
-  animatorController: {fileID: 9100000, guid: 3d98b1882e4ee624ebd575e8cf8edcfc, type: 2}
+  maxHealth: 0
+  baseSpeed: 0
+  enemySprite: {fileID: 0}
+  animatorController: {fileID: 0}
   patternList:
   - patternName: "\uB3C4\uB07C \uB0B4\uB824\uCE58\uAE30"
     patternType: 0
     intentIcon: {fileID: 136862768, guid: ea7de6defccb7054e830650d2736518a, type: 3}
     patternActionList:
-    - rid: 283199232281411587
-  - patternName: "\uBC29\uC5B4\uB3C4 \uC5BB\uAE30"
+    - rid: 283199232281411586
+  - patternName: "\uBC29\uD328 \uB4E4\uAE30"
     patternType: 1
     intentIcon: {fileID: 485272125, guid: ea7de6defccb7054e830650d2736518a, type: 3}
-    patternActionList:
-    - rid: 3789920056042586112
+    patternActionList: []
   references:
     version: 2
     RefIds:
-    - rid: 283199232281411587
+    - rid: 283199232281411586
       type: {class: AttackPatternAction, ns: , asm: Assembly-CSharp}
       data:
         actionTarget: 2
         damage: 10
-    - rid: 3789920056042586112
-      type: {class: AddArmorPatternAction, ns: , asm: Assembly-CSharp}
-      data:
-        actionTarget: 6
-        armorAmount: 10

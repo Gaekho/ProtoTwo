@@ -10,27 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
-  m_Name: 0
+  m_Name: 22
   m_EditorClassIdentifier: 
   id: 0
-  cardName: "\uB0B4\uB824\uCE58\uAE30"
+  cardName: "\uC911\uB9BD \uD14C\uC2A4\uD2B8"
   type: 1
-  color: 1
-  cardText: "\uB300\uC0C1\uC5D0\uAC8C \uD53C\uD574\uB97C 8 \uC785\uD78C\uB2E4."
-  cardSprite: {fileID: 1366562873, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
+  color: 4
+  cardText: "\uD53C\uD574\uB97C 5 \uC785\uD78C\uB2E4."
+  cardSprite: {fileID: 1400635668, guid: c76d2f2c4f3b43b43a5626aba909657a, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
-  cardTarget: 0
+  cardAnimTrigger: 0
+  usableWithoutTarget: 0
+  cardTarget: 2
   activeConditionList:
   - condition: 0
-    value: 3
-  - condition: 2
     value: 2
-  usableWithoutTarget: 0
   banishAfterUsed: 0
   cardActionList:
-  - rid: -2
+  - rid: 3789920033102102528
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 3789920033102102528
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        damage: 5

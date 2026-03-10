@@ -1,3 +1,4 @@
+//v0.02 / 2026.03.07 / 21:07
 namespace Proto2.Enums
 {
     public enum UnitTeam
@@ -30,19 +31,38 @@ namespace Proto2.Enums
         Gray
     }
 
-    public enum CardActionType
+    public enum CardAnimTrigger
     {
         Attack,
-        Block,
-        Dodge,
-        Draw,
-        Search,
-        StatusChange,
-        Buff,
-        Debuff
+        AddArmor,
+        ApplyBuff,
+        ApplyDebuff,
+        //이 아래로는 카드 고유
+        Draw
+    }
+
+    public enum EnemyPatternAnimTrigger
+    {
+        Attack,
+        AddArmor,
+        ApplyBuff,
+        ApplyDebuff
     }
 
     public enum ActionTargetType
+    {
+        None = 0,
+        Owner,
+        SelectedTarget,
+        AllAllies,
+        AllEnemies,
+        AllUnits,
+        RandomEnemy,
+        RandomAlly
+        //Random two? 추가 할 수도 있음.
+    }
+
+    public enum CardTargetType
     {
         None = 0,
         Ally,
@@ -51,15 +71,6 @@ namespace Proto2.Enums
         AllEnemy,
         AllCharacter,
         RandomEnemy
-    }
-
-    public enum PatternTargetType
-    {
-        Self,
-        RandomMob,
-        TurnHero,
-        AllHero,
-        RandomTwoHero
     }
 
     public enum EnemyPatternType
@@ -78,4 +89,5 @@ namespace Proto2.Enums
         EnemyTurn,
         End
     }
+
 }

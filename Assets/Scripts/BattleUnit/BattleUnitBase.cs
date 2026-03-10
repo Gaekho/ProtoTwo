@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Proto2.Enums;
 
-//v0.01 / 2026.03.06 / 04:41
+//v0.01 / 2026.03.06 / 16:41
 public abstract class BattleUnitBase : MonoBehaviour
 {
+    #region Field
     [Header("Battle Unit")]
     [SerializeField] protected UnitTeam team;
     [SerializeField] protected float currentHealth;
@@ -15,6 +16,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     [Header("Visual Components")]
     [SerializeField] protected SpriteRenderer mySprite;
     [SerializeField] protected Animator myAnimator;
+    #endregion
 
     #region Cache
     public UnitTeam Team => team;
@@ -23,6 +25,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     public bool IsDead => isDead;
     #endregion
 
+    #region Virtual Methods
     public virtual void SetProfile(UnitTeam myTeam, float maxHealth)
     {
         team = myTeam;
@@ -37,6 +40,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     {
         if (value <= 0) return;
         currentArmor += value;
+        DoArmorAnim();
     }
 
     public virtual void ClearArmor()
@@ -46,6 +50,8 @@ public abstract class BattleUnitBase : MonoBehaviour
 
     public virtual void GetDamage(float value)
     {
+        float previousHealth = currentHealth;           //데미지 받기 전 체력 저장.
+
         if (value <= 0) return;
         float remainDamage = value;
 
@@ -67,7 +73,47 @@ public abstract class BattleUnitBase : MonoBehaviour
             isDead = true;
             StartCoroutine(Die());
         }
+
+        if (!isDead && previousHealth > currentHealth)       //함수 발동 전 체력과 발동 후 체력 비교를 통해 실제 체력 손실이 있을때만 피격 애니메이션 재생.
+        {
+            DoDamagedAnim();
+        }
+    }
+    #endregion
+
+    #region Abstract Methods
+    protected abstract IEnumerator Die();
+    #endregion
+
+    #region Animation Trigger
+    public virtual void DoAttackAnim()
+    {
+        myAnimator.SetTrigger("Attack");
+    }
+ 
+    public virtual void DoArmorAnim()
+    {
+        myAnimator.SetTrigger("AddArmor");
     }
 
-    protected abstract IEnumerator Die();
+    public virtual void DoBuffAnim()
+    {
+        myAnimator.SetTrigger("ApplyBuff");
+    }
+
+    public virtual void DoDebuffAnim()
+    {
+        myAnimator.SetTrigger("ApplyDebuff");
+    }
+ 
+    public virtual void DoDamagedAnim()
+    {
+        myAnimator.SetTrigger("Damaged");
+    }
+
+    protected virtual void DoDieAnim()
+    {
+        myAnimator.SetTrigger("Die");
+    }
+    #endregion
 }

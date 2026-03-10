@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Deletable
 public class EnemyActionParameters
 {
     public readonly float value;
