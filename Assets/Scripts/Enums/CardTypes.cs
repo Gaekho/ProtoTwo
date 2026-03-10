@@ -31,18 +31,6 @@ namespace Proto2.Enums
         Gray
     }
 
-    public enum CardActionType
-    {
-        Attack,
-        Block,
-        Dodge,
-        Draw,
-        Search,
-        StatusChange,
-        Buff,
-        Debuff
-    }
-
     public enum CardAnimTrigger
     {
         Attack,

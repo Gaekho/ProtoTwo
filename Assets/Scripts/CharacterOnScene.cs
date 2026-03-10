@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using UnityEngine;
 
+//Deletable
 public class CharacterOnScene : MonoBehaviour
 {
     [Header("Field")]

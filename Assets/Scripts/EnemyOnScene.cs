@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.UIElements.Experimental;
 using Proto2.Enums;
 
+//Deletable
 public class EnemyOnScene : MonoBehaviour
 {
     [SerializeField] private EnemyData enemyData;

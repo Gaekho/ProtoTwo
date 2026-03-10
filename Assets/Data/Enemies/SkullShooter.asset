@@ -36,9 +36,9 @@ MonoBehaviour:
       type: {class: AttackPatternAction, ns: , asm: Assembly-CSharp}
       data:
         actionTarget: 7
-        damage: 5
+        damage: 12
     - rid: 283199232281411589
       type: {class: AttackPatternAction, ns: , asm: Assembly-CSharp}
       data:
-        actionTarget: 4
-        damage: 1
+        actionTarget: 3
+        damage: 5
