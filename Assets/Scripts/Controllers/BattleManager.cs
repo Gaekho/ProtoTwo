@@ -124,8 +124,8 @@ public class BattleManager : MonoBehaviour
             foreach (EnemyUnit enemy in enemyList)
             {
                 yield return new WaitForSeconds(0.5f);
-                //yield return enemy.StartCoroutine(enemy.UsePatternRoutine());         //적 패턴 기능 EnemyUnit에 구현 후에 다시 주석 해제.
-                //enemy.SetRandomPattern();
+                yield return enemy.StartCoroutine(enemy.UsePatternRoutine());         //적 패턴 기능 EnemyUnit에 구현 후에 다시 주석 해제.
+                enemy.SetRandomPattern();
             }
             yield return new WaitForSeconds(0.7f);  //모든 패턴 사용 후 딜레이
             

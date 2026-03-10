@@ -12,6 +12,8 @@ public class EnemyUnit : BattleUnitBase
     [SerializeField] private EnemyData enemyData;
     [SerializeField] private Canvas myCanvas;
     [SerializeField] private Slider healthSlider;
+    [SerializeField] private Image intentIcon;
+    [SerializeField] private EnemyPatternData currentPattern;
     #endregion
 
     public void SetProfile(EnemyData enemyData)
@@ -24,8 +26,10 @@ public class EnemyUnit : BattleUnitBase
         myCanvas = transform.parent.GetComponentInChildren<Canvas>();
         healthSlider = myCanvas.GetComponentInChildren<Slider>();
         healthSlider.value = 1f;
+        intentIcon = myCanvas.GetComponentInChildren<Image>();
 
         //패턴 세팅
+        SetRandomPattern();
     }
 
     #region Overrides
@@ -67,5 +71,40 @@ public class EnemyUnit : BattleUnitBase
     #endregion
 
     #region Methods
+    public void SetRandomPattern()
+    {
+        int index = Random.Range(0, enemyData.PatternList.Count);
+        currentPattern = enemyData.PatternList[index];
+        intentIcon.sprite = currentPattern.IntentIcon;
+    }
+
+    public void UsePattern()
+    {
+        switch (currentPattern.PatternType)
+        {
+            case EnemyPatternAnimTrigger.Attack:
+                DoAttackAnim(); break;
+
+            case EnemyPatternAnimTrigger.AddArmor:
+                DoArmorAnim(); break;
+
+            case EnemyPatternAnimTrigger.ApplyBuff:
+                DoBuffAnim(); break;
+
+            case EnemyPatternAnimTrigger.ApplyDebuff:
+                DoDebuffAnim(); break;
+        }
+
+        foreach(PatternActionBase patternAction in currentPattern.PatternActionList)
+        {
+            patternAction.DoAction(new PatternActionParameters(this, BattleManager.Instance.TurnCharacter, currentPattern));
+        }
+    }
+
+    public IEnumerator UsePatternRoutine()
+    {
+        UsePattern();
+        yield return new WaitForSeconds(0.7f);
+    }
     #endregion
 }

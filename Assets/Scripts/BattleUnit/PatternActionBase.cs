@@ -44,6 +44,7 @@ public abstract class PatternActionBase
                 else
                 {
                     result.Add(BattleManager.Instance.TurnCharacter);
+                    //ResolvedSelectedTarget() 을 추가할 수 있다. 경우에 따라 도발 등이 필요하다면 함수를 추가로 생성할 것.
                 }
                 break;
 

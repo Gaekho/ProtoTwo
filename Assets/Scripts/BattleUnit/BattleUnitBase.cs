@@ -40,6 +40,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     {
         if (value <= 0) return;
         currentArmor += value;
+        DoArmorAnim();
     }
 
     public virtual void ClearArmor()
