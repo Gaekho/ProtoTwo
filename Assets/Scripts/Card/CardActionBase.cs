@@ -96,3 +96,17 @@ public class AddArmorAction : CardActionBase
         }
     }
 }
+
+[Serializable]
+public class ApplyBuffAction : CardActionBase
+{
+    [SerializeReference] private BuffBase buff;
+
+    public override void DoAction(CardActionParameters actionParameters)
+    {
+        foreach(BattleUnitBase target in ActionTargets(actionParameters))
+        {
+            target.ReceiveBuff(buff, actionParameters.owner);
+        }
+    }
+}

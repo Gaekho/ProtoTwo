@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Proto2.Enums;
 
-//v0.01 / 2026.03.06 / 16:41
+//v0.02 / 2026.03.11 / 17:18
+// 변경 요약 : 버프 리스트 및 ReceiveBuff 추가
 public abstract class BattleUnitBase : MonoBehaviour
 {
     #region Field
@@ -12,6 +13,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField] protected float currentHealth;
     [SerializeField] protected float currentArmor;
     [SerializeField] protected bool isDead;
+    [SerializeReference] protected List<BuffInstance> buffList = new();
 
     [Header("Visual Components")]
     [SerializeField] protected SpriteRenderer mySprite;
@@ -79,6 +81,41 @@ public abstract class BattleUnitBase : MonoBehaviour
             DoDamagedAnim();
         }
     }
+
+    public virtual void ReceiveBuff( BuffBase buff, BattleUnitBase applier)
+    {
+        /*
+         * 1. 버프 리스트에 인스턴스 추가
+         *      중복된 버프가 있는지 검사
+                    없을 경우 : 그냥 추가하면 된다 아님? => BuffList.Add로 그냥 추가
+                    있을 경우 : 추가가 아니라 지속 시간 & 부여자 갱신 => buffInstance.MergeToSame(x)
+         
+         * 2. 애니메이션 재생
+         *      부여자랑 수여자가 같은 경우 : 애니메이션 재생 스킵
+         *      다를경우 : 지금 여기서 받는 모션 재생
+         */
+
+        //버프 리스트에 인스턴스 추가
+        BuffInstance alreadyExist = buffList.Find(x => x.SourceBuff.BuffType == buff.BuffType);
+
+        if(alreadyExist == null)
+        {
+            buffList.Add(new BuffInstance(buff, this, applier));
+            //buffInstance.SourceBuff.OnApply(buffInstance);
+        }
+        else
+        {
+            buff.MergeToSameBuff(alreadyExist, applier);
+        }
+
+        //애니메이션 재생
+        if(applier != this)
+        {
+            if (buff.IsDebuff) DoReceiveDebuffAnim();
+            else DoReceiveBuffAnim();
+        }
+    }
+
     #endregion
 
     #region Abstract Methods
@@ -96,14 +133,23 @@ public abstract class BattleUnitBase : MonoBehaviour
         myAnimator.SetTrigger("AddArmor");
     }
 
-    public virtual void DoBuffAnim()
+    public virtual void DoApplyBuffAnim()
     {
         myAnimator.SetTrigger("ApplyBuff");
     }
+    public virtual void DoReceiveBuffAnim()
+    {
+        myAnimator.SetTrigger("ReceiveBuff");
+    }
 
-    public virtual void DoDebuffAnim()
+    public virtual void DoApplyDebuffAnim()
     {
         myAnimator.SetTrigger("ApplyDebuff");
+    }
+
+    public virtual void DoReceiveDebuffAnim()
+    {
+        myAnimator.SetTrigger("ReceiveDebuff");
     }
  
     public virtual void DoDamagedAnim()

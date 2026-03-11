@@ -89,10 +89,10 @@ public class EnemyUnit : BattleUnitBase
                 DoArmorAnim(); break;
 
             case EnemyPatternAnimTrigger.ApplyBuff:
-                DoBuffAnim(); break;
+                DoApplyBuffAnim(); break;
 
             case EnemyPatternAnimTrigger.ApplyDebuff:
-                DoDebuffAnim(); break;
+                DoApplyDebuffAnim(); break;
         }
 
         foreach(PatternActionBase patternAction in currentPattern.PatternActionList)

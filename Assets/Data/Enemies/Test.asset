@@ -18,7 +18,20 @@ MonoBehaviour:
   baseSpeed: 0
   enemySprite: {fileID: 0}
   animatorController: {fileID: 0}
-  patternList: []
+  patternList:
+  - patternName: New Pattern 0
+    patternType: 2
+    intentIcon: {fileID: 0}
+    patternActionList:
+    - rid: 3789920081040375808
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3789920081040375808
+      type: {class: ApplyBuffPatternAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 1
+        buff:
+          rid: -2

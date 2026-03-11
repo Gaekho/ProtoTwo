@@ -104,3 +104,17 @@ public class AddArmorPatternAction : PatternActionBase
         }
     }
 }
+
+[Serializable]
+public class ApplyBuffPatternAction : PatternActionBase
+{
+    [SerializeReference] private BuffBase buff;
+
+    public override void DoAction(PatternActionParameters actionParameters)
+    {
+        foreach(BattleUnitBase target in ActionTargets(actionParameters))
+        {
+            target.ReceiveBuff(buff, actionParameters.owner);
+        }
+    }
+}
