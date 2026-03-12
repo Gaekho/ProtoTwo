@@ -13,26 +13,37 @@ MonoBehaviour:
   m_Name: 22
   m_EditorClassIdentifier: 
   id: 0
-  cardName: "\uC911\uB9BD \uD14C\uC2A4\uD2B8"
+  cardName: "\uBC84\uD504 \uD14C\uC2A4\uD2B8"
   type: 1
-  color: 4
-  cardText: "\uD53C\uD574\uB97C 5 \uC785\uD78C\uB2E4."
-  cardSprite: {fileID: 1400635668, guid: c76d2f2c4f3b43b43a5626aba909657a, type: 3}
+  color: 1
+  cardText: "\uB3C4\uBC1C \uBC84\uD504\uB97C 3 \uC5BB\uB294\uB2E4."
+  cardSprite: {fileID: 180651318, guid: 682fa2156d2416b49bce7ae4d58b61c0, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
-  cardAnimTrigger: 0
-  usableWithoutTarget: 0
-  cardTarget: 2
+  cardAnimTrigger: 2
+  usableWithoutTarget: 1
+  cardTarget: 0
   activeConditionList:
   - condition: 0
     value: 2
   banishAfterUsed: 0
   cardActionList:
-  - rid: 3789920033102102528
+  - rid: 283199280134488068
   references:
     version: 2
     RefIds:
-    - rid: 3789920033102102528
-      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+    - rid: 283199280134488068
+      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
       data:
-        actionTarget: 2
-        damage: 5
+        actionTarget: 1
+        buff:
+          rid: 283199280134488069
+    - rid: 283199280134488069
+      type: {class: TauntBuff, ns: , asm: Assembly-CSharp}
+      data:
+        buffType: 1
+        isDebuff: 0
+        buffName: Taunt
+        description: Get Enemies Attack or Apply to this Unit
+        triggerTiming: 0
+        duration: 3
+        reduceTiming: 2

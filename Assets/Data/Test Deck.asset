@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8adcfbef85162a48a9a5ef9fb4ef721, type: 3}
-  m_Name: DeckData
+  m_Name: Test Deck
   m_EditorClassIdentifier: 
   deckName: "\uB098\uB9CC\uC758 XX \uB371"
   characters:
@@ -28,6 +28,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1719012376e97334eb2c324220f2d868, type: 2}
   - {fileID: 11400000, guid: 1719012376e97334eb2c324220f2d868, type: 2}
   - {fileID: 11400000, guid: 1719012376e97334eb2c324220f2d868, type: 2}
-  - {fileID: 11400000, guid: 1719012376e97334eb2c324220f2d868, type: 2}
+  - {fileID: 11400000, guid: e50c1a5314a3e7a4ba9c80fd7775e41e, type: 2}
   - {fileID: 11400000, guid: e50c1a5314a3e7a4ba9c80fd7775e41e, type: 2}
   - {fileID: 11400000, guid: e50c1a5314a3e7a4ba9c80fd7775e41e, type: 2}
