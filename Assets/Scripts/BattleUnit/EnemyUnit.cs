@@ -42,7 +42,7 @@ public class EnemyUnit : BattleUnitBase
     {
         BattleManager.Instance.EnemyDead(this);       //에러 발생으로 잠시 주석처리. EnemyDead 수정 후 다시 사용.
         DoDieAnim();
-        yield return new WaitForSeconds(2f);
+        yield return WaitForAnimationStateEnd("Die");
         Destroy(transform.parent.gameObject);
     }
 
@@ -103,8 +103,35 @@ public class EnemyUnit : BattleUnitBase
 
     public IEnumerator UsePatternRoutine()
     {
-        UsePattern();
-        yield return new WaitForSeconds(0.7f);
+        switch (currentPattern.PatternType)
+        {
+            case EnemyPatternAnimTrigger.Attack:
+                DoAttackAnim();
+                //yield return WaitForAnimationStateEnd("Attack");
+                break;
+
+            case EnemyPatternAnimTrigger.AddArmor:
+                DoArmorAnim();
+                //yield return WaitForAnimationStateEnd("AddArmor");
+                break;
+
+            case EnemyPatternAnimTrigger.ApplyBuff:
+                DoApplyBuffAnim();
+                //yield return WaitForAnimationStateEnd("ApplyBuff");
+                break;
+
+            case EnemyPatternAnimTrigger.ApplyDebuff:
+                DoApplyDebuffAnim();
+                //yield return WaitForAnimationStateEnd("ApplyDebuff");
+                break;
+        }
+
+        foreach (PatternActionBase patternAction in currentPattern.PatternActionList)
+        {
+            patternAction.DoAction(new PatternActionParameters(this, BattleManager.Instance.TurnCharacter, currentPattern));
+        }
+
+        yield return new WaitForSeconds(0.1f);
     }
     #endregion
 }

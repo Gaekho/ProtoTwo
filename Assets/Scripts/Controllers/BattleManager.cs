@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-//v0.02 / 2026.03.07 / 09:58
-//변경 요약 : CharacterOnScene, EnemyOnScene을 AllyUnit, EnemyUnit으로 변경하는 작업 진행.
+//v0.02 / 2026.03.12 / 02:58
+//변경 요약 : BuffHook 추가, 라운드 루틴에 버프 추가.
 public class BattleManager : MonoBehaviour
 {
     #region Singleton
@@ -40,11 +40,11 @@ public class BattleManager : MonoBehaviour
     public IReadOnlyList<AllyUnit> PlayerParty => playerParty;
     public IReadOnlyList<EnemyUnit > EnemyList => enemyList;
     public UnityEvent onTurnStart;
+    public bool IsResolving {  get;  private set; }
     
     private void Awake()
     {
         Instance = this;
-        //EnemyPatternProcessor.Initialize();
         SetAlly();
         Debug.Log(playerParty[0].CharacterData.name);
         TurnCharacter = playerParty[0];
@@ -53,10 +53,7 @@ public class BattleManager : MonoBehaviour
         HandController.Instance.SetUp(deckData);
         turn = 0;
     }
-    private void Start()
-    {
-        StartCoroutine(BattleRoutine());
-    }
+
 
     private void SetAlly()
     {
@@ -82,9 +79,56 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    private IEnumerator BuffHookRoutine(BuffTriggerTiming timing, UnitTeam team)
+    {
+        switch (team)
+        {
+            case UnitTeam.Ally:
+                List<AllyUnit> snapshotA = new(playerParty);
+                foreach(AllyUnit unit in snapshotA)
+                {
+                    if(unit == null || unit.IsDead) continue;
+                    unit.TriggerBuff(timing);
+                    yield return null;
+                }
+                break;
+
+            case UnitTeam.Enemy:
+                List<EnemyUnit> snapshotE = new(enemyList);
+                foreach (EnemyUnit unit in snapshotE)
+                {
+                    if (unit == null || unit.IsDead) continue;
+                    unit.TriggerBuff(timing);
+                    yield return null;
+                }
+                break;
+        }
+        yield return new WaitForSeconds(0.05f);
+    }
+    private void BuffHook(BuffTriggerTiming timing, UnitTeam team)
+    {
+        switch (team)
+        {
+            case UnitTeam.Ally:
+                foreach(AllyUnit unit in playerParty)
+                {
+                    unit.TriggerBuff(timing);
+                }
+                break;
+            
+            case UnitTeam.Enemy:
+                foreach(EnemyUnit unit in enemyList)
+                {
+                    unit.TriggerBuff(timing);
+                }
+                break;
+        }
+    }
+
     public void EnemyDead(EnemyUnit dead)
     {
         int idx = enemyList.FindIndex(x => x.gameObject == dead.gameObject);
+        if (idx < 0) return;
         enemyList.RemoveAt(idx);
 
         if(enemyList.Count == 0)
@@ -93,6 +137,15 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public IEnumerator ResolveRoutine(IEnumerator routine)
+    {
+        IsResolving = true;
+        yield return routine;
+        IsResolving = false;
+        Debug.Log(IsResolving);
+    }
+
+    #region Main Routine
     private IEnumerator BattleRoutine()
     {
         //메인 전투 반복문 시작
@@ -101,38 +154,45 @@ public class BattleManager : MonoBehaviour
             //아군 턴 시작 페이즈
             turn++;
             CurrentState = TurnState.AllyTurn;
-            yield return UIManager.Instance.StartCoroutine(UIManager.Instance.TurnStart(turn, "Ally"));
+            //yield return UIManager.Instance.StartCoroutine(UIManager.Instance.TurnStart(turn, "Ally"));
+            yield return StartCoroutine(ResolveRoutine(UIManager.Instance.TurnStart(turn, "Ally")));
             HandController.Instance.DrawCard(3);
+            yield return StartCoroutine(ResolveRoutine(BuffHookRoutine(BuffTriggerTiming.OnTurnStart, UnitTeam.Ally)));
 
             //플레이어 카드 사용 페이즈
             while (CurrentState == TurnState.AllyTurn)
             {
-
                 yield return null;
             }
 
             //아군 턴 엔드 페이즈
-            yield return UIManager.Instance.StartCoroutine(UIManager.Instance.TurnEnd());
+            yield return StartCoroutine(ResolveRoutine(BuffHookRoutine(BuffTriggerTiming.OnTurnEnd, UnitTeam.Ally)));
+            yield return StartCoroutine(ResolveRoutine(UIManager.Instance.TurnEnd()));
             yield return new WaitForSeconds(0.5f);  //캐릭터 교체 후 딜레이
 
             
             //적 턴 시작 페이즈
             turn++;
-            yield return UIManager.Instance.StartCoroutine(UIManager.Instance.TurnStart(turn, "Enemy"));
+            yield return StartCoroutine(ResolveRoutine(UIManager.Instance.TurnStart(turn, "Enemy")));
+            yield return StartCoroutine(ResolveRoutine(BuffHookRoutine(BuffTriggerTiming.OnTurnStart, UnitTeam.Enemy)));
 
             //적 패턴 플레이 페이즈
-            foreach (EnemyUnit enemy in enemyList)
+            List<EnemyUnit> enemySnapshot = new(enemyList);
+            foreach (EnemyUnit enemy in enemySnapshot)
             {
                 yield return new WaitForSeconds(0.5f);
-                yield return enemy.StartCoroutine(enemy.UsePatternRoutine());         //적 패턴 기능 EnemyUnit에 구현 후에 다시 주석 해제.
+                yield return StartCoroutine(ResolveRoutine(enemy.UsePatternRoutine()));         //적 패턴 기능 EnemyUnit에 구현 후에 다시 주석 해제.
                 enemy.SetRandomPattern();
             }
             yield return new WaitForSeconds(0.7f);  //모든 패턴 사용 후 딜레이
-            
-            //적 턴 종료 (이후 작업 x)
+
+            //적 턴 종료
+            yield return StartCoroutine(ResolveRoutine(BuffHookRoutine(BuffTriggerTiming.OnTurnEnd, UnitTeam.Enemy)));
         }
     }
+    #endregion
 
+    #region Buttons
     //Button OnClick 함수들. ScreenCanvas의 버튼에서 참조.
     public void ChangeState(int state)
     {
@@ -145,9 +205,14 @@ public class BattleManager : MonoBehaviour
         TurnCharacter = playerParty[i];
         TurnCharacter.EnterTurn();
     }
+    #endregion
 
 
-    // Update is called once per frame
+    private void Start()
+    {
+        StartCoroutine(BattleRoutine());
+    }
+
     void Update()
     {
         

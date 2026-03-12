@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Proto2.Enums;
 
-//v0.02 / 2026.03.11 / 17:18
-// 변경 요약 : 버프 리스트 및 ReceiveBuff 추가
+//v0.03 / 2026.03.12 / 00:37
+// 변경 요약 : ReceiveBuff 수정, TriggerBuff 추가
 public abstract class BattleUnitBase : MonoBehaviour
 {
     #region Field
@@ -84,37 +84,98 @@ public abstract class BattleUnitBase : MonoBehaviour
 
     public virtual void ReceiveBuff( BuffBase buff, BattleUnitBase applier)
     {
-        /*
-         * 1. 버프 리스트에 인스턴스 추가
-         *      중복된 버프가 있는지 검사
-                    없을 경우 : 그냥 추가하면 된다 아님? => BuffList.Add로 그냥 추가
-                    있을 경우 : 추가가 아니라 지속 시간 & 부여자 갱신 => buffInstance.MergeToSame(x)
+        // <Summary>
+        // 1. 버프 리스트에 인스턴스 추가
+        //      중복된 버프가 있는지 검사
+        //            없을 경우 : 그냥 추가하면 된다 아님? => BuffList.Add로 그냥 추가
+        //            있을 경우 : 추가가 아니라 지속 시간 & 부여자 갱신 => buffInstance.MergeToSame(x)
          
-         * 2. 애니메이션 재생
-         *      부여자랑 수여자가 같은 경우 : 애니메이션 재생 스킵
-         *      다를경우 : 지금 여기서 받는 모션 재생
-         */
+        // 2. 애니메이션 재생
+        //      부여자랑 수여자가 같은 경우 : 애니메이션 재생 스킵
+        //      다를경우 : 지금 여기서 받는 모션 재생
+        //
 
-        //버프 리스트에 인스턴스 추가
+        // 1. 버프 리스트에 인스턴스 추가
         BuffInstance alreadyExist = buffList.Find(x => x.SourceBuff.BuffType == buff.BuffType);
 
         if(alreadyExist == null)
         {
-            buffList.Add(new BuffInstance(buff, this, applier));
-            //buffInstance.SourceBuff.OnApply(buffInstance);
+            BuffInstance newInstance = buff.CreateInstance(this, applier);
+            buffList.Add(newInstance);
+            buff.OnApply(newInstance);
         }
         else
         {
             buff.MergeToSameBuff(alreadyExist, applier);
+            buff.OnApply(alreadyExist);
         }
 
-        //애니메이션 재생
+        // 2. 애니메이션 재생
         if(applier != this)
         {
             if (buff.IsDebuff) DoReceiveDebuffAnim();
             else DoReceiveBuffAnim();
         }
     }
+
+    public void TriggerBuff(BuffTriggerTiming timing)
+    {
+        List<BuffInstance> snapshot = new(buffList);
+
+        foreach (BuffInstance buff in snapshot)
+        {
+            if(buff == null || buff.SourceBuff == null) continue;
+            if (!buffList.Contains(buff)) continue;
+
+            // 1.효과 발동
+            if(timing == BuffTriggerTiming.OnTurnStart && buff.SourceBuff.TriggerTiming == BuffTriggerTiming.OnTurnStart)
+            {
+                buff.SourceBuff.OnTurnStart(buff);
+            }
+            if(timing == BuffTriggerTiming.OnTurnEnd && buff.SourceBuff.TriggerTiming == BuffTriggerTiming.OnTurnEnd)
+            {
+                buff.SourceBuff.OnTurnEnd(buff);
+            }
+
+            // 2. 지속시간 감소
+            if (timing == BuffTriggerTiming.OnTurnStart && buff.SourceBuff.ReduceTiming == ReduceTiming.StartOfOwnerTurn)
+            {
+                buff.ReduceBuffDuration();
+            }
+
+            if (timing == BuffTriggerTiming.OnTurnEnd && buff.SourceBuff.ReduceTiming == ReduceTiming.EndOfOwnerTurn)
+            {
+                buff.ReduceBuffDuration();
+            }
+        }
+    }
+    public void RemoveBuff(BuffInstance buff)
+    {
+        int idx = buffList.IndexOf(buff);
+        if(idx < 0) return;
+
+        buffList.RemoveAt(idx);
+    }
+
+    #region Animation Wait
+    public IEnumerator WaitForAnimationStateEnd(string stateName, int layer = 0)
+    {
+        if (myAnimator == null) yield break;
+
+        yield return null;
+
+        // 1. 해당 상태에 실제로 들어갈 때까지 대기
+        yield return new WaitUntil(() =>
+            myAnimator.GetCurrentAnimatorStateInfo(layer).IsName(stateName));
+
+        // 2. 상태가 시작된 뒤 한 프레임 더 보장
+        yield return null;
+
+        // 3. 그 상태가 끝나서 다른 상태로 넘어갈 때까지 대기
+        yield return new WaitUntil(() =>
+            !myAnimator.GetCurrentAnimatorStateInfo(layer).IsName(stateName));
+    }
+    #endregion
 
     #endregion
 

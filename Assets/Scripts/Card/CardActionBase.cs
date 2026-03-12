@@ -4,8 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//v0.03 / 2026.03.07 / 21:39
-//변경 요약 : CardActionParameters의 필드를 readonly 형태로 변경, Serializable 추가.
+//v0.04 / 2026.03.12 / 01:02
+//변경 요약 : Enum 스위치문 완성.
 public class CardActionParameters
 {
     public readonly BattleUnitBase owner;
@@ -44,7 +44,24 @@ public abstract class CardActionBase
             case ActionTargetType.SelectedTarget:
                 result.Add(actionParameters.target);
                 break;
-            //BattleManager 수정 후에 나머지 만들기(PlayerParty, EnemyList 등의 수정 이후
+
+            case ActionTargetType.AllAllies:
+                result.AddRange(BattleManager.Instance.PlayerParty);
+                break;
+
+            case ActionTargetType.AllEnemies:
+                result.AddRange(BattleManager.Instance.EnemyList);
+                break;
+
+            case ActionTargetType.RandomAlly:
+                int i = UnityEngine.Random.Range(0, BattleManager.Instance.PlayerParty.Count);
+                result.Add(BattleManager.Instance.PlayerParty[i]);        //한줄로 쓰면 가독성 개떨어질까봐 두줄로 씀.
+                break;
+
+            case ActionTargetType.RandomEnemy:
+                int j = UnityEngine.Random.Range(0, BattleManager.Instance.EnemyList.Count);
+                result.Add(BattleManager.Instance.EnemyList[j]);
+                break;
         }
         return result;
     }

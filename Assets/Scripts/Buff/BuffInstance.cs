@@ -4,8 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//v0.01 / 2026.03.11 / 17:18
-// 최초 생성
+//v0.02 / 2026.03.12 / 01:03
+// ReduceBuffDuration 추가
 [Serializable]
 public class BuffInstance 
 {
@@ -41,8 +41,16 @@ public class BuffInstance
         remainTurn += amount;
     }
 
-    public void ReduceBuffDuration(BuffDurationTypes durationTypes)
+    public void ReduceBuffDuration()
     {
-        if (sourceBuff.DurationType == durationTypes) remainTurn--;
+        if(sourceBuff.ReduceTiming != ReduceTiming.Permanent)
+        {
+            remainTurn--;
+        }
+        
+        if(remainTurn <= 0)
+        {
+            owner.RemoveBuff(this);
+        }
     }
 }

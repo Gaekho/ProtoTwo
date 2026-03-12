@@ -4,30 +4,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//v0.01 / 2026.03.11 / 17:18
-// 최초 생성
+//v0.02 / 2026.03.12 / 01:32
+// BuffInstance 생성기 추가.
 [Serializable]
 public abstract class BuffBase 
 {
     [Header("Identity")]
-    [SerializeField] private BuffTypes buffType = 0;
-    [SerializeField] private bool isDebuff = false;
-    [SerializeField] private string buffName;
-    [SerializeField] private string description;
+    [SerializeField] protected BuffTypes buffType = 0;
+    [SerializeField] protected bool isDebuff = false;
+    [SerializeField] protected string buffName;
+    [SerializeField] protected string description;
+    [SerializeField] protected BuffTriggerTiming triggerTiming = 0;
 
     [Header("Duration")]
-    [SerializeField] private int duration = 1;
-    [SerializeField] private BuffDurationTypes durationType = 0;
+    [SerializeField] protected int duration = 1;
+    [SerializeField] protected ReduceTiming reduceTiming = 0;
 
     #region Cache
     public BuffTypes BuffType => buffType;
     public bool IsDebuff => isDebuff;
     public string BuffName => buffName;
     public string Description => description;
+    public BuffTriggerTiming TriggerTiming => triggerTiming;
     public int Duration => duration;
-    public BuffDurationTypes DurationType => durationType;
+    public ReduceTiming ReduceTiming => reduceTiming;
     #endregion
 
+    //BuffInstance 생성기. 추가 필드를 가지는 Buff의 Instance들은 해당 필드를 가지는 전용 인스턴스를 제작한 뒤, override 해야 한다.
+    public virtual BuffInstance CreateInstance(BattleUnitBase owner, BattleUnitBase applier)
+    {
+        return new BuffInstance(this, owner, applier);
+    }  
+    
     //중복 버프 부여 시도 시 작동.
     //기본적으로 지속시간만큼 연장.
     //스택이 필요한 경우 혹은 다른 로직이 필요한 경우 하위 클래스에서 override 해서 사용.

@@ -108,6 +108,47 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         transform.localScale = new Vector3(0.2f, 0.2f, 1f);
     }
+
+    public IEnumerator CardUseRoutine()
+    {
+
+        switch (data.CardAnimTrigger)
+        {
+            case CardAnimTrigger.Attack:
+                owner.DoAttackAnim();
+                //yield return owner.WaitForAnimationStateEnd("Attack");
+                break;
+
+            case CardAnimTrigger.AddArmor:
+                owner.DoArmorAnim();
+                //yield return owner.WaitForAnimationStateEnd("AddArmor");
+                break;
+
+            case CardAnimTrigger.ApplyBuff:
+                owner.DoApplyBuffAnim();
+                //yield return owner.WaitForAnimationStateEnd("ApplyBuff");
+                break;
+
+            case CardAnimTrigger.ApplyDebuff:
+                owner.DoApplyDebuffAnim();
+                //yield return owner.WaitForAnimationStateEnd("ApplyDebuff");
+                break;
+
+            case CardAnimTrigger.Draw:
+                owner.DoDrawAnim();
+                //yield return owner.WaitForAnimationStateEnd("Draw");
+                break;
+        }
+        foreach (var actionData in data.CarActionList)
+        {
+            actionData.DoAction(new CardActionParameters(owner, target, data, cardInstance, this));
+        }
+
+        yield return new WaitForSeconds(0.1f);
+        //AfterUsed();
+        HandController.Instance.AfterCardUse(this);
+
+    }
     public void Use()
     {
         switch (data.CardAnimTrigger)
@@ -282,6 +323,13 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnEndDrag(PointerEventData eventdata)
     {
+        if (BattleManager.Instance.IsResolving)
+        {
+            BackToHand();
+            Debug.Log("Can't Use Card Now!");
+            return;
+        }
+
         if(transform.position.y >= -0.8f)
         {
             //Debug.Log("used");
@@ -291,7 +339,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 {
                     //Use();
                     Debug.Log("Card Used Successfull");
-                    Use();
+                    StartCoroutine(BattleManager.Instance.ResolveRoutine(CardUseRoutine()));
                     //BackToHand();
                 }
                 else BackToHand();
