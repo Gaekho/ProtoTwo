@@ -21,6 +21,10 @@ public class CharacterData : ScriptableObject
     [SerializeField] private Sprite characterSprite;
     [SerializeField] private AnimatorController animatorController;
 
+    [Header("UI Setting")]
+    [SerializeField] private Sprite thumbNail;
+    [SerializeField] private Color uiColor;
+
     #region cache
     public string CharacterName => characterName;
     public string CharacterDescription => characterDescription;
@@ -31,5 +35,7 @@ public class CharacterData : ScriptableObject
     public float BaseSpeed => baseSpeed;
     public Sprite CharacterSprite => characterSprite;
     public AnimatorController AnimatorController => animatorController;
+    public Sprite ThumbNail => thumbNail;
+    public Color UIColor => uiColor;
     #endregion
 }

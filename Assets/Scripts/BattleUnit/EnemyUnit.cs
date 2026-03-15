@@ -42,7 +42,9 @@ public class EnemyUnit : BattleUnitBase
     {
         BattleManager.Instance.EnemyDead(this);       //에러 발생으로 잠시 주석처리. EnemyDead 수정 후 다시 사용.
         DoDieAnim();
-        yield return WaitForAnimationStateEnd("Die");
+        yield return null;                             //사망 애니메이션 발동 후 한 프레임 보장을 통해 버그 가능성 낮추기.
+        yield return new WaitForSeconds(myAnimator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(0.2f);
         Destroy(transform.parent.gameObject);
     }
 

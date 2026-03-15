@@ -136,4 +136,9 @@ public class HandController : MonoBehaviour
             card.localPosition = targetPosition;
         }
     }
+
+    public void TurnOffHand()
+    {
+        spawnParent.gameObject.SetActive(false);
+    }
 }

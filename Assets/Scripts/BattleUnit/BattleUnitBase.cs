@@ -158,23 +158,23 @@ public abstract class BattleUnitBase : MonoBehaviour
     }
 
     #region Animation Wait
-    public IEnumerator WaitForAnimationStateEnd(string stateName, int layer = 0)
-    {
-        if (myAnimator == null) yield break;
+    //public IEnumerator WaitForAnimationStateEnd(string stateName, int layer = 0)
+    //{
+    //    if (myAnimator == null) yield break;
 
-        yield return null;
+    //    yield return null;
 
-        // 1. 해당 상태에 실제로 들어갈 때까지 대기
-        yield return new WaitUntil(() =>
-            myAnimator.GetCurrentAnimatorStateInfo(layer).IsName(stateName));
+    //    // 1. 해당 상태에 실제로 들어갈 때까지 대기
+    //    yield return new WaitUntil(() =>
+    //        myAnimator.GetCurrentAnimatorStateInfo(layer).IsName(stateName));
 
-        // 2. 상태가 시작된 뒤 한 프레임 더 보장
-        yield return null;
+    //    // 2. 상태가 시작된 뒤 한 프레임 더 보장
+    //    yield return null;
 
-        // 3. 그 상태가 끝나서 다른 상태로 넘어갈 때까지 대기
-        yield return new WaitUntil(() =>
-            !myAnimator.GetCurrentAnimatorStateInfo(layer).IsName(stateName));
-    }
+    //    // 3. 그 상태가 끝나서 다른 상태로 넘어갈 때까지 대기
+    //    yield return new WaitUntil(() =>
+    //        !myAnimator.GetCurrentAnimatorStateInfo(layer).IsName(stateName));
+    //}
     #endregion
 
     #endregion

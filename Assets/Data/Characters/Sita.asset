@@ -21,3 +21,5 @@ MonoBehaviour:
   baseSpeed: 2
   characterSprite: {fileID: -1600454761, guid: 1bf60d3ab3a9e324bba57ea68d7a21f1, type: 3}
   animatorController: {fileID: 9100000, guid: 136b6274822449440bf85e88b2913292, type: 2}
+  thumbNail: {fileID: 21300000, guid: 3cb04e2b85921414fb5b981fab5790d1, type: 3}
+  uiColor: {r: 0.75294125, g: 0, b: 0, a: 1}

@@ -105,25 +105,6 @@ public class BattleManager : MonoBehaviour
         }
         yield return new WaitForSeconds(0.05f);
     }
-    private void BuffHook(BuffTriggerTiming timing, UnitTeam team)
-    {
-        switch (team)
-        {
-            case UnitTeam.Ally:
-                foreach(AllyUnit unit in playerParty)
-                {
-                    unit.TriggerBuff(timing);
-                }
-                break;
-            
-            case UnitTeam.Enemy:
-                foreach(EnemyUnit unit in enemyList)
-                {
-                    unit.TriggerBuff(timing);
-                }
-                break;
-        }
-    }
 
     public void EnemyDead(EnemyUnit dead)
     {
@@ -133,6 +114,7 @@ public class BattleManager : MonoBehaviour
 
         if(enemyList.Count == 0)
         {
+            HandController.Instance.TurnOffHand();
             StartCoroutine(UIManager.Instance.BattleEnd("승리"));
         }
     }

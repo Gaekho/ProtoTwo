@@ -14,6 +14,7 @@ public class AllyUnit : BattleUnitBase
     [SerializeField] private float currentSpeed;
     [SerializeField] private bool isTurn;
     [SerializeField] private Transform myTransform;     //턴 교체 시 크기 변경용
+    [SerializeField] private AllyUnitUIcontroller uiController;
     #endregion
 
     #region Cache
@@ -29,7 +30,8 @@ public class AllyUnit : BattleUnitBase
         this.characterData = characterData;
         base.SetProfile(UnitTeam.Ally, characterData.MaxHealth);
         mySprite.sprite = characterData.CharacterSprite;
-        
+        myAnimator.runtimeAnimatorController = characterData.AnimatorController;
+
         //스탯 저장
         currentAttack = characterData.BaseAttack;
         currentShield = characterData.BaseShield;
@@ -39,6 +41,9 @@ public class AllyUnit : BattleUnitBase
         isTurn = false;
         myTransform = transform.parent;
         myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
+
+        //UI 세팅
+        uiController.SetUIC(this);
     }
 
     #region Overrides
@@ -46,6 +51,14 @@ public class AllyUnit : BattleUnitBase
     {
         base.GetDamage(value);
         //UIManager 연결 후에 슬라이더 표시 기능 구현
+        uiController.SetArmorAmount(currentArmor);
+        uiController.SetHealthSlider(currentHealth);
+    }
+
+    public override void AddArmor(float value)
+    {
+        base.AddArmor(value);
+        uiController.SetArmorAmount(currentArmor);
     }
     protected override IEnumerator Die()
     {
@@ -59,12 +72,14 @@ public class AllyUnit : BattleUnitBase
     {
         isTurn = true;
         myTransform.localScale = new Vector3(1.2f, 1.2f, 1f);
+        uiController.SetTurn(true);
     }
     
     public void ExitTurn()
     {
         isTurn = false;
         myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
+        uiController.SetTurn(false);
     }
     #endregion
 
