@@ -54,3 +54,43 @@ public class PoisonDebuff : BuffBase
         instance.Owner.GetDamage(duration);
     }
 }
+
+[Serializable]
+public class StatPlusBuff : BuffBase
+{
+    [SerializeField] ConditionType stat;
+    [SerializeField] float plusAmount;
+
+    public ConditionType Stat => stat;
+    public float PlusAmount => plusAmount;
+
+    public StatPlusBuff()
+    {
+        buffType = BuffTypes.StatPlus;
+        isDebuff = false;
+        buffName = "Stat Plus";
+        description = "Stat bonus as amount, while duration";
+        triggerTiming = BuffTriggerTiming.None;
+
+        duration = 1;
+        reduceTiming = ReduceTiming.EndOfOwnerTurn;
+        stat = ConditionType.Attack;
+        plusAmount = 1;
+    }
+
+    public override void OnApply(BuffInstance instance)
+    {
+        instance.Owner.StatusChange(stat ,plusAmount);
+    }
+
+    public override void OnRemove(BuffInstance instance)
+    {
+        instance.Owner.StatusChange(stat, -plusAmount);
+    }
+}
+
+//[Serializable]
+//public class BufferBuff : BuffBase
+//{
+//    [SerializeField] private 
+//}

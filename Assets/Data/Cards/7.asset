@@ -16,14 +16,37 @@ MonoBehaviour:
   cardName: "\uB3C5 \uBC14\uB974\uAE30"
   type: 1
   color: 3
-  cardText: "\uB300\uC0C1 \uC544\uAD70\uC758 \uACF5\uACA9\uB825\uC744 1\uD134\uAC04
+  cardText: "\uB300\uC0C1 \uC544\uAD70\uC758 \uACF5\uACA9\uB825\uC744 2\uD134\uAC04
     1 \uC99D\uAC00\uC2DC\uD0A8\uB2E4."
   cardSprite: {fileID: 662112569, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
-  actionTargetType: 1
+  cardAnimTrigger: 2
+  usableWithoutTarget: 0
+  cardTarget: 1
   activeConditionList:
   - condition: 0
     value: 0
-  usableWithoutTarget: 0
   banishAfterUsed: 0
-  cardActionDataList: []
+  cardActionList:
+  - rid: 283199385430654979
+  references:
+    version: 2
+    RefIds:
+    - rid: 283199385430654979
+      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        buff:
+          rid: 283199385430654980
+    - rid: 283199385430654980
+      type: {class: StatPlusBuff, ns: , asm: Assembly-CSharp}
+      data:
+        buffType: 4
+        isDebuff: 0
+        buffName: Stat Plus
+        description: Stat bonus as amount, while duration
+        triggerTiming: 4
+        duration: 2
+        reduceTiming: 2
+        stat: 0
+        plusAmount: 1

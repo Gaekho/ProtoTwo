@@ -89,8 +89,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1e3c9591fe822488e8ca22799dc685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffType: 0
+  currentBuff:
+    sourceBuff:
+      rid: -2
+    owner: {fileID: 0}
+    applier: {fileID: 0}
+    remainTurn: 0
   buffSprite: {fileID: 7119851625507554032}
   buffDuration: {fileID: 1285630475425438505}
+  remainTurn: 0
+  iconEntry:
+  - buffType: 1
+    icon: {fileID: 0}
+  - buffType: 4
+    icon: {fileID: 0}
+  - buffType: 8
+    icon: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &5018999166885347680
 GameObject:
   m_ObjectHideFlags: 0

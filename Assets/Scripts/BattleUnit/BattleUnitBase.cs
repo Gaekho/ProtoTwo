@@ -51,6 +51,10 @@ public abstract class BattleUnitBase : MonoBehaviour
         currentArmor = 0f;
     }
 
+    public virtual void StatusChange(ConditionType statType, float amount)
+    {
+
+    }
     public virtual void GetDamage(float value)
     {
         float previousHealth = currentHealth;           //데미지 받기 전 체력 저장.
@@ -150,7 +154,7 @@ public abstract class BattleUnitBase : MonoBehaviour
             }
         }
     }
-    public void RemoveBuff(BuffInstance buff)
+    public virtual void RemoveBuff(BuffInstance buff)
     {
         int idx = buffList.IndexOf(buff);
         if(idx < 0) return;

@@ -1,0 +1,1040 @@
+fileFormatVersion: 2
+guid: f69bf93c120c77949b4a6532dbdaafdb
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: AddArmor
+    second: {fileID: 7400000, guid: 35c70235aff36184c884cfa9d040940d, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: ApplyDebuff
+    second: {fileID: 7400000, guid: 4761059eabad6474a829b1aa2622f61e, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: Attack
+    second: {fileID: 7400000, guid: 67b558f9bfd5b004b8ab27fd728c2d2c, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: Damaged
+    second: {fileID: 7400000, guid: c41cd1f7d0ce44e459702b0ec1c21499, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: IDLE
+    second: {fileID: 7400000, guid: 11cbd2f3aa4679f49aaf18f80742a003, type: 2}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 0
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 80
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  previousAsepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 0
+    customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
+    spritePadding: 0
+    generateModelPrefab: 1
+    generateAnimationClips: 1
+    addSortingGroup: 1
+    addShadowCasters: 0
+  asepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 0
+    customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
+    spritePadding: 0
+    generateModelPrefab: 1
+    generateAnimationClips: 1
+    addSortingGroup: 1
+    addShadowCasters: 0
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 639093109925328422
+  textureAssetName: 
+  singleSpriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  animatedSpriteImportData:
+  - name: Sita_Animation_Frame_0
+    originalName: 
+    pivot: {x: 0.4761905, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 86
+      y: 768
+      width: 63
+      height: 118
+    spriteID: f6cc06785f20e604aa6b83c45c8a822a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 86, y: 768}
+  - name: Sita_Animation_Frame_1
+    originalName: 
+    pivot: {x: 0.4761905, y: 0.5042017}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 86
+      y: 514
+      width: 63
+      height: 119
+    spriteID: 7d9f689c20b151c45b7d5b3dfd36796a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 86, y: 514}
+  - name: Sita_Animation_Frame_2
+    originalName: 
+    pivot: {x: 0.4761905, y: 0.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 86
+      y: 386
+      width: 63
+      height: 120
+    spriteID: 4f021971874df5e40abdbf1e3d6bea27
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 86, y: 386}
+  - name: Sita_Animation_Frame_3
+    originalName: 
+    pivot: {x: 0.4761905, y: 0.5042017}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 86
+      y: 641
+      width: 63
+      height: 119
+    spriteID: e272210eccbb02b4d8a7dc3d38e74946
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 86, y: 641}
+  - name: Sita_Animation_Frame_4
+    originalName: 
+    pivot: {x: 0.4761905, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 86
+      y: 894
+      width: 63
+      height: 118
+    spriteID: 43d28c6b0873b7447b4126fea32f8d55
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 86, y: 894}
+  - name: Sita_Animation_Frame_5
+    originalName: 
+    pivot: {x: 0.53424656, y: 0.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 132
+      width: 73
+      height: 120
+    spriteID: 8fa4cc97935a26e419f4f8459918f713
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 132}
+  - name: Sita_Animation_Frame_6
+    originalName: 
+    pivot: {x: 0.46875, y: 0.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 86
+      y: 130
+      width: 64
+      height: 120
+    spriteID: 305c5b9e9a9559847aa39b63bf5899ad
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 86, y: 130}
+  - name: Sita_Animation_Frame_7
+    originalName: 
+    pivot: {x: 0.46875, y: 0.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 86
+      y: 258
+      width: 64
+      height: 120
+    spriteID: a17142f08257baa40979b553e705ba25
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 86, y: 258}
+  - name: Sita_Animation_Frame_8
+    originalName: 
+    pivot: {x: 0.4109589, y: 0.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 260
+      width: 73
+      height: 120
+    spriteID: 7bc6092e5190f124da4e0e053455e172
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 260}
+  - name: Sita_Animation_Frame_9
+    originalName: 
+    pivot: {x: 0.4054054, y: 0.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 74
+      height: 120
+    spriteID: e6d6ceabed85e3c468dc6a48356c5765
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+  - name: Sita_Animation_Frame_10
+    originalName: 
+    pivot: {x: 0.44117647, y: 0.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 388
+      width: 68
+      height: 120
+    spriteID: 41339908e6d4fd34987d1403535410f8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 388}
+  - name: Sita_Animation_Frame_11
+    originalName: 
+    pivot: {x: 0.47761193, y: 0.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 516
+      width: 67
+      height: 120
+    spriteID: 6e4b0c3362b81884c94a593f14699328
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 516}
+  - name: Sita_Animation_Frame_12
+    originalName: 
+    pivot: {x: 0.5, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 232
+      y: 249
+      width: 60
+      height: 118
+    spriteID: cded083f15803f244a1b0fc7d14e2e26
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 232, y: 249}
+  - name: Sita_Animation_Frame_13
+    originalName: 
+    pivot: {x: 0.5, y: 0.5042017}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 888
+      width: 60
+      height: 119
+    spriteID: efcdd26016db16c45a254a74288e19a8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 161, y: 888}
+  - name: Sita_Animation_Frame_14
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 760
+      width: 60
+      height: 120
+    spriteID: df32d4ec07ad22e4abef278d60788128
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 161, y: 760}
+  - name: Sita_Animation_Frame_15
+    originalName: 
+    pivot: {x: 0.5, y: 0.5042017}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 232
+      y: 122
+      width: 60
+      height: 119
+    spriteID: fe74a16e3adb4be4c9b50db3078ec44c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 232, y: 122}
+  - name: Sita_Animation_Frame_16
+    originalName: 
+    pivot: {x: 0.5, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 232
+      y: 375
+      width: 60
+      height: 118
+    spriteID: 3cd88a2f7e3b9b649bb145534832fd80
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 232, y: 375}
+  - name: Sita_Animation_Frame_17
+    originalName: 
+    pivot: {x: 0.4761905, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 4
+      width: 63
+      height: 118
+    spriteID: d74c87d1a28ce3e48af08c02ce5d5ee7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 161, y: 4}
+  - name: Sita_Animation_Frame_18
+    originalName: 
+    pivot: {x: 0.4761905, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 130
+      width: 63
+      height: 118
+    spriteID: d5254cb356e018745bad17e8920f006a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 161, y: 130}
+  - name: Sita_Animation_Frame_19
+    originalName: 
+    pivot: {x: 0.44776118, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 644
+      width: 67
+      height: 118
+    spriteID: 0c697a2f64c2a6a4393eac45d13d7288
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 644}
+  - name: Sita_Animation_Frame_20
+    originalName: 
+    pivot: {x: 0.44776118, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 770
+      width: 67
+      height: 118
+    spriteID: ebee23f7fb6d62d4ba2296bc2e88128f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 770}
+  - name: Sita_Animation_Frame_21
+    originalName: 
+    pivot: {x: 0.44776118, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 896
+      width: 67
+      height: 118
+    spriteID: a0c8a2a15cd2f494a96667d95b2d3991
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 896}
+  - name: Sita_Animation_Frame_22
+    originalName: 
+    pivot: {x: 0.44776118, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 86
+      y: 4
+      width: 67
+      height: 118
+    spriteID: 37f47f1ed357c0441938a7b8949ef90a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 86, y: 4}
+  - name: Sita_Animation_Frame_23
+    originalName: 
+    pivot: {x: 0.4761905, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 256
+      width: 63
+      height: 118
+    spriteID: a02a0909e451b7e408defa1fcda0e0c3
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 161, y: 256}
+  - name: Sita_Animation_Frame_24
+    originalName: 
+    pivot: {x: 0.4761905, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 382
+      width: 63
+      height: 118
+    spriteID: 35d525431a4a60d42926ebbf9caa1646
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 161, y: 382}
+  - name: Sita_Animation_Frame_25
+    originalName: 
+    pivot: {x: 0.4761905, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 508
+      width: 63
+      height: 118
+    spriteID: 733efd621cbe53e42b518968e684a648
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 161, y: 508}
+  - name: Sita_Animation_Frame_26
+    originalName: 
+    pivot: {x: 0.5873016, y: 0.5555556}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 232
+      y: 501
+      width: 63
+      height: 108
+    spriteID: c68c17bb7a8c4424283d98d90a120389
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 232, y: 501}
+  - name: Sita_Animation_Frame_27
+    originalName: 
+    pivot: {x: 0.60655737, y: 0.5504587}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 232
+      y: 617
+      width: 61
+      height: 109
+    spriteID: 74690ca25ff22ef468a928e998b6305f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 232, y: 617}
+  - name: Sita_Animation_Frame_28
+    originalName: 
+    pivot: {x: 0.61538464, y: 0.54545456}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 232
+      y: 4
+      width: 65
+      height: 110
+    spriteID: 12f85785abceaa544b6d88d4f5d47602
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 232, y: 4}
+  - name: Sita_Animation_Frame_29
+    originalName: 
+    pivot: {x: 0.4761905, y: 0.5084746}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 634
+      width: 63
+      height: 118
+    spriteID: 4106f3ee57ebe83479fef9068fce9340
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 161, y: 634}
+  spriteSheetImportData: []
+  asepriteLayers:
+  - layerIndex: 0
+    guid: 1996696292
+    name: Sita_Animation
+    layerFlags: 0
+    layerType: 0
+    blendMode: 0
+    cells:
+    - name: Sita_Animation_Frame_0
+      frameIndex: 0
+      cellRect:
+        x: 10
+        y: 0
+        width: 63
+        height: 118
+      spriteId: f6cc06785f20e604aa6b83c45c8a822a
+    - name: Sita_Animation_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 10
+        y: 0
+        width: 63
+        height: 119
+      spriteId: 7d9f689c20b151c45b7d5b3dfd36796a
+    - name: Sita_Animation_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 10
+        y: 0
+        width: 63
+        height: 120
+      spriteId: 4f021971874df5e40abdbf1e3d6bea27
+    - name: Sita_Animation_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 10
+        y: 0
+        width: 63
+        height: 119
+      spriteId: e272210eccbb02b4d8a7dc3d38e74946
+    - name: Sita_Animation_Frame_4
+      frameIndex: 4
+      cellRect:
+        x: 10
+        y: 0
+        width: 63
+        height: 118
+      spriteId: 43d28c6b0873b7447b4126fea32f8d55
+    - name: Sita_Animation_Frame_5
+      frameIndex: 5
+      cellRect:
+        x: 1
+        y: 0
+        width: 73
+        height: 120
+      spriteId: 8fa4cc97935a26e419f4f8459918f713
+    - name: Sita_Animation_Frame_6
+      frameIndex: 6
+      cellRect:
+        x: 10
+        y: 0
+        width: 64
+        height: 120
+      spriteId: 305c5b9e9a9559847aa39b63bf5899ad
+    - name: Sita_Animation_Frame_7
+      frameIndex: 7
+      cellRect:
+        x: 10
+        y: 0
+        width: 64
+        height: 120
+      spriteId: a17142f08257baa40979b553e705ba25
+    - name: Sita_Animation_Frame_8
+      frameIndex: 8
+      cellRect:
+        x: 10
+        y: 0
+        width: 73
+        height: 120
+      spriteId: 7bc6092e5190f124da4e0e053455e172
+    - name: Sita_Animation_Frame_9
+      frameIndex: 9
+      cellRect:
+        x: 10
+        y: 0
+        width: 74
+        height: 120
+      spriteId: e6d6ceabed85e3c468dc6a48356c5765
+    - name: Sita_Animation_Frame_10
+      frameIndex: 10
+      cellRect:
+        x: 10
+        y: 0
+        width: 68
+        height: 120
+      spriteId: 41339908e6d4fd34987d1403535410f8
+    - name: Sita_Animation_Frame_11
+      frameIndex: 11
+      cellRect:
+        x: 8
+        y: 0
+        width: 67
+        height: 120
+      spriteId: 6e4b0c3362b81884c94a593f14699328
+    - name: Sita_Animation_Frame_12
+      frameIndex: 12
+      cellRect:
+        x: 10
+        y: 0
+        width: 60
+        height: 118
+      spriteId: cded083f15803f244a1b0fc7d14e2e26
+    - name: Sita_Animation_Frame_13
+      frameIndex: 13
+      cellRect:
+        x: 10
+        y: 0
+        width: 60
+        height: 119
+      spriteId: efcdd26016db16c45a254a74288e19a8
+    - name: Sita_Animation_Frame_14
+      frameIndex: 14
+      cellRect:
+        x: 10
+        y: 0
+        width: 60
+        height: 120
+      spriteId: df32d4ec07ad22e4abef278d60788128
+    - name: Sita_Animation_Frame_15
+      frameIndex: 15
+      cellRect:
+        x: 10
+        y: 0
+        width: 60
+        height: 119
+      spriteId: fe74a16e3adb4be4c9b50db3078ec44c
+    - name: Sita_Animation_Frame_16
+      frameIndex: 16
+      cellRect:
+        x: 10
+        y: 0
+        width: 60
+        height: 118
+      spriteId: 3cd88a2f7e3b9b649bb145534832fd80
+    - name: Sita_Animation_Frame_17
+      frameIndex: 17
+      cellRect:
+        x: 10
+        y: 0
+        width: 63
+        height: 118
+      spriteId: d74c87d1a28ce3e48af08c02ce5d5ee7
+    - name: Sita_Animation_Frame_18
+      frameIndex: 18
+      cellRect:
+        x: 10
+        y: 0
+        width: 63
+        height: 118
+      spriteId: d5254cb356e018745bad17e8920f006a
+    - name: Sita_Animation_Frame_19
+      frameIndex: 19
+      cellRect:
+        x: 10
+        y: 0
+        width: 67
+        height: 118
+      spriteId: 0c697a2f64c2a6a4393eac45d13d7288
+    - name: Sita_Animation_Frame_20
+      frameIndex: 20
+      cellRect:
+        x: 10
+        y: 0
+        width: 67
+        height: 118
+      spriteId: ebee23f7fb6d62d4ba2296bc2e88128f
+    - name: Sita_Animation_Frame_21
+      frameIndex: 21
+      cellRect:
+        x: 10
+        y: 0
+        width: 67
+        height: 118
+      spriteId: a0c8a2a15cd2f494a96667d95b2d3991
+    - name: Sita_Animation_Frame_22
+      frameIndex: 22
+      cellRect:
+        x: 10
+        y: 0
+        width: 67
+        height: 118
+      spriteId: 37f47f1ed357c0441938a7b8949ef90a
+    - name: Sita_Animation_Frame_23
+      frameIndex: 23
+      cellRect:
+        x: 10
+        y: 0
+        width: 63
+        height: 118
+      spriteId: a02a0909e451b7e408defa1fcda0e0c3
+    - name: Sita_Animation_Frame_24
+      frameIndex: 24
+      cellRect:
+        x: 10
+        y: 0
+        width: 63
+        height: 118
+      spriteId: 35d525431a4a60d42926ebbf9caa1646
+    - name: Sita_Animation_Frame_25
+      frameIndex: 25
+      cellRect:
+        x: 10
+        y: 0
+        width: 63
+        height: 118
+      spriteId: 733efd621cbe53e42b518968e684a648
+    - name: Sita_Animation_Frame_26
+      frameIndex: 26
+      cellRect:
+        x: 3
+        y: 0
+        width: 63
+        height: 108
+      spriteId: c68c17bb7a8c4424283d98d90a120389
+    - name: Sita_Animation_Frame_27
+      frameIndex: 27
+      cellRect:
+        x: 3
+        y: 0
+        width: 61
+        height: 109
+      spriteId: 74690ca25ff22ef468a928e998b6305f
+    - name: Sita_Animation_Frame_28
+      frameIndex: 28
+      cellRect:
+        x: 0
+        y: 0
+        width: 65
+        height: 110
+      spriteId: 12f85785abceaa544b6d88d4f5d47602
+    - name: Sita_Animation_Frame_29
+      frameIndex: 29
+      cellRect:
+        x: 10
+        y: 0
+        width: 63
+        height: 118
+      spriteId: 4106f3ee57ebe83479fef9068fce9340
+    linkedCells: []
+    parentIndex: -1
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Android
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  generatePhysicsShape: 0
+  secondarySpriteTextures: []
+  spritePackingTag: 
+  canvasSize: {x: 80, y: 120}

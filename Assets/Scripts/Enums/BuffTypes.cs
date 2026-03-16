@@ -10,6 +10,8 @@ namespace Proto2.Enums
         Taunt,
         Regen,
         Addiction,
+        StatPlus,
+        Buffer,
        
         //ต๐น๖วม
         Weakness,

@@ -6,19 +6,46 @@ using UnityEngine.UI;
 
 public class BuffUI : MonoBehaviour
 {
+    [Header("Profile")]
     [SerializeField] private BuffTypes buffType;
+    [SerializeField] private BuffInstance currentBuff;
+
+    [Header("UI")]
     [SerializeField] private Image buffSprite;
     [SerializeField] private Text buffDuration;
+
     [SerializeField] private int remainTurn;
-    [SerializeField] private List<Sprite> iconList;
+
+    [Header("Icon Database")]
+    [SerializeField] private BuffIconEntry [] iconEntry;
 
     public BuffTypes BuffType => buffType;
 
     public void SetBuff(BuffInstance buffInstance)
     {
+        currentBuff = buffInstance;
         buffType = buffInstance.SourceBuff.BuffType;
-        remainTurn = buffInstance.RemainTurn;
-        buffDuration.text = remainTurn.ToString();
+
+        Refresh();
+    }
+
+    public void Refresh()
+    {
+        if(currentBuff == null || currentBuff.SourceBuff == null) return;
+
+        buffType = currentBuff.SourceBuff.BuffType;
+
+        if(currentBuff.SourceBuff.ReduceTiming == ReduceTiming.Permanent)   
+            buffDuration.text = "¡Ä";
+
+        else 
+            buffDuration.text = currentBuff.RemainTurn.ToString();
+
+        Sprite icon = GetIcon(buffType);
+        if(icon != null)
+        {
+            buffSprite.sprite = icon;
+        }
     }
 
     public void MergeToSelf(BuffInstance buffInstance)
@@ -36,4 +63,21 @@ public class BuffUI : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    private Sprite GetIcon(BuffTypes type)
+    {
+        for(int i = 0; i < iconEntry.Length; i++)
+        {
+            if (iconEntry[i].buffType == type)
+                return iconEntry[i].icon;
+        }
+        return null;
+    }
+}
+
+[System.Serializable]
+public struct BuffIconEntry
+{
+    public BuffTypes buffType;
+    public Sprite icon;
 }

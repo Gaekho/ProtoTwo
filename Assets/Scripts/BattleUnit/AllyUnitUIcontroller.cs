@@ -1,3 +1,4 @@
+using Proto2.Enums;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,9 @@ public class AllyUnitUIcontroller : MonoBehaviour
     [Header("Buff")]
     [SerializeField] private GameObject buffUI;
     [SerializeField] private Transform buffContainer;
+
+    private readonly Dictionary<BuffTypes, BuffUI> buffUIs = new();
+
     public void SetUIC(AllyUnit unit )
     {
         outline.enabled = false;
@@ -47,8 +51,7 @@ public class AllyUnitUIcontroller : MonoBehaviour
     }
     public void SetTurn(bool isTurn)
     {
-        if(isTurn) outline.enabled = true;
-        else outline.enabled = false;
+        outline.enabled = isTurn;
     }
 
     public void SetArmorAmount(float amount)
@@ -56,20 +59,46 @@ public class AllyUnitUIcontroller : MonoBehaviour
         armorAmount.text = amount.ToString();
     }
 
-    public void CreateBuffUI( BuffInstance buff)
+    public void SetStatTexts(float attack, float shield, float speed)
     {
-            GameObject buffUIGO = Instantiate(buffUI, buffContainer);
-            buffUIGO.GetComponent<BuffUI>().SetBuff(buff);
+        atk.text = attack.ToString();
+        shd.text = shield.ToString();
+        spd.text = speed.ToString();
     }
 
-    public void MergeBuffUI(BuffInstance original)
+    public void CreateOrRefreshBuffUI(BuffInstance buff)
     {
-    foreach (BuffUI buffUI in buffContainer.GetComponentsInChildren<BuffUI>())
+        if(buff == null || buff.SourceBuff == null) return;
+
+        BuffTypes type = buff.SourceBuff.BuffType;
+
+        if(buffUIs.TryGetValue(type, out BuffUI existingUI))
         {
-            if(buffUI.BuffType == original.SourceBuff.BuffType)
-            {
-                break;
-            }
+            existingUI.SetBuff(buff);
+            return;
+        }
+
+        GameObject buffUIGO = Instantiate(buffUI, buffContainer);
+        buffUIGO.GetComponent<BuffUI>().SetBuff(buff);
+
+        buffUIs[type] = buffUIGO.GetComponent<BuffUI>();
+    }
+
+    public void RemoveBuffUI(BuffTypes type)
+    {
+        if(!buffUIs.TryGetValue(type, out BuffUI ui)) return;
+
+        buffUIs.Remove(type);
+
+        if (ui != null) Destroy(ui.gameObject);
+    }
+
+    public void RefreshAllBuffUI(List<BuffInstance> buffList)
+    {
+        foreach(BuffInstance buff in buffList)
+        {
+            CreateOrRefreshBuffUI(buff);
         }
     }
+
 }

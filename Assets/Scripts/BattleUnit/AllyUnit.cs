@@ -61,6 +61,19 @@ public class AllyUnit : BattleUnitBase
         uiController.SetArmorAmount(currentArmor);
     }
 
+    public override void StatusChange(ConditionType statType, float amount)
+    {
+        switch (statType)
+        {
+            case ConditionType.Attack:
+                currentAttack += amount;    break;
+            case ConditionType.Shield:
+                currentShield += amount;    break;
+            case ConditionType.Speed:
+                currentSpeed += amount;     break;
+        }
+        uiController.SetStatTexts(currentAttack, currentShield, currentSpeed);
+    }
     public override void ReceiveBuff(BuffBase buff, BattleUnitBase applier)
     {
         BuffInstance alreadyExist = buffList.Find(x => x.SourceBuff.BuffType == buff.BuffType);
@@ -70,12 +83,13 @@ public class AllyUnit : BattleUnitBase
             BuffInstance newInstance = buff.CreateInstance(this, applier);
             buffList.Add(newInstance);
             buff.OnApply(newInstance);
-            uiController.CreateBuffUI(newInstance);
+            uiController.CreateOrRefreshBuffUI(newInstance);
         }
         else
         {
             buff.MergeToSameBuff(alreadyExist, applier);
             buff.OnApply(alreadyExist);
+            uiController.CreateOrRefreshBuffUI(alreadyExist);
         }
 
         // 2. 애니메이션 재생
@@ -84,6 +98,15 @@ public class AllyUnit : BattleUnitBase
             if (buff.IsDebuff) DoReceiveDebuffAnim();
             else DoReceiveBuffAnim();
         }
+    }
+
+    public override void RemoveBuff(BuffInstance buff)
+    {
+        if (buff == null || buff.SourceBuff == null) return;
+
+        BuffTypes type = buff.SourceBuff.BuffType;
+        base.RemoveBuff(buff);
+        uiController.RemoveBuffUI(type);
     }
     protected override IEnumerator Die()
     {
@@ -105,6 +128,11 @@ public class AllyUnit : BattleUnitBase
         isTurn = false;
         myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
         uiController.SetTurn(false);
+    }
+
+    public void RefreshBuffUI()
+    {
+        uiController.RefreshAllBuffUI(buffList);
     }
     #endregion
 
