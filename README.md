@@ -71,13 +71,13 @@ public class NewPatternActionBase : PatternActionBase
 [Serializable]
 public class NewBuff : BuffBase
 {
-	[SerializeField] privat type ownField;
+	[SerializeField] private type ownField;
 
 	public type OwnField => ownField;	//Cache
 
 	public NewBuff()
 	{
-		buffTypes = BuffTypes.New;
+		buffType = BuffTypes.New;
 		isDebuff = false;
 		buffName = "NewBuff";
 		description = "Write description of this buff.";
