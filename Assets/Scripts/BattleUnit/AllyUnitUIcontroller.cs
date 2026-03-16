@@ -6,17 +6,27 @@ using UnityEngine.UI;
 public class AllyUnitUIcontroller : MonoBehaviour
 {
     //[SerializeField] private AllyUnit battleUnit;
+    [Header("ThumbNail")]
     [SerializeField] private Image thumbNail;
     [SerializeField] private Image thumbNailColor;
     [SerializeField] private Outline outline;
+
+    [Header("Stat Texts")]
     [SerializeField] private Text atk;
     [SerializeField] private Text shd;
     [SerializeField] private Text spd;
-    [SerializeField] private Text armorAmount;
-    [SerializeField] private Slider hpSlider;
-    [SerializeField] private Text healthTxt;
-    [SerializeField] private float maxHealth;
 
+    [Header("Health")]
+    [SerializeField] private float maxHealth;
+    [SerializeField] private Text healthTxt;
+    [SerializeField] private Slider hpSlider;
+
+    [Header("Armor")]
+    [SerializeField] private Text armorAmount;
+
+    [Header("Buff")]
+    [SerializeField] private GameObject buffUI;
+    [SerializeField] private Transform buffContainer;
     public void SetUIC(AllyUnit unit )
     {
         outline.enabled = false;
@@ -44,5 +54,22 @@ public class AllyUnitUIcontroller : MonoBehaviour
     public void SetArmorAmount(float amount)
     {
         armorAmount.text = amount.ToString();
+    }
+
+    public void CreateBuffUI( BuffInstance buff)
+    {
+            GameObject buffUIGO = Instantiate(buffUI, buffContainer);
+            buffUIGO.GetComponent<BuffUI>().SetBuff(buff);
+    }
+
+    public void MergeBuffUI(BuffInstance original)
+    {
+    foreach (BuffUI buffUI in buffContainer.GetComponentsInChildren<BuffUI>())
+        {
+            if(buffUI.BuffType == original.SourceBuff.BuffType)
+            {
+                break;
+            }
+        }
     }
 }

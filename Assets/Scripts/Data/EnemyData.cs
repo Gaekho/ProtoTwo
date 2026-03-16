@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Animations;
 using UnityEngine.UIElements;
 using System;
 using Proto2.Enums;
@@ -19,7 +18,7 @@ public class EnemyData : ScriptableObject
 
     //[Header("Visual")]
     [SerializeField] private Sprite enemySprite;
-    [SerializeField] private AnimatorController animatorController;
+    [SerializeField] private RuntimeAnimatorController animatorController;
 
     //[Header("Patterns")]
     [SerializeField] private List<EnemyPatternData> patternList = new();
@@ -30,7 +29,7 @@ public class EnemyData : ScriptableObject
     public float MaxHealth => maxHealth;
     public float BaseSpeed => baseSpeed;
     public Sprite EnemySprite => enemySprite;
-    public AnimatorController AnimatorController => animatorController;
+    public RuntimeAnimatorController AnimatorController => animatorController;
     public List<EnemyPatternData> PatternList => patternList;
     #endregion
 }

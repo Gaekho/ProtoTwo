@@ -261,7 +261,7 @@ MonoBehaviour:
   floors: 10
   minRoom: 1
   maxRoom: 4
-  essential: {fileID: 11400000, guid: 7acc92c6b4daebe4d85c9d8049f041c9, type: 2}
+  essential: {fileID: 11400000, guid: 128ad20ca476cd3418319fb889cf1df5, type: 2}
   nodes:
   - {fileID: -2178507785916407125, guid: d5806271c96471b4183486e552dde467, type: 3}
   - {fileID: -7654278118587436594, guid: 328c6cbf93befd74b8e1af1e98a59bdb, type: 3}

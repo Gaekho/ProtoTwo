@@ -60,6 +60,31 @@ public class AllyUnit : BattleUnitBase
         base.AddArmor(value);
         uiController.SetArmorAmount(currentArmor);
     }
+
+    public override void ReceiveBuff(BuffBase buff, BattleUnitBase applier)
+    {
+        BuffInstance alreadyExist = buffList.Find(x => x.SourceBuff.BuffType == buff.BuffType);
+
+        if (alreadyExist == null)
+        {
+            BuffInstance newInstance = buff.CreateInstance(this, applier);
+            buffList.Add(newInstance);
+            buff.OnApply(newInstance);
+            uiController.CreateBuffUI(newInstance);
+        }
+        else
+        {
+            buff.MergeToSameBuff(alreadyExist, applier);
+            buff.OnApply(alreadyExist);
+        }
+
+        // 2. 애니메이션 재생
+        if (applier != this)
+        {
+            if (buff.IsDebuff) DoReceiveDebuffAnim();
+            else DoReceiveBuffAnim();
+        }
+    }
     protected override IEnumerator Die()
     {
         //아직 미구현. 애니메이션 재생 및 자기 자신 파괴, BattleManager의 AllyList에서 삭제 등의 작업 추가.

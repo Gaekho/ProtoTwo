@@ -25,6 +25,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     public float CurrentHealth => currentHealth;
     public float CurrentArmor => currentArmor;
     public bool IsDead => isDead;
+    public List<BuffInstance> BuffList => buffList;
     #endregion
 
     #region Virtual Methods
@@ -118,7 +119,7 @@ public abstract class BattleUnitBase : MonoBehaviour
         }
     }
 
-    public void TriggerBuff(BuffTriggerTiming timing)
+    public virtual void TriggerBuff(BuffTriggerTiming timing)
     {
         List<BuffInstance> snapshot = new(buffList);
 

@@ -41,6 +41,11 @@ public class BuffInstance
         remainTurn += amount;
     }
 
+    public void RenewalDuration(int amount)
+    {
+        remainTurn = amount;
+    }
+
     public void ReduceBuffDuration()
     {
         if(sourceBuff.ReduceTiming != ReduceTiming.Permanent)

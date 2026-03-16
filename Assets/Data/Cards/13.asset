@@ -19,10 +19,20 @@ MonoBehaviour:
   cardText: "\uBC29\uC5B4\uB3C4\uB97C 5 \uC5BB\uB294\uB2E4."
   cardSprite: {fileID: 896510607, guid: 98e4d5c83b01593468e20276456118f1, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
-  actionTargetType: 1
+  cardAnimTrigger: 0
+  usableWithoutTarget: 1
+  cardTarget: 0
   activeConditionList:
   - condition: 2
     value: 2
-  usableWithoutTarget: 1
   banishAfterUsed: 0
-  cardActionDataList: []
+  cardActionList:
+  - rid: 3789920194590670855
+  references:
+    version: 2
+    RefIds:
+    - rid: 3789920194590670855
+      type: {class: AddArmorAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 1
+        armorAmount: 5

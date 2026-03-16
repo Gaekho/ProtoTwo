@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: EssentialNode_Test_Boss
   m_EditorClassIdentifier: 
   nodeType: 0
-  floor: 0
+  floor: 1

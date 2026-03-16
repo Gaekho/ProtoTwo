@@ -19,12 +19,33 @@ MonoBehaviour:
   cardText: "\uB3C4\uBC1C\uC744 2 \uC5BB\uC2B5\uB2C8\uB2E4."
   cardSprite: {fileID: 698158667, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
-  actionTargetType: 1
+  cardAnimTrigger: 2
+  usableWithoutTarget: 1
+  cardTarget: 0
   activeConditionList:
   - condition: 0
     value: 1
   - condition: 1
     value: 2
-  usableWithoutTarget: 1
   banishAfterUsed: 0
-  cardActionDataList: []
+  cardActionList:
+  - rid: 3789920145637376004
+  references:
+    version: 2
+    RefIds:
+    - rid: 3789920145637376004
+      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 1
+        buff:
+          rid: 3789920145637376005
+    - rid: 3789920145637376005
+      type: {class: TauntBuff, ns: , asm: Assembly-CSharp}
+      data:
+        buffType: 1
+        isDebuff: 0
+        buffName: Taunt
+        description: Get Enemies Attack or Apply to this Unit
+        triggerTiming: 0
+        duration: 2
+        reduceTiming: 2

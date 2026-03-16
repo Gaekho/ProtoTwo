@@ -37,11 +37,11 @@ public abstract class BuffBase
     }  
     
     //중복 버프 부여 시도 시 작동.
-    //기본적으로 지속시간만큼 연장.
+    //기본적으로 지속시간 갱신.
     //스택이 필요한 경우 혹은 다른 로직이 필요한 경우 하위 클래스에서 override 해서 사용.
     public virtual void MergeToSameBuff(BuffInstance originalBuff, BattleUnitBase newApplier)
     {
-        originalBuff.ProlongDuration(this.duration);
+        originalBuff.RenewalDuration(this.duration);
         originalBuff.SetNewApplier(newApplier);
     }
 

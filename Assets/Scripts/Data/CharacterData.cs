@@ -1,7 +1,6 @@
 using Proto2.Enums;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Character Data", menuName = "Proto2/Character", order = 0)]
@@ -19,7 +18,7 @@ public class CharacterData : ScriptableObject
 
     [Header("Visual")]
     [SerializeField] private Sprite characterSprite;
-    [SerializeField] private AnimatorController animatorController;
+    [SerializeField] private RuntimeAnimatorController animatorController;
 
     [Header("UI Setting")]
     [SerializeField] private Sprite thumbNail;
@@ -34,7 +33,7 @@ public class CharacterData : ScriptableObject
     public float BaseShield => baseShield;
     public float BaseSpeed => baseSpeed;
     public Sprite CharacterSprite => characterSprite;
-    public AnimatorController AnimatorController => animatorController;
+    public RuntimeAnimatorController AnimatorController => animatorController;
     public Sprite ThumbNail => thumbNail;
     public Color UIColor => uiColor;
     #endregion

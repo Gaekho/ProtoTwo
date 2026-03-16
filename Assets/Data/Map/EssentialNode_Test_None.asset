@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3649599a1e4a20a448dc121ec4c93e3c, type: 3}
   m_Name: EssentialNode_Test_None
   m_EditorClassIdentifier: 
-  nodeType: 5
+  nodeType: 0
   floor: 1

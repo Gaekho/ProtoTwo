@@ -16,21 +16,37 @@ MonoBehaviour:
   cardName: "\uD654\uC0B4 \uC138\uB840"
   type: 1
   color: 2
-  cardText: "\uD53C\uD574\uB97C 3\uC529 3\uBC88 \uC785\uD78C\uB2E4."
+  cardText: "\uB300\uC0C1\uC5D0\uAC8C \uD53C\uD574\uB97C 3\uC529 3\uBC88 \uC785\uD78C\uB2E4."
   cardSprite: {fileID: -1714748715, guid: 98e4d5c83b01593468e20276456118f1, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
-  actionTargetType: 2
+  cardAnimTrigger: 0
+  usableWithoutTarget: 0
+  cardTarget: 2
   activeConditionList:
   - condition: 0
     value: 2
   - condition: 2
     value: 3
-  usableWithoutTarget: 0
   banishAfterUsed: 0
-  cardActionDataList:
-  - cardActionType: 0
-    actionValue: 3
-  - cardActionType: 0
-    actionValue: 3
-  - cardActionType: 0
-    actionValue: 3
+  cardActionList:
+  - rid: 3789920194590670852
+  - rid: 3789920194590670853
+  - rid: 3789920194590670854
+  references:
+    version: 2
+    RefIds:
+    - rid: 3789920194590670852
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        damage: 3
+    - rid: 3789920194590670853
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        damage: 3
+    - rid: 3789920194590670854
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        damage: 3

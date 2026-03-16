@@ -20,12 +20,20 @@ MonoBehaviour:
     \uC788\uB2E4\uBA74 \uCD94\uAC00\uB85C \uD53C\uD574\uB97C 7 \uC785\uD78C\uB2E4."
   cardSprite: {fileID: 1593725169, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
-  actionTargetType: 2
+  cardAnimTrigger: 0
+  usableWithoutTarget: 0
+  cardTarget: 2
   activeConditionList:
   - condition: 0
     value: 4
-  usableWithoutTarget: 0
   banishAfterUsed: 0
-  cardActionDataList:
-  - cardActionType: 0
-    actionValue: 11
+  cardActionList:
+  - rid: 3789920145637376012
+  references:
+    version: 2
+    RefIds:
+    - rid: 3789920145637376012
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        damage: 11
