@@ -26,6 +26,9 @@ public abstract class BattleUnitBase : MonoBehaviour
     public float CurrentArmor => currentArmor;
     public bool IsDead => isDead;
     public List<BuffInstance> BuffList => buffList;
+    
+    public virtual float CurrentSpeed => 0f;
+
     #endregion
 
     #region Virtual Methods
@@ -158,7 +161,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     {
         int idx = buffList.IndexOf(buff);
         if(idx < 0) return;
-
+        buff.SourceBuff.OnRemove(buff);
         buffList.RemoveAt(idx);
     }
 

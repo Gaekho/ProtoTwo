@@ -21,7 +21,7 @@ public class AllyUnit : BattleUnitBase
     public CharacterData CharacterData => characterData;
     public float CurrentAttack => currentAttack;
     public float CurrentShield => currentShield;
-    public float CurrentSpeed => currentSpeed;
+    public override float CurrentSpeed => currentSpeed;
     public bool IsTurn => isTurn;
     #endregion
 

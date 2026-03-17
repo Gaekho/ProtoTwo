@@ -101,11 +101,11 @@ MonoBehaviour:
   remainTurn: 0
   iconEntry:
   - buffType: 1
-    icon: {fileID: 0}
+    icon: {fileID: 791137111, guid: 567d4874bbf9c384a96217074305f624, type: 3}
   - buffType: 4
-    icon: {fileID: 0}
+    icon: {fileID: 1734192875, guid: 567d4874bbf9c384a96217074305f624, type: 3}
   - buffType: 8
-    icon: {fileID: 0}
+    icon: {fileID: 286001626, guid: 567d4874bbf9c384a96217074305f624, type: 3}
   references:
     version: 2
     RefIds:

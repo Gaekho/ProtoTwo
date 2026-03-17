@@ -10,11 +10,14 @@ public class EnemyUnit : BattleUnitBase
     #region Field
     [Header("Enemy Unit")]
     [SerializeField] private EnemyData enemyData;
+    [SerializeField] private float baseSpeed => enemyData.BaseSpeed;
     [SerializeField] private Canvas myCanvas;
     [SerializeField] private Slider healthSlider;
     [SerializeField] private Image intentIcon;
     [SerializeField] private EnemyPatternData currentPattern;
     #endregion
+
+    public override float CurrentSpeed => baseSpeed;
 
     public void SetProfile(EnemyData enemyData)
     {

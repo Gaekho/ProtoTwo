@@ -20,7 +20,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private HandController handContoller;
     [SerializeField] private DeckData deckData;
 
-    [Header("Characters On Scene")]
+    [Header("Units On Scene")]
     [SerializeField] private GameObject basicCharacter;
     [SerializeField] private Transform allyContainer;
     [SerializeField] private Transform enemyContainer;
@@ -29,32 +29,53 @@ public class BattleManager : MonoBehaviour
 
     [Header("Turn")]
     [SerializeField] private int turn = 0;
-    [SerializeField] private Queue<AllyUnit> turnQ;
+    [SerializeField] private int queueCount = 0;        //큐 카운트 (큐를 채울때마다 누적)
+    [SerializeField] private int totalTurnCount = 0;    // 총 몇번째 턴인지 (유닛이 턴을 시작할때마다 누적)
+    [SerializeField] private Queue<BattleUnitBase> turnQ;
 
     [Header("Temporary Fields")]
     [SerializeField] private List<EnemyData> tempEnemies;
     #endregion
 
+    #region Cache
     public AllyUnit TurnCharacter { private set; get; }
+    public BattleUnitBase CurrentTurnUnit { private set; get; }
     public TurnState CurrentState { private set; get; }
     public IReadOnlyList<AllyUnit> PlayerParty => playerParty;
     public IReadOnlyList<EnemyUnit > EnemyList => enemyList;
-    public UnityEvent onTurnStart;
-    public bool IsResolving {  get;  private set; }
+    public int QueueCount => queueCount;
+    public int TotalTurnCount => totalTurnCount;
+    public bool IsResolving {  private set; get; }
+    #endregion    
     
+    public UnityEvent onTurnStart;
+
     private void Awake()
     {
         Instance = this;
+
         SetAlly();
+        SetEnemy();
+
+        HandController.Instance.SetUp(deckData);
+
+        TurnCharacter = null;
+        CurrentTurnUnit = null;
+        CurrentState = TurnState.None;
+        queueCount = 0;
+        totalTurnCount = 0;
+
         Debug.Log(playerParty[0].CharacterData.name);
         TurnCharacter = playerParty[0];
         TurnCharacter.EnterTurn();
-        SetEnemy();
-        HandController.Instance.SetUp(deckData);
         turn = 0;
     }
+    private void Start()
+    {
+        StartCoroutine(BattleRoutine());
+    }
 
-
+    #region Setup
     private void SetAlly()
     {
         playerParty.Clear();
@@ -78,7 +99,26 @@ public class BattleManager : MonoBehaviour
             enemies[i].SetProfile(tempEnemies[i]);        //레벨 데이터를 통한 에너미 데이터 전달 시 기능하도록 구현.
         }
     }
+    #endregion
 
+    #region TurnQueue
+    private void ReBuildTurnQueue()
+    {
+        //리스트 생성 및 살아있는 유닛 전부 확보
+        List<BattleUnitBase> aliveUnits = new();
+
+        foreach(var ally in playerParty)
+        {
+            if (ally != null && !ally.IsDead)   aliveUnits.Add(ally);
+        }
+        foreach(var enemy in EnemyList)
+        {
+            if (enemy != null && !enemy.IsDead) aliveUnits.Add(enemy);
+        }
+    }
+    #endregion
+
+    #region Buff
     private IEnumerator BuffHookRoutine(BuffTriggerTiming timing, UnitTeam team)
     {
         switch (team)
@@ -105,7 +145,9 @@ public class BattleManager : MonoBehaviour
         }
         yield return new WaitForSeconds(0.05f);
     }
+    #endregion
 
+    #region Unit Dead
     public void EnemyDead(EnemyUnit dead)
     {
         int idx = enemyList.FindIndex(x => x.gameObject == dead.gameObject);
@@ -118,7 +160,9 @@ public class BattleManager : MonoBehaviour
             StartCoroutine(UIManager.Instance.BattleEnd("승리"));
         }
     }
+    #endregion
 
+    #region Resolve
     public IEnumerator ResolveRoutine(IEnumerator routine)
     {
         IsResolving = true;
@@ -126,6 +170,7 @@ public class BattleManager : MonoBehaviour
         IsResolving = false;
         Debug.Log(IsResolving);
     }
+    #endregion
 
     #region Main Routine
     private IEnumerator BattleRoutine()
@@ -189,14 +234,4 @@ public class BattleManager : MonoBehaviour
     }
     #endregion
 
-
-    private void Start()
-    {
-        StartCoroutine(BattleRoutine());
-    }
-
-    void Update()
-    {
-        
-    }
 }
