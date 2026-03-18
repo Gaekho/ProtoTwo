@@ -1,297 +1,597 @@
-using Proto2.Enums;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
+using Proto2.Enums;
 
-public class EventGenerator : MonoBehaviour
+/// <summary>
+/// ½½·¹ÀÌ ´õ ½ºÆÄÀÌ¾î½Ä "¸Ê °ñ°Ý" »ý¼º±â
+/// 
+/// ÀÌ ½ºÅ©¸³Æ®´Â ¾Æ·¡¸¸ ´ã´çÇÕ´Ï´Ù.
+/// 1. Ãþº° ³ëµå »ý¼º
+/// 2. ½ÃÀÛÁ¡ ¿©·¯ °³¿¡¼­ À§Ãþ±îÁö °æ·Î »ý¼º
+/// 3. ±³Â÷¸¦ ÃÖ¼ÒÈ­ÇÏ¸ç ¿¬°á
+/// 4. ¿¬°áµÇÁö ¾ÊÀº ³ëµå Á¦°Å
+/// 5. ÃÖ»óÃþ À§¿¡ º¸½º ³ëµå 1°³ Ãß°¡
+/// 
+/// ÁÖÀÇ:
+/// - "¸î Ãþ¿¡ ¾î¶² ³ëµå Å¸ÀÔÀÌ ³ª¿Â´Ù" °°Àº ±ÔÄ¢Àº ¿©±â¼­ Ã³¸®ÇÏÁö ¾Ê½À´Ï´Ù.
+/// - ¸ðµç ÀÏ¹Ý ³ëµå´Â ±âº» ÇÁ¸®ÆÕÀ¸·Î »ý¼ºÇÕ´Ï´Ù.
+/// - ³ëµå Å¸ÀÔ ¹èÁ¤Àº ÀÌÈÄ º°µµ ½Ã½ºÅÛ¿¡¼­ Ã³¸®ÇÏµµ·Ï ºÐ¸®ÇÕ´Ï´Ù.
+/// </summary>
+public class MapGenerator : MonoBehaviour
 {
     [Header("Level Data")]
-    //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    [SerializeField] private int floors = 10;
-    //ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    [SerializeField] private int minRoom = 1;
-    //ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    [SerializeField] private int maxRoom = 4;
-    //ï¿½Ê¼ï¿½ ï¿½ï¿½ï¿½
-    [SerializeField] private EssentialNode essential;
-    //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    [SerializeField] private NodeBase[] nodes;
-    //Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½Æ®, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½)
-    [SerializeField] private int specialNodes = 2;
+    [SerializeField] private int floors = 10;          // ÀÏ¹Ý Ãþ ¼ö (º¸½ºÃþ Á¦¿Ü)
+    [SerializeField] private int minNode = 1;          // Ãþ´ç ÃÖ¼Ò ³ëµå ¼ö
+    [SerializeField] private int maxNode = 4;          // Ãþ´ç ÃÖ´ë ³ëµå ¼ö
+    [SerializeField] private NodeBase[] nodes;         // ³ëµå ÇÁ¸®ÆÕ ¸ñ·Ï
+    [SerializeField] private int specialNodes = 2;      //Æ¯¼ö ³ëµå(º¸½º, ¿¤¸®Æ® µî)
+    [SerializeField] private int numOfStartingNodes = 2;     // ½ÃÀÛ °æ·Î °³¼ö ¿ëµµ·Î »ç¿ë
 
     [Header("Map Data")]
-    //ï¿½ï¿½å¸¦ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    [SerializeField] private Transform buttonPivot;
-    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½å°£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    [SerializeField] private float nodeGap = 10.0f;
-    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    [SerializeField] private float floorGap = 10.0f;
+    [SerializeField] private Transform buttonPivot;    // ³ëµå°¡ »ý¼ºµÉ ºÎ¸ð
+    [SerializeField] private float nodeGap = 30f;      // °°Àº Ãþ ³» ³ëµå °£°Ý
+    [SerializeField] private float floorGap = 30f;     // Ãþ °£ °£°Ý
+    [SerializeField] private List<EssentialNode> essentialNodeList = new List<EssentialNode>();     //ÇÊ¼ö·Î µîÀåÇÏ´Â ³ëµå Á¤º¸
 
-    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    private int numOfNextFloorNode = 0;
-    //ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    private List<NodeBase> lastFloorNode = new List<NodeBase>();
-    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½Ë°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
-    private List<NodeBase> currentNodes = new List<NodeBase>();
+    // »ý¼ºµÈ ³ëµå °ü¸®¿ë
+    private Dictionary<Vector2Int, NodeBase> nodeMap = new();
+    private readonly List<NodeBase> generatedNodes = new();
+    private readonly List<Edge> edges = new();
 
-    //ï¿½Ê¿ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½
-    private List<NodeBase>[] nodeTiles;
-    private List<Vector2Int>[] nodeEdges;
+    private NodeBase bossNode;
 
-    private void Awake()
+    public Dictionary<Vector2Int, NodeBase> GetNodes() {  return nodeMap; }
+    public int GetMaxRoom() { return maxNode; }
+
+    /// <summary>
+    /// ¼± ¿¬°á Á¤º¸¸¦ ÀúÀåÇÏ´Â °£´ÜÇÑ ±¸Á¶Ã¼
+    /// ±³Â÷ °Ë»ç¿¡ »ç¿ëÇÕ´Ï´Ù.
+    /// </summary>
+    private struct Edge
     {
-        GenerateMap();
+        public Vector2Int from;
+        public Vector2Int to;
+
+        public Edge(Vector2Int from, Vector2Int to)
+        {
+            this.from = from;
+            this.to = to;
+        }
     }
 
+    [ContextMenu("Generate Map")]
     public void GenerateMap()
     {
-        Vector3 basePosition = buttonPivot.position;
-        //ï¿½Ê¼ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß±ï¿½ ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-        for (int i = 1; i <= floors; i++)
-        {
-            GenerateFloor(i, buttonPivot,basePosition);
-            basePosition.y += floorGap;
-        }
+        ClearMap();
+        ValidateSettings();
 
-        //InitializeMap();
-        //GeneratePaths();
+        // 1. ¸ÕÀú ¿©·¯ °³ÀÇ ½ÃÀÛ °æ·Î¸¦ ¸¸µé¾î ÀüÃ¼ ¸ÊÀÇ »À´ë¸¦ ±¸¼º
+        GeneratePaths();
+
+        // 2. °æ·Î¿Í ÀüÇô ¿¬°áµÇÁö ¾ÊÀº ³ëµå Á¦°Å
+        RemoveIsolatedNodes();
+
+        // 3. ÃÖ»óÃþ À§¿¡ º¸½º ³ëµå »ý¼º ÈÄ ¿¬°á
+        CreateBossNode();
+
+        Debug.Log("Map Generate Complete");
     }
 
-    private void InitializeMap()
+    [ContextMenu("Clear Map")]
+    public void ClearMap()
     {
-        nodeTiles = new List<NodeBase>[floors];
-        nodeEdges = new List<Vector2Int>[floors - 1];
-
-        for(int i = 0; i < floors; i++)
+        foreach (Transform child in buttonPivot)
         {
-            nodeTiles[i] = new List<NodeBase>();
-
-            if((i + 1) == essential.GetFloor())
-            {
-                for (int j = 0; j < maxRoom; j++)
-                {
-                    nodeTiles[i].Add(MatchNode(essential.GetNodeType()));
-                    nodeTiles[i][j].SetPosition(j, i);
-                }
-            }
-            else
-            {
-                for(int j = 0;j < maxRoom; j++)
-                {
-                    int randomRoon = Random.Range(0, nodes.Length - specialNodes);
-                    nodeTiles[i].Add(nodes[randomRoon]);
-                    nodeTiles[i][j].SetPosition(j, i);
-                }
-            }
+            DestroyImmediate(child.gameObject);
         }
+
+        nodeMap.Clear();
+        generatedNodes.Clear();
+        edges.Clear();
+        bossNode = null;
     }
 
+    /// <summary>
+    /// ¼³Á¤°ª º¸Á¤
+    /// </summary>
+    private void ValidateSettings()
+    {
+        floors = Mathf.Max(2, floors);
+        minNode = Mathf.Max(1, minNode);
+        maxNode = Mathf.Max(minNode, maxNode);
+        numOfStartingNodes = Mathf.Clamp(numOfStartingNodes, 1, maxNode);
+    }
+
+    // ------------------------------------------------------------------
+    // 1. °æ·Î »ý¼º
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// ½ÃÀÛÁ¡ ¿©·¯ °³¸¦ »Ì°í,
+    /// °¢ ½ÃÀÛÁ¡¿¡¼­ ¸Ç À§Ãþ±îÁö ÇÑ ÁÙ °æ·Î¸¦ »ý¼ºÇÕ´Ï´Ù.
+    /// ÀÌÈÄ °¢ ÃþÀÇ ÃÖ¼Ò ³ëµå ¼ö¸¦ ¸¸Á·ÇÏµµ·Ï º¸°­ÇÕ´Ï´Ù.
+    /// </summary>
     private void GeneratePaths()
     {
-        List<NodeBase> firstFloorStarts = new List<NodeBase>();
+        List<int> startColumns = GetUniqueStartColumns(numOfStartingNodes);
 
-        for (int p = 0; p < maxRoom; p++)
+        // ½ÃÀÛÁ¡¸¶´Ù 1°³¾¿ À§·Î ¿Ã¶ó°¡´Â °æ·Î »ý¼º
+        foreach (int startX in startColumns)
         {
-            int currentX = Random.Range(0, maxRoom);
+            int currentX = startX;
+            //GetOrCreateNode(new Vector2Int(currentX, 0));
 
-            NodeBase currentNode = nodeTiles[0][currentX];
-            currentNode.SetConnected();
-            if (p == 0 || p == 1) firstFloorStarts.Add(currentNode);
-
-            for (int f = 0; f < floors - 1; f++)
+            for (int y = 0; y < floors - 1; y++)
             {
-                List<int> validNextX = new List<int>();
-                int nodeX = (int)currentNode.GetPosition().x;
+                int nextX = PickNextColumn(currentX, y);
 
-                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ (x-1, x, x+1) Å½ï¿½ï¿½
-                for (int dx = -1; dx <= 1; dx++)
-                {
-                    int nextX = nodeX + dx;
-                    if (nextX >= 0 && nextX < floors)
-                    {
-                        // ï¿½ï¿½Ä¢: ï¿½ï¿½ï¿½(ï¿½ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-                        if (!IsCrossing(f, nodeX, nextX))
-                        {
-                            validNextX.Add(nextX);
-                        }
-                    }
-                }
+                Vector2Int from = new Vector2Int(currentX, y);
+                Vector2Int to = new Vector2Int(nextX, y + 1);
 
-                if (validNextX.Count == 0)
-                    validNextX.Add(nodeX); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ (ï¿½ï¿½ï¿½ï¿½)
+                NodeBase fromNode = GetOrCreateNode(from);
+                NodeBase toNode = GetOrCreateNode(to);
 
-                int chosenX = validNextX[Random.Range(0, validNextX.Count)];
-                NodeBase nextNode = nodeTiles[f + 1][chosenX];
-
-                // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-                if (!currentNode.nextNodes.Contains(nextNode))
-                {
-                    currentNode.nextNodes.Add(nextNode);
-                    nextNode.prevNodes.Add(currentNode);
-                    nodeEdges[f].Add(new Vector2Int(nodeX, chosenX));
-                }
-
-                nextNode.SetConnected();
-                currentNode = nextNode;
+                ConnectNodes(fromNode, toNode);
+                currentX = nextX;
             }
         }
+
+        // °¢ ÃþÀÌ ÃÖ¼Ò/ÃÖ´ë ¹æ ¼ö ¹üÀ§¿¡ µé¾î¿Àµµ·Ï ³ëµå¸¦ º¸°­
+        //EnsureFloorRoomCounts();
+
+        // ½ÃÀÛÃþ¿¡¼­ µµ´Þ ºÒ°¡´ÉÇÑ ³ëµå Á¦°Å
+        RemoveUnreachableNodes();
     }
 
-    private bool IsCrossing(int floor, int fromX, int toX)
+    /// <summary>
+    /// ½ÃÀÛÃþ¿¡¼­ »ç¿ëÇÒ ½ÃÀÛ x ÁÂÇ¥¸¦ Áßº¹ ¾øÀÌ »Ì½À´Ï´Ù.
+    /// </summary>
+    private List<int> GetUniqueStartColumns(int count)
     {
-        if (nodeEdges.Length != 0)
-        {
-            foreach (var edge in nodeEdges[floor])
-            {
-                int eFrom = edge.x;
-                int eTo = edge.y;
+        List<int> pool = Enumerable.Range(0, maxNode)
+            .OrderBy(_ => Random.value)
+            .ToList();
 
-                if (fromX < eFrom && toX > eTo) return true;
-                if (fromX > eFrom && toX < eTo) return true;
+        return pool.Take(count).ToList();
+    }
+
+    /// <summary>
+    /// ÇöÀç Ä­¿¡¼­ ´ÙÀ½ ÃþÀ¸·Î ÀÌµ¿ÇÒ x ÁÂÇ¥¸¦ ¼±ÅÃÇÕ´Ï´Ù.
+    /// ±âº»ÀûÀ¸·Î ÁÂ, Áß¾Ó, ¿ì Áß ÇÏ³ª·Î¸¸ ÀÌµ¿ÇÕ´Ï´Ù.
+    /// °¡´ÉÇÏ¸é ±âÁ¸ ¼±°ú ±³Â÷ÇÏÁö ¾Ê´Â ÈÄº¸¸¦ ¿ì¼± ¼±ÅÃÇÕ´Ï´Ù.
+    /// </summary>
+    private int PickNextColumn(int currentX, int currentY)
+    {
+        List<int> candidates = new();
+
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            int nextX = currentX + dx;
+            if (nextX < 0 || nextX >= maxNode)
+                continue;
+
+            Edge candidate = new Edge(
+                new Vector2Int(currentX, currentY),
+                new Vector2Int(nextX, currentY + 1)
+            );
+
+            if (!IsCrossing(candidate))
+            {
+                candidates.Add(nextX);
             }
         }
+
+        // ±³Â÷¸¦ ÇÇÇÒ ¼ö ÀÖ´Â ÈÄº¸°¡ ¾øÀ¸¸é ±×³É ÀÎÁ¢ Ä­ Çã¿ë
+        if (candidates.Count == 0)
+        {
+            //for (int dx = -1; dx <= 1; dx++)
+            //{
+            //    int nextX = currentX + dx;
+            //    if (nextX < 0 || nextX >= horizontalSlots)
+            //        continue;
+
+            //    candidates.Add(nextX);
+            //}
+            candidates.Add(currentX);
+        }
+
+        return candidates[Random.Range(0, candidates.Count)];
+    }
+
+    /// <summary>
+    /// °°Àº Ãþ¿¡¼­ ½ÃÀÛÇØ¼­ ´ÙÀ½ ÃþÀ¸·Î °¡´Â µÎ ¼±ÀÌ XÀÚ ÇüÅÂ·Î ±³Â÷ÇÏ´ÂÁö °Ë»çÇÕ´Ï´Ù.
+    /// </summary>
+    private bool IsCrossing(Edge candidate)
+    {
+        foreach (Edge existing in edges)
+        {
+            // °°Àº Ãþ¿¡¼­ ½ÃÀÛÇÏ´Â °£¼±³¢¸®¸¸ ±³Â÷ °Ë»ç
+            if (existing.from.y != candidate.from.y)
+                continue;
+
+            bool crosses =
+                (candidate.from.x < existing.from.x && candidate.to.x > existing.to.x) ||
+                (candidate.from.x > existing.from.x && candidate.to.x < existing.to.x);
+
+            if (crosses)
+                return true;
+        }
+
         return false;
     }
 
-    private void AssignNodeTypes()
+    /// <summary>
+    /// °¢ ÃþÀÇ ³ëµå ¼ö°¡ minRoom ~ maxRoom »çÀÌ°¡ µÇµµ·Ï º¸°­ÇÕ´Ï´Ù.
+    /// 
+    /// »õ ³ëµå¸¦ ¸¸µé¸é ¹Ýµå½Ã ÀÌÀü Ãþ ¶Ç´Â ´ÙÀ½ Ãþ°ú ¿¬°áÀ» ½ÃµµÇÕ´Ï´Ù.
+    /// ±×·¡¾ß °í¸³ ³ëµå°¡ µÇÁö ¾Ê½À´Ï´Ù.
+    /// </summary>
+    private void EnsureFloorRoomCounts()
     {
-        for (int f = 0; f < floors; f++)
+        for (int currentFloor = 0; currentFloor < floors; currentFloor++)
         {
-            foreach (var node in nodeTiles[f])
+            //int targetCount = Random.Range(minRoom, maxRoom + 1);
+            //List<NodeBase> floorNodes = GetNodesAtFloor(currentFloor);
+
+            //while (floorNodes.Count < targetCount)
+            //{
+            //    int x = Random.Range(0, horizontalSlots);
+            //    Vector2Int pos = new Vector2Int(x, currentFloor);
+
+            //    if (nodeMap.ContainsKey(pos))
+            //    {
+            //        floorNodes = GetNodesAtFloor(currentFloor);
+            //        continue;
+            //    }
+
+            //    NodeBase newNode = GetOrCreateNode(pos);
+
+            //    // ¾Æ·¡Ãþ°ú ¿¬°á
+            //    if (currentFloor > 0)
+            //    {
+            //        TryConnectToClosestFloor(newNode, currentFloor - 1, connectFromOtherToThis: true);
+            //    }
+
+            //    // À§Ãþ°ú ¿¬°á
+            //    if (currentFloor < floors - 1)
+            //    {
+            //        TryConnectToClosestFloor(newNode, currentFloor + 1, connectFromOtherToThis: false);
+            //    }
+
+            //    floorNodes = GetNodesAtFloor(currentFloor);
+            //}
+
+            int targetCount = Random.Range(minNode, maxNode + 1);
+            int currentCount = GetNodesAtFloor(currentFloor).Count;
+
+            while (currentCount < targetCount)
             {
-                if (!node.IsConnected()) {  continue; }
+                int x = Random.Range(0, maxNode);
+                Vector2Int pos = new Vector2Int(x, currentFloor);
 
-                NodeBase newNode = Instantiate(node, buttonPivot);
-                Vector3 basePosition = buttonPivot.position;
-                basePosition += new Vector3((newNode.GetPosition().x * nodeGap), (newNode.GetPosition().y * floorGap), 0);
-                newNode.transform.position = basePosition;
-            }
-        }
-    }
-
-    
-
-    // --- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½È­ï¿½ï¿½ ï¿½Úµï¿½ ---
-    private void OnDrawGizmos()
-    {
-        if (nodeTiles == null) return;
-
-        float spacingX = 1.5f;
-        float spacingY = 2.0f;
-
-        for (int f = 0; f < floors; f++)
-        {
-            foreach (var node in nodeTiles[f])
-            {
-                if (!node.IsConnected()) continue;
-
-                Vector3 pos = new Vector3(node.GetPosition().x * spacingX - (floors * spacingX / 2f), f * spacingY, 0);
-
-                // ï¿½ï¿½ï¿½á¼± ï¿½×¸ï¿½ï¿½ï¿½
-                Gizmos.color = Color.white;
-                foreach (var next in node.nextNodes)
+                if (nodeMap.ContainsKey(pos))
                 {
-                    Vector3 nextPos = new Vector3(next.GetPosition().x * spacingX - (floors * spacingX / 2f), next.GetPosition().y * spacingY, 0);
-                    Gizmos.DrawLine(pos, nextPos);
+                    continue;
                 }
+
+                NodeBase newNode = GetOrCreateNode(pos);
+
+                if (currentFloor > 0)
+                {
+                    TryConnectToClosestFloor(newNode, currentFloor - 1, true);
+                }
+
+                if (currentFloor < floors - 1)
+                {
+                    TryConnectToClosestFloor(newNode, currentFloor + 1, false);
+                }
+
+                currentCount++;
             }
         }
     }
 
-    private void GenerateFloor(int currentFloor, Transform pivot, Vector3 basePosition)
+    /// <summary>
+    /// ÁöÁ¤ÇÑ ÃþÀÇ ³ëµåµé Áß, source¿Í xÃàÀ¸·Î °¡Àå °¡±î¿î ³ëµå¿Í ¿¬°áÇÕ´Ï´Ù.
+    /// </summary>
+    private void TryConnectToClosestFloor(NodeBase source, int targetFloor, bool connectFromOtherToThis)
     {
-        numOfNextFloorNode = Random.Range(minRoom, maxRoom);
+        List<NodeBase> candidates = GetNodesAtFloor(targetFloor);
+        if (candidates.Count == 0)
+            return;
 
-        if (currentFloor == essential.GetFloor())
+        NodeBase nearest = candidates
+            .OrderBy(n => Mathf.Abs(n.GetPosition().x - source.GetPosition().x))
+            .FirstOrDefault();
+
+        if (nearest == null)
+            return;
+
+        if (connectFromOtherToThis)
         {
-            GenerateNode(essential.GetNodeType(), numOfNextFloorNode, pivot, basePosition);
+            ConnectNodes(nearest, source);
         }
         else
         {
-            int nodeTypes = nodes.Length - specialNodes;
-            int randomNode = Random.Range(0, nodeTypes);
-            GenerateNode((NodeType)randomNode, numOfNextFloorNode, pivot, basePosition);
-        }
-
-        foreach (NodeBase node in lastFloorNode)
-        {
-            ConnectNode(node);
-        }
-
-        //Ã¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­
-        if (currentFloor == 1)
-        {
-            foreach (NodeBase node in currentNodes)
-            {
-                node.SetActivate();
-            }
-        }
-
-        lastFloorNode.Clear();
-        lastFloorNode = currentNodes;
-        currentNodes.Clear();
-    }
-
-    private void GenerateNode(NodeType nodeType, int nodeAmount, Transform pivot, Vector3 basePosition)
-    {
-        for (int i = 0; i < nodeAmount; i++)
-        {
-            NodeBase makingNode = MatchNode(nodeType);
-            if (makingNode != null)
-            {
-                NodeBase newNode = Instantiate(makingNode, pivot);
-                newNode.transform.position = basePosition;
-                currentNodes.Add(newNode);
-            }
-            basePosition += new Vector3(nodeGap, 0, 0);
+            ConnectNodes(source, nearest);
         }
     }
 
-    private NodeBase MatchNode(NodeType nodeType)
+    // ------------------------------------------------------------------
+    // 2. ³ëµå »ý¼º / ¿¬°á
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// grid ÁÂÇ¥¿¡ ÇØ´çÇÏ´Â ³ëµå°¡ ÀÖÀ¸¸é ¹ÝÈ¯ÇÏ°í,
+    /// ¾øÀ¸¸é »õ·Î »ý¼ºÇÕ´Ï´Ù.
+    /// </summary>
+    private NodeBase GetOrCreateNode(Vector2Int gridPos)
     {
-        for(int i  = 0; i < nodes.Length; i++)
+        if (nodeMap.TryGetValue(gridPos, out NodeBase existing))
         {
-            if(nodeType == nodes[i].GetNodeType())
+            return existing;
+        }
+
+        NodeBase prefab = GetRandomNode(gridPos.y);
+        if (prefab == null)
+        {
+            Debug.LogError("±âº» ³ëµå ÇÁ¸®ÆÕÀÌ ¾ø½À´Ï´Ù.");
+            return null;
+        }
+
+        NodeBase created = Instantiate(prefab, buttonPivot);
+        created.name = $"Node_{gridPos.x}_{gridPos.y}";
+
+        created.SetPosition(gridPos.x, gridPos.y);
+        created.SetNodeIndex(generatedNodes.Count);
+
+        RectTransform rect = created.GetComponent<RectTransform>();
+        Vector2 localPos = GridToLocalPosition(gridPos.x, gridPos.y);
+
+        if (rect != null)
+            rect.anchoredPosition = localPos;
+        else
+            created.transform.localPosition = localPos;
+
+        created.nextNodes ??= new List<NodeBase>();
+        created.prevNodes ??= new List<NodeBase>();
+
+        nodeMap.Add(gridPos, created);
+        generatedNodes.Add(created);
+
+        return created;
+    }
+
+    /// <summary>
+    /// µÎ ³ëµå¸¦ ´Ü¹æÇâÀ¸·Î ¿¬°áÇÕ´Ï´Ù.
+    /// from -> to
+    /// </summary>
+    private void ConnectNodes(NodeBase from, NodeBase to)
+    {
+        if (from == null || to == null)
+            return;
+
+        if (from.nextNodes.Contains(to))
+            return;
+
+        from.nextNodes.Add(to);
+        to.prevNodes.Add(from);
+
+        from.SetConnected();
+        to.SetConnected();
+
+        edges.Add(new Edge(
+            new Vector2Int((int)from.GetPosition().x, (int)from.GetPosition().y),
+            new Vector2Int((int)to.GetPosition().x, (int)to.GetPosition().y)
+        ));
+    }
+
+    /// <summary>
+    /// grid ÁÂÇ¥¸¦ ½ÇÁ¦ ·ÎÄÃ ÁÂÇ¥·Î º¯È¯ÇÕ´Ï´Ù.
+    /// °¡¿îµ¥ Á¤·Ä ÇüÅÂ·Î ¹èÄ¡ÇÕ´Ï´Ù.
+    /// </summary>
+    private Vector2 GridToLocalPosition(int x, int y)
+    {
+        float width = (maxNode - 1) * nodeGap;
+        float startX = -width * 0.5f;
+
+        float posX = startX + x * nodeGap;
+        float posY = y * floorGap;
+
+        return new Vector2(posX, posY);
+    }
+
+    // ------------------------------------------------------------------
+    // 3. Á¤¸® ´Ü°è
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// ¿ÏÀüÈ÷ °í¸³µÈ ³ëµå Á¦°Å
+    /// prevµµ ¾ø°í nextµµ ¾ø´Â ³ëµå Á¦°Å
+    /// </summary>
+    private void RemoveIsolatedNodes()
+    {
+        List<NodeBase> removeTargets = generatedNodes
+            .Where(n => n.prevNodes.Count == 0 && n.nextNodes.Count == 0)
+            .ToList();
+
+        foreach (NodeBase node in removeTargets)
+        {
+            RemoveNode(node);
+        }
+    }
+
+    /// <summary>
+    /// ½ÃÀÛÃþ¿¡¼­ ½ÇÁ¦·Î µµ´Þ °¡´ÉÇÑ ³ëµå¸¸ ³²±é´Ï´Ù.
+    /// </summary>
+    private void RemoveUnreachableNodes()
+    {
+        List<NodeBase> startNodes = GetNodesAtFloor(0);
+        HashSet<NodeBase> reachable = new();
+        Queue<NodeBase> queue = new();
+
+        foreach (NodeBase node in startNodes)
+        {
+            reachable.Add(node);
+            queue.Enqueue(node);
+        }
+
+        while (queue.Count > 0)
+        {
+            NodeBase current = queue.Dequeue();
+
+            foreach (NodeBase next in current.nextNodes)
             {
-                return nodes[i];
+                if (next == null)
+                    continue;
+
+                if (reachable.Add(next))
+                {
+                    queue.Enqueue(next);
+                }
             }
         }
+
+        List<NodeBase> removeTargets = generatedNodes
+            .Where(n => !reachable.Contains(n))
+            .ToList();
+
+        foreach (NodeBase node in removeTargets)
+        {
+            RemoveNode(node);
+        }
+    }
+
+    /// <summary>
+    /// ³ëµå¸¦ ¸Ê¿¡¼­ Á¦°ÅÇÕ´Ï´Ù.
+    /// ¿¬°á Á¤º¸µµ °°ÀÌ Á¤¸®ÇÕ´Ï´Ù.
+    /// </summary>
+    private void RemoveNode(NodeBase node)
+    {
+        foreach (NodeBase prev in node.prevNodes)
+        {
+            if (prev != null)
+                prev.nextNodes.Remove(node);
+        }
+
+        foreach (NodeBase next in node.nextNodes)
+        {
+            if (next != null)
+                next.prevNodes.Remove(node);
+        }
+
+        Vector2Int key = new Vector2Int((int)node.GetPosition().x, (int)node.GetPosition().y);
+
+        nodeMap.Remove(key);
+        generatedNodes.Remove(node);
+
+        DestroyImmediate(node.gameObject);
+    }
+
+    // ------------------------------------------------------------------
+    // 4. º¸½º ³ëµå »ý¼º
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// ¸¶Áö¸· ÀÏ¹Ý Ãþ À§¿¡ º¸½º ³ëµå¸¦ ÇÏ³ª »ý¼ºÇÏ°í,
+    /// ÃÖ»óÃþÀÇ ¸ðµç ³ëµå¸¦ º¸½º ³ëµå¿¡ ¿¬°áÇÕ´Ï´Ù.
+    /// </summary>
+    private void CreateBossNode()
+    {
+        List<NodeBase> topFloorNodes = GetNodesAtFloor(floors - 1);
+        if (topFloorNodes.Count == 0)
+            return;
+
+        NodeBase bossPrefab = GetBossNodePrefab();
+        if (bossPrefab == null)
+        {
+            Debug.LogWarning("Boss ³ëµå ÇÁ¸®ÆÕÀÌ ¾ø½À´Ï´Ù.");
+            return;
+        }
+
+        bossNode = Instantiate(bossPrefab, buttonPivot);
+        bossNode.name = "Boss_Node";
+
+        // º¸½º ³ëµå´Â floors ¹øÂ° ÁÙ¿¡ À§Ä¡ (ÀÏ¹Ý Ãþº¸´Ù ÇÑ Ä­ À§)
+        bossNode.SetPosition(maxNode / 2, floors);
+        bossNode.SetNodeIndex(generatedNodes.Count);
+
+        RectTransform rect = bossNode.GetComponent<RectTransform>();
+        Vector2 bossPos = new Vector2(0f, floors * floorGap);
+
+        if (rect != null)
+            rect.anchoredPosition = bossPos;
+        else
+            bossNode.transform.localPosition = bossPos;
+
+        bossNode.nextNodes ??= new List<NodeBase>();
+        bossNode.prevNodes ??= new List<NodeBase>();
+
+        generatedNodes.Add(bossNode);
+
+        foreach (NodeBase top in topFloorNodes)
+        {
+            ConnectNodes(top, bossNode);
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // 5. ÇïÆÛ
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// Æ¯Á¤ ÃþÀÇ ³ëµå ¸ñ·Ï ¹ÝÈ¯
+    /// </summary>
+    private List<NodeBase> GetNodesAtFloor(int floor)
+    {
+        return generatedNodes
+            .Where(n => Mathf.RoundToInt(n.GetPosition().y) == floor)
+            .OrderBy(n => n.GetPosition().x)
+            .ToList();
+    }
+
+    /// <summary>
+    /// ÀÏ¹Ý ³ëµå¿ë ±âº» ÇÁ¸®ÆÕ ¹ÝÈ¯
+    /// 
+    /// ÇöÀç´Â nodes[0]À» ±âº» ³ëµå ÇÁ¸®ÆÕÀ¸·Î »ç¿ëÇÕ´Ï´Ù.
+    /// ÃßÈÄ ÇÊ¿äÇÏ¸é º°µµ ÇÊµå·Î ºÐ¸®ÇÏ´Â °ÍÀÌ ´õ ¾ÈÀüÇÕ´Ï´Ù.
+    /// </summary>
+    private NodeBase GetRandomNode(int currentFloor)
+    {
+        if (nodes == null || nodes.Length == 0)
+            return null;
+
+        foreach(EssentialNode essential in essentialNodeList)
+        {
+            if(essential.GetFloor() == currentFloor)
+            {
+                return nodes[(int)essential.GetNodeType()];
+            }
+        }
+
+        int nodeIndex = Random.Range(0, (nodes.Length - specialNodes));
+
+        return nodes[nodeIndex];
+    }
+
+    /// <summary>
+    /// º¸½º ³ëµå ÇÁ¸®ÆÕ ¹ÝÈ¯
+    /// 
+    /// ÇöÀç´Â nodes ¹è¿­ ¾È¿¡¼­ NodeType.Boss¸¦ °¡Áø ÇÁ¸®ÆÕÀ» Ã£½À´Ï´Ù.
+    /// ¾øÀ¸¸é null ¹ÝÈ¯.
+    /// </summary>
+    private NodeBase GetBossNodePrefab()
+    {
+        if (nodes == null)
+            return null;
+
+        foreach (NodeBase node in nodes)
+        {
+            if (node != null && node.GetNodeType() == NodeType.BossBattle)
+                return node;
+        }
+
         return null;
-    }
-
-    private void ConnectNode(NodeBase node)
-    {
-        //int numOfNodeToConnect = Random.Range(1, numOfNextFloorNode);
-        //int index = node.GetNodeIndex();
-        //int changeIndex = 0;
-        //bool bIsNeighobrChecked = false;
-
-        //for(int i = 0; i < numOfNodeToConnect; i++)
-        //{
-        //    if (bIsNeighobrChecked)
-        //    {
-        //        changeIndex++;
-        //    }
-        //    else
-        //    {
-        //        changeIndex *= -1;
-        //    }
-
-        //    int indexToConnect = index + changeIndex;
-
-        //    if (indexToConnect >= 0)
-        //    {
-        //        node.ConnectNode(currentNodes[indexToConnect]);
-        //        bIsNeighobrChecked = !bIsNeighobrChecked;
-        //    }
-        //    else
-        //    {
-        //        indexToConnect *= -1;
-        //        node.ConnectNode(currentNodes[indexToConnect]);
-        //        bIsNeighobrChecked = true;
-        //    }
-        //    i++;
-        //}
     }
 }

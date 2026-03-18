@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class UnknownNode : NodeBase
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
+    [Header("Incounter")]
+    [SerializeField] private List<UnknownIncounter> incounters;
 
     public override void OnClick(string sceneName)
     {
         base.OnClick(sceneName);
         Debug.Log("Unknown Node Access");
+    }
+
+    private UnknownIncounter RandomIncounter()
+    {
+        int index = Random.Range(0, incounters.Count);
+        return incounters[index];
     }
 }
