@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
+  m_Name: 2
+  m_EditorClassIdentifier: 
+  id: 2
+  cardName: "\uC601\uD63C \uAC11\uC637"
+  type: 1
+  color: 1
+  cardText: "\uB300\uC0C1\uC5D0\uAC8C \uBC29\uC5B4\uB3C4\uB97C 10\uBD80\uC5EC\uD55C\uB2E4."
+  cardSprite: {fileID: -1606494161, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
+  dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
+  cardAnimTrigger: 0
+  usableWithoutTarget: 0
+  cardTarget: 1
+  activeConditionList:
+  - condition: 1
+    value: 3
+  banishAfterUsed: 0
+  cardActionList:
+  - rid: 3789920145637376003
+  references:
+    version: 2
+    RefIds:
+    - rid: 3789920145637376003
+      type: {class: AddArmorAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        armorAmount: 10

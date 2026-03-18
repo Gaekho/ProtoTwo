@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//v0.02 / 2026.03.09 / 14:31
+//변경 요약 : BanishAfterUsed 참조 추가로 소멸 구현.
 public class HandController : MonoBehaviour
 {
-    #region Singlton
+    #region Singleton
     private HandController() { }
     public static HandController Instance { get; private set; }
     #endregion
@@ -40,11 +42,13 @@ public class HandController : MonoBehaviour
         //SetUp();
     }
 
-    public void SetUp()
+    public void SetUp(DeckData deck)
     {
+        deckData = deck;
         currentDeck = new List<CardData>(deckData.DeckList);
         Debug.Log("Deck Ready");
-        DrawCard(5);
+        ShuffleDeck();
+        DrawCard(3);
     }
 
     public void DrawCard(int value)
@@ -86,7 +90,14 @@ public class HandController : MonoBehaviour
         CardInstance removed = currentHand[idx];
         currentHand.RemoveAt(idx);
 
-        currentGraveyard.Add(removed);
+        if (removed.cardData.BanishAfterUsed)
+        {
+            currentBanished.Add(removed);
+        }
+        else
+        {
+            currentGraveyard.Add(removed);
+        }
 
         Destroy(view.gameObject);
         SortCard();
@@ -114,7 +125,7 @@ public class HandController : MonoBehaviour
 
     public void SortCard()
     {
-        int count = currentHand.Count;  Debug.Log("Now Card Count in Hand" + spawnParent.childCount);
+        int count = currentHand.Count;  //Debug.Log("Now Card Count in Hand" + spawnParent.childCount);
         if (count == 0) return;
 
         for(int i = 0; i<spawnParent.childCount; i++)
@@ -125,18 +136,9 @@ public class HandController : MonoBehaviour
             card.localPosition = targetPosition;
         }
     }
-}
 
-
-[System.Serializable]
-public class CardInstance
-{
-    public int id;
-    public CardData cardData;
-
-    public CardInstance(int id, CardData cardData)
+    public void TurnOffHand()
     {
-        this.id = id;
-        this.cardData = cardData;
+        spawnParent.gameObject.SetActive(false);
     }
 }

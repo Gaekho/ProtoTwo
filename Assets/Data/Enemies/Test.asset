@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b576987f6a9b34292963a88d6e3f13, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: 
+  enemyName: 
+  enemyDescription: 
+  maxHealth: 0
+  baseSpeed: 0
+  enemySprite: {fileID: 0}
+  animatorController: {fileID: 0}
+  patternList:
+  - patternName: "\uBC84\uD504 \uC5BB\uAE30"
+    patternType: 2
+    intentIcon: {fileID: 485272125, guid: ea7de6defccb7054e830650d2736518a, type: 3}
+    patternActionList:
+    - rid: 3789920081040375808
+  references:
+    version: 2
+    RefIds:
+    - rid: 283199280134488070
+      type: {class: PoisonDebuff, ns: , asm: Assembly-CSharp}
+      data:
+        buffType: 6
+        isDebuff: 1
+        buffName: Poison
+        description: Get 1 damages on start of turn.
+        triggerTiming: 3
+        duration: 1
+        reduceTiming: 2
+    - rid: 3789920081040375808
+      type: {class: ApplyBuffPatternAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 1
+        buff:
+          rid: 283199280134488070

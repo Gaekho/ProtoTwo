@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
+  m_Name: 11
+  m_EditorClassIdentifier: 
+  id: 11
+  cardName: "\uD5E4\uB4DC \uC0F7"
+  type: 1
+  color: 2
+  cardText: "\uB300\uC0C1\uC5D0\uAC8C \uD53C\uD574\uB97C 15 \uC785\uD78C\uB2E4."
+  cardSprite: {fileID: -1508921690, guid: 98e4d5c83b01593468e20276456118f1, type: 3}
+  dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
+  cardAnimTrigger: 0
+  usableWithoutTarget: 0
+  cardTarget: 2
+  activeConditionList:
+  - condition: 0
+    value: 5
+  banishAfterUsed: 0
+  cardActionList:
+  - rid: 3789920194590670851
+  references:
+    version: 2
+    RefIds:
+    - rid: 3789920194590670851
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        damage: 15

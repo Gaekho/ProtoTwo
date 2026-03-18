@@ -17,7 +17,9 @@ MonoBehaviour:
   cardColor: 2
   maxHealth: 90
   baseAttack: 5
-  baseShield: 5
-  baseSpeed: 5
+  baseShield: 1
+  baseSpeed: 3
   characterSprite: {fileID: -639471020, guid: 0f347ea64281fe7459a885b9e4608ba3, type: 3}
   animatorController: {fileID: 9100000, guid: d9ec19571a930f04ab95d352ce6ffd88, type: 2}
+  thumbNail: {fileID: 21300000, guid: 25f3ad67ba350324fb539d19194bcff6, type: 3}
+  uiColor: {r: 0, g: 0.43921572, b: 1, a: 1}

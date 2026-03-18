@@ -5,36 +5,47 @@ using UnityEngine.EventSystems;
 using Proto2.Enums;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using TMPro;
 
+//v0.04 /2026.03.09 / 14:46
+//변경 요약 : layermask 기반 충돌 감지 추가, 드래그 중 canvas 비활성화. 중립카드 사용 시도 시 주인을 턴 캐릭터로 변경.
 public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     #region field
     [Header("Own Field")]
     [SerializeField] private CardData data;
     [SerializeField] private bool isPlayable = true;
-    [SerializeField] private Image myImage;
     [SerializeField] private Vector3 originalTransform;
     [SerializeField] private Canvas canvas;
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private AllyUnit owner;
 
-    [Header("Raycast Radius")]
+    [Header("Visual UI Field")]
+    [SerializeField] private SpriteRenderer mySprite;
+    [SerializeField] private TMP_Text[] textList;
+    [SerializeField] private Text[] conditionList;
+
+    [Header("Raycast")]
+    [SerializeField] private LayerMask layerMask;
     [SerializeField] private float radius = 0.25f;
 
     [Header("For Debug")]
     public int handIndex;
-    public CharacterOnScene temp;
-    public GameObject target;
+    public BattleUnitBase target;
     public CardInstance cardInstance;
 
     #endregion
-
+    
     #region methods
     public void Awake()
     {
+        //비주얼 컴포넌트들 연결
         mainCamera = Camera.main;
         originalTransform = transform.position;
         canvas = GetComponentInChildren<Canvas>();
-        myImage = canvas.GetComponentInChildren<Image>();
+        mySprite = GetComponent<SpriteRenderer>();
+        textList = canvas.GetComponentsInChildren<TMP_Text>();  //카드 이름, 카드 텍스트 순으로 가져온다.
+        conditionList = canvas.GetComponentsInChildren<Text>(); //ATK, DEF, SPD 순으로 가져온다.
         // How to Search Owner Character of this Card?
    
     }
@@ -44,12 +55,45 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         data = cardData;
         handIndex = index;
         cardInstance = inst;
-        myImage.sprite =  data.CardSprite;
-        foreach(CharacterOnScene ch in BattleManager.Instance.PlayerParty)
+
+        //비주얼 세팅
+        mySprite.sprite =  data.CardSprite;
+        textList[0].text = data.CardName;
+        textList[1].text = data.CardText;
+
+        //조건 텍스트 세팅
+        foreach(ActiveConditionData conditionData in data.ActiveConditionList)
         {
-           if(ch.CharacterData.CardColor == data.Color)
+            switch (conditionData.Condition)
             {
-               temp = ch; break;
+                case ConditionType.Attack:
+                    {
+                        conditionList[0].text = conditionData.Value.ToString();
+                        break;
+                    }
+                case ConditionType.Shield:
+                    {
+                        conditionList[1].text = conditionData.Value.ToString(); 
+                        break;
+                    }
+                case ConditionType.Speed:
+                    {
+                        conditionList[2].text = conditionData.Value.ToString();
+                        break;
+                    }
+            }
+        }
+
+        //주인 찾기
+        foreach(AllyUnit ally in BattleManager.Instance.PlayerParty)
+        {
+           if(ally.CharacterData.CardColor == data.Color)
+            {
+               owner = ally; break;
+            }
+           else if(data.Color == CardColor.Gray)
+            {
+                owner = BattleManager.Instance.TurnCharacter;
             }
         }
     }
@@ -63,50 +107,106 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         transform.localScale = new Vector3(0.2f, 0.2f, 1f);
     }
+
+    public IEnumerator CardUseRoutine()
+    {
+
+        switch (data.CardAnimTrigger)
+        {
+            case CardAnimTrigger.Attack:
+                owner.DoAttackAnim();
+                //yield return owner.WaitForAnimationStateEnd("Attack");
+                break;
+
+            case CardAnimTrigger.AddArmor:
+                owner.DoArmorAnim();
+                //yield return owner.WaitForAnimationStateEnd("AddArmor");
+                break;
+
+            case CardAnimTrigger.ApplyBuff:
+                owner.DoApplyBuffAnim();
+                //yield return owner.WaitForAnimationStateEnd("ApplyBuff");
+                break;
+
+            case CardAnimTrigger.ApplyDebuff:
+                owner.DoApplyDebuffAnim();
+                //yield return owner.WaitForAnimationStateEnd("ApplyDebuff");
+                break;
+
+            case CardAnimTrigger.Draw:
+                owner.DoDrawAnim();
+                //yield return owner.WaitForAnimationStateEnd("Draw");
+                break;
+        }
+        foreach (var actionData in data.CarActionList)
+        {
+            actionData.DoAction(new CardActionParameters(owner, target, data, cardInstance, this));
+        }
+
+        yield return new WaitForSeconds(0.1f);
+        //AfterUsed();
+        HandController.Instance.AfterCardUse(this);
+
+    }
     public void Use()
     {
-        foreach (var actionData in data.CarActionDataList)
+        switch (data.CardAnimTrigger)
         {
-            CardActionProcessor.GetAction(actionData.CardActionType).DoAction(new CardActionParameters(actionData.ActionValue, temp, target ? target.GetComponent<EnemyOnScene>() : null, data, this));
+            case CardAnimTrigger.Attack:
+                owner.DoAttackAnim(); break;
+
+            case CardAnimTrigger.AddArmor:
+                owner.DoArmorAnim(); break;
+            
+            case CardAnimTrigger.ApplyBuff: 
+                owner.DoApplyBuffAnim(); break;
+
+            case CardAnimTrigger.ApplyDebuff: 
+                owner.DoApplyDebuffAnim(); break;
+
+            case CardAnimTrigger.Draw: 
+                owner.DoDrawAnim(); break;
+        }
+        foreach (var actionData in data.CarActionList)
+        {
+            actionData.DoAction(new CardActionParameters(owner, target, data, cardInstance, this));
         }
 
         //AfterUsed();
         HandController.Instance.AfterCardUse(this);
     }
 
-    public void AfterUsed()
-    {
-        if (data.BanishAfterUsed)
-        {
-            //HandController.Instance.currentBanished.Add(this.data);
-            //HandController.Instance.currentHand.RemoveAt(handIndex);
-        }
-        else
-        {
-            //HandController.Instance.currentGraveyard.Add(this.data);
-            //HandController.Instance.currentHand.RemoveAt(handIndex);
-        }
-        
-        Destroy(this.gameObject);
-    }
-
     public void BackToHand()
     {
         transform.position = originalTransform;
         CardsizeSmall();
-        myImage.sprite = data.CardSprite;
+        mySprite.sprite = data.CardSprite;
+        canvas.gameObject.SetActive(true);
         //Color color = Color.white;
         //color.a = 1f;
         //myImage.color = color;           OnDrag 참조
 
         //SetCard(data);
     }
-    public bool CheckCondition(CardData myData, CharacterOnScene character)
+    public bool CheckCondition(CardData myData, AllyUnit owner)
     {
-        float val = 0f; 
+        float val; 
         float currentStat = 0f;
         bool lastCheck = false;
+        
+        //중립 카드 사용 시 참고할 캐릭터
+        if(data.Color == CardColor.Gray)
+        {
+            owner = BattleManager.Instance.TurnCharacter;
+            this.owner = BattleManager.Instance.TurnCharacter;
+        }
 
+        //턴 캐릭터 체크
+        if(owner != BattleManager.Instance.TurnCharacter)
+        {
+            Debug.Log("Not Turn Character");
+            return false;
+        }
         for(int i=0; i<myData.ActiveConditionList.Count; i++)
         {
             val = myData.ActiveConditionList[i].Value;
@@ -114,23 +214,15 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             switch (myData.ActiveConditionList[i].Condition)
             {
                 case ConditionType.Attack:
-                    currentStat = character.currentAttack;
-                    break;
-
-                case ConditionType.Health: 
-                    currentStat = character.currentHealth; 
-                    break;
-
-                case ConditionType.Gnosis:
-                    currentStat = character.currentGnosis;
+                    currentStat = owner.CurrentAttack;
                     break;
 
                 case ConditionType.Speed: 
-                    currentStat = character.currentSpeed;
+                    currentStat = owner.CurrentSpeed;
                     break;
 
                 case ConditionType.Shield: 
-                    currentStat = character.currentShield;
+                    currentStat = owner.CurrentShield;
                     break;
             }
             //Debug.Log("val" + val);
@@ -143,50 +235,43 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             else
             {
                 lastCheck = false;
+                break;
                 //Debug.Log(lastCheck);
             }
         }
         //Debug.Log("checked");
         return lastCheck;
     }
-
     public bool CheckTarget(CardData data)
     {
-       
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Collider2D hit = Physics2D.OverlapCircle(mouseWorldPos, radius);
-        /*if (hit != null)
-        {
-            target = hit.gameObject;
-            Debug.Log(hit.gameObject.name);
-        }*/
-
         if (data.UsableWithoutTarget) return true;
 
-        if (hit != null)
-        {
-            target = hit.gameObject;
-            Debug.Log(hit.gameObject.name);
-            if (data.ActionTargetType.ToString() == hit.tag)
-            {
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Collider2D hit = Physics2D.OverlapCircle(mouseWorldPos, radius, layerMask);
 
-                Debug.Log("valid target");
-                return true;
-            }
-            else
-            {
-                Debug.Log("invalid target");
-                Debug.Log("target : " + hit.tag + ", data : " + data.ActionTargetType);
-                return false;
-            }
-        }
-        else if (hit == null)
-        {
-            Debug.Log("Nothing detected");
-            return false;
+        if (hit == null) { Debug.Log("Nothing Detected"); return false; }
+
+        target = hit.gameObject.GetComponentInParent<BattleUnitBase>();
+        if (target == null) 
+        { 
+            Debug.Log("target is null");  
+            Debug.Log($"hit = {hit.name}");
+            Debug.Log($"parent battle unit = {hit.GetComponentInParent<BattleUnitBase>()}");
+            Debug.Log($"self battle unit = {hit.GetComponent<BattleUnitBase>()}");
+            return false; 
         }
 
-        else Debug.Log("else");  return false;
+
+        switch (data.CardTarget)
+        {
+            case CardTargetType.Ally:
+                return target.Team == UnitTeam.Ally;
+
+            case CardTargetType.Enemy:
+                return target.Team == UnitTeam.Enemy;
+        }
+
+        return false;
     }
 
     void OnDrawGizmos()
@@ -215,7 +300,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         CardsizeSmall();
         originalTransform = transform.position;
-        myImage.sprite = data.DragIcon;
+        mySprite.sprite = data.DragIcon;
+        canvas.gameObject.SetActive(false);
     }
 
     public void OnDrag(PointerEventData eventdata)
@@ -232,21 +318,27 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
          *나중에 핸드를 자동으로 정렬시킬 때 문제가 될 수 있음. */
         Vector3 worldPoint = mainCamera.ScreenToWorldPoint(new Vector3(eventdata.position.x, eventdata.position.y, 10f));
         transform.position = new Vector3(worldPoint.x, worldPoint.y, originalTransform.z);
-
     }
 
     public void OnEndDrag(PointerEventData eventdata)
     {
+        if (BattleManager.Instance.IsResolving)
+        {
+            BackToHand();
+            Debug.Log("Can't Use Card Now!");
+            return;
+        }
+
         if(transform.position.y >= -0.8f)
         {
             //Debug.Log("used");
-            if(CheckCondition(data, temp))
+            if(CheckCondition(data, owner))
             {
                 if (CheckTarget(data))
                 {
                     //Use();
                     Debug.Log("Card Used Successfull");
-                    Use();
+                    StartCoroutine(BattleManager.Instance.ResolveRoutine(CardUseRoutine()));
                     //BackToHand();
                 }
                 else BackToHand();
@@ -260,4 +352,17 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         Debug.Log(transform.position.y);
     }
     #endregion
+}
+
+[System.Serializable]
+public class CardInstance
+{
+    public int id;
+    public CardData cardData;
+
+    public CardInstance(int id, CardData cardData)
+    {
+        this.id = id;
+        this.cardData = cardData;
+    }
 }

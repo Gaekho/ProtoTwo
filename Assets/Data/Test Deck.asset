@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8adcfbef85162a48a9a5ef9fb4ef721, type: 3}
+  m_Name: Test Deck
+  m_EditorClassIdentifier: 
+  deckName: "\uB098\uB9CC\uC758 XX \uB371"
+  characters:
+  - {fileID: 11400000, guid: f66711e8d1f9e7042b8847eb35dd74dc, type: 2}
+  - {fileID: 11400000, guid: df177b6509be79043b5f416367be10c9, type: 2}
+  - {fileID: 11400000, guid: 13797e9bb337be14082a2eddadb51faf, type: 2}
+  deckList:
+  - {fileID: 11400000, guid: df47c84449fdbbd4abbdab0d3ac2ae9f, type: 2}
+  - {fileID: 11400000, guid: df47c84449fdbbd4abbdab0d3ac2ae9f, type: 2}
+  - {fileID: 11400000, guid: df47c84449fdbbd4abbdab0d3ac2ae9f, type: 2}
+  - {fileID: 11400000, guid: e50c1a5314a3e7a4ba9c80fd7775e41e, type: 2}
+  - {fileID: 11400000, guid: e50c1a5314a3e7a4ba9c80fd7775e41e, type: 2}
+  - {fileID: 11400000, guid: e50c1a5314a3e7a4ba9c80fd7775e41e, type: 2}
+  - {fileID: 11400000, guid: 1719012376e97334eb2c324220f2d868, type: 2}
+  - {fileID: 11400000, guid: 1719012376e97334eb2c324220f2d868, type: 2}
+  - {fileID: 11400000, guid: 1719012376e97334eb2c324220f2d868, type: 2}
+  - {fileID: 11400000, guid: 1719012376e97334eb2c324220f2d868, type: 2}
+  - {fileID: 11400000, guid: e50c1a5314a3e7a4ba9c80fd7775e41e, type: 2}
+  - {fileID: 11400000, guid: e50c1a5314a3e7a4ba9c80fd7775e41e, type: 2}
+  - {fileID: 11400000, guid: e50c1a5314a3e7a4ba9c80fd7775e41e, type: 2}
