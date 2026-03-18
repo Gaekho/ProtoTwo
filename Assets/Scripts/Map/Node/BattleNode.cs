@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BattleNode : NodeBase
 {
+
+
     void Start()
     {
     }

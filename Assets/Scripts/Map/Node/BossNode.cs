@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossNode : NodeBase
+public class BossNode : BattleNode
 {
     void Start()
     {
