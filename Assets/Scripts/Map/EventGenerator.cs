@@ -1,298 +1,593 @@
-using Proto2.Enums;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
+using Proto2.Enums;
 
-public class EventGenerator : MonoBehaviour
+/// <summary>
+/// 슬레이 더 스파이어식 "맵 골격" 생성기
+/// 
+/// 이 스크립트는 아래만 담당합니다.
+/// 1. 층별 노드 생성
+/// 2. 시작점 여러 개에서 위층까지 경로 생성
+/// 3. 교차를 최소화하며 연결
+/// 4. 연결되지 않은 노드 제거
+/// 5. 최상층 위에 보스 노드 1개 추가
+/// 
+/// 주의:
+/// - "몇 층에 어떤 노드 타입이 나온다" 같은 규칙은 여기서 처리하지 않습니다.
+/// - 모든 일반 노드는 기본 프리팹으로 생성합니다.
+/// - 노드 타입 배정은 이후 별도 시스템에서 처리하도록 분리합니다.
+/// </summary>
+public class MapGenerator : MonoBehaviour
 {
     [Header("Level Data")]
-    //총 층수
-    [SerializeField] private int floors = 10;
-    //층당 최소 방 갯수
-    [SerializeField] private int minRoom = 1;
-    //층당 최대 방 갯수
-    [SerializeField] private int maxRoom = 4;
-    //필수 노드
-    [SerializeField] private EssentialNode essential;
-    //노드 정보
-    [SerializeField] private NodeBase[] nodes;
-    //특수 노드 수(엘리트, 보스 등)
-    [SerializeField] private int specialNodes = 2;
+    [SerializeField] private int floors = 10;          // 일반 층 수 (보스층 제외)
+    [SerializeField] private int minRoom = 1;          // 층당 최소 노드 수
+    [SerializeField] private int maxRoom = 4;          // 층당 최대 노드 수
+    [SerializeField] private NodeBase[] nodes;         // 노드 프리팹 목록
+    [SerializeField] private int numOfStartingNodes = 2;     // 시작 경로 개수 용도로 사용
 
     [Header("Map Data")]
-    //노드를 배치할 좌표 기준점
-    [SerializeField] private Transform buttonPivot;
-    //같은 층 노드간의 간격
-    [SerializeField] private float nodeGap = 10.0f;
-    //층간 간격
-    [SerializeField] private float floorGap = 10.0f;
+    [SerializeField] private Transform buttonPivot;    // 노드가 생성될 부모
+    [SerializeField] private float nodeGap = 30f;      // 같은 층 내 노드 간격
+    [SerializeField] private float floorGap = 30f;     // 층 간 간격
 
-    //윗층 노드 갯수
-    private int numOfNextFloorNode = 0;
-    //아랫층 노드들
-    private List<NodeBase> lastFloorNode = new List<NodeBase>();
-    //현재 층 노드들. 알고리즘상 임시 저장용
-    private List<NodeBase> currentNodes = new List<NodeBase>();
+    [Header("Generator Option")]
+    [SerializeField] private bool generateOnStart = true;
 
-    //맵에 설치된 노드
-    private List<NodeBase>[] nodeTiles;
-    private List<Vector2Int>[] nodeEdges;
+    // 생성된 노드 관리용
+    private readonly Dictionary<Vector2Int, NodeBase> nodeMap = new();
+    private readonly List<NodeBase> generatedNodes = new();
+    private readonly List<Edge> edges = new();
 
-    private void Awake()
+    private NodeBase bossNode;
+
+    /// <summary>
+    /// 선 연결 정보를 저장하는 간단한 구조체
+    /// 교차 검사에 사용합니다.
+    /// </summary>
+    private struct Edge
     {
-        GenerateMap();
+        public Vector2Int from;
+        public Vector2Int to;
+
+        public Edge(Vector2Int from, Vector2Int to)
+        {
+            this.from = from;
+            this.to = to;
+        }
     }
 
+    private void Start()
+    {
+        if (generateOnStart)
+        {
+            GenerateMap();
+        }
+    }
+
+    [ContextMenu("Generate Map")]
     public void GenerateMap()
     {
-        //Vector3 basePosition = buttonTestTransform.position;
-        ////필수 노드 지정 층과 맞추기 위해 1부터 시작
-        //for (int i = 1; i <= floors; i++)
-        //{
-        //    GenerateFloor(i, buttonTestTransform,basePosition);
-        //    basePosition.y += floorGap;
-        //}
+        ClearMap();
+        ValidateSettings();
 
-        InitializeMap();
+        // 1. 먼저 여러 개의 시작 경로를 만들어 전체 맵의 뼈대를 구성
         GeneratePaths();
+
+        // 2. 경로와 전혀 연결되지 않은 노드 제거
+        RemoveIsolatedNodes();
+
+        // 3. 최상층 위에 보스 노드 생성 후 연결
+        CreateBossNode();
+
+        Debug.Log("Map Generate Complete");
     }
 
-    private void InitializeMap()
+    [ContextMenu("Clear Map")]
+    public void ClearMap()
     {
-        nodeTiles = new List<NodeBase>[floors];
-        nodeEdges = new List<Vector2Int>[floors - 1];
-
-        for(int i = 0; i < floors; i++)
+        foreach (Transform child in buttonPivot)
         {
-            nodeTiles[i] = new List<NodeBase>();
-
-            if((i + 1) == essential.GetFloor())
-            {
-                for (int j = 0; j < maxRoom; j++)
-                {
-                    nodeTiles[i].Add(MatchNode(essential.GetNodeType()));
-                    nodeTiles[i][j].SetPosition(j, i);
-                }
-            }
-            else
-            {
-                for(int j = 0;j < maxRoom; j++)
-                {
-                    int randomRoon = Random.Range(0, nodes.Length - specialNodes);
-                    nodeTiles[i].Add(nodes[randomRoon]);
-                    nodeTiles[i][j].SetPosition(j, i);
-                }
-            }
+            DestroyImmediate(child.gameObject);
         }
+
+        nodeMap.Clear();
+        generatedNodes.Clear();
+        edges.Clear();
+        bossNode = null;
     }
 
+    /// <summary>
+    /// 설정값 보정
+    /// </summary>
+    private void ValidateSettings()
+    {
+        floors = Mathf.Max(2, floors);
+        minRoom = Mathf.Max(1, minRoom);
+        maxRoom = Mathf.Max(minRoom, maxRoom);
+        numOfStartingNodes = Mathf.Clamp(numOfStartingNodes, 1, maxRoom);
+    }
+
+    // ------------------------------------------------------------------
+    // 1. 경로 생성
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// 시작점 여러 개를 뽑고,
+    /// 각 시작점에서 맨 위층까지 한 줄 경로를 생성합니다.
+    /// 이후 각 층의 최소 노드 수를 만족하도록 보강합니다.
+    /// </summary>
     private void GeneratePaths()
     {
-        List<NodeBase> firstFloorStarts = new List<NodeBase>();
+        List<int> startColumns = GetUniqueStartColumns(numOfStartingNodes);
 
-        for (int p = 0; p < maxRoom; p++)
+        // 시작점마다 1개씩 위로 올라가는 경로 생성
+        foreach (int startX in startColumns)
         {
-            int currentX = Random.Range(0, maxRoom);
+            int currentX = startX;
+            //GetOrCreateNode(new Vector2Int(currentX, 0));
 
-            NodeBase currentNode = nodeTiles[0][currentX];
-            currentNode.SetConnected();
-            if (p == 0 || p == 1) firstFloorStarts.Add(currentNode);
-
-            for (int f = 0; f < floors - 1; f++)
+            for (int y = 0; y < floors - 1; y++)
             {
-                List<int> validNextX = new List<int>();
-                int nodeX = (int)currentNode.GetPosition().x;
+                int nextX = PickNextColumn(currentX, y);
 
-                // 위층의 인접한 3개 노드 (x-1, x, x+1) 탐색
-                for (int dx = -1; dx <= 1; dx++)
-                {
-                    int nextX = nodeX + dx;
-                    if (nextX >= 0 && nextX < floors)
-                    {
-                        // 규칙: 경로(선)는 서로 교차할 수 없음
-                        if (!IsCrossing(f, nodeX, nextX))
-                        {
-                            validNextX.Add(nextX);
-                        }
-                    }
-                }
+                Vector2Int from = new Vector2Int(currentX, y);
+                Vector2Int to = new Vector2Int(nextX, y + 1);
 
-                if (validNextX.Count == 0)
-                    validNextX.Add(nodeX); // 교착 상태 방지용 안전장치 (직진)
+                NodeBase fromNode = GetOrCreateNode(from);
+                NodeBase toNode = GetOrCreateNode(to);
 
-                int chosenX = validNextX[Random.Range(0, validNextX.Count)];
-                NodeBase nextNode = nodeTiles[f + 1][chosenX];
-
-                // 노드 연결
-                if (!currentNode.nextNodes.Contains(nextNode))
-                {
-                    currentNode.nextNodes.Add(nextNode);
-                    nextNode.prevNodes.Add(currentNode);
-                    nodeEdges[f].Add(new Vector2Int(nodeX, chosenX));
-                }
-
-                nextNode.SetConnected();
-                currentNode = nextNode;
+                ConnectNodes(fromNode, toNode);
+                currentX = nextX;
             }
         }
+
+        // 각 층이 최소/최대 방 수 범위에 들어오도록 노드를 보강
+        //EnsureFloorRoomCounts();
+
+        // 시작층에서 도달 불가능한 노드 제거
+        RemoveUnreachableNodes();
     }
 
-    private bool IsCrossing(int floor, int fromX, int toX)
+    /// <summary>
+    /// 시작층에서 사용할 시작 x 좌표를 중복 없이 뽑습니다.
+    /// </summary>
+    private List<int> GetUniqueStartColumns(int count)
     {
-        if (nodeEdges.Length != 0)
-        {
-            foreach (var edge in nodeEdges[floor])
-            {
-                int eFrom = edge.x;
-                int eTo = edge.y;
+        List<int> pool = Enumerable.Range(0, maxRoom)
+            .OrderBy(_ => Random.value)
+            .ToList();
 
-                if (fromX < eFrom && toX > eTo) return true;
-                if (fromX > eFrom && toX < eTo) return true;
+        return pool.Take(count).ToList();
+    }
+
+    /// <summary>
+    /// 현재 칸에서 다음 층으로 이동할 x 좌표를 선택합니다.
+    /// 기본적으로 좌, 중앙, 우 중 하나로만 이동합니다.
+    /// 가능하면 기존 선과 교차하지 않는 후보를 우선 선택합니다.
+    /// </summary>
+    private int PickNextColumn(int currentX, int currentY)
+    {
+        List<int> candidates = new();
+
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            int nextX = currentX + dx;
+            if (nextX < 0 || nextX >= maxRoom)
+                continue;
+
+            Edge candidate = new Edge(
+                new Vector2Int(currentX, currentY),
+                new Vector2Int(nextX, currentY + 1)
+            );
+
+            if (!IsCrossing(candidate))
+            {
+                candidates.Add(nextX);
             }
         }
+
+        // 교차를 피할 수 있는 후보가 없으면 그냥 인접 칸 허용
+        if (candidates.Count == 0)
+        {
+            //for (int dx = -1; dx <= 1; dx++)
+            //{
+            //    int nextX = currentX + dx;
+            //    if (nextX < 0 || nextX >= horizontalSlots)
+            //        continue;
+
+            //    candidates.Add(nextX);
+            //}
+            candidates.Add(currentX);
+        }
+
+        return candidates[Random.Range(0, candidates.Count)];
+    }
+
+    /// <summary>
+    /// 같은 층에서 시작해서 다음 층으로 가는 두 선이 X자 형태로 교차하는지 검사합니다.
+    /// </summary>
+    private bool IsCrossing(Edge candidate)
+    {
+        foreach (Edge existing in edges)
+        {
+            // 같은 층에서 시작하는 간선끼리만 교차 검사
+            if (existing.from.y != candidate.from.y)
+                continue;
+
+            bool crosses =
+                (candidate.from.x < existing.from.x && candidate.to.x > existing.to.x) ||
+                (candidate.from.x > existing.from.x && candidate.to.x < existing.to.x);
+
+            if (crosses)
+                return true;
+        }
+
         return false;
     }
 
-    private void AssignNodeTypes()
+    /// <summary>
+    /// 각 층의 노드 수가 minRoom ~ maxRoom 사이가 되도록 보강합니다.
+    /// 
+    /// 새 노드를 만들면 반드시 이전 층 또는 다음 층과 연결을 시도합니다.
+    /// 그래야 고립 노드가 되지 않습니다.
+    /// </summary>
+    private void EnsureFloorRoomCounts()
     {
-        for (int f = 0; f < floors; f++)
+        for (int currentFloor = 0; currentFloor < floors; currentFloor++)
         {
-            foreach (var node in nodeTiles[f])
-            {
-                if (!node.IsConnected()) {  continue; }
+            //int targetCount = Random.Range(minRoom, maxRoom + 1);
+            //List<NodeBase> floorNodes = GetNodesAtFloor(currentFloor);
 
-                NodeBase newNode = Instantiate(node, buttonPivot);
-                Vector3 basePosition = buttonPivot.position;
-                basePosition += new Vector3((newNode.GetPosition().x * nodeGap), (newNode.GetPosition().y * floorGap), 0);
-                newNode.transform.position = basePosition;
+            //while (floorNodes.Count < targetCount)
+            //{
+            //    int x = Random.Range(0, horizontalSlots);
+            //    Vector2Int pos = new Vector2Int(x, currentFloor);
+
+            //    if (nodeMap.ContainsKey(pos))
+            //    {
+            //        floorNodes = GetNodesAtFloor(currentFloor);
+            //        continue;
+            //    }
+
+            //    NodeBase newNode = GetOrCreateNode(pos);
+
+            //    // 아래층과 연결
+            //    if (currentFloor > 0)
+            //    {
+            //        TryConnectToClosestFloor(newNode, currentFloor - 1, connectFromOtherToThis: true);
+            //    }
+
+            //    // 위층과 연결
+            //    if (currentFloor < floors - 1)
+            //    {
+            //        TryConnectToClosestFloor(newNode, currentFloor + 1, connectFromOtherToThis: false);
+            //    }
+
+            //    floorNodes = GetNodesAtFloor(currentFloor);
+            //}
+
+            int targetCount = Random.Range(minRoom, maxRoom + 1);
+            int currentCount = GetNodesAtFloor(currentFloor).Count;
+
+            while (currentCount < targetCount)
+            {
+                int x = Random.Range(0, maxRoom);
+                Vector2Int pos = new Vector2Int(x, currentFloor);
+
+                if (nodeMap.ContainsKey(pos))
+                {
+                    continue;
+                }
+
+                NodeBase newNode = GetOrCreateNode(pos);
+
+                if (currentFloor > 0)
+                {
+                    TryConnectToClosestFloor(newNode, currentFloor - 1, true);
+                }
+
+                if (currentFloor < floors - 1)
+                {
+                    TryConnectToClosestFloor(newNode, currentFloor + 1, false);
+                }
+
+                currentCount++;
             }
         }
     }
 
-    
-
-    // --- 에디터 시각화용 코드 ---
-    private void OnDrawGizmos()
+    /// <summary>
+    /// 지정한 층의 노드들 중, source와 x축으로 가장 가까운 노드와 연결합니다.
+    /// </summary>
+    private void TryConnectToClosestFloor(NodeBase source, int targetFloor, bool connectFromOtherToThis)
     {
-        if (nodeTiles == null) return;
+        List<NodeBase> candidates = GetNodesAtFloor(targetFloor);
+        if (candidates.Count == 0)
+            return;
 
-        float spacingX = 1.5f;
-        float spacingY = 2.0f;
+        NodeBase nearest = candidates
+            .OrderBy(n => Mathf.Abs(n.GetPosition().x - source.GetPosition().x))
+            .FirstOrDefault();
 
-        for (int f = 0; f < floors; f++)
+        if (nearest == null)
+            return;
+
+        if (connectFromOtherToThis)
         {
-            foreach (var node in nodeTiles[f])
+            ConnectNodes(nearest, source);
+        }
+        else
+        {
+            ConnectNodes(source, nearest);
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // 2. 노드 생성 / 연결
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// grid 좌표에 해당하는 노드가 있으면 반환하고,
+    /// 없으면 새로 생성합니다.
+    /// </summary>
+    private NodeBase GetOrCreateNode(Vector2Int gridPos)
+    {
+        if (nodeMap.TryGetValue(gridPos, out NodeBase existing))
+        {
+            return existing;
+        }
+
+        NodeBase prefab = GetDefaultNodePrefab();
+        if (prefab == null)
+        {
+            Debug.LogError("기본 노드 프리팹이 없습니다.");
+            return null;
+        }
+
+        NodeBase created = Instantiate(prefab, buttonPivot);
+        created.name = $"Node_{gridPos.x}_{gridPos.y}";
+
+        created.SetPosition(gridPos.x, gridPos.y);
+        created.SetNodeIndex(generatedNodes.Count);
+
+        RectTransform rect = created.GetComponent<RectTransform>();
+        Vector2 localPos = GridToLocalPosition(gridPos.x, gridPos.y);
+
+        if (rect != null)
+            rect.anchoredPosition = localPos;
+        else
+            created.transform.localPosition = localPos;
+
+        created.nextNodes ??= new List<NodeBase>();
+        created.prevNodes ??= new List<NodeBase>();
+
+        nodeMap.Add(gridPos, created);
+        generatedNodes.Add(created);
+
+        return created;
+    }
+
+    /// <summary>
+    /// 두 노드를 단방향으로 연결합니다.
+    /// from -> to
+    /// </summary>
+    private void ConnectNodes(NodeBase from, NodeBase to)
+    {
+        if (from == null || to == null)
+            return;
+
+        if (from.nextNodes.Contains(to))
+            return;
+
+        from.nextNodes.Add(to);
+        to.prevNodes.Add(from);
+
+        from.SetConnected();
+        to.SetConnected();
+
+        edges.Add(new Edge(
+            new Vector2Int((int)from.GetPosition().x, (int)from.GetPosition().y),
+            new Vector2Int((int)to.GetPosition().x, (int)to.GetPosition().y)
+        ));
+    }
+
+    /// <summary>
+    /// grid 좌표를 실제 로컬 좌표로 변환합니다.
+    /// 가운데 정렬 형태로 배치합니다.
+    /// </summary>
+    private Vector2 GridToLocalPosition(int x, int y)
+    {
+        float width = (maxRoom - 1) * nodeGap;
+        float startX = -width * 0.5f;
+
+        float posX = startX + x * nodeGap;
+        float posY = y * floorGap;
+
+        return new Vector2(posX, posY);
+    }
+
+    // ------------------------------------------------------------------
+    // 3. 정리 단계
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// 완전히 고립된 노드 제거
+    /// prev도 없고 next도 없는 노드 제거
+    /// </summary>
+    private void RemoveIsolatedNodes()
+    {
+        List<NodeBase> removeTargets = generatedNodes
+            .Where(n => n.prevNodes.Count == 0 && n.nextNodes.Count == 0)
+            .ToList();
+
+        foreach (NodeBase node in removeTargets)
+        {
+            RemoveNode(node);
+        }
+    }
+
+    /// <summary>
+    /// 시작층에서 실제로 도달 가능한 노드만 남깁니다.
+    /// </summary>
+    private void RemoveUnreachableNodes()
+    {
+        List<NodeBase> startNodes = GetNodesAtFloor(0);
+        HashSet<NodeBase> reachable = new();
+        Queue<NodeBase> queue = new();
+
+        foreach (NodeBase node in startNodes)
+        {
+            reachable.Add(node);
+            queue.Enqueue(node);
+        }
+
+        while (queue.Count > 0)
+        {
+            NodeBase current = queue.Dequeue();
+
+            foreach (NodeBase next in current.nextNodes)
             {
-                if (!node.IsConnected()) continue;
+                if (next == null)
+                    continue;
 
-                Vector3 pos = new Vector3(node.GetPosition().x * spacingX - (floors * spacingX / 2f), f * spacingY, 0);
-
-                // 연결선 그리기
-                Gizmos.color = Color.white;
-                foreach (var next in node.nextNodes)
+                if (reachable.Add(next))
                 {
-                    Vector3 nextPos = new Vector3(next.GetPosition().x * spacingX - (floors * spacingX / 2f), next.GetPosition().y * spacingY, 0);
-                    Gizmos.DrawLine(pos, nextPos);
+                    queue.Enqueue(next);
                 }
             }
         }
-    }
 
-    private void GenerateFloor(int currentFloor, Transform pivot, Vector3 basePosition)
-    {
-        //numOfNextFloorNode = Random.Range(minRoom, maxRoom);
+        List<NodeBase> removeTargets = generatedNodes
+            .Where(n => !reachable.Contains(n))
+            .ToList();
 
-        //if(currentFloor == essential.GetFloor())
-        //{
-        //    GenerateNode(essential.GetNodeType(), numOfNextFloorNode, pivot, basePosition);
-        //}
-        //else
-        //{
-        //    int nodeTypes = nodes.Length - specialNodes;
-        //    int randomNode = Random.Range(0, nodeTypes);
-        //    GenerateNode((NodeType)randomNode, numOfNextFloorNode, pivot, basePosition);
-        //}
-
-        //foreach (NodeBase node in lastFloorNode)
-        //{
-        //    ConnectNode(node);
-        //}
-
-        ////첫층 노드들 활성화
-        //if(currentFloor == 1)
-        //{
-        //    foreach(NodeBase node in currentNodes)
-        //    {
-        //        node.SetActivate();
-        //    }
-        //}
-
-        //lastFloorNode.Clear();
-        //lastFloorNode = currentNodes;
-        //currentNodes.Clear();
-    }
-
-    private void GenerateNode(NodeType nodeType, int nodeAmount, Transform pivot, Vector3 basePosition)
-    {
-        //for (int i = 0; i < nodeAmount; i++)
-        //{
-        //    NodeBase makingNode = MatchNode(nodeType);
-        //    if(makingNode != null)
-        //    {
-        //        NodeBase newNode = Instantiate(makingNode, pivot);
-        //        newNode.transform.position = basePosition;
-        //        currentNodes.Add(newNode);
-        //    }
-        //    basePosition += new Vector3(nodeGap, 0, 0);
-        //}
-    }
-
-    private NodeBase MatchNode(NodeType nodeType)
-    {
-        for(int i  = 0; i < nodes.Length; i++)
+        foreach (NodeBase node in removeTargets)
         {
-            if(nodeType == nodes[i].GetNodeType())
-            {
-                return nodes[i];
-            }
+            RemoveNode(node);
         }
-        return null;
     }
 
-    private void ConnectNode(NodeBase node)
+    /// <summary>
+    /// 노드를 맵에서 제거합니다.
+    /// 연결 정보도 같이 정리합니다.
+    /// </summary>
+    private void RemoveNode(NodeBase node)
     {
-        //int numOfNodeToConnect = Random.Range(1, numOfNextFloorNode);
-        //int index = node.GetNodeIndex();
-        //int changeIndex = 0;
-        //bool bIsNeighobrChecked = false;
+        foreach (NodeBase prev in node.prevNodes)
+        {
+            if (prev != null)
+                prev.nextNodes.Remove(node);
+        }
 
-        //for(int i = 0; i < numOfNodeToConnect; i++)
-        //{
-        //    if (bIsNeighobrChecked)
-        //    {
-        //        changeIndex++;
-        //    }
-        //    else
-        //    {
-        //        changeIndex *= -1;
-        //    }
+        foreach (NodeBase next in node.nextNodes)
+        {
+            if (next != null)
+                next.prevNodes.Remove(node);
+        }
 
-        //    int indexToConnect = index + changeIndex;
+        Vector2Int key = new Vector2Int((int)node.GetPosition().x, (int)node.GetPosition().y);
 
-        //    if (indexToConnect >= 0)
-        //    {
-        //        node.ConnectNode(currentNodes[indexToConnect]);
-        //        bIsNeighobrChecked = !bIsNeighobrChecked;
-        //    }
-        //    else
-        //    {
-        //        indexToConnect *= -1;
-        //        node.ConnectNode(currentNodes[indexToConnect]);
-        //        bIsNeighobrChecked = true;
-        //    }
-        //    i++;
-        //}
+        nodeMap.Remove(key);
+        generatedNodes.Remove(node);
+
+        DestroyImmediate(node.gameObject);
+    }
+
+    // ------------------------------------------------------------------
+    // 4. 보스 노드 생성
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// 마지막 일반 층 위에 보스 노드를 하나 생성하고,
+    /// 최상층의 모든 노드를 보스 노드에 연결합니다.
+    /// </summary>
+    private void CreateBossNode()
+    {
+        List<NodeBase> topFloorNodes = GetNodesAtFloor(floors - 1);
+        if (topFloorNodes.Count == 0)
+            return;
+
+        NodeBase bossPrefab = GetBossNodePrefab();
+        if (bossPrefab == null)
+        {
+            Debug.LogWarning("Boss 노드 프리팹이 없습니다.");
+            return;
+        }
+
+        bossNode = Instantiate(bossPrefab, buttonPivot);
+        bossNode.name = "Boss_Node";
+
+        // 보스 노드는 floors 번째 줄에 위치 (일반 층보다 한 칸 위)
+        bossNode.SetPosition(maxRoom / 2, floors);
+        bossNode.SetNodeIndex(generatedNodes.Count);
+
+        RectTransform rect = bossNode.GetComponent<RectTransform>();
+        Vector2 bossPos = new Vector2(0f, floors * floorGap);
+
+        if (rect != null)
+            rect.anchoredPosition = bossPos;
+        else
+            bossNode.transform.localPosition = bossPos;
+
+        bossNode.nextNodes ??= new List<NodeBase>();
+        bossNode.prevNodes ??= new List<NodeBase>();
+
+        generatedNodes.Add(bossNode);
+
+        foreach (NodeBase top in topFloorNodes)
+        {
+            ConnectNodes(top, bossNode);
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // 5. 헬퍼
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// 특정 층의 노드 목록 반환
+    /// </summary>
+    private List<NodeBase> GetNodesAtFloor(int floor)
+    {
+        return generatedNodes
+            .Where(n => Mathf.RoundToInt(n.GetPosition().y) == floor)
+            .OrderBy(n => n.GetPosition().x)
+            .ToList();
+    }
+
+    /// <summary>
+    /// 일반 노드용 기본 프리팹 반환
+    /// 
+    /// 현재는 nodes[0]을 기본 노드 프리팹으로 사용합니다.
+    /// 추후 필요하면 별도 필드로 분리하는 것이 더 안전합니다.
+    /// </summary>
+    private NodeBase GetDefaultNodePrefab()
+    {
+        if (nodes == null || nodes.Length == 0)
+            return null;
+
+        return nodes[0];
+    }
+
+    /// <summary>
+    /// 보스 노드 프리팹 반환
+    /// 
+    /// 현재는 nodes 배열 안에서 NodeType.Boss를 가진 프리팹을 찾습니다.
+    /// 없으면 null 반환.
+    /// </summary>
+    private NodeBase GetBossNodePrefab()
+    {
+        if (nodes == null)
+            return null;
+
+        foreach (NodeBase node in nodes)
+        {
+            if (node != null && node.GetNodeType() == NodeType.BossBattle)
+                return node;
+        }
+
+        return null;
     }
 }

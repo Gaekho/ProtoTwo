@@ -47,6 +47,8 @@ public class NodeBase : MonoBehaviour
             bIsPlayerOn = true;
             SceneManager.LoadScene(sceneName);
         }
+
+        SceneManager.LoadScene(sceneName);
     }
 
     private void Awake()
