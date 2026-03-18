@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject turnChangePanel;
     [SerializeField] private GameObject characterSelectPanel;
     [SerializeField] private GameObject rewardPanel;
+    [SerializeField] private TurnQUIController qUIController;
     #endregion
     // Start is called before the first frame update
 
@@ -37,7 +38,7 @@ public class UIManager : MonoBehaviour
 
         whosTurn.text = who + " Turn";
         turnCount.text = turn.ToString();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.8f);
         turnChangePanel.SetActive(false);
         yield break;
     }
@@ -55,12 +56,37 @@ public class UIManager : MonoBehaviour
         yield break;
     }
 
+    public IEnumerator UnitTurnStart(int turn, string who)
+    {
+        turnChangePanel.SetActive(true);
+        TMP_Text whosTurn = turnChangePanel.GetComponentInChildren<TMP_Text>();
+        Text turnCount = turnChangePanel.GetComponentInChildren<Text>();
+
+        whosTurn.text = who + "'s Turn";
+        turnCount.text = turn.ToString();
+
+        qUIController.OnUnitTurnStart();
+
+        yield return new WaitForSeconds(0.8f);
+        turnChangePanel.SetActive(false);
+        yield break;
+    }
+    public IEnumerator UnitTurnEnd()
+    {
+        yield break;
+    }
+
     public IEnumerator BattleEnd(string winLose)
     {
         rewardPanel.SetActive(true);
         TMP_Text wl = GetComponentInChildren<TMP_Text>();
         wl.text = "전투 " + winLose + "!";
         yield break;
+    }
+
+    public void RefreshTurnQueue(int queueCount, List<BattleUnitBase> aliveUnits)
+    {
+        qUIController.ReBuildQueue(queueCount, aliveUnits);
     }
 
     public void Selection()

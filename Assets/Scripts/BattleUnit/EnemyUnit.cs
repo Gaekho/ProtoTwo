@@ -17,6 +17,7 @@ public class EnemyUnit : BattleUnitBase
     [SerializeField] private EnemyPatternData currentPattern;
     #endregion
 
+    public EnemyData EnemyData => enemyData;
     public override float CurrentSpeed => baseSpeed;
 
     public void SetProfile(EnemyData enemyData)

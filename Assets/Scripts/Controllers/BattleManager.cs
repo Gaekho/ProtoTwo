@@ -1,6 +1,7 @@
 using Proto2.Enums;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -39,6 +40,7 @@ public class BattleManager : MonoBehaviour
 
     #region Cache
     public AllyUnit TurnCharacter { private set; get; }
+    public BattleUnitBase ActingUnit { private set; get; }
     public BattleUnitBase CurrentTurnUnit { private set; get; }
     public TurnState CurrentState { private set; get; }
     public IReadOnlyList<AllyUnit> PlayerParty => playerParty;
@@ -115,9 +117,38 @@ public class BattleManager : MonoBehaviour
         {
             if (enemy != null && !enemy.IsDead) aliveUnits.Add(enemy);
         }
+
+        //여기에 정렬 알고리즘 투입
+        queueCount++;
+
+        //큐 UI 업데이트(UI Manager 호출)
     }
     #endregion
 
+    #region StateHelper
+    private bool IsBattleEnd()
+    {
+        bool allEnemyDead = enemyList.Count == 0 || enemyList.TrueForAll(x => x == null || x.IsDead);
+        bool allAllyDead = playerParty.Count == 0 || playerParty.TrueForAll(x => x == null || x.IsDead);
+
+        if (allEnemyDead)
+        {
+            CurrentState = TurnState.End;
+            HandController.Instance.TurnOffHand();
+            StartCoroutine(UIManager.Instance.BattleEnd("승리"));
+            return true;
+        }
+
+        if(allAllyDead)
+        {
+            CurrentState = TurnState.End;
+            HandController.Instance.TurnOffHand();
+            StartCoroutine(UIManager.Instance.BattleEnd("패배"));
+            return true;
+        }
+        return false;
+    }
+    #endregion
     #region Buff
     private IEnumerator BuffHookRoutine(BuffTriggerTiming timing, UnitTeam team)
     {
@@ -145,6 +176,13 @@ public class BattleManager : MonoBehaviour
         }
         yield return new WaitForSeconds(0.05f);
     }
+
+    private IEnumerator UnitBuffHook(BuffTriggerTiming timing, BattleUnitBase unit)
+    {
+        yield return new WaitForSeconds(0.1f);
+        unit.TriggerBuff(timing);
+        yield return new WaitForSeconds(0.2f);
+    }
     #endregion
 
     #region Unit Dead
@@ -159,6 +197,11 @@ public class BattleManager : MonoBehaviour
             HandController.Instance.TurnOffHand();
             StartCoroutine(UIManager.Instance.BattleEnd("승리"));
         }
+    }
+
+    public void AllyDead(AllyUnit dead)
+    {
+
     }
     #endregion
 
@@ -215,6 +258,61 @@ public class BattleManager : MonoBehaviour
 
             //적 턴 종료
             yield return StartCoroutine(ResolveRoutine(BuffHookRoutine(BuffTriggerTiming.OnTurnEnd, UnitTeam.Enemy)));
+        }
+    }
+
+    private IEnumerator BattleRoutineTwo()
+    {
+        //최초 턴 큐 생성
+        ReBuildTurnQueue();
+
+        // 메인 배틀 진입
+        while (true)
+        {
+            if (IsBattleEnd()) yield break;
+
+            //캐릭터 턴 시작 : 패널 표시  --> actingUnit 저장
+            totalTurnCount++;
+            ActingUnit = turnQ.First<BattleUnitBase>();
+            string name;
+            if(ActingUnit.Team == UnitTeam.Ally)
+            {
+                CurrentState = TurnState.AllyTurn;
+                AllyUnit ally = ActingUnit as AllyUnit;
+                name = ally.CharacterData.CharacterName;
+                StartCoroutine(UIManager.Instance.UnitTurnStart(totalTurnCount, name));
+            }
+            else if(ActingUnit.Team == UnitTeam.Enemy)
+            {
+                CurrentState = TurnState.EnemyTurn;
+                EnemyUnit enemy = ActingUnit as EnemyUnit;
+                name = enemy.EnemyData.EnemyName;
+                StartCoroutine(UIManager.Instance.UnitTurnStart(totalTurnCount, name));
+            }
+
+            //버프 훅(턴 시작 시)
+            yield return UnitBuffHook(BuffTriggerTiming.OnTurnStart, ActingUnit);
+
+            //분기(적 || 아군) 
+            //아군이면 카드 사용 대기 및 턴 종료까지 대기
+            //적이면 패턴 슥 슥 쓰고 턴종
+            if(ActingUnit.Team == UnitTeam.Ally)
+            {
+                while(CurrentState == TurnState.AllyTurn)
+                {
+                    yield return null;
+                    //씬에서 TurnEnd 버튼 클릭 시 ChangeState( End ) 호출
+                }
+            }
+            else if(ActingUnit.Team == UnitTeam.Enemy)
+            {
+                EnemyUnit enemy = ActingUnit as EnemyUnit;
+                yield return new WaitForSeconds(0.5f);
+                yield return StartCoroutine(ResolveRoutine(enemy.UsePatternRoutine()));         //적 패턴 기능 EnemyUnit에 구현 후에 다시 주석 해제.
+                enemy.SetRandomPattern();
+            }
+
+            //턴 종료되면 적당히 종료 루틴이 뭐있냐 없지 사실상 턴 체인지로 가자
         }
     }
     #endregion
