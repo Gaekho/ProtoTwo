@@ -25,12 +25,14 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private int minRoom = 1;          // 층당 최소 노드 수
     [SerializeField] private int maxRoom = 4;          // 층당 최대 노드 수
     [SerializeField] private NodeBase[] nodes;         // 노드 프리팹 목록
+    [SerializeField] private int specialNodes = 2;      //특수 노드(보스, 엘리트 등)
     [SerializeField] private int numOfStartingNodes = 2;     // 시작 경로 개수 용도로 사용
 
     [Header("Map Data")]
     [SerializeField] private Transform buttonPivot;    // 노드가 생성될 부모
     [SerializeField] private float nodeGap = 30f;      // 같은 층 내 노드 간격
     [SerializeField] private float floorGap = 30f;     // 층 간 간격
+    [SerializeField] private List<EssentialNode> essentialNodeList = new List<EssentialNode>();     //필수로 등장하는 노드 정보
 
     [Header("Generator Option")]
     [SerializeField] private bool generateOnStart = true;
@@ -339,7 +341,7 @@ public class MapGenerator : MonoBehaviour
             return existing;
         }
 
-        NodeBase prefab = GetDefaultNodePrefab();
+        NodeBase prefab = GetRandomNode(gridPos.y);
         if (prefab == null)
         {
             Debug.LogError("기본 노드 프리팹이 없습니다.");
@@ -563,12 +565,22 @@ public class MapGenerator : MonoBehaviour
     /// 현재는 nodes[0]을 기본 노드 프리팹으로 사용합니다.
     /// 추후 필요하면 별도 필드로 분리하는 것이 더 안전합니다.
     /// </summary>
-    private NodeBase GetDefaultNodePrefab()
+    private NodeBase GetRandomNode(int currentFloor)
     {
         if (nodes == null || nodes.Length == 0)
             return null;
 
-        return nodes[0];
+        foreach(EssentialNode essential in essentialNodeList)
+        {
+            if(essential.GetFloor() == currentFloor)
+            {
+                return nodes[(int)essential.GetNodeType()];
+            }
+        }
+
+        int nodeIndex = Random.Range(0, (nodes.Length - specialNodes));
+
+        return nodes[nodeIndex];
     }
 
     /// <summary>

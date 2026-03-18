@@ -396,15 +396,19 @@ MonoBehaviour:
   maxRoom: 4
   nodes:
   - {fileID: -2178507785916407125, guid: d5806271c96471b4183486e552dde467, type: 3}
-  - {fileID: -7654278118587436594, guid: 328c6cbf93befd74b8e1af1e98a59bdb, type: 3}
   - {fileID: -6941827101426666324, guid: 27951962be1c8a446ba826dab6da2f8a, type: 3}
-  - {fileID: 3161368144530395488, guid: 59b19f30837c8784088d53d95a116961, type: 3}
   - {fileID: 147628389622489810, guid: 78c5d718708bb6943bbf93b307b2cc0e, type: 3}
   - {fileID: -1185414134551820846, guid: 77794707f5aa6734887aee66e3e54c1a, type: 3}
+  - {fileID: 3161368144530395488, guid: 59b19f30837c8784088d53d95a116961, type: 3}
+  - {fileID: -7654278118587436594, guid: 328c6cbf93befd74b8e1af1e98a59bdb, type: 3}
+  specialNodes: 2
   numOfStartingNodes: 4
   buttonPivot: {fileID: 428350659}
   nodeGap: 100
   floorGap: 100
+  essentialNodeList:
+  - {fileID: 11400000, guid: 7acc92c6b4daebe4d85c9d8049f041c9, type: 2}
+  - {fileID: 11400000, guid: 128ad20ca476cd3418319fb889cf1df5, type: 2}
   generateOnStart: 1
 --- !u!4 &670114731
 Transform:
