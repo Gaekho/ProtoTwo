@@ -13,6 +13,19 @@ public class MapManager : MonoBehaviour
     private Dictionary<Vector2Int, NodeBase> nodeMap = new();
     //ÇÑ Ãþ´ç ÃÖ´ë ³ëµå °¹¼ö
     private int maxNode = 4;
+    public static MapManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+}
 
     private void Start()
     {

@@ -15,8 +15,8 @@ public class NodeBase : MonoBehaviour
     private bool bIsConnected = false;
     private bool bIsActive = false;
 
-    public List<NodeBase> nextNodes;
-    public List<NodeBase> prevNodes;
+    public List<NodeBase> nextNodes = new();
+    public List<NodeBase> prevNodes = new();
 
     private Vector2 position = Vector2.zero;
 
@@ -32,6 +32,12 @@ public class NodeBase : MonoBehaviour
     public void SetConnected() { bIsConnected = true; }
     public void SetActivate(bool inActivate) { bIsActive = inActivate; }
 
+    public void SetUnActivate()
+    {
+        bIsPlayerOn = false;
+        SetActivate(false);
+    }
+
     public void SetPosition(int inX, int inY)
     {
         position.x = inX;
@@ -40,8 +46,35 @@ public class NodeBase : MonoBehaviour
 
     public virtual void OnClick(string sceneName)
     {
+        if(prevNodes.Count == 0)
+        {
+            Debug.Log("no prevNodes");
+        }
+        else
+        {
+            Debug.Log("prevNodes exist");
+        }
+        if (nextNodes.Count == 0)
+        {
+            Debug.Log("no nextNodes");
+        }
+        else
+        {
+            Debug.Log("nextNodes exist");
+        }
+
         if (bIsActive)
         {
+            foreach (NodeBase node in prevNodes)
+            {
+                node.SetUnActivate();
+            }
+
+            foreach(NodeBase node in nextNodes)
+            {
+                node.SetActivate(true);
+            }
+
             bIsPlayerOn = true;
             SceneManager.LoadScene(sceneName);
         }
