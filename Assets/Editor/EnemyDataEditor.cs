@@ -17,6 +17,8 @@ public class EnemyDataEditor : Editor
     private SerializedProperty enemySpriteProp;
     private SerializedProperty animatorControllerProp;
 
+    private SerializedProperty thumbNailProp;
+
     private SerializedProperty patternListProp;
 
     private List<Type> actionTypes;
@@ -31,6 +33,8 @@ public class EnemyDataEditor : Editor
 
         enemySpriteProp = serializedObject.FindProperty("enemySprite");
         animatorControllerProp = serializedObject.FindProperty("animatorController");
+
+        thumbNailProp = serializedObject.FindProperty("thumbNail");
 
         patternListProp = serializedObject.FindProperty("patternList");
 
@@ -63,6 +67,9 @@ public class EnemyDataEditor : Editor
         EditorGUILayout.LabelField("Visual", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(enemySpriteProp);
         EditorGUILayout.PropertyField(animatorControllerProp);
+
+        EditorGUILayout.LabelField("UI Setting", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(thumbNailProp);
     }
 
     private void DrawPatternList()

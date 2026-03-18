@@ -20,8 +20,12 @@ public class EnemyData : ScriptableObject
     [SerializeField] private Sprite enemySprite;
     [SerializeField] private RuntimeAnimatorController animatorController;
 
+    //[Header("UI Settings")]
+    [SerializeField] private Sprite thumbNail;
     //[Header("Patterns")]
     [SerializeField] private List<EnemyPatternData> patternList = new();
+
+
 
     #region cache
     public string EnemyName => enemyName;
@@ -31,6 +35,7 @@ public class EnemyData : ScriptableObject
     public Sprite EnemySprite => enemySprite;
     public RuntimeAnimatorController AnimatorController => animatorController;
     public List<EnemyPatternData> PatternList => patternList;
+    public Sprite ThumbNail => thumbNail;
     #endregion
 }
 

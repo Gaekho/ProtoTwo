@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
 
         whosTurn.text = who + " Turn";
         turnCount.text = turn.ToString();
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1.5f);
         turnChangePanel.SetActive(false);
         yield break;
     }

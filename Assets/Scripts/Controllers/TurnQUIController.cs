@@ -20,7 +20,7 @@ public class TurnQUIController : MonoBehaviour
     [Header("Visual Setting")]
     [SerializeField] private Color enemyColor = Color.gray;
     [SerializeField] private Vector3 normalScale = Vector3.one;
-    [SerializeField] private Vector3 turnScale = new Vector3(1.2f, 1.2f);
+    [SerializeField] private Vector3 turnScale = new (1.2f, 1.2f);
 
     [Header("Runtime")]
     [SerializeField] private List<GameObject> spawnedQElements = new();
@@ -33,14 +33,15 @@ public class TurnQUIController : MonoBehaviour
 
         if (aliveUnits == null || aliveUnits.Count == 0) return;
 
-        for(int i=0; i<aliveUnits.Count; i++)
+        //첫번째 고정
+        SetQelement(turnQElement, aliveUnits[0]);
+        turnQElement.transform.localScale = turnScale;
+
+        //두번째부터 생성
+        for(int i=1; i<aliveUnits.Count; i++)
         {
             CreateWaitingElement(aliveUnits[i]);
         }
-
-        if (spawnedQElements[0] != null)
-            spawnedQElements[0].transform.localScale = turnScale;
-
     }
 
     public void ClearQueueUI()
@@ -59,12 +60,22 @@ public class TurnQUIController : MonoBehaviour
 
     public void OnUnitTurnStart()
     {
-        GameObject delete = spawnedQElements[0];
-        spawnedQElements.RemoveAt(0);
-        Destroy(delete);
+        if(spawnedQElements.Count == 0) return;
 
-        if (spawnedQElements[0] != null)
-            spawnedQElements[0].transform.localScale = turnScale;
+        GameObject next = spawnedQElements[0];
+        if(next == null)
+        {
+            spawnedQElements.RemoveAt(0);
+            return;
+        }
+
+        //턴 슬롯으로 비주얼 이동
+        turnQElement.GetComponent<Image>().sprite = next.GetComponent<Image>().sprite;
+        turnQElement.GetComponent<Outline>().effectColor = next.GetComponent<Outline>().effectColor;
+
+        //원본삭제
+        spawnedQElements.RemoveAt(0);
+        Destroy(next);
     }
 
     private void CreateWaitingElement(BattleUnitBase unit)
@@ -89,7 +100,7 @@ public class TurnQUIController : MonoBehaviour
         else if(unit.Team == UnitTeam.Enemy)
         {
             EnemyUnit enemy = unit as EnemyUnit;
-            //image.sprite = enemy.EnemyData.ThumbNail;
+            image.sprite = enemy.EnemyData.ThumbNail;
             outline.effectColor = enemyColor;
         }
     }

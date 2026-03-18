@@ -40,7 +40,7 @@ public class BattleManager : MonoBehaviour
 
     #region Cache
     public AllyUnit TurnCharacter { private set; get; }
-    public BattleUnitBase ActingUnit { private set; get; }
+    public BattleUnitBase ActingUnit; //{ private set; get; }
     public BattleUnitBase CurrentTurnUnit { private set; get; }
     public TurnState CurrentState { private set; get; }
     public IReadOnlyList<AllyUnit> PlayerParty => playerParty;
@@ -74,7 +74,7 @@ public class BattleManager : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine(BattleRoutine());
+        StartCoroutine(BattleRoutineTwo());
     }
 
     #region Setup
@@ -117,11 +117,37 @@ public class BattleManager : MonoBehaviour
         {
             if (enemy != null && !enemy.IsDead) aliveUnits.Add(enemy);
         }
+        Debug.Log(aliveUnits.Count);
 
         //여기에 정렬 알고리즘 투입
+        // 동속 랜덤용 셔플
+        for (int i = 0; i < aliveUnits.Count; i++)
+        {
+            int rand = Random.Range(i, aliveUnits.Count);
+            (aliveUnits[i], aliveUnits[rand]) = (aliveUnits[rand], aliveUnits[i]);
+        }
+
+        aliveUnits = aliveUnits
+            .OrderByDescending(GetUnitSpeed)
+            .ToList();
+
+        turnQ = new Queue<BattleUnitBase>();
+        foreach (var unit in aliveUnits)
+        {
+            turnQ.Enqueue(unit);
+            Debug.Log(unit.name);
+        }
+
+        //큐 카운트 증가
         queueCount++;
 
         //큐 UI 업데이트(UI Manager 호출)
+        UIManager.Instance.RefreshTurnQueue(queueCount, aliveUnits);
+    }
+
+    private float GetUnitSpeed(BattleUnitBase unit)
+    {
+        return unit.CurrentSpeed;
     }
     #endregion
 
@@ -149,6 +175,7 @@ public class BattleManager : MonoBehaviour
         return false;
     }
     #endregion
+
     #region Buff
     private IEnumerator BuffHookRoutine(BuffTriggerTiming timing, UnitTeam team)
     {
@@ -192,6 +219,8 @@ public class BattleManager : MonoBehaviour
         if (idx < 0) return;
         enemyList.RemoveAt(idx);
 
+        //ReBuildTurnQueue();
+
         if(enemyList.Count == 0)
         {
             HandController.Instance.TurnOffHand();
@@ -201,6 +230,11 @@ public class BattleManager : MonoBehaviour
 
     public void AllyDead(AllyUnit dead)
     {
+        int idx = playerParty.FindIndex(x=> x.gameObject == dead.gameObject);
+        if (idx < 0) return;
+        playerParty.RemoveAt(idx);
+
+        IsBattleEnd();
 
     }
     #endregion
@@ -265,39 +299,57 @@ public class BattleManager : MonoBehaviour
     {
         //최초 턴 큐 생성
         ReBuildTurnQueue();
+        Debug.Log("First Queue Created");
 
         // 메인 배틀 진입
         while (true)
         {
-            if (IsBattleEnd()) yield break;
+            if (IsBattleEnd()) { Debug.Log("Done"); yield break; }
+
+            if(turnQ == null || turnQ.Count == 0)
+            {
+                ReBuildTurnQueue();
+                Debug.Log("Rebuild Queue");
+                if (turnQ.Count == 0) { Debug.Log("TurnQ count 0"); yield break; }
+            }
 
             //캐릭터 턴 시작 : 패널 표시  --> actingUnit 저장
             totalTurnCount++;
-            ActingUnit = turnQ.First<BattleUnitBase>();
+            ActingUnit = turnQ.Dequeue();
             string name;
             if(ActingUnit.Team == UnitTeam.Ally)
             {
                 CurrentState = TurnState.AllyTurn;
+
+                if(TurnCharacter != null) { TurnCharacter.ExitTurn(); }
+
                 AllyUnit ally = ActingUnit as AllyUnit;
+                
+                TurnCharacter = ally;
+                TurnCharacter.EnterTurn();
+
                 name = ally.CharacterData.CharacterName;
-                StartCoroutine(UIManager.Instance.UnitTurnStart(totalTurnCount, name));
+                yield return StartCoroutine(ResolveRoutine(UIManager.Instance.UnitTurnStart(totalTurnCount, name)));
             }
+
             else if(ActingUnit.Team == UnitTeam.Enemy)
             {
                 CurrentState = TurnState.EnemyTurn;
                 EnemyUnit enemy = ActingUnit as EnemyUnit;
                 name = enemy.EnemyData.EnemyName;
-                StartCoroutine(UIManager.Instance.UnitTurnStart(totalTurnCount, name));
+                yield return StartCoroutine(ResolveRoutine(UIManager.Instance.UnitTurnStart(totalTurnCount, name)));
             }
 
             //버프 훅(턴 시작 시)
             yield return UnitBuffHook(BuffTriggerTiming.OnTurnStart, ActingUnit);
 
+            //유닛 턴 시작
             //분기(적 || 아군) 
             //아군이면 카드 사용 대기 및 턴 종료까지 대기
-            //적이면 패턴 슥 슥 쓰고 턴종
+            //적이면 패턴 쓰고 턴 종료
             if(ActingUnit.Team == UnitTeam.Ally)
             {
+                HandController.Instance.DrawCard(1);
                 while(CurrentState == TurnState.AllyTurn)
                 {
                     yield return null;
@@ -308,11 +360,14 @@ public class BattleManager : MonoBehaviour
             {
                 EnemyUnit enemy = ActingUnit as EnemyUnit;
                 yield return new WaitForSeconds(0.5f);
-                yield return StartCoroutine(ResolveRoutine(enemy.UsePatternRoutine()));         //적 패턴 기능 EnemyUnit에 구현 후에 다시 주석 해제.
+                yield return StartCoroutine(ResolveRoutine(enemy.UsePatternRoutine()));
                 enemy.SetRandomPattern();
             }
+            // 턴 종료 버프 훅
+            yield return StartCoroutine(ResolveRoutine(UnitBuffHook(BuffTriggerTiming.OnTurnEnd, ActingUnit)));
 
-            //턴 종료되면 적당히 종료 루틴이 뭐있냐 없지 사실상 턴 체인지로 가자
+            //턴 종료되면 턴이 시작하기 전에, 큐를 확인하고 비어있으면 ReBuildQueue
+            if (turnQ.Count == 1) ReBuildTurnQueue();
         }
     }
     #endregion
