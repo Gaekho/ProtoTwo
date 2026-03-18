@@ -9,8 +9,6 @@ public class NodeBase : MonoBehaviour
 {
     [Header("Node Data")]
     [SerializeField] public NodeType nodetype;
-    [SerializeField] public Sprite buttonImage;
-    [SerializeField] public Button nodeButton;
 
     private int nodeIndex = -1;
     private bool bIsPlayerOn = false;
@@ -32,7 +30,7 @@ public class NodeBase : MonoBehaviour
 
     public void SetNodeIndex(int newIndex) { nodeIndex = newIndex; }
     public void SetConnected() { bIsConnected = true; }
-    public void SetActivate() { bIsActive = true; }
+    public void SetActivate(bool inActivate) { bIsActive = inActivate; }
 
     public void SetPosition(int inX, int inY)
     {
@@ -48,15 +46,15 @@ public class NodeBase : MonoBehaviour
             SceneManager.LoadScene(sceneName);
         }
 
-        SceneManager.LoadScene(sceneName);
+        //SceneManager.LoadScene(sceneName);
     }
 
-    private void Awake()
-    {
-        if (nodeButton == null)
-        {
-            nodeButton = GetComponent<Button>();
-        }
-        Debug.Log("Node Generated");
-    }
+    //private void Awake()
+    //{
+    //    if (nodeButton == null)
+    //    {
+    //        nodeButton = GetComponent<Button>();
+    //    }
+    //    Debug.Log("Node Generated");
+    //}
 }

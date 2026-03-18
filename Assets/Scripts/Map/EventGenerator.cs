@@ -22,8 +22,8 @@ public class MapGenerator : MonoBehaviour
 {
     [Header("Level Data")]
     [SerializeField] private int floors = 10;          // 일반 층 수 (보스층 제외)
-    [SerializeField] private int minRoom = 1;          // 층당 최소 노드 수
-    [SerializeField] private int maxRoom = 4;          // 층당 최대 노드 수
+    [SerializeField] private int minNode = 1;          // 층당 최소 노드 수
+    [SerializeField] private int maxNode = 4;          // 층당 최대 노드 수
     [SerializeField] private NodeBase[] nodes;         // 노드 프리팹 목록
     [SerializeField] private int specialNodes = 2;      //특수 노드(보스, 엘리트 등)
     [SerializeField] private int numOfStartingNodes = 2;     // 시작 경로 개수 용도로 사용
@@ -34,15 +34,15 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private float floorGap = 30f;     // 층 간 간격
     [SerializeField] private List<EssentialNode> essentialNodeList = new List<EssentialNode>();     //필수로 등장하는 노드 정보
 
-    [Header("Generator Option")]
-    [SerializeField] private bool generateOnStart = true;
-
     // 생성된 노드 관리용
-    private readonly Dictionary<Vector2Int, NodeBase> nodeMap = new();
+    private Dictionary<Vector2Int, NodeBase> nodeMap = new();
     private readonly List<NodeBase> generatedNodes = new();
     private readonly List<Edge> edges = new();
 
     private NodeBase bossNode;
+
+    public Dictionary<Vector2Int, NodeBase> GetNodes() {  return nodeMap; }
+    public int GetMaxRoom() { return maxNode; }
 
     /// <summary>
     /// 선 연결 정보를 저장하는 간단한 구조체
@@ -57,14 +57,6 @@ public class MapGenerator : MonoBehaviour
         {
             this.from = from;
             this.to = to;
-        }
-    }
-
-    private void Start()
-    {
-        if (generateOnStart)
-        {
-            GenerateMap();
         }
     }
 
@@ -106,9 +98,9 @@ public class MapGenerator : MonoBehaviour
     private void ValidateSettings()
     {
         floors = Mathf.Max(2, floors);
-        minRoom = Mathf.Max(1, minRoom);
-        maxRoom = Mathf.Max(minRoom, maxRoom);
-        numOfStartingNodes = Mathf.Clamp(numOfStartingNodes, 1, maxRoom);
+        minNode = Mathf.Max(1, minNode);
+        maxNode = Mathf.Max(minNode, maxNode);
+        numOfStartingNodes = Mathf.Clamp(numOfStartingNodes, 1, maxNode);
     }
 
     // ------------------------------------------------------------------
@@ -157,7 +149,7 @@ public class MapGenerator : MonoBehaviour
     /// </summary>
     private List<int> GetUniqueStartColumns(int count)
     {
-        List<int> pool = Enumerable.Range(0, maxRoom)
+        List<int> pool = Enumerable.Range(0, maxNode)
             .OrderBy(_ => Random.value)
             .ToList();
 
@@ -176,7 +168,7 @@ public class MapGenerator : MonoBehaviour
         for (int dx = -1; dx <= 1; dx++)
         {
             int nextX = currentX + dx;
-            if (nextX < 0 || nextX >= maxRoom)
+            if (nextX < 0 || nextX >= maxNode)
                 continue;
 
             Edge candidate = new Edge(
@@ -270,12 +262,12 @@ public class MapGenerator : MonoBehaviour
             //    floorNodes = GetNodesAtFloor(currentFloor);
             //}
 
-            int targetCount = Random.Range(minRoom, maxRoom + 1);
+            int targetCount = Random.Range(minNode, maxNode + 1);
             int currentCount = GetNodesAtFloor(currentFloor).Count;
 
             while (currentCount < targetCount)
             {
-                int x = Random.Range(0, maxRoom);
+                int x = Random.Range(0, maxNode);
                 Vector2Int pos = new Vector2Int(x, currentFloor);
 
                 if (nodeMap.ContainsKey(pos))
@@ -401,7 +393,7 @@ public class MapGenerator : MonoBehaviour
     /// </summary>
     private Vector2 GridToLocalPosition(int x, int y)
     {
-        float width = (maxRoom - 1) * nodeGap;
+        float width = (maxNode - 1) * nodeGap;
         float startX = -width * 0.5f;
 
         float posX = startX + x * nodeGap;
@@ -522,7 +514,7 @@ public class MapGenerator : MonoBehaviour
         bossNode.name = "Boss_Node";
 
         // 보스 노드는 floors 번째 줄에 위치 (일반 층보다 한 칸 위)
-        bossNode.SetPosition(maxRoom / 2, floors);
+        bossNode.SetPosition(maxNode / 2, floors);
         bossNode.SetNodeIndex(generatedNodes.Count);
 
         RectTransform rect = bossNode.GetComponent<RectTransform>();
