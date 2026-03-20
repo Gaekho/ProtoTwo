@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b576987f6a9b34292963a88d6e3f13, type: 3}
   m_Name: SkullKnight
   m_EditorClassIdentifier: 
-  enemyName: skullKnight
+  enemyName: "\uBC31\uAE30\uC0AC(\uCC3D)"
   enemyDescription: 
   maxHealth: 35
   baseSpeed: 1

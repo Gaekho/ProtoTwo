@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef94ee1e6f62abb4588b12b992677049, type: 3}
   m_Name: Sita
   m_EditorClassIdentifier: 
-  characterName: Sita
+  characterName: "\uC2DC\uD0C0"
   characterDescription: 
   cardColor: 1
   maxHealth: 100

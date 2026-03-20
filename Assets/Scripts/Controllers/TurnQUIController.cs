@@ -24,23 +24,24 @@ public class TurnQUIController : MonoBehaviour
 
     [Header("Runtime")]
     [SerializeField] private List<GameObject> spawnedQElements = new();
+    [SerializeField] private List<BattleUnitBase> waitingUnits = new();
 
 
-    public void ReBuildQueue(int queueCount, List<BattleUnitBase> aliveUnits)
+    public void ReBuildQueue(int queueCount, List<BattleUnitBase> orderedUnits)
     {
         ClearQueueUI();
         SetQueueCount(queueCount);
 
-        if (aliveUnits == null || aliveUnits.Count == 0) return;
+        if (orderedUnits == null || orderedUnits.Count == 0) return;
 
         //첫번째 고정
-        SetQelement(turnQElement, aliveUnits[0]);
+        SetQelement(turnQElement, orderedUnits[0]);
         turnQElement.transform.localScale = turnScale;
 
         //두번째부터 생성
-        for(int i=1; i<aliveUnits.Count; i++)
+        for(int i=1; i<orderedUnits.Count; i++)
         {
-            CreateWaitingElement(aliveUnits[i]);
+            CreateWaitingElement(orderedUnits[i]);
         }
     }
 
@@ -53,35 +54,49 @@ public class TurnQUIController : MonoBehaviour
             spawnedQElements.Clear();
         }
     }
-    private void SetQueueCount(int count)
-    {
-        queueCount.text = $"[ {count} ]";
-    }
 
-    public void OnUnitTurnStart()
+    public void TransferQueueUI()
     {
         if(spawnedQElements.Count == 0) return;
 
         GameObject next = spawnedQElements[0];
-        if(next == null)
+        BattleUnitBase nextUnit = waitingUnits[0];
+
+        SetQelement(turnQElement, nextUnit);
+        turnQElement.transform.localScale = turnScale;
+
+        spawnedQElements.RemoveAt(0);
+        waitingUnits.RemoveAt(0);
+        Destroy(next);
+    }
+
+    public void RemoveUnitFromQueueUI(BattleUnitBase deadUnit)
+    {
+        if (deadUnit == null) return;
+
+        int idx = waitingUnits.IndexOf(deadUnit);
+        if (idx < 0) return;
+
+        if (idx < spawnedQElements.Count && spawnedQElements[idx] != null)
         {
-            spawnedQElements.RemoveAt(0);
-            return;
+            Destroy(spawnedQElements[idx]);
         }
 
-        //턴 슬롯으로 비주얼 이동
-        turnQElement.GetComponent<Image>().sprite = next.GetComponent<Image>().sprite;
-        turnQElement.GetComponent<Outline>().effectColor = next.GetComponent<Outline>().effectColor;
+        waitingUnits.RemoveAt(idx);
+        spawnedQElements.RemoveAt(idx);
+    }
 
-        //원본삭제
-        spawnedQElements.RemoveAt(0);
-        Destroy(next);
+    private void SetQueueCount(int count)
+    {
+        queueCount.text = $"[ {count} ]";
     }
 
     private void CreateWaitingElement(BattleUnitBase unit)
     {
         GameObject newElement = Instantiate(qElement, queueContainer);
         spawnedQElements.Add(newElement);
+        waitingUnits.Add(unit);
+
         SetQelement(newElement, unit);
         newElement.transform.localScale = normalScale;
     }

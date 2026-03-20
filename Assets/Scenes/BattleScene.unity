@@ -2311,8 +2311,25 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6756376220677150703, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756376220677150703, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756376220677150703, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756376220677150703, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8852758183593251169, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
@@ -3291,7 +3308,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Enemy Turn
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a7925d88af03e3a46bf83b8ec3dbe0e4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3355,7 +3372,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1169754153
@@ -3828,7 +3845,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1361442694}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3896,6 +3913,7 @@ MonoBehaviour:
   normalScale: {x: 1, y: 1, z: 1}
   turnScale: {x: 1.2, y: 1.2, z: 0}
   spawnedQElements: []
+  waitingUnits: []
 --- !u!1 &1383072352
 GameObject:
   m_ObjectHideFlags: 0
@@ -5994,9 +6012,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f272231a9cde82c4186c5eabdaa28688, type: 2}
   - {fileID: 11400000, guid: 1530b9c94d716b04c84a3e36393a8201, type: 2}
   ActingUnit: {fileID: 0}
-  onTurnStart:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1767197941
 GameObject:
   m_ObjectHideFlags: 0
@@ -6079,7 +6094,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1767197944}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1761083817}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: BackToMap
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1767197944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6345,7 +6372,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC804\uD22C \uC2B9\uB9AC!"
+  m_text: ...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a7925d88af03e3a46bf83b8ec3dbe0e4, type: 2}
   m_sharedMaterial: {fileID: 1515708835507398414, guid: a7925d88af03e3a46bf83b8ec3dbe0e4, type: 2}
@@ -6597,12 +6624,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 553461614}
+  - {fileID: 1361442695}
   - {fileID: 95868993}
   - {fileID: 2010548168}
   - {fileID: 629534584}
   - {fileID: 2068102748}
   - {fileID: 1930861940}
-  - {fileID: 1361442695}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6660,7 +6687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1930861940
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7439,6 +7466,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5937372730945844386, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756376220677150703, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756376220677150703, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756376220677150703, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756376220677150703, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

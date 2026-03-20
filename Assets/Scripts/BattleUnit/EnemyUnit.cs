@@ -4,16 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using Proto2.Enums;
 
-//v0.01 / 2026.03.07 / 07:29
+//v0.03 / 2026.03.20 / 17:25
+//변경 요약 : UI Controller 추가
 public class EnemyUnit : BattleUnitBase
 {
     #region Field
     [Header("Enemy Unit")]
     [SerializeField] private EnemyData enemyData;
     [SerializeField] private float baseSpeed => enemyData.BaseSpeed;
-    [SerializeField] private Canvas myCanvas;
-    [SerializeField] private Slider healthSlider;
-    [SerializeField] private Image intentIcon;
+
+    [Header("EnemyUI")]
+    [SerializeField] private EnemyUIController uiController;
+
+    [Header("Current Pattern")]
     [SerializeField] private EnemyPatternData currentPattern;
     #endregion
 
@@ -26,11 +29,7 @@ public class EnemyUnit : BattleUnitBase
         base.SetProfile(UnitTeam.Enemy, enemyData.MaxHealth);
         mySprite.sprite = enemyData.EnemySprite;
 
-        //UI Canvas 세팅
-        myCanvas = transform.parent.GetComponentInChildren<Canvas>();
-        healthSlider = myCanvas.GetComponentInChildren<Slider>();
-        healthSlider.value = 1f;
-        intentIcon = myCanvas.GetComponentInChildren<Image>();
+        uiController.SetUpUI(this);
 
         //패턴 세팅
         SetRandomPattern();
@@ -40,7 +39,41 @@ public class EnemyUnit : BattleUnitBase
     public override void GetDamage(float value)
     {
         base.GetDamage(value);
-        healthSlider.value = currentHealth / enemyData.MaxHealth;
+        uiController.SetArmorText(currentArmor);
+        uiController.SetHealth(currentHealth);
+    }
+
+    public override void AddArmor(float value)
+    {
+        base.AddArmor(value);
+        uiController.SetArmorText(currentArmor);
+    }
+
+    public override void ReceiveBuff(BuffBase buff, BattleUnitBase applier)
+    {
+        // 1. 버프 리스트에 인스턴스 추가
+        BuffInstance alreadyExist = buffList.Find(x => x.SourceBuff.BuffType == buff.BuffType);
+
+        if (alreadyExist == null)
+        {
+            BuffInstance newInstance = buff.CreateInstance(this, applier);
+            buffList.Add(newInstance);
+            buff.OnApply(newInstance);
+            uiController.CreateOrRefreshBuffUI(newInstance);
+        }
+        else
+        {
+            buff.MergeToSameBuff(alreadyExist, applier);
+            buff.OnApply(alreadyExist);
+            uiController.CreateOrRefreshBuffUI(alreadyExist);
+        }
+
+        // 2. 애니메이션 재생
+        if (applier != this)
+        {
+            if (buff.IsDebuff) DoReceiveDebuffAnim();
+            else DoReceiveBuffAnim();
+        }
     }
     protected override IEnumerator Die()
     {
@@ -81,7 +114,7 @@ public class EnemyUnit : BattleUnitBase
     {
         int index = Random.Range(0, enemyData.PatternList.Count);
         currentPattern = enemyData.PatternList[index];
-        intentIcon.sprite = currentPattern.IntentIcon;
+        uiController.SetPatternImage(currentPattern);
     }
 
     public void UsePattern()
@@ -137,7 +170,8 @@ public class EnemyUnit : BattleUnitBase
             patternAction.DoAction(new PatternActionParameters(this, BattleManager.Instance.TurnCharacter, currentPattern));
         }
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.7f);
     }
+
     #endregion
 }

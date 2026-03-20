@@ -62,10 +62,8 @@ public class UIManager : MonoBehaviour
         TMP_Text whosTurn = turnChangePanel.GetComponentInChildren<TMP_Text>();
         Text turnCount = turnChangePanel.GetComponentInChildren<Text>();
 
-        whosTurn.text = who + "'s Turn";
+        whosTurn.text = who + "의 차례";
         turnCount.text = turn.ToString();
-
-        qUIController.OnUnitTurnStart();
 
         yield return new WaitForSeconds(0.8f);
         turnChangePanel.SetActive(false);
@@ -79,28 +77,45 @@ public class UIManager : MonoBehaviour
     public IEnumerator BattleEnd(string winLose)
     {
         rewardPanel.SetActive(true);
-        TMP_Text wl = GetComponentInChildren<TMP_Text>();
+        TMP_Text wl = rewardPanel.GetComponentInChildren<TMP_Text>();
         wl.text = "전투 " + winLose + "!";
         yield break;
     }
 
-    public void RefreshTurnQueue(int queueCount, List<BattleUnitBase> aliveUnits)
+    public IEnumerator RoundStart(int queueCount)
+    {
+        turnChangePanel.SetActive(true);
+
+        TMP_Text whosTurn = turnChangePanel.GetComponentInChildren<TMP_Text>();
+        Text turnCount = turnChangePanel.GetComponentInChildren<Text>();
+        qUIController.transform.localScale = new Vector3(1.5f, 1.5f);
+
+        whosTurn.text = $"{queueCount} 번째 라운드 진행";
+        turnCount.text = "";
+
+        yield return new WaitForSeconds(1.5f);
+        qUIController.transform.localScale = Vector3.one;
+        turnChangePanel.SetActive(false);
+    }
+
+    public void RefreshTurnQueueUI(int queueCount, List<BattleUnitBase> aliveUnits)
     {
         qUIController.ReBuildQueue(queueCount, aliveUnits);
+    }
+
+    public void TransferTurnQueueUI()
+    {
+        qUIController.TransferQueueUI();
+    }
+
+    public void RemoveUnitFromTurnQueueUI(BattleUnitBase deadUnit)
+    {
+        qUIController.RemoveUnitFromQueueUI(deadUnit);
     }
 
     public void Selection()
     {
 
     }
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
