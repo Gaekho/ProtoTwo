@@ -33,7 +33,8 @@ MonoBehaviour:
   - patternName: "\uBC29\uC5B4\uB3C4 \uC5BB\uAE30"
     patternType: 1
     intentIcon: {fileID: 485272125, guid: ea7de6defccb7054e830650d2736518a, type: 3}
-    patternActionList: []
+    patternActionList:
+    - rid: 3789920283384610822
   references:
     version: 2
     RefIds:
@@ -47,3 +48,8 @@ MonoBehaviour:
       data:
         actionTarget: 6
         armorAmount: 10
+    - rid: 3789920283384610822
+      type: {class: AddArmorPatternAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 6
+        armorAmount: 15
