@@ -6,8 +6,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-//v0.04 / 2026.03.19 
-//변경 요약 : 전체 루틴 변경
+//v0.05 / 2026.03.26 
+//변경 요약 : SpawnEnemy 명세서 추가
 public class BattleManager : MonoBehaviour
 {
     #region Singleton
@@ -99,6 +99,23 @@ public class BattleManager : MonoBehaviour
             enemyList.Add(enemies[i]);
             enemies[i].SetProfile(tempEnemies[i]);        //레벨 데이터를 통한 에너미 데이터 전달 시 기능하도록 구현.
         }
+    }
+
+    private void SpawnEnemies()
+    {
+        /* 맵 데이터에서 적 인카운터의 조합을 확인, 적절한 위치에 배정한다.
+         * 
+         * 적절한 위치는 적의 수에 따라 달라져야 한다.
+         * 유닛 가로 크기는 1이다. 따라서 간격은 1.1 이상으로 한다.
+         * 위치는 x position 1.5 ~ 4.0 사이의 유동적이며, 기본적으로 평균이 2 가 되도록 배치한다.
+         * 모든 적 유닛의 x position은 (1~4)범위로 설정한다.(적 진영의 크기)
+         * 단독 적은 2
+         * 2개체는 1.2, 2.8
+         * 3개체는 1, 2.5, 4 명확하진 않은데, 적절한 거리 및 이유를 들어서 공식화 하면 좋을 것 같다. 
+         * 
+         * 적을 스폰하기 위해 BasicEnemy 프리팹을 사용한다.
+         * 이후 SetEnemy() 를 통해 적절한 데이터를 주입한다.
+         */
     }
     #endregion
 
