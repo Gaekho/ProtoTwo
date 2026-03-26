@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef94ee1e6f62abb4588b12b992677049, type: 3}
   m_Name: Rigel
   m_EditorClassIdentifier: 
-  characterName: rigel
+  characterName: "\uB9AC\uAC94"
   characterDescription: 
   cardColor: 2
   maxHealth: 90
