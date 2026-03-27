@@ -46,7 +46,7 @@ MonoBehaviour:
     - rid: 3789920145637376011
       type: {class: PoisonDebuff, ns: , asm: Assembly-CSharp}
       data:
-        buffType: 6
+        buffType: 8
         isDebuff: 1
         buffName: Poison
         description: Get 1 damages on start of turn.
