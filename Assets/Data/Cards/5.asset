@@ -16,7 +16,7 @@ MonoBehaviour:
   cardName: "\uB3C5\uBCD1 \uD22C\uCC99"
   type: 1
   color: 3
-  cardText: "\uD53C\uD574\uB97C 5 \uC785\uD788\uACE0 \uB3C5\uC131\uC744 2 \uBD80\uC5EC\uD569\uB2C8\uB2E4."
+  cardText: "\uD53C\uD574\uB97C 5 \uC785\uD788\uACE0 \uB3C5\uC131\uC744 5 \uBD80\uC5EC\uD569\uB2C8\uB2E4."
   cardSprite: {fileID: -881700137, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 0
@@ -51,5 +51,5 @@ MonoBehaviour:
         buffName: Poison
         description: Get 1 damages on start of turn.
         triggerTiming: 3
-        duration: 2
+        duration: 5
         reduceTiming: 2
