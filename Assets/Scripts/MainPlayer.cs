@@ -17,11 +17,7 @@ public class MainPlayer : MonoBehaviour
     [Header("Gameplay")]
     [SerializeField] private float MoveSpeed = 1.0f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Vector3 GetPlayerPosition() { return transform.position; }
 
     private void Update()
     {
