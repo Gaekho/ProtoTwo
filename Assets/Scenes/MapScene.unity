@@ -220,6 +220,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7629767225023370684, guid: f5b83045256815e46b6ca4efd5f43c67, type: 3}
   m_PrefabInstance: {fileID: 394017270}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &402429729 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6159695144428589645, guid: f5b83045256815e46b6ca4efd5f43c67, type: 3}
+  m_PrefabInstance: {fileID: 394017270}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402429727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 412e58822b4602b4da9177a46fcc8fc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &402429733
 Rigidbody2D:
   serializedVersion: 4
@@ -573,7 +584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d2673efd5afeda41bfb552ac503b8f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 402429729}
   cameraFollowThreshold: 2
 --- !u!1 &1809103473
 GameObject:
@@ -729,5 +740,5 @@ SceneRoots:
   - {fileID: 1498022799}
   - {fileID: 2006675200}
   - {fileID: 506246014}
-  - {fileID: 394017270}
   - {fileID: 712511406}
+  - {fileID: 394017270}
