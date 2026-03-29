@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3649599a1e4a20a448dc121ec4c93e3c, type: 3}
-  m_Name: EssentialNode_Test_Boss
+  m_Script: {fileID: 11500000, guid: 0ae8a2c2a9e12da4c9da13a873005277, type: 3}
+  m_Name: BattleEncounter
   m_EditorClassIdentifier: 
-  nodeType: 0
-  floor: 0
+  enemyData:
+  - {fileID: 11400000, guid: f272231a9cde82c4186c5eabdaa28688, type: 2}
+  - {fileID: 11400000, guid: 1530b9c94d716b04c84a3e36393a8201, type: 2}
