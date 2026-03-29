@@ -165,6 +165,20 @@ public abstract class BattleUnitBase : MonoBehaviour
         buffList.RemoveAt(idx);
     }
 
+    public virtual bool HasBuff(BuffTypes buffType)
+    {
+        return buffList.Exists(x => x != null && x.SourceBuff != null && x.SourceBuff.BuffType == buffType);
+    }
+
+    public virtual BuffInstance GetBuff(BuffTypes buffType)
+    {
+        if (HasBuff(buffType))
+        {
+            return buffList.Find(x => x.SourceBuff.BuffType == buffType);
+        }
+        else return null;
+    }
+
     #region Animation Wait
     //public IEnumerator WaitForAnimationStateEnd(string stateName, int layer = 0)
     //{

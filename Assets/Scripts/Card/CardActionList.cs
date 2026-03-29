@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+using Proto2.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -64,12 +66,80 @@ public class ApplyBuffAction : CardActionBase
     }
 }
 
+#region Branching Action Supporter
+[Serializable]
+public class BranchConditionData
+{
+    [SerializeField] private BranchActionCondition condition;
+    [SerializeField] private float value;
+    [SerializeField] private BuffTypes buffType;
+
+    public BranchActionCondition Condition => condition;
+    public float Value => value;
+    public BuffTypes BuffType => buffType;
+}
+#endregion
 [Serializable]
 public class BranchingAction : CardActionBase
 {
+    [Header("Condition")]
+    [SerializeField] private BranchConditionData condition = new();
+
+    [Header("Actions If Ture")]
+    [SerializeReference] private List<CardActionBase> trueActions = new();
+
+    [Header("Actions If False")]
+    [SerializeReference] private List<CardActionBase> falseActions = new();
      
     public override void DoAction(CardActionParameters actionParameters)
     {
-        throw new NotImplementedException();
+        switch(BranchConditionCheck(condition, actionParameters))
+        {
+            case true:
+                foreach (CardActionBase Taction in trueActions) Taction.DoAction(actionParameters);
+                break;
+
+            case false:
+                foreach (CardActionBase Faction in falseActions) Faction.DoAction(actionParameters);
+                break;
+        }
+    }
+    private bool BranchConditionCheck(BranchConditionData branchCondition, CardActionParameters actionParameters)
+    {
+        switch (branchCondition.Condition)
+        {            
+            case BranchActionCondition.OwnerHealthGreater:
+                if (actionParameters.owner.CurrentHealth >= branchCondition.Value) return true;
+                else return false;
+
+            case BranchActionCondition.OwnerHealthLess:
+                if (actionParameters.owner.CurrentHealth <= branchCondition.Value) return true;
+                else return false;
+            
+            case BranchActionCondition.TargetHealthGreater:
+                if (actionParameters.target.CurrentHealth >= branchCondition.Value) return true;
+                else return false;
+
+            case BranchActionCondition.TargetHealthLess:
+                if (actionParameters.target.CurrentHealth <= branchCondition.Value) return true;
+                else return false;
+
+            case BranchActionCondition.OwnerHasBuff:
+                if (actionParameters.owner.HasBuff(branchCondition.BuffType)) return true;
+                else return false;
+
+            case BranchActionCondition.OwnerNotHasBuff:
+                if (actionParameters.owner.HasBuff(branchCondition.BuffType)) return false;
+                else return true;
+
+            case BranchActionCondition.TargetHasBuff:
+                if (actionParameters.target.HasBuff(branchCondition.BuffType)) return true;
+                else return false;
+
+            case BranchActionCondition.TargetNotHasBuff:
+                if (actionParameters.target.HasBuff(branchCondition.BuffType)) return false;
+                else return true;
+        }
+        return false;
     }
 }
