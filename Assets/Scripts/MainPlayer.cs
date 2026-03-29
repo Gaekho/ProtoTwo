@@ -20,20 +20,17 @@ public class MainPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(transform.localPosition);
-        Debug.Log(transform.position);
+        
     }
 
     private void Update()
     {
         if(Input.GetKey(KeyCode.A))
         {
-            Debug.Log("LeftMove Input");
             Move(MoveDirection.Left);
         }
         if(Input.GetKey(KeyCode.D))
         {
-            Debug.Log("RightMove Input");
             Move(MoveDirection.Right);
         }
 
@@ -45,12 +42,12 @@ public class MainPlayer : MonoBehaviour
         if(direction == MoveDirection.Left)
         {
             transform.position += Vector3.left * MoveSpeed * Time.deltaTime;
-            transform.localPosition += Vector3.left * MoveSpeed * Time.deltaTime;
+            //transform.localPosition += Vector3.left * MoveSpeed * Time.deltaTime;
         }
         if(direction == MoveDirection.Right)
         {
             transform.position += Vector3.right * MoveSpeed * Time.deltaTime;
-            transform.localPosition += Vector3.right * MoveSpeed * Time.deltaTime;
+            //transform.localPosition += Vector3.right * MoveSpeed * Time.deltaTime;
         }
     }
 }
