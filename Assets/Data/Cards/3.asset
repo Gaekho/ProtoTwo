@@ -47,7 +47,7 @@ MonoBehaviour:
         actionTarget: 0
         condition:
           condition: 2
-          value: 50
+          healthRate: 0.5
           buffType: 0
         trueActions:
         - rid: 3789920508957687810

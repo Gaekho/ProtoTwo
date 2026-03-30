@@ -71,11 +71,11 @@ public class ApplyBuffAction : CardActionBase
 public class BranchConditionData
 {
     [SerializeField] private BranchActionCondition condition;
-    [SerializeField] private float value;
+    [SerializeField] private float healthRate;
     [SerializeField] private BuffTypes buffType;
 
     public BranchActionCondition Condition => condition;
-    public float Value => value;
+    public float HealthRate => healthRate;
     public BuffTypes BuffType => buffType;
 }
 #endregion
@@ -109,19 +109,19 @@ public class BranchingAction : CardActionBase
         switch (branchCondition.Condition)
         {            
             case BranchActionCondition.OwnerHealthGreater:
-                if (actionParameters.owner.CurrentHealth >= branchCondition.Value) return true;
+                if (actionParameters.owner.CurrentHealth >= branchCondition.HealthRate) return true;
                 else return false;
 
             case BranchActionCondition.OwnerHealthLess:
-                if (actionParameters.owner.CurrentHealth <= branchCondition.Value) return true;
+                if (actionParameters.owner.CurrentHealth <= branchCondition.HealthRate) return true;
                 else return false;
             
             case BranchActionCondition.TargetHealthGreater:
-                if (actionParameters.target.CurrentHealth >= branchCondition.Value) return true;
+                if (actionParameters.target.CurrentHealth >= branchCondition.HealthRate) return true;
                 else return false;
 
             case BranchActionCondition.TargetHealthLess:
-                if (actionParameters.target.CurrentHealth <= branchCondition.Value) return true;
+                if (actionParameters.target.CurrentHealth <= branchCondition.HealthRate) return true;
                 else return false;
 
             case BranchActionCondition.OwnerHasBuff:
@@ -141,5 +141,47 @@ public class BranchingAction : CardActionBase
                 else return true;
         }
         return false;
+    }
+}
+
+[Serializable]
+public class ClearArmorAction : CardActionBase
+{
+    public override void DoAction(CardActionParameters actionParameters)
+    {
+        foreach(BattleUnitBase target in ActionTargets(actionParameters))
+        {
+            target.ClearArmor();
+        } 
+    }
+}
+
+[Serializable]
+public class RemoveBuffAction : CardActionBase
+{
+    [SerializeReference] private BuffBase targetBuff;
+
+    public override void DoAction(CardActionParameters actionParameters)
+    {
+        foreach(BattleUnitBase target in ActionTargets(actionParameters))
+        {
+            if (target.HasBuff(targetBuff.BuffType))
+            {
+                BuffInstance removeTarget = target.GetBuff(targetBuff.BuffType);
+                target.RemoveBuff(removeTarget);
+            }
+        }
+    }
+
+    [Serializable]
+    public class ShowIntentAction : CardActionBase
+    {
+        public override void DoAction(CardActionParameters actionParameters)
+        {
+            foreach (BattleUnitBase target in ActionTargets(actionParameters))
+            {
+                EnemyUnit enemy = target as EnemyUnit;
+            }
+        }
     }
 }

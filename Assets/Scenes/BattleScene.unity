@@ -2327,6 +2327,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8849710984357025609, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8852758183593251169, guid: 041b6d195dc467d498dc9356e2756fff, type: 3}
@@ -5166,6 +5170,18 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 4201cc51bd781f04099930bbd759ea95, type: 2}
+    - target: {fileID: 4650463370419993619, guid: 91ba972ccf22a714895ccc90901f8d37, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4650463370419993619, guid: 91ba972ccf22a714895ccc90901f8d37, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4650463370419993619, guid: 91ba972ccf22a714895ccc90901f8d37, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5202983149974829260, guid: 91ba972ccf22a714895ccc90901f8d37, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.775

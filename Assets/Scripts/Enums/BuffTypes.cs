@@ -17,7 +17,10 @@ namespace Proto2.Enums
         Weakness,
         Vulnerable,
         Poison,
-        Stun
+        Stun,
+        Unstable,
+        Oil,
+        Bleeding
     }
 
     public enum ReduceTiming
