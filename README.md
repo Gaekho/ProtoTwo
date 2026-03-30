@@ -122,9 +122,12 @@ public class NewBuffInstance : BuffInstance
 
 ---
 
-# 맵 노드 추가
+# 맵 추가 방법
+맵 씬 폴더 관리법
+지역
+L 맵(필드), 배틀
 
-## 새로운 노드 카테고리 추가 방법
+## 새로운 맵 추가 방법
 
 - 노드 추가 :
     1. `NodeTypes.cs`에 타입 enum 추가.
