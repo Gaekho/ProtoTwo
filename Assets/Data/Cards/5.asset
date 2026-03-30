@@ -16,7 +16,8 @@ MonoBehaviour:
   cardName: "\uB3C5\uBCD1 \uD22C\uCC99"
   type: 1
   color: 3
-  cardText: "\uD53C\uD574\uB97C 5 \uC785\uD788\uACE0 \uB3C5\uC131\uC744 5 \uBD80\uC5EC\uD569\uB2C8\uB2E4."
+  cardText: "\uBB34\uC791\uC704 \uC801\uC5D0\uAC8C \uB3C5\uC131\uC744 5 \uBD80\uC5EC\uD55C\uB2E4.
+    \uB450\uBC88 \uBC18\uBCF5\uB41C\uB2E4."
   cardSprite: {fileID: -881700137, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 0
@@ -27,23 +28,34 @@ MonoBehaviour:
     value: 2
   banishAfterUsed: 0
   cardActionList:
-  - rid: 3789920145637376009
   - rid: 3789920145637376010
+  - rid: 3789920508957687811
   references:
     version: 2
     RefIds:
-    - rid: 3789920145637376009
-      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
-      data:
-        actionTarget: 2
-        damage: 5
     - rid: 3789920145637376010
       type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
       data:
-        actionTarget: 2
+        actionTarget: 6
         buff:
           rid: 3789920145637376011
     - rid: 3789920145637376011
+      type: {class: PoisonDebuff, ns: , asm: Assembly-CSharp}
+      data:
+        buffType: 8
+        isDebuff: 1
+        buffName: Poison
+        description: Get 1 damages on start of turn.
+        triggerTiming: 3
+        duration: 5
+        reduceTiming: 2
+    - rid: 3789920508957687811
+      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 6
+        buff:
+          rid: 3789920508957687812
+    - rid: 3789920508957687812
       type: {class: PoisonDebuff, ns: , asm: Assembly-CSharp}
       data:
         buffType: 8

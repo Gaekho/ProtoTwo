@@ -13,39 +13,47 @@ MonoBehaviour:
   m_Name: 3
   m_EditorClassIdentifier: 
   id: 3
-  cardName: "\uBD84\uB178\uC758 \uC678\uCE68"
+  cardName: "\uB9AC\uBCA4\uC9C0"
   type: 1
   color: 1
-  cardText: "\uB3C4\uBC1C\uC744 2 \uC5BB\uC2B5\uB2C8\uB2E4."
-  cardSprite: {fileID: 698158667, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
+  cardText: "\uC120\uD0DD\uB41C \uC801\uC5D0\uAC8C \uD53C\uD574\uB97C 5\uC785\uD799\uB2C8\uB2E4.
+    \uC790\uC2E0\uC758 \uCCB4\uB825\uC774 50% \uC774\uD558\uB77C\uBA74 \uD53C\uD574\uB7C9\uC774
+    10 \uC99D\uAC00\uD55C\uB2E4."
+  cardSprite: {fileID: -993018294, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
-  cardAnimTrigger: 2
+  cardAnimTrigger: 0
   usableWithoutTarget: 1
-  cardTarget: 0
+  cardTarget: 2
   activeConditionList:
   - condition: 0
-    value: 1
+    value: 3
   - condition: 1
     value: 2
   banishAfterUsed: 0
   cardActionList:
-  - rid: 3789920145637376004
+  - rid: 3789920508957687808
+  - rid: 3789920508957687809
   references:
     version: 2
     RefIds:
-    - rid: 3789920145637376004
-      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
+    - rid: 3789920508957687808
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
       data:
-        actionTarget: 1
-        buff:
-          rid: 3789920145637376005
-    - rid: 3789920145637376005
-      type: {class: TauntBuff, ns: , asm: Assembly-CSharp}
+        actionTarget: 2
+        damage: 5
+    - rid: 3789920508957687809
+      type: {class: BranchingAction, ns: , asm: Assembly-CSharp}
       data:
-        buffType: 1
-        isDebuff: 0
-        buffName: Taunt
-        description: Get Enemies Attack or Apply to this Unit
-        triggerTiming: 0
-        duration: 2
-        reduceTiming: 2
+        actionTarget: 0
+        condition:
+          condition: 2
+          value: 50
+          buffType: 0
+        trueActions:
+        - rid: 3789920508957687810
+        falseActions: []
+    - rid: 3789920508957687810
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        damage: 10

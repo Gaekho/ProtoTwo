@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
   m_Name: 20t
   m_EditorClassIdentifier: 
-  id: 0
+  id: 20
   cardName: "\uC0C8\uB85C\uC6B4 \uACF5\uACA9\uCE74\uB4DC"
   type: 1
   color: 1

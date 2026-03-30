@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
   m_Name: 21t
   m_EditorClassIdentifier: 
-  id: 0
+  id: 21
   cardName: "\uBC29\uC5B4 \uD14C\uC2A4\uD2B8"
   type: 1
   color: 1
@@ -20,11 +20,11 @@ MonoBehaviour:
   cardSprite: {fileID: -1606494161, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 1
+  usableWithoutTarget: 1
   cardTarget: 0
   activeConditionList:
   - condition: 1
     value: 2
-  usableWithoutTarget: 1
   banishAfterUsed: 0
   cardActionList:
   - rid: 283199188643086338
