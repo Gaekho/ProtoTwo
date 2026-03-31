@@ -64,6 +64,7 @@ public class NewPatternActionBase : PatternActionBase
     5. 필요한 추가 필드 생성 및 생성자에 추가.
     6. (추가 필드/스펙) 전용 `BuffInstance` 하위 클래스 생성.
     7. (추가 필드/스펙) BuffBase 하위 클래스에서 `CreateInstance`, `MergeToSameBuff` override.
+    8. BuffUI 프리팹에 BuffIconEntry 등록
 
 ```csharp
 // Assets/Scripts/Buff/BuffList 하위에 작성
