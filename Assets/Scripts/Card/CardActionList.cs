@@ -13,6 +13,12 @@ public class AttackAction : CardActionBase
     {
         foreach (BattleUnitBase target in ActionTargets(actionParameters))
         {
+            float totalDamage = damage;
+            if (actionParameters.owner.HasBuff(BuffTypes.Strengthen))
+            {
+                //actionParameters.owner.GetBuff(BuffTypes.Strengthen) as
+            }
+
             target.GetDamage(damage);
         }
     }

@@ -32,54 +32,6 @@ public class TauntBuff : BuffBase
 }
 
 [Serializable]
-public class PoisonDebuff : BuffBase
-{
-    public PoisonDebuff() 
-    {
-        buffType = BuffTypes.Poison;
-        isDebuff = true;
-        buffName = "Poison";
-        description = $"Get 10% of current health (Max 30) damages on start of turn.";
-        triggerTiming = BuffTriggerTiming.OnTurnStart;
-
-        duration = 1;
-        reduceTiming= ReduceTiming.EndOfOwnerTurn;
-    }
-
-    public override void OnApply(BuffInstance instance)
-    {
-        Debug.Log($"{instance.Owner.name} is Poisoned.");
-    }
-
-    public override void OnTurnStart(BuffInstance instance)
-    {
-        float damage = instance.Owner.CurrentHealth * 0.1f;
-        if(damage > 30) damage = 30;
-        instance.Owner.GetDamage(damage);
-    }
-}
-
-[Serializable]
-public class BleedingDebuff : BuffBase
-{
-    public BleedingDebuff()
-    {
-        buffType = BuffTypes.Bleeding;
-        isDebuff = true;
-        buffName = "Bleeding";
-        description = $"Get {duration} damages on start of turn.";
-        triggerTiming = BuffTriggerTiming.OnTurnStart;
-
-        duration = 1;
-        reduceTiming = ReduceTiming.EndOfOwnerTurn;
-    }
-    public override void OnTurnStart(BuffInstance instance)
-    {
-        instance.Owner.GetDamage(duration);
-    }
-}
-
-[Serializable]
 public class StatPlusBuff : BuffBase
 {
     [SerializeField] ConditionType stat;
@@ -114,53 +66,36 @@ public class StatPlusBuff : BuffBase
 }
 
 [Serializable]
-public class OilDebuff : BuffBase
+public class StrengthenBuff : BuffBase
 {
-    public OilDebuff()
+    [SerializeField] private float additionalDamageRate;
+
+    public StrengthenBuff()
     {
-        buffType = BuffTypes.Oil;
-        isDebuff = true;
-        buffName = "Oil";
-        description = "Speed -1 while duration";
+        buffType = BuffTypes.Strengthen;
+        isDebuff = false;
+        buffName = "Strengthen";
+        description = $"Attack damage increase {(int)(additionalDamageRate*100)}% while duration.";
         triggerTiming = BuffTriggerTiming.None;
 
         duration = 1;
-        reduceTiming= ReduceTiming.EndOfOwnerTurn;
+        reduceTiming = ReduceTiming.EndOfOwnerTurn;
+
+        additionalDamageRate = 1.1f;
     }
 
-    public override void OnApply(BuffInstance instance)
+    public override BuffInstance CreateInstance(BattleUnitBase owner, BattleUnitBase applier)
     {
-        instance.Owner.StatusChange(ConditionType.Speed, -1);
+        return new StrengthenBuffInstance(this, owner, applier, additionalDamageRate);
     }
 
-    public override void OnRemove(BuffInstance instance)
+    public override void MergeToSameBuff(BuffInstance originalBuff, BattleUnitBase newApplier)
     {
-        instance.Owner.StatusChange(ConditionType.Speed, 1);
+        base.MergeToSameBuff(originalBuff, newApplier);
+
+        StrengthenBuffInstance inst = originalBuff as StrengthenBuffInstance;
+        if (inst == null) return;
+
+        inst.SetDamageRate(additionalDamageRate);
     }
-}
-
-[Serializable]
-public class UnstableDebuff : BuffBase
-{
-    [SerializeField] private int amount;
-    public UnstableDebuff()
-    {
-        buffType = BuffTypes.Unstable;
-        isDebuff = true;
-        buffName = "Unstable";
-        description = "Damage to owner when removed";
-        triggerTiming = BuffTriggerTiming.OnRemove;
-
-        duration = 1;
-        reduceTiming = ReduceTiming.Permanent;
-    }
-
-    public override void OnRemove(BuffInstance instance)
-    {
-        int totalDamage;
-        totalDamage = instance.RemainTurn * (instance.RemainTurn + 3);
-        totalDamage /= 2;
-        instance.Owner.GetDamage(totalDamage);
-    }
-
 }

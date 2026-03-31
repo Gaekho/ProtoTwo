@@ -20,6 +20,7 @@ public class BuffUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     [Header("ToolTip Box")]
     [SerializeField] private GameObject tooltipBox;
+    [SerializeField] private TMP_Text buffNameText;
     [SerializeField] private TMP_Text tooltipText;
 
     [Header("Icon Database")]
@@ -83,6 +84,7 @@ public class BuffUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         tooltipBox.SetActive(true);
+        buffNameText.text = currentBuff.SourceBuff.BuffName;
         tooltipText.text = currentBuff.SourceBuff.Description;
     }
 

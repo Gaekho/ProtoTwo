@@ -12,6 +12,8 @@ namespace Proto2.Enums
         Addiction,
         StatPlus,
         Buffer,
+        Berserk,
+        Strengthen,
        
         //ต๐น๖วม
         Weakness,
