@@ -2,6 +2,7 @@ using Proto2.Enums;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //V0.01 / 2026.03.07 / 18:31
 public class AllyUnit : BattleUnitBase
@@ -15,6 +16,10 @@ public class AllyUnit : BattleUnitBase
     [SerializeField] private bool isTurn;
     [SerializeField] private Transform myTransform;     //턴 교체 시 크기 변경용
     [SerializeField] private AllyUnitUIcontroller uiController;
+
+    [Header("Own UI")]
+    [SerializeField] private Canvas ownUIcanvas;
+    [SerializeField] private Slider healthSlider;
     #endregion
 
     #region Cache
