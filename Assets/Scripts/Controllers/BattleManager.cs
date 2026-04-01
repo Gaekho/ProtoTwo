@@ -41,7 +41,7 @@ public class BattleManager : MonoBehaviour
 
     #region Cache
     public AllyUnit TurnCharacter { private set; get; }
-    public BattleUnitBase ActingUnit; //{ private set; get; }
+    public BattleUnitBase ActingUnit { private set; get; }
     public BattleUnitBase CurrentTurnUnit { private set; get; }
     public TurnState CurrentState { private set; get; }
     public IReadOnlyList<AllyUnit> PlayerParty => playerParty;
@@ -357,7 +357,7 @@ public class BattleManager : MonoBehaviour
                 if (turnQ.Count == 0) { Debug.Log("TurnQ count 0"); yield break; }
             }
 
-            //캐릭터 턴 시작 : 패널 표시  --> actingUnit 저장
+            //유닛 턴 시작 : 패널 표시  --> actingUnit 저장
             totalTurnCount++;
             ActingUnit = turnQ.Dequeue();
             string name;

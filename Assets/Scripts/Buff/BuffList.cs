@@ -63,6 +63,11 @@ public class StatPlusBuff : BuffBase
     {
         instance.Owner.StatusChange(stat, -plusAmount);
     }
+
+    public override void UpdateTooltip()
+    {
+        description = $"{stat} Stat bonus as {plusAmount}, while duration";
+    }
 }
 
 [Serializable]
@@ -98,4 +103,10 @@ public class StrengthenBuff : BuffBase
 
         inst.SetDamageRate(additionalDamageRate);
     }
+
+    public override void UpdateTooltip()
+    {
+        description = $"Attack damage increase {(int)(additionalDamageRate * 100)}% while duration.";
+    }
+
 }

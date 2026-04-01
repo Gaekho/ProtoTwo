@@ -85,7 +85,7 @@ public class BuffUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         tooltipBox.SetActive(true);
         buffNameText.text = currentBuff.SourceBuff.BuffName;
-        tooltipText.text = currentBuff.SourceBuff.Description;
+        tooltipText.text = currentBuff.SourceBuff.GetTooltip();
     }
 
     public void OnPointerExit(PointerEventData eventData) 

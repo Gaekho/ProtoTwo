@@ -785,12 +785,14 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: df47c84449fdbbd4abbdab0d3ac2ae9f, type: 2}
   isPlayable: 1
   originalTransform: {x: 0, y: 0, z: 0}
-  canvas: {fileID: 0}
+  canvas: {fileID: 4598688428315940244}
   mainCamera: {fileID: 0}
   owner: {fileID: 0}
-  mySprite: {fileID: 0}
+  mySprite: {fileID: 5125572776164115171}
   textList: []
   conditionList: []
+  highLight: {fileID: 319583642742688981}
+  blackMask: {fileID: 2710305754780711036}
   layerMask:
     serializedVersion: 2
     m_Bits: 128

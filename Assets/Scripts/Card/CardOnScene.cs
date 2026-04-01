@@ -24,6 +24,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private SpriteRenderer mySprite;
     [SerializeField] private TMP_Text[] textList;
     [SerializeField] private Text[] conditionList;
+    [SerializeField] private SpriteRenderer highLight;
+    [SerializeField] private SpriteRenderer blackMask;
 
     [Header("Raycast")]
     [SerializeField] private LayerMask layerMask;
@@ -42,13 +44,16 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //비주얼 컴포넌트들 연결
         mainCamera = Camera.main;
         originalTransform = transform.position;
-        canvas = GetComponentInChildren<Canvas>();
-        mySprite = GetComponent<SpriteRenderer>();
+        //canvas = GetComponentInChildren<Canvas>();
+        //mySprite = GetComponent<SpriteRenderer>();
         textList = canvas.GetComponentsInChildren<TMP_Text>();  //카드 이름, 카드 텍스트 순으로 가져온다.
         conditionList = canvas.GetComponentsInChildren<Text>(); //ATK, DEF, SPD 순으로 가져온다.
         // How to Search Owner Character of this Card?
+        SetUnPlayable();
    
     }
+
+
 
     public void SetCard(CardData cardData, int index, CardInstance inst)
     {
@@ -98,6 +103,36 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
     }
 
+    public void SetPlayable(BattleUnitBase turnUnit)
+    {
+        if (turnUnit == null || turnUnit.Team == UnitTeam.Enemy)
+        {
+            SetUnPlayable();
+            return;
+        }
+
+        AllyUnit tester = turnUnit as AllyUnit;
+        if(tester == owner || data.Color == CardColor.Gray)
+        {
+            isPlayable = true;
+            blackMask.gameObject.SetActive(false);
+
+            if(CheckCondition(data, owner))
+            {
+            highLight.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            SetUnPlayable();
+        }
+
+    }
+    public void SetUnPlayable()
+    {
+        highLight.gameObject.SetActive(false);
+        blackMask.gameObject.SetActive(true);
+    }
     public void CardsizeBig()
     {
         transform.localScale = new Vector3(0.5f, 0.5f, 1f);
@@ -182,6 +217,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         CardsizeSmall();
         mySprite.sprite = data.CardSprite;
         canvas.gameObject.SetActive(true);
+        SetPlayable(BattleManager.Instance.ActingUnit);
         //Color color = Color.white;
         //color.a = 1f;
         //myImage.color = color;           OnDrag 참조
@@ -302,6 +338,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         originalTransform = transform.position;
         mySprite.sprite = data.DragIcon;
         canvas.gameObject.SetActive(false);
+        highLight.gameObject.SetActive(false);
+        blackMask.gameObject.SetActive(false);
     }
 
     public void OnDrag(PointerEventData eventdata)

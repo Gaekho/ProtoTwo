@@ -30,6 +30,11 @@ public class PoisonDebuff : BuffBase
         if (damage > 30) damage = 30;
         instance.Owner.GetDamage(damage);
     }
+
+    public override void UpdateTooltip()
+    {
+        description = $"Get 10% of current health (Max 30) damages {duration} on start of turn.";
+    }
 }
 
 [Serializable]
@@ -102,4 +107,8 @@ public class UnstableDebuff : BuffBase
         instance.Owner.GetDamage(totalDamage);
     }
 
+    public override void UpdateTooltip()
+    {
+        //description = $"Damage {}to owner when removed.";
+    }
 }

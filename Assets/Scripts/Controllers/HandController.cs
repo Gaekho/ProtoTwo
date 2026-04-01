@@ -135,8 +135,19 @@ public class HandController : MonoBehaviour
             Vector3 targetPosition = Vector3.Lerp(startPoint, endPoint, t);
             card.localPosition = targetPosition;
         }
+
+        RefreshHandVisual();
     }
 
+    public void RefreshHandVisual()
+    {
+        foreach (CardOnScene card in spawnParent.GetComponentsInChildren<CardOnScene>())
+        {
+            //card.SetUnPlayable();
+
+            card.SetPlayable(BattleManager.Instance.ActingUnit);
+        }
+    }
     public void TurnOffHand()
     {
         spawnParent.gameObject.SetActive(false);
