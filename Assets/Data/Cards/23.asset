@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
+  m_Name: 23
+  m_EditorClassIdentifier: 
+  id: 23
+  cardName: "\uBD88\uC548\uC815 \uBD80\uC5EC"
+  type: 1
+  color: 3
+  cardText: "\uC801\uC5D0\uAC8C \uBD88\uC548\uC815\uC744 1 \uBD80\uC5EC\uD569\uB2C8\uB2E4."
+  cardSprite: {fileID: -176529788, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
+  dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
+  cardAnimTrigger: 0
+  usableWithoutTarget: 0
+  cardTarget: 2
+  activeConditionList:
+  - condition: 0
+    value: 3
+  - condition: 2
+    value: 2
+  banishAfterUsed: 0
+  cardActionList:
+  - rid: 7424453399785766912
+  references:
+    version: 2
+    RefIds:
+    - rid: 7424453399785766912
+      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        buff:
+          rid: 7424453399785766913
+    - rid: 7424453399785766913
+      type: {class: UnstableDebuff, ns: , asm: Assembly-CSharp}
+      data:
+        buffType: 12
+        isDebuff: 1
+        buffName: Unstable
+        description: Damage to owner when removed
+        triggerTiming: 2
+        duration: 1
+        reduceTiming: 4
+        amount: 1
