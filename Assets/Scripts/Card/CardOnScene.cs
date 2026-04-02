@@ -24,7 +24,6 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private SpriteRenderer mySprite;
     [SerializeField] private TMP_Text[] textList;
     [SerializeField] private Text[] conditionList;
-    [SerializeField] private SpriteRenderer highLight;
     [SerializeField] private SpriteRenderer blackMask;
 
     [Header("Raycast")]
@@ -119,7 +118,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
             if(CheckCondition(data, owner))
             {
-            highLight.gameObject.SetActive(true);
+            
             }
         }
         else
@@ -130,7 +129,6 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public void SetUnPlayable()
     {
-        highLight.gameObject.SetActive(false);
         blackMask.gameObject.SetActive(true);
     }
     public void CardsizeBig()
@@ -338,7 +336,6 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         originalTransform = transform.position;
         mySprite.sprite = data.DragIcon;
         canvas.gameObject.SetActive(false);
-        highLight.gameObject.SetActive(false);
         blackMask.gameObject.SetActive(false);
     }
 

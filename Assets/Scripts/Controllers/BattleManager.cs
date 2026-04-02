@@ -370,12 +370,12 @@ public class BattleManager : MonoBehaviour
             {
                 CurrentState = TurnState.AllyTurn;
 
-                //if (TurnCharacter != null) { TurnCharacter.ExitTurn(); }
+                if (TurnCharacter != null) { TurnCharacter.ExitTurn(); }
 
                 AllyUnit ally = ActingUnit as AllyUnit;
 
                 TurnCharacter = ally;
-                //TurnCharacter.EnterTurn();
+                TurnCharacter.EnterTurn();
 
                 name = ally.CharacterData.CharacterName;
                 yield return StartCoroutine(ResolveRoutine(UIManager.Instance.UnitTurnStart(totalTurnCount, name)));
