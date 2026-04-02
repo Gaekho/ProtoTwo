@@ -74,8 +74,9 @@ public class AllyUnit : BattleUnitBase
             case ConditionType.Speed:
                 currentSpeed += amount;     break;
         }
-        AllyUnitUIcontroller allyUIC = uiController as AllyUnitUIcontroller;
-        allyUIC.SetStatTexts(currentAttack, currentShield, currentSpeed);
+        //AllyUnitUIcontroller allyUIC = uiController as AllyUnitUIcontroller;
+        //allyUIC.SetStatTexts(currentAttack, currentShield, currentSpeed);
+        UIManager.Instance.UpdateStatUI(this, currentAttack, currentShield, currentSpeed);
     }
     public override void ReceiveBuff(BuffBase buff, BattleUnitBase applier)
     {

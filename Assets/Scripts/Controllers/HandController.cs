@@ -42,6 +42,11 @@ public class HandController : MonoBehaviour
         //SetUp();
     }
 
+    private void Update()
+    {
+        //SortCard();
+    }
+
     public void SetUp(DeckData deck)
     {
         deckData = deck;

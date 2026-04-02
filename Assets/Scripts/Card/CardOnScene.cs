@@ -23,7 +23,10 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [Header("Visual UI Field")]
     [SerializeField] private SpriteRenderer mySprite;
     [SerializeField] private TMP_Text[] textList;
-    [SerializeField] private Text[] conditionList;
+    //[SerializeField] private Text[] conditionList;
+    [SerializeField] private Text atkTxt;
+    [SerializeField] private Text shdTxt;
+    [SerializeField] private Text spdTxt;
     [SerializeField] private SpriteRenderer blackMask;
 
     [Header("Raycast")]
@@ -46,7 +49,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //canvas = GetComponentInChildren<Canvas>();
         //mySprite = GetComponent<SpriteRenderer>();
         textList = canvas.GetComponentsInChildren<TMP_Text>();  //카드 이름, 카드 텍스트 순으로 가져온다.
-        conditionList = canvas.GetComponentsInChildren<Text>(); //ATK, DEF, SPD 순으로 가져온다.
+        //conditionList = canvas.GetComponentsInChildren<Text>(); //ATK, DEF, SPD 순으로 가져온다.
         // How to Search Owner Character of this Card?
         SetUnPlayable();
    
@@ -72,17 +75,17 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             {
                 case ConditionType.Attack:
                     {
-                        conditionList[0].text = conditionData.Value.ToString();
+                        atkTxt.text = conditionData.Value.ToString();
                         break;
                     }
                 case ConditionType.Shield:
                     {
-                        conditionList[1].text = conditionData.Value.ToString(); 
+                        shdTxt.text = conditionData.Value.ToString(); 
                         break;
                     }
                 case ConditionType.Speed:
                     {
-                        conditionList[2].text = conditionData.Value.ToString();
+                        spdTxt.text = conditionData.Value.ToString();
                         break;
                     }
             }
@@ -116,9 +119,41 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             isPlayable = true;
             blackMask.gameObject.SetActive(false);
 
-            if(CheckCondition(data, owner))
+            if(!CheckCondition(data, owner))
             {
-            
+                for(int i = 0; i<data.ActiveConditionList.Count; i++)
+                {
+                    switch (data.ActiveConditionList[i].Condition)
+                    {
+                        case ConditionType.Attack:
+                            if (data.ActiveConditionList[i].Value > owner.CurrentAttack)
+                            {
+                                atkTxt.color = Color.red; break;
+                            }
+                            break;
+
+                        case ConditionType.Shield:
+                            if (data.ActiveConditionList[i].Value > owner.CurrentShield)
+                            {
+                                shdTxt.color = Color.red; break;
+                            }
+                            break;
+
+                        case ConditionType.Speed:
+                            if (data.ActiveConditionList[i].Value > owner.CurrentSpeed)
+                            {
+                                spdTxt.color = Color.red; break;
+                            }
+                            break;
+                    }
+
+                }
+            }
+            else
+            {
+                atkTxt.color = Color.white;
+                shdTxt.color = Color.white;
+                spdTxt.color = Color.white;
             }
         }
         else

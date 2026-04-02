@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 3577889203133152893}
   - component: {fileID: 4339026091134019784}
   m_Layer: 0
-  m_Name: Def Condition
+  m_Name: Shd Condition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -790,8 +790,9 @@ MonoBehaviour:
   owner: {fileID: 0}
   mySprite: {fileID: 5125572776164115171}
   textList: []
-  conditionList: []
-  highLight: {fileID: 319583642742688981}
+  atkTxt: {fileID: 1348245098643532375}
+  shdTxt: {fileID: 4339026091134019784}
+  spdTxt: {fileID: 8698150997450461784}
   blackMask: {fileID: 2710305754780711036}
   layerMask:
     serializedVersion: 2

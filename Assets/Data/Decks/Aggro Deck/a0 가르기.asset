@@ -28,6 +28,7 @@ MonoBehaviour:
   banishAfterUsed: 0
   cardActionList:
   - rid: 3655606838914973696
+  - rid: 7424453428555808768
   references:
     version: 2
     RefIds:
@@ -36,3 +37,19 @@ MonoBehaviour:
       data:
         actionTarget: 2
         damage: 8
+    - rid: 7424453428555808768
+      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        buff:
+          rid: 7424453428555808769
+    - rid: 7424453428555808769
+      type: {class: BleedingDebuff, ns: , asm: Assembly-CSharp}
+      data:
+        buffType: 14
+        isDebuff: 1
+        buffName: Bleeding
+        description: Get 1 damages on start of turn.
+        triggerTiming: 3
+        duration: 2
+        reduceTiming: 2

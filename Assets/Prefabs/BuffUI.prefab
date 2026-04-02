@@ -185,13 +185,13 @@ MonoBehaviour:
     icon: {fileID: 791137111, guid: 567d4874bbf9c384a96217074305f624, type: 3}
   - buffType: 4
     icon: {fileID: 1734192875, guid: 567d4874bbf9c384a96217074305f624, type: 3}
-  - buffType: 8
-    icon: {fileID: 286001626, guid: 567d4874bbf9c384a96217074305f624, type: 3}
   - buffType: 10
-    icon: {fileID: 1334757795, guid: 7ebeff67809465c48bd357ab188317c0, type: 3}
-  - buffType: 11
-    icon: {fileID: -1822024087, guid: 7ebeff67809465c48bd357ab188317c0, type: 3}
+    icon: {fileID: 286001626, guid: 567d4874bbf9c384a96217074305f624, type: 3}
   - buffType: 12
+    icon: {fileID: 1334757795, guid: 7ebeff67809465c48bd357ab188317c0, type: 3}
+  - buffType: 13
+    icon: {fileID: -1822024087, guid: 7ebeff67809465c48bd357ab188317c0, type: 3}
+  - buffType: 14
     icon: {fileID: 586780825, guid: 7ebeff67809465c48bd357ab188317c0, type: 3}
   references:
     version: 2

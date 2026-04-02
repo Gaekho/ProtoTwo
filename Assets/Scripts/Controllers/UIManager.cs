@@ -14,11 +14,25 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region Field
-    [SerializeField] private Canvas screenCanvas;
+    [Header("Turn Change Panel")]
     [SerializeField] private GameObject turnChangePanel;
-    [SerializeField] private GameObject characterSelectPanel;
+    [SerializeField] private TMP_Text whosTurn;
+    [SerializeField] private Text turnCount;
+
+    [SerializeField] private Canvas screenCanvas;
+
+    [Header("Reward Panel")]
     [SerializeField] private GameObject rewardPanel;
+    [SerializeField] private TMP_Text winOrLose;
+    [SerializeField] private RectTransform RewardContainer;
+
+    [Header("Turn Queue")]
     [SerializeField] private TurnQUIController qUIController;
+
+    [Header("Ally Stats")]
+    [SerializeField] private GameObject grayPanel;
+    [SerializeField] private List<AllyStatUI> allyStatUIs;
+    private Dictionary<Color, AllyStatUI> statUIDict;
     #endregion
     // Start is called before the first frame update
 
@@ -26,41 +40,41 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
         turnChangePanel.SetActive(false);
-        characterSelectPanel.SetActive(false);
         rewardPanel.SetActive(false);
     }
 
-    public IEnumerator TurnStart(int turn, string who)
-    {
-        turnChangePanel.SetActive(true);
-        TMP_Text whosTurn = turnChangePanel.GetComponentInChildren<TMP_Text>();
-        Text turnCount = turnChangePanel.GetComponentInChildren<Text>();
+    // NotUsed
+    //public IEnumerator TurnStart(int turn, string who)
+    //{
+    //    turnChangePanel.SetActive(true);
+    //    TMP_Text whosTurn = turnChangePanel.GetComponentInChildren<TMP_Text>();
+    //    Text turnCount = turnChangePanel.GetComponentInChildren<Text>();
 
-        whosTurn.text = who + " Turn";
-        turnCount.text = turn.ToString();
-        yield return new WaitForSeconds(1.5f);
-        turnChangePanel.SetActive(false);
-        yield break;
-    }
+    //    whosTurn.text = who + " Turn";
+    //    turnCount.text = turn.ToString();
+    //    yield return new WaitForSeconds(1.5f);
+    //    turnChangePanel.SetActive(false);
+    //    yield break;
+    //}
 
-    public IEnumerator TurnEnd()
-    {
-        characterSelectPanel.SetActive(true);
+    //public IEnumerator TurnEnd()
+    //{
+    //    characterSelectPanel.SetActive(true);
 
-        while (BattleManager.Instance.CurrentState == TurnState.End)
-        {
-            yield return null;
-        }
-        //yield return new WaitForSeconds(0.5f);
-        characterSelectPanel.SetActive(false);
-        yield break;
-    }
+    //    while (BattleManager.Instance.CurrentState == TurnState.End)
+    //    {
+    //        yield return null;
+    //    }
+    //    //yield return new WaitForSeconds(0.5f);
+    //    characterSelectPanel.SetActive(false);
+    //    yield break;
+    //}
 
     public IEnumerator UnitTurnStart(int turn, string who)
     {
         turnChangePanel.SetActive(true);
-        TMP_Text whosTurn = turnChangePanel.GetComponentInChildren<TMP_Text>();
-        Text turnCount = turnChangePanel.GetComponentInChildren<Text>();
+        //TMP_Text whosTurn = turnChangePanel.GetComponentInChildren<TMP_Text>();
+        //Text turnCount = turnChangePanel.GetComponentInChildren<Text>();
 
         whosTurn.text = who + "의 차례";
         turnCount.text = turn.ToString();
@@ -68,6 +82,22 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
         turnChangePanel.SetActive(false);
         yield break;
+    }
+
+    public void AllyStatPanelTurn(AllyUnit ally)
+    {
+        foreach(AllyStatUI statUI in allyStatUIs)
+        {
+            if (ally.CharacterData.UIColor == statUI.GetColor())
+            {
+                grayPanel.transform.localPosition = new Vector3(grayPanel.transform.localPosition.x, statUI.transform.localPosition.y, 0);
+                statUI.EnterTurn();
+            }
+            else
+            {
+                statUI.ExitTurn();
+            }
+        }
     }
     public IEnumerator UnitTurnEnd()
     {
@@ -113,9 +143,23 @@ public class UIManager : MonoBehaviour
         qUIController.RemoveUnitFromQueueUI(deadUnit);
     }
 
-    public void Selection()
+    public void SetupStatUI()
     {
-
+        foreach(AllyStatUI statUI in allyStatUIs)
+        {
+            statUI.SetUp();
+        }
+    }
+    public void UpdateStatUI(AllyUnit unit, float atk, float shd, float spd)
+    {
+        foreach(AllyStatUI statUI in allyStatUIs)
+        {
+            if(unit.CharacterData.UIColor == statUI.GetColor())
+            {
+                statUI.SetStatText(atk, shd, spd);
+                return;
+            }
+        }
     }
 
 }
