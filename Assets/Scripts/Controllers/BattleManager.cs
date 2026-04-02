@@ -59,7 +59,7 @@ public class BattleManager : MonoBehaviour
         SetAlly();
         //SetEnemy();
 
-        HandController.Instance.SetUp(deckData);
+        HandController.Instance.SetUp(GameManager.Instance.GetPlayerDeck());
 
         TurnCharacter = null;
         CurrentTurnUnit = null;

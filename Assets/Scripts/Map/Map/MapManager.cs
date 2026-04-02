@@ -10,11 +10,6 @@ public class MapManager : MonoBehaviour
     [Header("Encounter")]
     [SerializeField] private List<Encounter> encounters = new List<Encounter>();
 
-    private EncounterBase encounterData = null;
-
-    public void SetEncounterData(EncounterBase inEncounter) {  encounterData = inEncounter; }
-    public EncounterBase GetEncounterData() {  return encounterData; }
-
     private void Awake()
     {
         
