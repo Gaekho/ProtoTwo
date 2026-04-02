@@ -72,7 +72,7 @@ public class BattleManager : MonoBehaviour
         TurnCharacter.EnterTurn();
         turn = 0;
 
-        BattleEncounter encounterData = (BattleEncounter)MapManager.Instance.GetEncounterData();
+        BattleEncounter encounterData = (BattleEncounter)GameManager.Instance.GetEncounterData();
         if(encounterData != null )
         {
             SpawnEnemies(encounterData.GetEnemies());

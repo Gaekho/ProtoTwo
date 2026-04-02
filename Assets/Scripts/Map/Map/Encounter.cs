@@ -24,7 +24,7 @@ public class Encounter : MonoBehaviour
     {
         if (sceneName != null)
         {
-            MapManager.Instance.SetEncounterData(encounterData);
+            GameManager.Instance.SetEncounterData(encounterData);
 
             SceneManager.LoadScene(sceneName);
         }

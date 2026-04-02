@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {
-    public static MapManager Instance = null;
-
     [Header("Encounter")]
     [SerializeField] private List<Encounter> encounters = new List<Encounter>();
 
@@ -19,16 +17,7 @@ public class MapManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            if (Instance != this)
-                Destroy(this.gameObject);
-        }
+        
     }
 
     private void Start()
