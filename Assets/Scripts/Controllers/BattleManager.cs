@@ -56,7 +56,7 @@ public class BattleManager : MonoBehaviour
         Instance = this;
 
         SetAlly();
-        SetEnemy();
+        //SetEnemy();
 
         HandController.Instance.SetUp(deckData);
 
@@ -70,6 +70,12 @@ public class BattleManager : MonoBehaviour
         TurnCharacter = playerParty[0];
         TurnCharacter.EnterTurn();
         turn = 0;
+
+        BattleEncounter encounterData = (BattleEncounter)MapManager.Instance.GetEncounterData();
+        if(encounterData != null )
+        {
+            SetEnemy(encounterData.GetEnemies());
+        }
     }
     private void Start()
     {
@@ -89,7 +95,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void SetEnemy()
+    private void SetEnemy(List<EnemyData> encounterEnemy)
     {
         enemyList.Clear();
         EnemyUnit [] enemies = enemyContainer.GetComponentsInChildren<EnemyUnit>();
@@ -97,7 +103,7 @@ public class BattleManager : MonoBehaviour
         for(int i= 0; i<enemies.Length; i++)
         {
             enemyList.Add(enemies[i]);
-            enemies[i].SetProfile(tempEnemies[i]);        //레벨 데이터를 통한 에너미 데이터 전달 시 기능하도록 구현.
+            enemies[i].SetProfile(encounterEnemy[i]);        //레벨 데이터를 통한 에너미 데이터 전달 시 기능하도록 구현.
         }
     }
 

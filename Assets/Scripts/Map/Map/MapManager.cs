@@ -7,20 +7,26 @@ using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {
-    public static MapManager instance = null;
+    public static MapManager Instance = null;
 
-    
+    [Header("Encounter")]
+    [SerializeField] private List<Encounter> encounters = new List<Encounter>();
+
+    private EncounterBase encounterData = null;
+
+    public void SetEncounterData(EncounterBase inEncounter) {  encounterData = inEncounter; }
+    public EncounterBase GetEncounterData() {  return encounterData; }
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
         {
-            if (instance != this)
+            if (Instance != this)
                 Destroy(this.gameObject);
         }
     }
