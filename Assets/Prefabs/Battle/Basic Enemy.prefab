@@ -971,12 +971,6 @@ MonoBehaviour:
   myAnimator: {fileID: 0}
   enemyData: {fileID: 0}
   uiController: {fileID: 6528942753413226615}
-  myCanvas: {fileID: 0}
-  healthSlider: {fileID: 0}
-  armorText: {fileID: 4049538264448960418}
-  intentIcon: {fileID: 0}
-  buffContainer: {fileID: 3163314199523390681}
-  buffUI: {fileID: 4561868982761045368, guid: 4b274d1325843164a96aeaab2182431d, type: 3}
   currentPattern:
     patternName: 
     patternType: 0

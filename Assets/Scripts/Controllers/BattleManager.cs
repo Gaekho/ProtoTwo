@@ -26,6 +26,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private GameObject basicCharacter;
     [SerializeField] private Transform allyContainer;
     [SerializeField] private Transform enemyContainer;
+    [SerializeField] private float enemyGap = 1;
     [SerializeField] private List<AllyUnit> playerParty;
     [SerializeField] private List<EnemyUnit> enemyList;
 
@@ -74,7 +75,7 @@ public class BattleManager : MonoBehaviour
         BattleEncounter encounterData = (BattleEncounter)MapManager.Instance.GetEncounterData();
         if(encounterData != null )
         {
-            SetEnemy(encounterData.GetEnemies());
+            SpawnEnemies(encounterData.GetEnemies());
         }
     }
     private void Start()
@@ -107,7 +108,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void SpawnEnemies()
+    private void SpawnEnemies(List<EnemyData> encounterEnemy)
     {
         /* 맵 데이터에서 적 인카운터의 조합을 확인, 적절한 위치에 배정한다.
          * 
@@ -122,6 +123,24 @@ public class BattleManager : MonoBehaviour
          * 적을 스폰하기 위해 BasicEnemy 프리팹을 사용한다.
          * 이후 SetEnemy() 를 통해 적절한 데이터를 주입한다.
          */
+
+        for(int i = 0;  i < encounterEnemy.Count; i++)
+        {
+            GameObject created = Instantiate(enemyPrefab);
+            if (created != null)
+            {
+                created.transform.position = enemyContainer.position;
+                EnemyUnit enemy = created.GetComponentInChildren<EnemyUnit>();
+
+                if (enemy != null)
+                {
+                    enemy.SetProfile(encounterEnemy[i]);
+                }
+
+                enemyContainer.position += new Vector3(enemyGap, 0, 0);
+            }
+        }
+
     }
     #endregion
 
