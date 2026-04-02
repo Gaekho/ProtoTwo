@@ -14,7 +14,7 @@ public class EnemyUnit : BattleUnitBase
     [SerializeField] private float baseSpeed => enemyData.BaseSpeed;
 
     [Header("EnemyUI")]
-    [SerializeField] private EnemyUIController uiController;
+    //[SerializeField] private EnemyUIController uiController;
 
     [Header("Current Pattern")]
     [SerializeField] private EnemyPatternData currentPattern;
@@ -39,14 +39,14 @@ public class EnemyUnit : BattleUnitBase
     public override void GetDamage(float value)
     {
         base.GetDamage(value);
-        uiController.SetArmorText(currentArmor);
+        uiController.SetArmor(currentArmor);
         uiController.SetHealth(currentHealth);
     }
 
     public override void AddArmor(float value)
     {
         base.AddArmor(value);
-        uiController.SetArmorText(currentArmor);
+        uiController.SetArmor(currentArmor);
     }
 
     public override void ReceiveBuff(BuffBase buff, BattleUnitBase applier)
@@ -114,7 +114,9 @@ public class EnemyUnit : BattleUnitBase
     {
         int index = Random.Range(0, enemyData.PatternList.Count);
         currentPattern = enemyData.PatternList[index];
-        uiController.SetPatternImage(currentPattern);
+
+        EnemyUIController enemyUIC = uiController as EnemyUIController;
+        enemyUIC.SetPatternImage(currentPattern);
     }
 
     public void UsePattern()

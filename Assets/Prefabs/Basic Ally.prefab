@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5517435591131515203}
   - component: {fileID: 6482608477838073622}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: Armor Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 8469900263941342240}
   - component: {fileID: 2001977091771850414}
   - component: {fileID: 8587015136914389252}
+  - component: {fileID: 3954765212558144329}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -259,6 +260,30 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3954765212558144329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870534892612884539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b04ee55d902a814bb135542be118724, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 8146428128565617106}
+  unitUICanvas: {fileID: 8469900263941342240}
+  turnArrow: {fileID: 6560849525240059521}
+  healthSlider: {fileID: 631263358242270565}
+  healthTxt: {fileID: 2546697322019604065}
+  armorTxt: {fileID: 6482608477838073622}
+  buffContainer: {fileID: 2037346808608921231}
+  buffUI: {fileID: 4561868982761045368, guid: 4b274d1325843164a96aeaab2182431d, type: 3}
+  atk: {fileID: 0}
+  shd: {fileID: 0}
+  spd: {fileID: 0}
+  maxHealth: 0
 --- !u!1 &1903856420406196048
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,18 +931,17 @@ MonoBehaviour:
   currentHealth: 0
   currentArmor: 0
   isDead: 0
+  isTurn: 0
   buffList: []
-  mySprite: {fileID: 0}
-  myAnimator: {fileID: 0}
+  myTransform: {fileID: 7419698711006897556}
+  mySprite: {fileID: 4650463370419993619}
+  myAnimator: {fileID: 4552175770712804687}
+  uiController: {fileID: 3954765212558144329}
   characterData: {fileID: 0}
   currentAttack: 0
   currentShield: 0
   currentSpeed: 0
-  isTurn: 0
-  myTransform: {fileID: 0}
-  uiController: {fileID: 0}
-  ownUIcanvas: {fileID: 0}
-  healthSlider: {fileID: 0}
+  ownUIcanvas: {fileID: 8469900263941342240}
   references:
     version: 2
     RefIds: []

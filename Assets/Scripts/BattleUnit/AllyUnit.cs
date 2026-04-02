@@ -13,13 +13,10 @@ public class AllyUnit : BattleUnitBase
     [SerializeField] private float currentAttack;
     [SerializeField] private float currentShield;
     [SerializeField] private float currentSpeed;
-    [SerializeField] private bool isTurn;
-    [SerializeField] private Transform myTransform;     //턴 교체 시 크기 변경용
-    [SerializeField] private AllyUnitUIcontroller uiController;
+    //[SerializeField] private AllyUnitUIcontroller uiController;
 
     [Header("Own UI")]
     [SerializeField] private Canvas ownUIcanvas;
-    [SerializeField] private Slider healthSlider;
     #endregion
 
     #region Cache
@@ -48,7 +45,7 @@ public class AllyUnit : BattleUnitBase
         myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
 
         //UI 세팅
-        uiController.SetUIC(this);
+        uiController.SetUpUI(this);
     }
 
     #region Overrides
@@ -56,14 +53,14 @@ public class AllyUnit : BattleUnitBase
     {
         base.GetDamage(value);
         //UIManager 연결 후에 슬라이더 표시 기능 구현
-        uiController.SetArmorAmount(currentArmor);
-        uiController.SetHealthSlider(currentHealth);
+        uiController.SetArmor(currentArmor);
+        uiController.SetHealth(currentHealth);
     }
 
     public override void AddArmor(float value)
     {
         base.AddArmor(value);
-        uiController.SetArmorAmount(currentArmor);
+        uiController.SetArmor(currentArmor);
     }
 
     public override void StatusChange(ConditionType statType, float amount)
@@ -77,7 +74,8 @@ public class AllyUnit : BattleUnitBase
             case ConditionType.Speed:
                 currentSpeed += amount;     break;
         }
-        uiController.SetStatTexts(currentAttack, currentShield, currentSpeed);
+        AllyUnitUIcontroller allyUIC = uiController as AllyUnitUIcontroller;
+        allyUIC.SetStatTexts(currentAttack, currentShield, currentSpeed);
     }
     public override void ReceiveBuff(BuffBase buff, BattleUnitBase applier)
     {
@@ -121,20 +119,6 @@ public class AllyUnit : BattleUnitBase
     #endregion
 
     #region Methods
-    public void EnterTurn()
-    {
-        isTurn = true;
-        myTransform.localScale = new Vector3(1.2f, 1.2f, 1f);
-        uiController.SetTurn(true);
-    }
-    
-    public void ExitTurn()
-    {
-        isTurn = false;
-        myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
-        uiController.SetTurn(false);
-    }
-
     public void RefreshBuffUI()
     {
         uiController.RefreshAllBuffUI(buffList);
