@@ -20,14 +20,17 @@ MonoBehaviour:
   animatorController: {fileID: 9100000, guid: 3d98b1882e4ee624ebd575e8cf8edcfc, type: 2}
   thumbNail: {fileID: 21300000, guid: 360f98e6957afaf478d9360b5bfa5967, type: 3}
   patternList:
-  - patternName: "\uB79C\uB364 \uD0C0\uACA9"
+  - patternName: "\uBB34\uC791\uC704 \uC0AC\uACA9"
     patternType: 0
     intentIcon: {fileID: 164540345, guid: ea7de6defccb7054e830650d2736518a, type: 3}
+    patternDescription: "\uBB34\uC791\uC704 \uC801\uC5D0\uAC8C \uD53C\uD574\uB97C
+      12 \uC785\uD78C\uB2E4."
     patternActionList:
     - rid: 283199232281411588
   - patternName: "\uD654\uC0B4 \uB09C\uC0AC"
     patternType: 0
     intentIcon: {fileID: 54223421, guid: ea7de6defccb7054e830650d2736518a, type: 3}
+    patternDescription: "\uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uD53C\uD574\uB97C 5 \uC785\uD78C\uB2E4."
     patternActionList:
     - rid: 283199232281411589
   references:

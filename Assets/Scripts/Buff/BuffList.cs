@@ -159,7 +159,7 @@ public class StrengthenBuff : BuffBase
         buffType = BuffTypes.Strengthen;
         isDebuff = false;
         buffName = "Strengthen";
-        description = $"Attack damage increase {(int)(additionalDamageRate*100)}% while duration.";
+        description = $"지속시간 동안 피해량이 {(int)((additionalDamageRate-1)*100)}% 상승한다.";
         triggerTiming = BuffTriggerTiming.None;
 
         duration = 1;
@@ -185,7 +185,7 @@ public class StrengthenBuff : BuffBase
 
     public override void UpdateTooltip()
     {
-        description = $"Attack damage increase {(int)(additionalDamageRate * 100)}% while duration.";
+        description = $"지속시간 동안 피해량이 {(int)((additionalDamageRate - 1) * 100)}% 상승한다.";
     }
 
 }

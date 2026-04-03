@@ -387,7 +387,11 @@ public class BattleManager : MonoBehaviour
 
             //캐릭터 턴 시작 : 패널 표시  --> actingUnit 저장
             totalTurnCount++;
+
+            if(ActingUnit != null) { ActingUnit.ExitTurn(); }
             ActingUnit = turnQ.Dequeue();
+            if(ActingUnit != null) { ActingUnit.EnterTurn(); }
+
             string name;
             if (ActingUnit.Team == UnitTeam.Ally)
             {

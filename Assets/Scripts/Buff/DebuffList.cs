@@ -33,7 +33,7 @@ public class PoisonDebuff : BuffBase
 
     public override void UpdateTooltip()
     {
-        description = $"Get 10% of current health (Max 30) damages {duration} on start of turn.";
+        description = $"턴 시작 시 최대 체력의 10% 피해 (최대 30)을 입는다.";
     }
 }
 
@@ -54,6 +54,11 @@ public class BleedingDebuff : BuffBase
     public override void OnTurnStart(BuffInstance instance)
     {
         instance.Owner.GetDamage(duration);
+    }
+
+    public override void UpdateTooltip()
+    {
+        description = $"턴 시작 시 {duration} 피해를 입는다.";
     }
 }
 
@@ -80,6 +85,11 @@ public class OilDebuff : BuffBase
     public override void OnRemove(BuffInstance instance)
     {
         instance.Owner.StatusChange(ConditionType.Speed, 1);
+    }
+
+    public override void UpdateTooltip()
+    {
+        description = "지속시간동안 속도 스탯이 1 감소한다.";
     }
 }
 

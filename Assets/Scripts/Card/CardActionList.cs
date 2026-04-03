@@ -16,10 +16,11 @@ public class AttackAction : CardActionBase
             float totalDamage = damage;
             if (actionParameters.owner.HasBuff(BuffTypes.Strengthen))
             {
-                //actionParameters.owner.GetBuff(BuffTypes.Strengthen) as
+                StrengthenBuffInstance buff = actionParameters.owner.GetBuff(BuffTypes.Strengthen) as StrengthenBuffInstance;
+                totalDamage = buff.DamageIncreaseRate * damage;
             }
 
-            target.GetDamage(damage);
+            target.GetDamage(totalDamage);
         }
     }
 }

@@ -16,12 +16,12 @@ MonoBehaviour:
   cardName: "\uAD11\uD3ED\uD654"
   type: 1
   color: 1
-  cardText: "\uC774\uBC88 \uD134 \uB3D9\uC548 \uD53C\uD574\uB7C9\uC774 10% \uC99D\uAC00\uD55C\uB2E4."
+  cardText: "\uC774\uBC88 \uD134 \uB3D9\uC548 \uD53C\uD574\uB7C9\uC774 50% \uC99D\uAC00\uD55C\uB2E4."
   cardSprite: {fileID: -993018294, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 0
-  usableWithoutTarget: 0
-  cardTarget: 2
+  usableWithoutTarget: 1
+  cardTarget: 0
   activeConditionList:
   - condition: 0
     value: 3
@@ -42,11 +42,11 @@ MonoBehaviour:
     - rid: 3655606838914973700
       type: {class: StrengthenBuff, ns: , asm: Assembly-CSharp}
       data:
-        buffType: 7
+        buffType: 9
         isDebuff: 0
         buffName: Strengthen
-        description: Attack damage increase 0% while duration.
+        description: Attack damage increase 150% while duration.
         triggerTiming: 0
         duration: 1
         reduceTiming: 2
-        additionalDamageRate: 1.1
+        additionalDamageRate: 1.5
