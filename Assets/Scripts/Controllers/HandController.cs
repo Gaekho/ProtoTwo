@@ -108,6 +108,7 @@ public class HandController : MonoBehaviour
         //SortCard();
         //Destroy(view.gameObject);
         DestroyImmediate(view.gameObject);
+        BattleManager.Instance.IsResolving = false;
         SortCard();
     }
 

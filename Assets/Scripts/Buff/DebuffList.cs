@@ -103,7 +103,7 @@ public class UnstableDebuff : BuffBase
     {
         int totalDamage;
         totalDamage = instance.RemainTurn * (instance.RemainTurn + 3);
-        totalDamage /= 2;
+        totalDamage /= totalDamage/2;
         instance.Owner.GetDamage(totalDamage);
     }
 

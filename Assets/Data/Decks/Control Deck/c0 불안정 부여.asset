@@ -10,46 +10,41 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
-  m_Name: "a0 \uAC00\uB974\uAE30"
+  m_Name: "c0 \uBD88\uC548\uC815 \uBD80\uC5EC"
   m_EditorClassIdentifier: 
   id: 0
-  cardName: "\uAC00\uB974\uAE30"
+  cardName: "\uBD88\uC548\uC815 \uBD80\uC5EC"
   type: 1
-  color: 1
-  cardText: "\uC120\uD0DD\uB41C \uC801\uC5D0\uAC8C \uD53C\uD574\uB97C 8 \uC785\uD78C\uB2E4."
-  cardSprite: {fileID: 1366562873, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
+  color: 3
+  cardText: 
+  cardSprite: {fileID: 1593725169, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 0
   usableWithoutTarget: 0
   cardTarget: 2
   activeConditionList:
   - condition: 0
-    value: 3
+    value: 0
   banishAfterUsed: 0
   cardActionList:
-  - rid: 3655606838914973696
-  - rid: 7424453428555808768
+  - rid: 7424453443970400271
   references:
     version: 2
     RefIds:
-    - rid: 3655606838914973696
-      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
-      data:
-        actionTarget: 2
-        damage: 8
-    - rid: 7424453428555808768
+    - rid: 7424453443970400271
       type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
       data:
         actionTarget: 2
         buff:
-          rid: 7424453428555808769
-    - rid: 7424453428555808769
-      type: {class: BleedingDebuff, ns: , asm: Assembly-CSharp}
+          rid: 7424453443970400272
+    - rid: 7424453443970400272
+      type: {class: UnstableDebuff, ns: , asm: Assembly-CSharp}
       data:
         buffType: 14
         isDebuff: 1
-        buffName: Bleeding
-        description: Get 1 damages on start of turn.
-        triggerTiming: 3
-        duration: 2
-        reduceTiming: 2
+        buffName: Unstable
+        description: Damage to owner when removed
+        triggerTiming: 2
+        duration: 1
+        reduceTiming: 4
+        amount: 2

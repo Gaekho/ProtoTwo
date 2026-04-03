@@ -16,7 +16,8 @@ MonoBehaviour:
   cardName: "\uB3C5 \uBC14\uB974\uAE30"
   type: 1
   color: 3
-  cardText: "\uC120\uD0DD\uB41C \uC801\uC5D0\uAC8C '\uAE30\uB984'\uC744 2 \uBD80\uC5EC\uD55C\uB2E4."
+  cardText: "\uC120\uD0DD\uB41C \uC544\uAD70\uC758 \uACF5\uACA9 \uC2A4\uD0EF\uC744
+    1\uD134\uAC04 1 \uC99D\uAC00\uC2DC\uD0A8\uB2E4."
   cardSprite: {fileID: 662112569, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 2
@@ -36,14 +37,14 @@ MonoBehaviour:
       data:
         actionTarget: 2
         buff:
-          rid: 3655606838914973708
-    - rid: 3655606838914973708
-      type: {class: StatPlusBuff, ns: , asm: Assembly-CSharp}
+          rid: 7424453443970400257
+    - rid: 7424453443970400257
+      type: {class: AtkStatPlusBuff, ns: , asm: Assembly-CSharp}
       data:
         buffType: 4
         isDebuff: 0
-        buffName: Stat Plus
-        description: Stat bonus as amount, while duration
+        buffName: "\uACF5\uACA9 \uC2A4\uD0EF \uAC15\uD654"
+        description: "1\uD134 \uB3D9\uC548 \uACF5\uACA9 \uC2A4\uD0EF\uC774 1\uC99D\uAC00\uD55C\uB2E4."
         triggerTiming: 0
         duration: 1
         reduceTiming: 2

@@ -165,15 +165,15 @@ public class ClearArmorAction : CardActionBase
 [Serializable]
 public class RemoveBuffAction : CardActionBase
 {
-    [SerializeReference] private BuffBase targetBuff;
+    [SerializeReference] private BuffTypes targetBuff;
 
     public override void DoAction(CardActionParameters actionParameters)
     {
         foreach(BattleUnitBase target in ActionTargets(actionParameters))
         {
-            if (target.HasBuff(targetBuff.BuffType))
+            if (target.HasBuff(targetBuff))
             {
-                BuffInstance removeTarget = target.GetBuff(targetBuff.BuffType);
+                BuffInstance removeTarget = target.GetBuff(targetBuff);
                 target.RemoveBuff(removeTarget);
             }
         }

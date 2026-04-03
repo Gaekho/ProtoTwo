@@ -40,7 +40,7 @@ MonoBehaviour:
     - rid: 3655606838914973706
       type: {class: OilDebuff, ns: , asm: Assembly-CSharp}
       data:
-        buffType: 13
+        buffType: 15
         isDebuff: 1
         buffName: Oil
         description: Speed -1 while duration

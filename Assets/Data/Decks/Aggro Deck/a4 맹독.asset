@@ -40,10 +40,10 @@ MonoBehaviour:
     - rid: 3655606838914973704
       type: {class: PoisonDebuff, ns: , asm: Assembly-CSharp}
       data:
-        buffType: 10
+        buffType: 12
         isDebuff: 1
         buffName: Poison
-        description: Get 10% of current health (Max 30) damages on start of turn.
+        description: Get 10% of current health (Max 30) damages 5 on start of turn.
         triggerTiming: 3
         duration: 5
         reduceTiming: 2

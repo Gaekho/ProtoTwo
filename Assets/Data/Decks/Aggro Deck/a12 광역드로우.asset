@@ -10,38 +10,38 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
-  m_Name: 8
+  m_Name: "a12 \uAD11\uC5ED\uB4DC\uB85C\uC6B0"
   m_EditorClassIdentifier: 
-  id: 8
-  cardName: "\uC900\uBE44"
+  id: 12
+  cardName: "\uC804\uCCB4\uB380 \uB4DC\uB85C\uC6B0"
   type: 1
-  color: 3
-  cardText: "\uCE74\uB4DC\uB97C 2\uC7A5 \uBF51\uB294\uB2E4."
-  cardSprite: {fileID: 635249428, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
+  color: 2
+  cardText: "\uC544\uAD70 \uC804\uCCB4\uAC00 \uD53C\uD574\uB97C 3 \uC785\uB294\uB2E4.
+    \uCE74\uB4DC\uB97C \uB450\uC7A5 \uBF51\uB294\uB2E4."
+  cardSprite: {fileID: 896510607, guid: 98e4d5c83b01593468e20276456118f1, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
-  cardAnimTrigger: 4
+  cardAnimTrigger: 0
   usableWithoutTarget: 1
   cardTarget: 0
   activeConditionList:
+  - condition: 1
+    value: 1
   - condition: 2
-    value: 2
+    value: 3
   banishAfterUsed: 0
   cardActionList:
-  - rid: 3789920194590670848
-  - rid: 7424453443970400256
+  - rid: 7424453443970400267
+  - rid: 7424453443970400268
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 3789920194590670848
+    - rid: 7424453443970400267
       type: {class: DrawAction, ns: , asm: Assembly-CSharp}
       data:
-        actionTarget: 0
+        actionTarget: 1
         drawCount: 2
-    - rid: 7424453443970400256
-      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
+    - rid: 7424453443970400268
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
       data:
-        actionTarget: 0
-        buff:
-          rid: -2
+        actionTarget: 3
+        damage: 3
