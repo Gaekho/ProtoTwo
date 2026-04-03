@@ -26,6 +26,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private GameObject basicCharacter;
     [SerializeField] private Transform allyContainer;
     [SerializeField] private Transform enemyContainer;
+    [SerializeField] private float enemyGap = 1;
     [SerializeField] private List<AllyUnit> playerParty;
     [SerializeField] private List<EnemyUnit> enemyList;
 
@@ -41,7 +42,7 @@ public class BattleManager : MonoBehaviour
 
     #region Cache
     public AllyUnit TurnCharacter { private set; get; }
-    public BattleUnitBase ActingUnit { private set; get; }
+    public BattleUnitBase ActingUnit; //{ private set; get; }
     public BattleUnitBase CurrentTurnUnit { private set; get; }
     public TurnState CurrentState { private set; get; }
     public IReadOnlyList<AllyUnit> PlayerParty => playerParty;
@@ -56,10 +57,9 @@ public class BattleManager : MonoBehaviour
         Instance = this;
 
         SetAlly();
-        SetEnemy();
-        UIManager.Instance.SetupStatUI();
+        //SetEnemy();
 
-        HandController.Instance.SetUp(deckData);
+        HandController.Instance.SetUp(GameManager.Instance.GetPlayerDeck());
 
         TurnCharacter = null;
         CurrentTurnUnit = null;
@@ -71,6 +71,12 @@ public class BattleManager : MonoBehaviour
         TurnCharacter = playerParty[0];
         TurnCharacter.EnterTurn();
         turn = 0;
+
+        BattleEncounter encounterData = (BattleEncounter)GameManager.Instance.GetEncounterData();
+        if(encounterData != null )
+        {
+            SpawnEnemies(encounterData.GetEnemies());
+        }
     }
     private void Start()
     {
@@ -90,7 +96,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void SetEnemy()
+    private void SetEnemy(List<EnemyData> encounterEnemy)
     {
         enemyList.Clear();
         EnemyUnit [] enemies = enemyContainer.GetComponentsInChildren<EnemyUnit>();
@@ -98,11 +104,11 @@ public class BattleManager : MonoBehaviour
         for(int i= 0; i<enemies.Length; i++)
         {
             enemyList.Add(enemies[i]);
-            enemies[i].SetProfile(tempEnemies[i]);        //레벨 데이터를 통한 에너미 데이터 전달 시 기능하도록 구현.
+            enemies[i].SetProfile(encounterEnemy[i]);        //레벨 데이터를 통한 에너미 데이터 전달 시 기능하도록 구현.
         }
     }
 
-    private void SpawnEnemies()
+    private void SpawnEnemies(List<EnemyData> encounterEnemy)
     {
         /* 맵 데이터에서 적 인카운터의 조합을 확인, 적절한 위치에 배정한다.
          * 
@@ -117,6 +123,24 @@ public class BattleManager : MonoBehaviour
          * 적을 스폰하기 위해 BasicEnemy 프리팹을 사용한다.
          * 이후 SetEnemy() 를 통해 적절한 데이터를 주입한다.
          */
+
+        for(int i = 0;  i < encounterEnemy.Count; i++)
+        {
+            GameObject created = Instantiate(enemyPrefab);
+            if (created != null)
+            {
+                created.transform.position = enemyContainer.position;
+                EnemyUnit enemy = created.GetComponentInChildren<EnemyUnit>();
+
+                if (enemy != null)
+                {
+                    enemy.SetProfile(encounterEnemy[i]);
+                }
+
+                enemyContainer.position += new Vector3(enemyGap, 0, 0);
+            }
+        }
+
     }
     #endregion
 
@@ -296,51 +320,50 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     #region Main Routine
-    // OldVersion
-    //private ienumerator battleroutine()
-    //{
-    //    메인 전투 반복문 시작
-    //    while (true)
-    //    {
-    //        아군 턴 시작 페이즈
-    //        turn++;
-    //        currentstate = turnstate.allyturn;
-    //        yield return uimanager.instance.startcoroutine(uimanager.instance.turnstart(turn, "ally"));
-    //        yield return startcoroutine(resolveroutine(uimanager.instance.turnstart(turn, "ally")));
-    //        handcontroller.instance.drawcard(3);
-    //        yield return startcoroutine(resolveroutine(buffhookroutine(bufftriggertiming.onturnstart, unitteam.ally)));
+    private IEnumerator BattleRoutine()
+    {
+        //메인 전투 반복문 시작
+        while (true)
+        {
+            //아군 턴 시작 페이즈
+            turn++;
+            CurrentState = TurnState.AllyTurn;
+            //yield return UIManager.Instance.StartCoroutine(UIManager.Instance.TurnStart(turn, "Ally"));
+            yield return StartCoroutine(ResolveRoutine(UIManager.Instance.TurnStart(turn, "Ally")));
+            HandController.Instance.DrawCard(3);
+            yield return StartCoroutine(ResolveRoutine(BuffHookRoutine(BuffTriggerTiming.OnTurnStart, UnitTeam.Ally)));
 
-    //        플레이어 카드 사용 페이즈
-    //        while (currentstate == turnstate.allyturn)
-    //        {
-    //            yield return null;
-    //        }
+            //플레이어 카드 사용 페이즈
+            while (CurrentState == TurnState.AllyTurn)
+            {
+                yield return null;
+            }
 
-    //        아군 턴 엔드 페이즈
-    //        yield return startcoroutine(resolveroutine(buffhookroutine(bufftriggertiming.onturnend, unitteam.ally)));
-    //        yield return startcoroutine(resolveroutine(uimanager.instance.turnend()));
-    //        yield return new waitforseconds(0.5f);  //캐릭터 교체 후 딜레이
+            //아군 턴 엔드 페이즈
+            yield return StartCoroutine(ResolveRoutine(BuffHookRoutine(BuffTriggerTiming.OnTurnEnd, UnitTeam.Ally)));
+            yield return StartCoroutine(ResolveRoutine(UIManager.Instance.TurnEnd()));
+            yield return new WaitForSeconds(0.5f);  //캐릭터 교체 후 딜레이
 
+            
+            //적 턴 시작 페이즈
+            turn++;
+            yield return StartCoroutine(ResolveRoutine(UIManager.Instance.TurnStart(turn, "Enemy")));
+            yield return StartCoroutine(ResolveRoutine(BuffHookRoutine(BuffTriggerTiming.OnTurnStart, UnitTeam.Enemy)));
 
-    //        적 턴 시작 페이즈
-    //        turn++;
-    //        yield return startcoroutine(resolveroutine(uimanager.instance.turnstart(turn, "enemy")));
-    //        yield return startcoroutine(resolveroutine(buffhookroutine(bufftriggertiming.onturnstart, unitteam.enemy)));
+            //적 패턴 플레이 페이즈
+            List<EnemyUnit> enemySnapshot = new(enemyList);
+            foreach (EnemyUnit enemy in enemySnapshot)
+            {
+                yield return new WaitForSeconds(0.5f);
+                yield return StartCoroutine(ResolveRoutine(enemy.UsePatternRoutine()));         //적 패턴 기능 EnemyUnit에 구현 후에 다시 주석 해제.
+                enemy.SetRandomPattern();
+            }
+            yield return new WaitForSeconds(0.7f);  //모든 패턴 사용 후 딜레이
 
-    //        적 패턴 플레이 페이즈
-    //        list<enemyunit> enemysnapshot = new(enemylist);
-    //        foreach (enemyunit enemy in enemysnapshot)
-    //        {
-    //            yield return new waitforseconds(0.5f);
-    //            yield return startcoroutine(resolveroutine(enemy.usepatternroutine()));         //적 패턴 기능 enemyunit에 구현 후에 다시 주석 해제.
-    //            enemy.setrandompattern();
-    //        }
-    //        yield return new waitforseconds(0.7f);  //모든 패턴 사용 후 딜레이
-
-    //        적 턴 종료
-    //        yield return startcoroutine(resolveroutine(buffhookroutine(bufftriggertiming.onturnend, unitteam.enemy)));
-    //    }
-    //}
+            //적 턴 종료
+            yield return StartCoroutine(ResolveRoutine(BuffHookRoutine(BuffTriggerTiming.OnTurnEnd, UnitTeam.Enemy)));
+        }
+    }
 
     private IEnumerator BattleRoutineTwo()
     {
@@ -359,14 +382,9 @@ public class BattleManager : MonoBehaviour
                 if (turnQ.Count == 0) { Debug.Log("TurnQ count 0"); yield break; }
             }
 
-            //유닛 턴 시작 : 패널 표시  --> actingUnit 저장
+            //캐릭터 턴 시작 : 패널 표시  --> actingUnit 저장
             totalTurnCount++;
-            if(ActingUnit != null) { ActingUnit.ExitTurn(); }
-
             ActingUnit = turnQ.Dequeue();
-
-            if(ActingUnit != null) { ActingUnit.EnterTurn(); }
-
             string name;
             if (ActingUnit.Team == UnitTeam.Ally)
             {
@@ -378,7 +396,7 @@ public class BattleManager : MonoBehaviour
 
                 TurnCharacter = ally;
                 TurnCharacter.EnterTurn();
-                UIManager.Instance.AllyStatPanelTurn(ally);
+
                 name = ally.CharacterData.CharacterName;
                 yield return StartCoroutine(ResolveRoutine(UIManager.Instance.UnitTurnStart(totalTurnCount, name)));
             }
