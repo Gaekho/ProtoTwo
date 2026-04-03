@@ -89,6 +89,7 @@ public class EnemyDataEditor : Editor
             SerializedProperty patternNameProp = patternElement.FindPropertyRelative("patternName");
             SerializedProperty patternTypeProp = patternElement.FindPropertyRelative("patternType");
             SerializedProperty intentIconProp = patternElement.FindPropertyRelative("intentIcon");
+            SerializedProperty patternDescriptionProp = patternElement.FindPropertyRelative("patternDescription");
             SerializedProperty patternActionListProp = patternElement.FindPropertyRelative("patternActionList");
 
             string patternName = string.IsNullOrEmpty(patternNameProp.stringValue)
@@ -124,6 +125,7 @@ public class EnemyDataEditor : Editor
                 EditorGUILayout.PropertyField(patternNameProp);
                 EditorGUILayout.PropertyField(patternTypeProp);
                 EditorGUILayout.PropertyField(intentIconProp);
+                EditorGUILayout.PropertyField (patternDescriptionProp);
 
                 EditorGUILayout.Space(4);
                 DrawPatternActionList(patternActionListProp, i);

@@ -12,6 +12,7 @@ public class EnemyUIController : BattleUnitUIcontroller
     [SerializeField] private Text armorText;
     [SerializeField] private Image intentIcon;
     [SerializeField] private float maxHealth;
+    [SerializeField] private EnemyPatternTooltip patternTooltip;
 
     public override  void SetUpUI(BattleUnitBase unit)
     {
@@ -38,6 +39,8 @@ public class EnemyUIController : BattleUnitUIcontroller
         if (data == null || data.IntentIcon == null) return;
 
         intentIcon.sprite = data.IntentIcon;
+
+        patternTooltip.SetTooltip(data);
     }
 
 }

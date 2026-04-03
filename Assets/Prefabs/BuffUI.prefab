@@ -182,17 +182,25 @@ MonoBehaviour:
   tooltipText: {fileID: 136215654023625562}
   iconEntry:
   - buffType: 1
-    icon: {fileID: 791137111, guid: 567d4874bbf9c384a96217074305f624, type: 3}
+    icon: {fileID: 443373642, guid: d6751e9b107bf954eb18dffe12be6cff, type: 3}
   - buffType: 4
-    icon: {fileID: 1734192875, guid: 567d4874bbf9c384a96217074305f624, type: 3}
-  - buffType: 10
-    icon: {fileID: 286001626, guid: 567d4874bbf9c384a96217074305f624, type: 3}
+    icon: {fileID: -1560008175, guid: d6751e9b107bf954eb18dffe12be6cff, type: 3}
+  - buffType: 5
+    icon: {fileID: 727821139, guid: d6751e9b107bf954eb18dffe12be6cff, type: 3}
+  - buffType: 6
+    icon: {fileID: 1032638669, guid: d6751e9b107bf954eb18dffe12be6cff, type: 3}
+  - buffType: 9
+    icon: {fileID: -2083481737, guid: d6751e9b107bf954eb18dffe12be6cff, type: 3}
   - buffType: 12
-    icon: {fileID: 1334757795, guid: 7ebeff67809465c48bd357ab188317c0, type: 3}
+    icon: {fileID: -1565785650, guid: d6751e9b107bf954eb18dffe12be6cff, type: 3}
   - buffType: 13
-    icon: {fileID: -1822024087, guid: 7ebeff67809465c48bd357ab188317c0, type: 3}
+    icon: {fileID: -144448700, guid: d6751e9b107bf954eb18dffe12be6cff, type: 3}
   - buffType: 14
-    icon: {fileID: 586780825, guid: 7ebeff67809465c48bd357ab188317c0, type: 3}
+    icon: {fileID: -1988213772, guid: d6751e9b107bf954eb18dffe12be6cff, type: 3}
+  - buffType: 15
+    icon: {fileID: 463870117, guid: d6751e9b107bf954eb18dffe12be6cff, type: 3}
+  - buffType: 16
+    icon: {fileID: 1206206791, guid: d6751e9b107bf954eb18dffe12be6cff, type: 3}
   references:
     version: 2
     RefIds:

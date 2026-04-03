@@ -62,6 +62,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         data = cardData;
         handIndex = index;
         cardInstance = inst;
+        isPlayable = false;
 
         //비주얼 세팅
         mySprite.sprite =  data.CardSprite;
@@ -164,6 +165,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public void SetUnPlayable()
     {
+        isPlayable = false;
         blackMask.gameObject.SetActive(true);
     }
     public void CardsizeBig()
@@ -262,7 +264,9 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         float val; 
         float currentStat = 0f;
         bool lastCheck = false;
-        
+
+        if (!isPlayable) return false;
+
         //중립 카드 사용 시 참고할 캐릭터
         if(data.Color == CardColor.Gray)
         {
