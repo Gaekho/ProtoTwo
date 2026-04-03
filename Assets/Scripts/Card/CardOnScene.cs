@@ -55,8 +55,6 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
    
     }
 
-
-
     public void SetCard(CardData cardData, int index, CardInstance inst)
     {
         data = cardData;
@@ -163,11 +161,13 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
 
     }
+    
     public void SetUnPlayable()
     {
         isPlayable = false;
         blackMask.gameObject.SetActive(true);
     }
+
     public void CardsizeBig()
     {
         transform.localScale = new Vector3(0.5f, 0.5f, 1f);
@@ -218,6 +218,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         HandController.Instance.AfterCardUse(this);
 
     }
+    
     public void Use()
     {
         switch (data.CardAnimTrigger)
@@ -258,6 +259,11 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //myImage.color = color;           OnDrag 참조
 
         //SetCard(data);
+    }
+    
+    public void SetHomePositionFromLocal(Vector3 localPos)
+    {
+        originalTransform = transform.parent.TransformPoint(localPos);
     }
     public bool CheckCondition(CardData myData, AllyUnit owner)
     {
@@ -315,6 +321,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //Debug.Log("checked");
         return lastCheck;
     }
+    
     public bool CheckTarget(CardData data)
     {
         if (data.UsableWithoutTarget) return true;

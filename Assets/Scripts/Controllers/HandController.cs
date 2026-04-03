@@ -104,7 +104,10 @@ public class HandController : MonoBehaviour
             currentGraveyard.Add(removed);
         }
 
-        Destroy(view.gameObject);
+        //view.gameObject.SetActive(false);
+        //SortCard();
+        //Destroy(view.gameObject);
+        DestroyImmediate(view.gameObject);
         SortCard();
     }
 
@@ -130,15 +133,35 @@ public class HandController : MonoBehaviour
 
     public void SortCard()
     {
-        int count = currentHand.Count;  //Debug.Log("Now Card Count in Hand" + spawnParent.childCount);
+        List<CardOnScene> cards = new();
+
+        foreach(Transform child in spawnParent)
+        {
+            CardOnScene card = child.GetComponent<CardOnScene>();
+            if(card == null) continue;
+            if(!child.gameObject.activeSelf) continue;
+            cards.Add(card);
+        }
+
+
+        //int count = currentHand.Count;
+        int count = cards.Count;
         if (count == 0) return;
 
-        for(int i = 0; i<spawnParent.childCount; i++)
+        //for(int i = 0; i<spawnParent.childCount; i++)
+        //{
+        //    Transform card = spawnParent.GetChild(i);
+        //    float t = count == 1 ? 0.5f : (float)i / (count - 1);
+        //    Vector3 targetPosition = Vector3.Lerp(startPoint, endPoint, t);
+        //    card.localPosition = targetPosition;
+        //}
+        for(int i = 0; i < count; i++)
         {
-            Transform card = spawnParent.GetChild(i);
-            float t = count == 1 ? 0.5f : (float)i / (count - 1);
+            float t = count == 1?0.5f : (float)i / (count - 1);
             Vector3 targetPosition = Vector3.Lerp(startPoint, endPoint, t);
-            card.localPosition = targetPosition;
+
+            cards[i].transform.localPosition = targetPosition;
+            cards[i].SetHomePositionFromLocal(targetPosition);
         }
 
         RefreshHandVisual();
