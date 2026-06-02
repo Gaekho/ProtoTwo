@@ -64,6 +64,7 @@ public class NewPatternActionBase : PatternActionBase
     5. 필요한 추가 필드 생성 및 생성자에 추가.
     6. (추가 필드/스펙) 전용 `BuffInstance` 하위 클래스 생성.
     7. (추가 필드/스펙) BuffBase 하위 클래스에서 `CreateInstance`, `MergeToSameBuff` override.
+    8. BuffUI 프리팹에 BuffIconEntry 등록
 
 ```csharp
 // Assets/Scripts/Buff/BuffList 하위에 작성
@@ -122,9 +123,12 @@ public class NewBuffInstance : BuffInstance
 
 ---
 
-# 맵 노드 추가
+# 맵 추가 방법
+맵 씬 폴더 관리법
+지역
+L 맵(필드), 배틀
 
-## 새로운 노드 카테고리 추가 방법
+## 새로운 맵 추가 방법
 
 - 노드 추가 :
     1. `NodeTypes.cs`에 타입 enum 추가.
