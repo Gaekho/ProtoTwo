@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Codice.Client.Common.GameUI;
 
 //v0.02 / 2026.03.08 / 16:28
 [CustomEditor(typeof(CardData))]
@@ -62,7 +63,7 @@ public class CardDataEditor : Editor
 
         DrawDefaultSections();
         EditorGUILayout.Space(8);
-        DrawCardActionList();
+        DrawManagedActionList(cardActionListProp, "Card Action List");
 
         serializedObject.ApplyModifiedProperties();
     }
@@ -93,19 +94,81 @@ public class CardDataEditor : Editor
         EditorGUILayout.PropertyField(banishAfterUsedProp);
     }
 
-    private void DrawCardActionList()
-    {
-        EditorGUILayout.LabelField("Card Action List", EditorStyles.boldLabel);
+    //private void DrawCardActionList()
+    //{
+    //    EditorGUILayout.LabelField("Card Action List", EditorStyles.boldLabel);
 
-        if(cardActionListProp == null)
+    //    if(cardActionListProp == null)
+    //    {
+    //        EditorGUILayout.HelpBox("cardActionList property not found.", MessageType.Error); 
+    //        return;
+    //    }
+
+    //    for(int i = 0; i< cardActionListProp.arraySize; i++)
+    //    {
+    //        SerializedProperty element = cardActionListProp.GetArrayElementAtIndex(i);
+
+    //        EditorGUILayout.BeginVertical("box");
+    //        EditorGUILayout.BeginHorizontal();
+
+    //        string typeName = GetManagedRefernceTypeName(element);
+    //        element.isExpanded = EditorGUILayout.Foldout(
+    //            element.isExpanded,
+    //            $"Element {i} : {typeName}",
+    //            true
+    //        );
+
+    //        GUI.backgroundColor = new Color(1f, 0.6f, 0.6f);
+    //        if(GUILayout.Button("Delete", GUILayout.Width(60)))
+    //        {
+    //            DeleteElementAt(i);
+    //            GUI.backgroundColor = Color.white;
+    //            EditorGUILayout.EndHorizontal();
+    //            EditorGUILayout.EndVertical();
+    //            break;
+    //        }
+    //        GUI.backgroundColor = Color.white;
+
+    //        EditorGUILayout.EndHorizontal();
+
+    //        if(element.isExpanded)
+    //        {
+    //            if(element.managedReferenceValue == null)
+    //            {
+    //                EditorGUILayout.HelpBox("No action type assigned.", MessageType.Warning);
+    //            }
+    //            else
+    //            {
+    //                EditorGUI.indentLevel++;
+    //                EditorGUILayout.PropertyField(element, true);
+    //                EditorGUI.indentLevel--;
+    //            }
+    //        }
+    //        EditorGUILayout.EndVertical();
+    //    }
+
+    //    EditorGUILayout.Space(4);
+
+    //    Rect buttonRect = GUILayoutUtility.GetRect(0f, 24f, GUILayout.ExpandWidth(true));
+    //    if(GUI.Button(buttonRect, "Add Action"))
+    //    {
+    //        ShowAddActionMenu(buttonRect);
+    //    }
+    //}
+
+    private void DrawManagedActionList(SerializedProperty listProp, string label)
+    {
+        EditorGUILayout.LabelField(label, EditorStyles.boldLabel);
+
+        if(listProp == null)
         {
-            EditorGUILayout.HelpBox("cardActionList property not found.", MessageType.Error); 
+            EditorGUILayout.HelpBox($"{label} property not found.", MessageType.Error);
             return;
         }
 
-        for(int i = 0; i< cardActionListProp.arraySize; i++)
+        for (int i= 0; i < listProp.arraySize; i++)
         {
-            SerializedProperty element = cardActionListProp.GetArrayElementAtIndex(i);
+            SerializedProperty element = listProp.GetArrayElementAtIndex(i);
 
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.BeginHorizontal();
@@ -120,7 +183,7 @@ public class CardDataEditor : Editor
             GUI.backgroundColor = new Color(1f, 0.6f, 0.6f);
             if(GUILayout.Button("Delete", GUILayout.Width(60)))
             {
-                DeleteElementAt(i);
+                DeleteManagedElement(listProp.propertyPath, i);
                 GUI.backgroundColor = Color.white;
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.EndVertical();
@@ -130,32 +193,65 @@ public class CardDataEditor : Editor
 
             EditorGUILayout.EndHorizontal();
 
-            if(element.isExpanded)
+            if (element.isExpanded)
             {
-                if(element.managedReferenceValue == null)
-                {
-                    EditorGUILayout.HelpBox("No action type assigned.", MessageType.Warning);
-                }
-                else
-                {
-                    EditorGUI.indentLevel++;
-                    EditorGUILayout.PropertyField(element, true);
-                    EditorGUI.indentLevel--;
-                }
+                DrawManagedActionElement(element);
             }
+
             EditorGUILayout.EndVertical();
         }
 
         EditorGUILayout.Space(4);
 
         Rect buttonRect = GUILayoutUtility.GetRect(0f, 24f, GUILayout.ExpandWidth(true));
-        if(GUI.Button(buttonRect, "Add Action"))
+        if (GUI.Button(buttonRect, $"Add {label}"))
         {
-            ShowAddActionMenu(buttonRect);
+            ShowAddActionMenu(buttonRect, listProp);
         }
     }
 
-    private void ShowAddActionMenu(Rect buttonRect)
+    private void DrawManagedActionElement(SerializedProperty element)
+    {
+        if (element == null) return;
+
+        if(element.managedReferenceValue == null)
+        {
+            EditorGUILayout.HelpBox("No action type assigned.", MessageType.Warning);
+            return;
+        }
+
+        SerializedProperty iterator = element.Copy();
+        SerializedProperty end = iterator.GetEndProperty();
+        bool enterChildren = true;
+
+        while(iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
+        {
+            enterChildren = false;
+
+            if (iterator.name == "m_Script") continue;
+
+            if(iterator.name == "trueActions")
+            {
+                DrawManagedActionList(iterator, "True Actions");
+                continue;
+            }
+
+            if(iterator.name == "falseActions")
+            {
+                DrawManagedActionList(iterator, "False Actions");
+                continue;
+            }
+
+            if(iterator.name == "buff" && iterator.propertyType == SerializedPropertyType.ManagedReference)
+            {
+                BuffReferenceEditorUtility.DrawBuffReferenceField(iterator, "Buff");
+                continue;
+            }
+
+            EditorGUILayout.PropertyField(iterator, true);
+        }
+    }
+    private void ShowAddActionMenu(Rect buttonRect, SerializedProperty listProp)
     {
         GenericMenu menu = new GenericMenu();
 
@@ -165,10 +261,11 @@ public class CardDataEditor : Editor
         }
         else
         {
+            string propertyPath = listProp.propertyPath;
             for(int i = 0; i < actionTypes.Count; i++)
             {
                 Type type = actionTypes[i];
-                menu.AddItem(new GUIContent(type.Name), false, () => AddAction(type));
+                menu.AddItem(new GUIContent(type.Name), false, () => AddManagedAction(propertyPath ,type));
             }
         }
         menu.DropDown(buttonRect);
@@ -182,6 +279,28 @@ public class CardDataEditor : Editor
         cardActionListProp.InsertArrayElementAtIndex(index);
 
         SerializedProperty newElement = cardActionListProp.GetArrayElementAtIndex(index);
+        newElement.managedReferenceValue = Activator.CreateInstance(type);
+        newElement.isExpanded = true;
+
+        serializedObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(target);
+    }
+
+    private void AddManagedAction( string propertyPath, Type type)
+    {
+        serializedObject.Update();
+
+        SerializedProperty listProp = serializedObject.FindProperty(propertyPath);
+        if(listProp == null)
+        {
+            Debug.Log($"Property not found : {propertyPath}");
+            return;
+        }
+
+        int index = listProp.arraySize;
+        listProp.InsertArrayElementAtIndex(index);
+
+        SerializedProperty newElement = listProp.GetArrayElementAtIndex(index);
         newElement.managedReferenceValue = Activator.CreateInstance(type);
         newElement.isExpanded = true;
 
@@ -204,6 +323,29 @@ public class CardDataEditor : Editor
         EditorUtility.SetDirty(target);
     }
 
+    private void DeleteManagedElement( string propertyPath, int index)
+    {
+        serializedObject.Update();
+
+        SerializedProperty listProp = serializedObject.FindProperty(propertyPath);
+        if(listProp == null)
+        {
+            Debug.LogError($"Property not found : {propertyPath}");
+            return;
+        }
+
+        SerializedProperty element = listProp.GetArrayElementAtIndex(index);
+
+        if(element.managedReferenceValue != null)
+        {
+            element.managedReferenceValue = null;
+        }
+
+        listProp.DeleteArrayElementAtIndex(index);
+
+        serializedObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(target);
+    }
     private string GetManagedRefernceTypeName(SerializedProperty property)
     {
         if(property == null || property.managedReferenceValue == null)

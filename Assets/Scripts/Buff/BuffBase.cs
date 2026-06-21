@@ -45,6 +45,16 @@ public abstract class BuffBase
         originalBuff.SetNewApplier(newApplier);
     }
 
+    public virtual void UpdateTooltip()
+    {
+
+    }
+    public virtual string GetTooltip()
+    {
+        UpdateTooltip();
+        return this.description;
+    }
+
     //버프가 실제로 추가된 직후 1회 호출
     public virtual void OnApply(BuffInstance instance) { }
 

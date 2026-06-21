@@ -28,11 +28,20 @@ MonoBehaviour:
   banishAfterUsed: 0
   cardActionList:
   - rid: 3789920194590670848
+  - rid: 7424453443970400256
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 3789920194590670848
       type: {class: DrawAction, ns: , asm: Assembly-CSharp}
       data:
         actionTarget: 0
         drawCount: 2
+    - rid: 7424453443970400256
+      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 0
+        buff:
+          rid: -2

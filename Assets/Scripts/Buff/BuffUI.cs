@@ -1,10 +1,12 @@
 using Proto2.Enums;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BuffUI : MonoBehaviour
+public class BuffUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Profile")]
     [SerializeField] private BuffTypes buffType;
@@ -15,6 +17,11 @@ public class BuffUI : MonoBehaviour
     [SerializeField] private Text buffDuration;
 
     [SerializeField] private int remainTurn;
+
+    [Header("ToolTip Box")]
+    [SerializeField] private GameObject tooltipBox;
+    [SerializeField] private TMP_Text buffNameText;
+    [SerializeField] private TMP_Text tooltipText;
 
     [Header("Icon Database")]
     [SerializeField] private BuffIconEntry [] iconEntry;
@@ -72,6 +79,18 @@ public class BuffUI : MonoBehaviour
                 return iconEntry[i].icon;
         }
         return null;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        tooltipBox.SetActive(true);
+        buffNameText.text = currentBuff.SourceBuff.BuffName;
+        tooltipText.text = currentBuff.SourceBuff.GetTooltip();
+    }
+
+    public void OnPointerExit(PointerEventData eventData) 
+    {
+        tooltipBox.SetActive(false);
     }
 }
 
