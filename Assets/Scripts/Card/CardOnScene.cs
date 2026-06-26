@@ -23,7 +23,11 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [Header("Visual UI Field")]
     [SerializeField] private SpriteRenderer mySprite;
     [SerializeField] private TMP_Text[] textList;
-    [SerializeField] private Text[] conditionList;
+    //[SerializeField] private Text[] conditionList;
+    [SerializeField] private Text atkTxt;
+    [SerializeField] private Text shdTxt;
+    [SerializeField] private Text spdTxt;
+    [SerializeField] private SpriteRenderer blackMask;
 
     [Header("Raycast")]
     [SerializeField] private LayerMask layerMask;
@@ -42,11 +46,12 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //비주얼 컴포넌트들 연결
         mainCamera = Camera.main;
         originalTransform = transform.position;
-        canvas = GetComponentInChildren<Canvas>();
-        mySprite = GetComponent<SpriteRenderer>();
+        //canvas = GetComponentInChildren<Canvas>();
+        //mySprite = GetComponent<SpriteRenderer>();
         textList = canvas.GetComponentsInChildren<TMP_Text>();  //카드 이름, 카드 텍스트 순으로 가져온다.
-        conditionList = canvas.GetComponentsInChildren<Text>(); //ATK, DEF, SPD 순으로 가져온다.
+        //conditionList = canvas.GetComponentsInChildren<Text>(); //ATK, DEF, SPD 순으로 가져온다.
         // How to Search Owner Character of this Card?
+        SetUnPlayable();
    
     }
 
@@ -55,6 +60,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         data = cardData;
         handIndex = index;
         cardInstance = inst;
+        isPlayable = false;
 
         //비주얼 세팅
         mySprite.sprite =  data.CardSprite;
@@ -68,17 +74,17 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             {
                 case ConditionType.Attack:
                     {
-                        conditionList[0].text = conditionData.Value.ToString();
+                        atkTxt.text = conditionData.Value.ToString();
                         break;
                     }
                 case ConditionType.Shield:
                     {
-                        conditionList[1].text = conditionData.Value.ToString(); 
+                        shdTxt.text = conditionData.Value.ToString(); 
                         break;
                     }
                 case ConditionType.Speed:
                     {
-                        conditionList[2].text = conditionData.Value.ToString();
+                        spdTxt.text = conditionData.Value.ToString();
                         break;
                     }
             }
@@ -96,6 +102,70 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 owner = BattleManager.Instance.TurnCharacter;
             }
         }
+    }
+
+    public void SetPlayable(BattleUnitBase turnUnit)
+    {
+        if (turnUnit == null || turnUnit.Team == UnitTeam.Enemy)
+        {
+            SetUnPlayable();
+            return;
+        }
+
+        AllyUnit tester = turnUnit as AllyUnit;
+        if(tester == owner || data.Color == CardColor.Gray)
+        {
+            isPlayable = true;
+            blackMask.gameObject.SetActive(false);
+
+            if(!CheckCondition(data, owner))
+            {
+                for(int i = 0; i<data.ActiveConditionList.Count; i++)
+                {
+                    switch (data.ActiveConditionList[i].Condition)
+                    {
+                        case ConditionType.Attack:
+                            if (data.ActiveConditionList[i].Value > owner.CurrentAttack)
+                            {
+                                atkTxt.color = Color.red; break;
+                            }
+                            break;
+
+                        case ConditionType.Shield:
+                            if (data.ActiveConditionList[i].Value > owner.CurrentShield)
+                            {
+                                shdTxt.color = Color.red; break;
+                            }
+                            break;
+
+                        case ConditionType.Speed:
+                            if (data.ActiveConditionList[i].Value > owner.CurrentSpeed)
+                            {
+                                spdTxt.color = Color.red; break;
+                            }
+                            break;
+                    }
+
+                }
+            }
+            else
+            {
+                atkTxt.color = Color.white;
+                shdTxt.color = Color.white;
+                spdTxt.color = Color.white;
+            }
+        }
+        else
+        {
+            SetUnPlayable();
+        }
+
+    }
+    
+    public void SetUnPlayable()
+    {
+        isPlayable = false;
+        blackMask.gameObject.SetActive(true);
     }
 
     public void CardsizeBig()
@@ -148,6 +218,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         HandController.Instance.AfterCardUse(this);
 
     }
+    
     public void Use()
     {
         switch (data.CardAnimTrigger)
@@ -182,18 +253,26 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         CardsizeSmall();
         mySprite.sprite = data.CardSprite;
         canvas.gameObject.SetActive(true);
+        SetPlayable(BattleManager.Instance.ActingUnit);
         //Color color = Color.white;
         //color.a = 1f;
         //myImage.color = color;           OnDrag 참조
 
         //SetCard(data);
     }
+    
+    public void SetHomePositionFromLocal(Vector3 localPos)
+    {
+        originalTransform = transform.parent.TransformPoint(localPos);
+    }
     public bool CheckCondition(CardData myData, AllyUnit owner)
     {
         float val; 
         float currentStat = 0f;
         bool lastCheck = false;
-        
+
+        if (!isPlayable) return false;
+
         //중립 카드 사용 시 참고할 캐릭터
         if(data.Color == CardColor.Gray)
         {
@@ -242,6 +321,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //Debug.Log("checked");
         return lastCheck;
     }
+    
     public bool CheckTarget(CardData data)
     {
         if (data.UsableWithoutTarget) return true;
@@ -302,6 +382,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         originalTransform = transform.position;
         mySprite.sprite = data.DragIcon;
         canvas.gameObject.SetActive(false);
+        blackMask.gameObject.SetActive(false);
     }
 
     public void OnDrag(PointerEventData eventdata)

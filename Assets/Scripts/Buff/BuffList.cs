@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting;
 using Proto2.Enums;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 // v0.01 / 2026.03.12 / 01:04
 // 최초 생성
@@ -30,33 +32,7 @@ public class TauntBuff : BuffBase
 }
 
 [Serializable]
-public class PoisonDebuff : BuffBase
-{
-    public PoisonDebuff() 
-    {
-        buffType = BuffTypes.Poison;
-        isDebuff = true;
-        buffName = "Poison";
-        description = $"Get {duration} damages on start of turn.";
-        triggerTiming = BuffTriggerTiming.OnTurnStart;
-
-        duration = 1;
-        reduceTiming= ReduceTiming.EndOfOwnerTurn;
-    }
-
-    public override void OnApply(BuffInstance instance)
-    {
-        Debug.Log($"{instance.Owner.name} is Poisoned.");
-    }
-
-    public override void OnTurnStart(BuffInstance instance)
-    {
-        instance.Owner.GetDamage(duration);
-    }
-}
-
-[Serializable]
-public class StatPlusBuff : BuffBase
+public class AtkStatPlusBuff : BuffBase
 {
     [SerializeField] ConditionType stat;
     [SerializeField] float plusAmount;
@@ -64,12 +40,12 @@ public class StatPlusBuff : BuffBase
     public ConditionType Stat => stat;
     public float PlusAmount => plusAmount;
 
-    public StatPlusBuff()
+    public AtkStatPlusBuff()
     {
-        buffType = BuffTypes.StatPlus;
+        buffType = BuffTypes.AtkStatPlus;
         isDebuff = false;
-        buffName = "Stat Plus";
-        description = "Stat bonus as amount, while duration";
+        buffName = "공격 스탯 강화";
+        description = $"{duration}턴 동안 공격 스탯이 {plusAmount}증가한다.";
         triggerTiming = BuffTriggerTiming.None;
 
         duration = 1;
@@ -80,17 +56,136 @@ public class StatPlusBuff : BuffBase
 
     public override void OnApply(BuffInstance instance)
     {
-        instance.Owner.StatusChange(stat ,plusAmount);
+        instance.Owner.StatusChange(ConditionType.Attack ,plusAmount);
     }
 
     public override void OnRemove(BuffInstance instance)
     {
-        instance.Owner.StatusChange(stat, -plusAmount);
+        instance.Owner.StatusChange(ConditionType.Attack, -plusAmount);
+    }
+
+    public override void UpdateTooltip()
+    {
+        description = $"{duration}턴 동안 공격 스탯이 {plusAmount}증가한다.";
     }
 }
 
-//[Serializable]
-//public class BufferBuff : BuffBase
-//{
-//    [SerializeField] private 
-//}
+[Serializable]
+public class ShdStatPlusBuff : BuffBase
+{
+    [SerializeField] ConditionType stat;
+    [SerializeField] float plusAmount;
+
+    public ConditionType Stat => stat;
+    public float PlusAmount => plusAmount;
+
+    public ShdStatPlusBuff()
+    {
+        buffType = BuffTypes.ShdStatPlus;
+        isDebuff = false;
+        buffName = "방어 스탯 강화";
+        description = $"{duration}턴 동안 방어 스탯이 {plusAmount}증가한다.";
+        triggerTiming = BuffTriggerTiming.None;
+
+        duration = 1;
+        reduceTiming = ReduceTiming.EndOfOwnerTurn;
+        stat = ConditionType.Shield;
+        plusAmount = 1;
+
+    }
+    public override void OnApply(BuffInstance instance)
+    {
+        instance.Owner.StatusChange(ConditionType.Shield, plusAmount);
+    }
+
+    public override void OnRemove(BuffInstance instance)
+    {
+        instance.Owner.StatusChange(ConditionType.Shield, -plusAmount);
+    }
+
+    public override void UpdateTooltip()
+    {
+        description = $"{duration}턴 동안 방어 스탯이 {plusAmount}증가한다.";
+    }
+
+}
+
+[Serializable]
+public class SpdStatPlusBuff : BuffBase
+{
+    [SerializeField] ConditionType stat;
+    [SerializeField] float plusAmount;
+
+    public ConditionType Stat => stat;
+    public float PlusAmount => plusAmount;
+
+    public SpdStatPlusBuff()
+    {
+        buffType = BuffTypes.SpdStatPlus;
+        isDebuff = false;
+        buffName = "속도 스탯 강화";
+        description = $"{duration}턴 동안 속도 스탯이 {plusAmount}증가한다.";
+        triggerTiming = BuffTriggerTiming.None;
+
+        duration = 1;
+        reduceTiming = ReduceTiming.EndOfOwnerTurn;
+        stat = ConditionType.Speed;
+        plusAmount = 1;
+    }
+
+    public override void OnApply(BuffInstance instance)
+    {
+        instance.Owner.StatusChange(ConditionType.Speed, plusAmount);
+    }
+
+    public override void OnRemove(BuffInstance instance)
+    {
+        instance.Owner.StatusChange(ConditionType.Speed, -plusAmount);
+    }
+
+    public override void UpdateTooltip()
+    {
+        description = $"{duration}턴 동안 속도 스탯이 {plusAmount}증가한다.";
+    }
+}
+
+[Serializable]
+public class StrengthenBuff : BuffBase
+{
+    [SerializeField] private float additionalDamageRate;
+
+    public StrengthenBuff()
+    {
+        buffType = BuffTypes.Strengthen;
+        isDebuff = false;
+        buffName = "Strengthen";
+        description = $"지속시간 동안 피해량이 {(int)((additionalDamageRate-1)*100)}% 상승한다.";
+        triggerTiming = BuffTriggerTiming.None;
+
+        duration = 1;
+        reduceTiming = ReduceTiming.EndOfOwnerTurn;
+
+        additionalDamageRate = 1.1f;
+    }
+
+    public override BuffInstance CreateInstance(BattleUnitBase owner, BattleUnitBase applier)
+    {
+        return new StrengthenBuffInstance(this, owner, applier, additionalDamageRate);
+    }
+
+    public override void MergeToSameBuff(BuffInstance originalBuff, BattleUnitBase newApplier)
+    {
+        base.MergeToSameBuff(originalBuff, newApplier);
+
+        StrengthenBuffInstance inst = originalBuff as StrengthenBuffInstance;
+        if (inst == null) return;
+
+        inst.SetDamageRate(additionalDamageRate);
+    }
+
+    public override void UpdateTooltip()
+    {
+        description = $"지속시간 동안 피해량이 {(int)((additionalDamageRate - 1) * 100)}% 상승한다.";
+    }
+
+}

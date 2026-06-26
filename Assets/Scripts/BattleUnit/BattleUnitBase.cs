@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Proto2.Enums;
+using UnityEngine.UI;
 
 //v0.03 / 2026.03.12 / 00:37
 // 변경 요약 : ReceiveBuff 수정, TriggerBuff 추가
@@ -13,11 +14,14 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField] protected float currentHealth;
     [SerializeField] protected float currentArmor;
     [SerializeField] protected bool isDead;
+    [SerializeField] protected bool isTurn;
     [SerializeReference] protected List<BuffInstance> buffList = new();
 
     [Header("Visual Components")]
+    [SerializeField] protected Transform myTransform;
     [SerializeField] protected SpriteRenderer mySprite;
     [SerializeField] protected Animator myAnimator;
+    [SerializeField] protected BattleUnitUIcontroller uiController;
     #endregion
 
     #region Cache
@@ -38,8 +42,8 @@ public abstract class BattleUnitBase : MonoBehaviour
         isDead = false;
         currentHealth = maxHealth;
         currentArmor = 0f;
-        mySprite = GetComponent<SpriteRenderer>();
-        myAnimator = GetComponent<Animator>();
+
+        uiController.SetUpUI(this);
     }
 
     public virtual void AddArmor(float value)
@@ -47,17 +51,20 @@ public abstract class BattleUnitBase : MonoBehaviour
         if (value <= 0) return;
         currentArmor += value;
         DoArmorAnim();
+        uiController.SetArmor(currentArmor);
     }
 
     public virtual void ClearArmor()
     {
         currentArmor = 0f;
+        uiController.SetArmor(0f);
     }
 
     public virtual void StatusChange(ConditionType statType, float amount)
     {
 
     }
+
     public virtual void GetDamage(float value)
     {
         float previousHealth = currentHealth;           //데미지 받기 전 체력 저장.
@@ -90,6 +97,21 @@ public abstract class BattleUnitBase : MonoBehaviour
         }
     }
 
+    public virtual void EnterTurn()
+    {
+        isTurn = true;
+        myTransform.localScale = new Vector3(1.2f, 1.2f, 1f);
+        uiController.SetTurn(true);
+    }
+
+    public virtual void ExitTurn()
+    {
+        isTurn = false;
+        myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
+        uiController.SetTurn(false);
+    }
+
+    #region Buff
     public virtual void ReceiveBuff( BuffBase buff, BattleUnitBase applier)
     {
         // <Summary>
@@ -164,6 +186,22 @@ public abstract class BattleUnitBase : MonoBehaviour
         buff.SourceBuff.OnRemove(buff);
         buffList.RemoveAt(idx);
     }
+
+    public virtual bool HasBuff(BuffTypes buffType)
+    {
+        return buffList.Exists(x => x != null && x.SourceBuff != null && x.SourceBuff.BuffType == buffType);
+    }
+
+    public virtual BuffInstance GetBuff(BuffTypes buffType)
+    {
+        if (HasBuff(buffType))
+        {
+            return buffList.Find(x => x.SourceBuff.BuffType == buffType);
+        }
+        else return null;
+    }
+
+    #endregion
 
     #region Animation Wait
     //public IEnumerator WaitForAnimationStateEnd(string stateName, int layer = 0)

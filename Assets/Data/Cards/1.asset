@@ -13,32 +13,33 @@ MonoBehaviour:
   m_Name: 1
   m_EditorClassIdentifier: 
   id: 1
-  cardName: "\uBC1B\uC544\uCE58\uAE30"
+  cardName: "\uBB34\uBAA8\uD55C \uAC15\uD0C0"
   type: 1
   color: 1
-  cardText: "\uBC29\uC5B4\uB3C4\uB97C 5 \uC5BB\uACE0 \uCE74\uB4DC\uB97C 1\uC7A5 \uB4DC\uB85C\uC6B0\uD55C\uB2E4."
-  cardSprite: {fileID: -1948998313, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
+  cardText: "\uC120\uD0DD\uB41C \uC801\uC5D0\uAC8C \uD53C\uD574\uB97C 10\uC785\uD788\uACE0,
+    \uCCB4\uB825\uC744 3 \uC783\uB294\uB2E4."
+  cardSprite: {fileID: -993018294, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 0
-  usableWithoutTarget: 1
-  cardTarget: 0
+  usableWithoutTarget: 0
+  cardTarget: 2
   activeConditionList:
   - condition: 2
     value: 2
   banishAfterUsed: 0
   cardActionList:
-  - rid: 3789920145637376001
-  - rid: 3789920145637376002
+  - rid: 283199706319028224
+  - rid: 283199706319028225
   references:
     version: 2
     RefIds:
-    - rid: 3789920145637376001
-      type: {class: DrawAction, ns: , asm: Assembly-CSharp}
+    - rid: 283199706319028224
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        damage: 10
+    - rid: 283199706319028225
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
       data:
         actionTarget: 1
-        drawCount: 1
-    - rid: 3789920145637376002
-      type: {class: AddArmorAction, ns: , asm: Assembly-CSharp}
-      data:
-        actionTarget: 1
-        armorAmount: 5
+        damage: 3

@@ -10,14 +10,21 @@ namespace Proto2.Enums
         Taunt,
         Regen,
         Addiction,
-        StatPlus,
+        AtkStatPlus,
+        ShdStatPlus,
+        SpdStatPlus,
         Buffer,
+        Berserk,
+        Strengthen,
        
         //ต๐น๖วม
         Weakness,
         Vulnerable,
         Poison,
-        Stun
+        Stun,
+        Unstable,
+        Oil,
+        Bleeding
     }
 
     public enum ReduceTiming

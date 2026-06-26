@@ -29,6 +29,7 @@ MonoBehaviour:
   banishAfterUsed: 0
   cardActionList:
   - rid: 3789920145637376012
+  - rid: 3789920487384809480
   references:
     version: 2
     RefIds:
@@ -36,4 +37,20 @@ MonoBehaviour:
       type: {class: AttackAction, ns: , asm: Assembly-CSharp}
       data:
         actionTarget: 2
-        damage: 11
+        damage: 4
+    - rid: 3789920487384809480
+      type: {class: BranchingAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        condition:
+          condition: 7
+          value: 0
+          buffType: 8
+        trueActions:
+        - rid: 3789920487384809481
+        falseActions: []
+    - rid: 3789920487384809481
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        damage: 7

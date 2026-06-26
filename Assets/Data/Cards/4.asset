@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: 4
   m_EditorClassIdentifier: 
   id: 4
-  cardName: "\uAD11\uD3ED\uD654"
+  cardName: "\uBB34\uC7A5 \uD574\uC81C"
   type: 1
   color: 1
-  cardText: "\uB3C4\uBC1C\uC744 1 \uC5BB\uACE0, \uBC29\uC5B4\uB3C4\uB97C 6\uC5BB\uC2B5\uB2C8\uB2E4."
-  cardSprite: {fileID: -993018294, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
+  cardText: "\uC120\uD0DD\uB41C \uC801\uC758 \uBC29\uC5B4\uB3C4\uB97C 0\uC73C\uB85C
+    \uB9CC\uB4E4\uACE0 \uD53C\uD574\uB97C 4 \uC785\uD78C\uB2E4."
+  cardSprite: {fileID: -1948998313, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 0
   usableWithoutTarget: 1

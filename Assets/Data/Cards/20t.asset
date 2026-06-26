@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
   m_Name: 20t
   m_EditorClassIdentifier: 
-  id: 0
+  id: 20
   cardName: "\uC0C8\uB85C\uC6B4 \uACF5\uACA9\uCE74\uB4DC"
   type: 1
   color: 1
@@ -30,7 +30,7 @@ MonoBehaviour:
   banishAfterUsed: 0
   cardActionList:
   - rid: 283199188643086336
-  - rid: 283199204833886208
+  - rid: 3789920487384809476
   references:
     version: 2
     RefIds:
@@ -39,8 +39,13 @@ MonoBehaviour:
       data:
         actionTarget: 2
         damage: 8
-    - rid: 283199204833886208
-      type: {class: DrawAction, ns: , asm: Assembly-CSharp}
+    - rid: 3789920487384809476
+      type: {class: BranchingAction, ns: , asm: Assembly-CSharp}
       data:
         actionTarget: 0
-        drawCount: 1
+        condition:
+          condition: 2
+          value: 0
+          buffType: 0
+        trueActions: []
+        falseActions: []
