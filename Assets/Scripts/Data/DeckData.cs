@@ -10,15 +10,16 @@ public class DeckData : ScriptableObject
     [Header("Deck Profile")]
     [SerializeField] private string deckName = "나만의 XX 덱";
 
-    [Header("Character Selection")]
-    [SerializeField] private List<CharacterData> characters;
+    //굳이 있어야 함?
+    //[Header("Character Selection")]
+    //[SerializeField] private List<CharacterData> characters;
 
     [Header("Deck List")]
-    [SerializeField] private List<CardData> deckList;
+    [SerializeField] private List<CardData> cardList;
 
     #region cache
     public string DeckName => deckName;
-    public List<CharacterData> Characters => characters;
-    public List<CardData> DeckList => deckList;
+    //public List<CharacterData> Characters => characters;
+    public List<CardData> DeckList => cardList;
     #endregion
 }
