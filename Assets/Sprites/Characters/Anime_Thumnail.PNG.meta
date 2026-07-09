@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: NewDesignPic_trans 1_0
+      name: Sita_Anime_Thumbnail
       rect:
         serializedVersion: 2
         x: 176
@@ -118,7 +118,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NewDesignPic_trans 1_1
+      name: Sulphur_Anime_Thumbnail
       rect:
         serializedVersion: 2
         x: 568
@@ -139,7 +139,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NewDesignPic_trans 1_2
+      name: Rigel_Anime_Thumbnail
       rect:
         serializedVersion: 2
         x: 971
@@ -170,9 +170,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      NewDesignPic_trans 1_0: 979401693
-      NewDesignPic_trans 1_1: -311539716
-      NewDesignPic_trans 1_2: 1079967496
+      Rigel_Anime_Thumbnail: 1079967496
+      Sita_Anime_Thumbnail: 979401693
+      Sulphur_Anime_Thumbnail: -311539716
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
