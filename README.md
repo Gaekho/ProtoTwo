@@ -1,4 +1,4 @@
-# 필수 정보
+# 필수 정보 
 
 ### 유니티 에디터 버전 : 2022.22.3f1
 
@@ -6,7 +6,26 @@
 
 ### VS 유니코드 설정 : 서명없는 UTF-8 (권장)
 
-# 효과 디자인 추가 방법 (코드)
+---
+
+# 디자인 정보
+
+### 사용 폰트
+배틀에 사용되는 픽셀 스타일 폰트 : **PF 스타더스트**
+카드에 사용되는 폰트 : **마루 부리**
+
+### 캐릭터 스타일
+**원화 :** 아니메 스타일
+**픽셀 :** 48px * 60px (1:1.25)
+		캐릭터 순수 키가 48px이며, 위로 12px는 여백.
+
+**시타 색상 :** #B73930
+**솔퓌르 색상 :** #60BD58
+**리겔 색상 :** #6C5CFF
+
+---
+
+# 배틀 효과 추가 방법 (코드)
 
 ### 액션 추가 방법
 
@@ -123,42 +142,3 @@ public class NewBuffInstance : BuffInstance
 
 ---
 
-# 맵 추가 방법
-맵 씬 폴더 관리법
-지역
-L 맵(필드), 배틀
-
-## 새로운 맵 추가 방법
-
-- 노드 추가 :
-    1. `NodeTypes.cs`에 타입 enum 추가.
-    2. `NodeBase` 상속받아서 노드 클래스 추가
-
-```csharp
-// Assets/Scripts/Enums/Notypes.cs 하위에 작성
- public enum NodeType
-    {
-        Battle = 0,
-        Camp,
-        Gift,
-        Unknown,
-        //평소에 나오는 노트 추가시 이 위에 추가할것
-        EliteBattle,
-        BossBattle
-        //평소에는 안나오는 특수 노트 추가시  끝에 추가할것
-     }
-```
-
-```csharp
-// Assets/Scripts/Map
-
-public class NewNode : NodeBase
-{
-
-    public override void OnClick(string sceneName)
-    {
-        base.OnClick(sceneName);
-        Debug.Log("New Node Access");
-    }
-}
-```
