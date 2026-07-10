@@ -4,7 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class NodeSceneManager : MonoBehaviour
 {
-    //SceneManager SceneManager;
+    private NodeSceneManager () { }
+    public static NodeSceneManager Instance { get; private set; }
+    private void Awake()
+    {
+        Instance = this;
+        
+    }
     // Start is called before the first frame update
     void Start()
     {
