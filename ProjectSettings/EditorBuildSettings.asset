@@ -12,12 +12,12 @@ EditorBuildSettings:
     path: Assets/Scenes/BattleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 0
-    path: Assets/Scenes/CampScene.unity
+    path: Assets/Scenes/NodeScene_0001.unity
     guid: 38e345455ead05d40be123a50f8167c8
   - enabled: 0
     path: Assets/Scenes/GiftScene.unity
     guid: d5ea157789cc80649a9878bac65ebc25
   - enabled: 0
-    path: Assets/Scenes/UnknownScene.unity
+    path: Assets/Scenes/NodeScene_0000.unity
     guid: f5aa5f88bc72de8419c128e31e75992f
   m_configObjects: {}
