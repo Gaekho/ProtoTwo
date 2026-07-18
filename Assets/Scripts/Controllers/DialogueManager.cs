@@ -39,12 +39,19 @@ public class DialogueManager : MonoBehaviour
         onDialogueCompleteCallback = onComplete;
         currentStory = new Story(inkJson.text);
 
+        Debug.Log($"current Story : {currentStory}");
+
         if (!string.IsNullOrEmpty(knotName))
         {
             currentStory.ChoosePathString(knotName);
         }
 
         activeCanvasInstance = Instantiate(dialogueCanvas, parentTransform);
+
+        uiController = activeCanvasInstance.GetComponentInChildren<DialogueUIController>();
+
+        Debug.Log($"uiController : {uiController.gameObject.name}");
+        AdvanceStroy();
     }
 
     public void AdvanceStroy()
@@ -54,7 +61,12 @@ public class DialogueManager : MonoBehaviour
             string nextLine = currentStory.Continue();
             List<String> currentTags = currentStory.currentTags;
 
-            uiController.SetDialogueUI();
+            uiController.SetDialogueUI(nextLine, currentStory.currentChoices, currentTags);
+            Debug.Log("Story Advanced!");
+        }
+        else
+        {
+            EndStory();
         }
     }
 
@@ -65,7 +77,13 @@ public class DialogueManager : MonoBehaviour
     }
     public void EndStory()
     {
-
+        if (activeCanvasInstance != null)
+        {
+            Destroy(activeCanvasInstance);
+            activeCanvasInstance = null;
+            uiController = null;
+        }
+        dialoguePlaying = false;
     }
 
 }
