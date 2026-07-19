@@ -6,12 +6,17 @@ using UnityEngine.SceneManagement;
 
 public class UnLoader : MonoBehaviour
 {
-    public void LoadScene(string sceneName)
+    public void LoadAdditiveScene(string sceneName)
     {
         NodeSceneManager.Instance.SceneLoad(sceneName);
     }
-    public void UnLoadScene()
+    public void UnLoadThisScene()
     {
         NodeSceneManager.Instance.SceneUnLoad(gameObject.scene.name);
+    }
+
+    public void ToAnotherMap(string mapName)
+    {
+
     }
 }

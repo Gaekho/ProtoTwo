@@ -84,6 +84,7 @@ public class DialogueManager : MonoBehaviour
             uiController = null;
         }
         dialoguePlaying = false;
+        Debug.Log("Story End");
     }
 
 }
