@@ -70,3 +70,8 @@
     닥치지 못해?
     ->END
 ->DONE
+
+===0102_start===
+#speaker:물약 상인 #sheet:DialogueSprite01 #mood:Sulphur #layout:right
+노드의 시작입니다. 클릭 시 꺼집니다.
+->DONE

@@ -25,7 +25,10 @@ public class NodeSceneManager : MonoBehaviour
 
     public void SceneLoad(string sceneName)
     {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        if (SceneManager.GetSceneByName(sceneName).name == null)
+        {
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        }
     }
 
     public void SceneUnLoad(string sceneName)

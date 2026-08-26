@@ -7,6 +7,7 @@ using System;
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
+    private DialogueManager() { }
 
     [Header("Dialogue UI Prefab")]
     [SerializeField] private GameObject dialogueCanvas;
