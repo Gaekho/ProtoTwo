@@ -22,8 +22,8 @@ public class RuntimeState : MonoBehaviour
     #endregion
 
     //Current Node
-    string currentNodeId;
-    string currentRegionId;
+    [SerializeField] private string currentNodeId;
+    private string currentRegionId;
 
     //Party State
     private CurrentPartyState currentPartyState;
@@ -36,5 +36,15 @@ public class RuntimeState : MonoBehaviour
     
     // Quest State
     public Dictionary<int, bool> questFlags;
+
+    public void SetCurrentNode(string nodeId)
+    {
+        // Split by region number & Node Id
+        currentNodeId = nodeId;
+    }
+    public string GetCurrentNodeId()
+    {
+        return (currentNodeId);
+    }
 
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// In NodeScene Root
 public class NodeSceneCotroller : MonoBehaviour
 {
     [SerializeField] string currentNode;
@@ -14,9 +15,5 @@ public class NodeSceneCotroller : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
