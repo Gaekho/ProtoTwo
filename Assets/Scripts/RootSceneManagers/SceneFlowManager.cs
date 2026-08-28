@@ -49,4 +49,10 @@ public class SceneFlowManager : MonoBehaviour
         RootUIController.Instance.FadeInTrigger();
         isTransitioning = false;
     }
+
+    public IEnumerator RequestBattleEncounter()
+    {
+        yield return SceneManager.LoadSceneAsync("NewBattleScene", LoadSceneMode.Additive);
+        yield return null;
+    }
 }

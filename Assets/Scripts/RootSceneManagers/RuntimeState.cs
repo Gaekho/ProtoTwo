@@ -1,3 +1,4 @@
+using Proto2.Enums;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,13 +22,14 @@ public class RuntimeState : MonoBehaviour
     }
     #endregion
 
+    
     //Current Node
     [SerializeField] private string currentNodeId;
     [SerializeField] private string currentRegionId;
 
     //Party State
     private CurrentPartyState currentPartyState;
-    public DeckData currentDeck;
+    private DeckData currentDeck;
     //HashSet<int> ownedCardIds;
 
     //Region State <RegionId, value>
@@ -35,8 +37,15 @@ public class RuntimeState : MonoBehaviour
     private Dictionary<string , int> affinity;
     
     // Quest State
-    public Dictionary<int, bool> questFlags;
+    private Dictionary<int, bool> questFlags;
 
+    //Node State
+    private Dictionary<string, NodeDangerLevel> nodeDangerLevels = new ();
+    private Dictionary<string, bool> nodeEncounterActive = new ();
+
+    #region Public Methods
+
+    // Node ID Get & Set
     public void SetCurrentNode(string fullNodeId)
     {
         // Split by region number & Node Id
@@ -62,5 +71,24 @@ public class RuntimeState : MonoBehaviour
         string node = fullNodeId.Substring(2, 2);
         return (region, node);
     }
+    
+    // Node State Get & Set
+    public NodeDangerLevel GetNodeDangerLevel(string nodeId)
+    {
+        return nodeDangerLevels[nodeId];
+    }
+    public void SetNodeDangerousLevel(string nodeId, NodeDangerLevel danger)
+    {
+        nodeDangerLevels[nodeId] = danger;
+    }
+    public bool HasActiveEncounter(string nodeId)
+    {
+        return nodeEncounterActive[nodeId];
+    }
+    public void SetNodeEncounter(string nodeId, bool active)
+    {
+        nodeEncounterActive[nodeId] = active;
+    }
 
+    #endregion
 }

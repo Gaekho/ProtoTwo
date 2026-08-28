@@ -413,6 +413,10 @@ PrefabInstance:
       propertyPath: targetNodeId
       value: 0001
       objectReference: {fileID: 0}
+    - target: {fileID: 6568604562410387310, guid: 4824660e3537bae47a6347d5c8e7e85d, type: 3}
+      propertyPath: m_text
+      value: "\uC804\uD22C\uC2DC\uD5D8"
+      objectReference: {fileID: 0}
     - target: {fileID: 7031892170287398479, guid: 4824660e3537bae47a6347d5c8e7e85d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
