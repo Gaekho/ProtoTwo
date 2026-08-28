@@ -31,15 +31,22 @@ public class SceneFlowManager : MonoBehaviour
         else
         {
             Debug.Log("Node Transition Start");
-            TransitionNode(targetNodeId);
+            StartCoroutine(TransitionNode(targetNodeId));
         }
     }
-    private void TransitionNode(string targetNodeId)
+    private IEnumerator TransitionNode(string targetNodeId)
     {
         isTransitioning = true;
-        SceneManager.UnloadSceneAsync("NodeScene_" + RuntimeState.Instance.GetCurrentNodeId());
-        SceneManager.LoadSceneAsync("NodeScene_" + targetNodeId, LoadSceneMode.Additive);
+        RootUIController.Instance.FadeOutTrigger();
+        Scene regionMap = SceneManager.GetSceneByName("RegionMap");
+        if(regionMap.IsValid() && regionMap.isLoaded)
+        {
+            yield return SceneManager.UnloadSceneAsync(regionMap);
+        }
+        yield return SceneManager.UnloadSceneAsync("NodeScene_" + RuntimeState.Instance.GetCurrentNodeId());
+        yield return SceneManager.LoadSceneAsync("NodeScene_" + targetNodeId, LoadSceneMode.Additive);
         RuntimeState.Instance.SetCurrentNode(targetNodeId);
+        RootUIController.Instance.FadeInTrigger();
         isTransitioning = false;
     }
 }

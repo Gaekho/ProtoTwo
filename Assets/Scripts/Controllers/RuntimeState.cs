@@ -23,28 +23,44 @@ public class RuntimeState : MonoBehaviour
 
     //Current Node
     [SerializeField] private string currentNodeId;
-    private string currentRegionId;
+    [SerializeField] private string currentRegionId;
 
     //Party State
     private CurrentPartyState currentPartyState;
     public DeckData currentDeck;
     //HashSet<int> ownedCardIds;
 
-    //Region State
+    //Region State <RegionId, value>
     private Dictionary<string, int> suspicion;
     private Dictionary<string , int> affinity;
     
     // Quest State
     public Dictionary<int, bool> questFlags;
 
-    public void SetCurrentNode(string nodeId)
+    public void SetCurrentNode(string fullNodeId)
     {
         // Split by region number & Node Id
-        currentNodeId = nodeId;
+        //currentNodeId = nodeId;
+        (string region, string node) = SplitNodeId(fullNodeId);
+        currentRegionId = region;
+        currentNodeId = node;
     }
     public string GetCurrentNodeId()
     {
-        return (currentNodeId);
+        return (currentRegionId + currentNodeId);
+    }
+
+    public string GetCurrentRegionId()
+    {
+        return currentRegionId;
+    }
+
+    private (string region, string node) SplitNodeId(string fullNodeId)
+    {
+        if (fullNodeId.Length != 4) Debug.Log("Node Id should be length 4");
+        string region = fullNodeId.Substring(0, 2);
+        string node = fullNodeId.Substring(2, 2);
+        return (region, node);
     }
 
 }
