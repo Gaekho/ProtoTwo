@@ -18,4 +18,10 @@ namespace Proto2.Enums
         Caution,
         Danger
     }
+
+    public enum AreaType
+    {
+        Village,
+        Dungeon
+    }
 }

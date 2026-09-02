@@ -8,11 +8,13 @@ public class UnLoader : MonoBehaviour
 {
     public void LoadAdditiveScene(string sceneName)
     {
-        NodeSceneManager.Instance.SceneLoad(sceneName);
+        //NodeSceneManager.Instance.SceneLoad(sceneName);
+        StartCoroutine(SceneFlowManager.Instance.RequestSceneOverload(sceneName));
     }
     public void UnLoadThisScene()
     {
-        NodeSceneManager.Instance.SceneUnLoad(gameObject.scene.name);
+        //NodeSceneManager.Instance.SceneUnLoad(gameObject.scene.name);
+        SceneManager.UnloadSceneAsync(gameObject.scene.name);
     }
 
     public void ToAnotherMap(string mapName)

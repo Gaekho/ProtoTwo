@@ -23,7 +23,7 @@ public class SceneFlowManager : MonoBehaviour
     #endregion
 
     public bool isTransitioning;
-    
+
     // Only Way to Transition
     public void RequestNodeTransition(string targetNodeId)
     {
@@ -37,22 +37,28 @@ public class SceneFlowManager : MonoBehaviour
     private IEnumerator TransitionNode(string targetNodeId)
     {
         isTransitioning = true;
-        RootUIController.Instance.FadeOutTrigger();
+        RootUiManager.Instance.FadeOutTrigger();
         Scene regionMap = SceneManager.GetSceneByName("RegionMap");
-        if(regionMap.IsValid() && regionMap.isLoaded)
+        if (regionMap.IsValid() && regionMap.isLoaded)
         {
             yield return SceneManager.UnloadSceneAsync(regionMap);
         }
         yield return SceneManager.UnloadSceneAsync("NodeScene_" + RuntimeState.Instance.GetCurrentNodeId());
         yield return SceneManager.LoadSceneAsync("NodeScene_" + targetNodeId, LoadSceneMode.Additive);
         RuntimeState.Instance.SetCurrentNode(targetNodeId);
-        RootUIController.Instance.FadeInTrigger();
+        RootUiManager.Instance.FadeInTrigger();
         isTransitioning = false;
     }
 
     public IEnumerator RequestBattleEncounter()
     {
         yield return SceneManager.LoadSceneAsync("NewBattleScene", LoadSceneMode.Additive);
+        yield return null;
+    }
+
+    public IEnumerator RequestSceneOverload(string targetScene)
+    {
+        yield return SceneManager.LoadSceneAsync(targetScene);
         yield return null;
     }
 }

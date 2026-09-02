@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExploreBaseController : MonoBehaviour
+public class ExploreBaseDirector : MonoBehaviour
 {
     private void Start()
     {

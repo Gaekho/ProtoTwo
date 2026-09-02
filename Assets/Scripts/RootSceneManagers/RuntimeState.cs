@@ -24,11 +24,12 @@ public class RuntimeState : MonoBehaviour
 
     
     //Current Node
-    [SerializeField] private string currentNodeId;
-    [SerializeField] private string currentRegionId;
+    [SerializeField] private string currentRegionId;    // Length 2 (Head)
+    [SerializeField] private string currentLocalId;     // Length 2 (Rear)
+    [SerializeField] private AreaType currentAreaType;  // Village || Dungeon
 
     //Party State
-    private CurrentPartyState currentPartyState;
+    private PartyState currentPartyState;
     private DeckData currentDeck;
     //HashSet<int> ownedCardIds;
 
@@ -40,8 +41,7 @@ public class RuntimeState : MonoBehaviour
     private Dictionary<int, bool> questFlags;
 
     //Node State
-    private Dictionary<string, NodeDangerLevel> nodeDangerLevels = new ();
-    private Dictionary<string, bool> nodeEncounterActive = new ();
+    private Dictionary<string, NodeState> nodeStates = new ();
 
     #region Public Methods
 
@@ -49,45 +49,50 @@ public class RuntimeState : MonoBehaviour
     public void SetCurrentNode(string fullNodeId)
     {
         // Split by region number & Node Id
-        //currentNodeId = nodeId;
-        (string region, string node) = SplitNodeId(fullNodeId);
+        (string region, string local) = SplitNodeId(fullNodeId);
         currentRegionId = region;
-        currentNodeId = node;
+        currentLocalId = local;
     }
-    public string GetCurrentNodeId()
-    {
-        return (currentRegionId + currentNodeId);
-    }
+    public string GetCurrentNodeId() => currentRegionId + currentLocalId;
 
-    public string GetCurrentRegionId()
-    {
-        return currentRegionId;
-    }
+    public string GetCurrentRegionId() => currentRegionId;
+    public string GetCurrentLocalId() => currentLocalId;
 
-    private (string region, string node) SplitNodeId(string fullNodeId)
+    private (string region, string local) SplitNodeId(string fullNodeId)
     {
         if (fullNodeId.Length != 4) Debug.Log("Node Id should be length 4");
         string region = fullNodeId.Substring(0, 2);
-        string node = fullNodeId.Substring(2, 2);
-        return (region, node);
+        string local = fullNodeId.Substring(2, 2);
+        return (region, local);
     }
     
     // Node State Get & Set
-    public NodeDangerLevel GetNodeDangerLevel(string nodeId)
+    //public NodeDangerLevel GetNodeDangerLevel(string nodeId)
+    //{
+    //    return nodeDangerLevels[nodeId];
+    //}
+    //public void SetNodeDangerousLevel(string nodeId, NodeDangerLevel danger)
+    //{
+    //    nodeDangerLevels[nodeId] = danger;
+    //}
+    //public bool HasActiveEncounter(string nodeId)
+    //{
+    //    return nodeEncounterActive[nodeId];
+    //}
+    //public void SetNodeEncounter(string nodeId, bool active)
+    //{
+    //    nodeEncounterActive[nodeId] = active;
+    //}
+
+    public NodeState GetNodeState(string nodeId)
     {
-        return nodeDangerLevels[nodeId];
-    }
-    public void SetNodeDangerousLevel(string nodeId, NodeDangerLevel danger)
-    {
-        nodeDangerLevels[nodeId] = danger;
-    }
-    public bool HasActiveEncounter(string nodeId)
-    {
-        return nodeEncounterActive[nodeId];
-    }
-    public void SetNodeEncounter(string nodeId, bool active)
-    {
-        nodeEncounterActive[nodeId] = active;
+        if(!nodeStates.TryGetValue(nodeId, out var state))
+        {
+            state = new NodeState();
+            nodeStates[nodeId] = state;
+        }
+
+        return state;
     }
 
     #endregion

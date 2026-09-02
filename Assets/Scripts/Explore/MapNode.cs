@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum NodeState
+public enum NodeAccessable
 {
     None = 0,
     CurrentNode,
@@ -15,6 +15,7 @@ public class MapNode : MonoBehaviour
 {
     [SerializeField] private string targetNodeId;
     [SerializeField] private NodeState state;
+    [SerializeField] private NodeAccessable accessable;
     [SerializeField] private GameObject popUp;
     [SerializeField] private Button goButton;
     // Update Pop-up

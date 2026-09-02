@@ -3,24 +3,8 @@ using System.Collections.Generic;
 using UnityEditor.Search;
 using UnityEngine;
 
-public class CurrentPartyState : MonoBehaviour
+public class PartyState
 {
-    #region Singleton
-    private CurrentPartyState() { }
-    public static CurrentPartyState Instance;
-    private void Awake()
-    {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-    #endregion
-
     private DeckData currentDeck;
     private readonly CharacterState sitaState;
     private CharacterState rigel;

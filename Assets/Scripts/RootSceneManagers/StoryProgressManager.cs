@@ -23,7 +23,7 @@ public class StoryProgressManager : MonoBehaviour
 
     public void SetValue(string key, int value) => currentValue[key] = value;
 
-    public bool ShouldTrigger(string key)
+    public bool ShouldStoryTrigger(string key)
     {
         int current = currentValue.TryGetValue(key, out var c) ? c : 0;
         int lastShown = lastShownValue.TryGetValue(key, out var i) ? 1 : -1;

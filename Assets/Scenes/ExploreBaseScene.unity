@@ -3670,7 +3670,7 @@ GameObject:
   - component: {fileID: 738220755}
   - component: {fileID: 738220754}
   m_Layer: 0
-  m_Name: Explore Base Controller
+  m_Name: Explore Base Director
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

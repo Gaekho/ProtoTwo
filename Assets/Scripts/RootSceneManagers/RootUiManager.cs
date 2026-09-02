@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RootUIController : MonoBehaviour
+public class RootUiManager : MonoBehaviour
 {
     #region Singleton
-    public static RootUIController Instance { get; private set; } 
-    private RootUIController() { }
+    public static RootUiManager Instance { get; private set; } 
+    private RootUiManager() { }
     private void Awake()
     {
         if (Instance == null)

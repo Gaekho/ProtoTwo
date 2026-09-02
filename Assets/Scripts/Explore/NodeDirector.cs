@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // In NodeScene Root
-public class NodeSceneCotroller : MonoBehaviour
+public class NodeDirector : MonoBehaviour
 {
-    [SerializeField] private string currentNode;
+    [SerializeField] private string currentNodeId;
     // Start is called before the first frame update
     void Start()
     {
-        currentNode = RuntimeState.Instance.GetCurrentNodeId();
+        currentNodeId = RuntimeState.Instance.GetCurrentNodeId();
 
+        // Set Node Visited
+        RuntimeState.Instance.GetNodeState(currentNodeId).VisitNode();
+
+        var nodeState = RuntimeState.Instance.GetNodeState(currentNodeId);
         //Check Battle Encounter
-        if(RuntimeState.Instance.HasActiveEncounter(currentNode))
+        if(nodeState.HasEncounter)
         {
             Debug.Log("Battle Scene Start");
             //Enabled Interaction Triggers
@@ -24,7 +28,7 @@ public class NodeSceneCotroller : MonoBehaviour
         }
 
         //Update Suspicious
-        switch (RuntimeState.Instance.GetNodeDangerLevel(currentNode))
+        switch (nodeState.DangerLevel)
         {
             case Proto2.Enums.NodeDangerLevel.Safe: 
                
@@ -40,7 +44,7 @@ public class NodeSceneCotroller : MonoBehaviour
         }
 
         //Check Story Trigger
-        if (StoryProgressManager.Instance.ShouldTrigger(currentNode))
+        if (StoryProgressManager.Instance.ShouldStoryTrigger(currentNodeId))
         {
             Debug.Log("Should Story Trigger");
         }
