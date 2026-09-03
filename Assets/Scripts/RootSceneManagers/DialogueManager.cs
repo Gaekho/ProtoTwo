@@ -52,10 +52,10 @@ public class DialogueManager : MonoBehaviour
         uiController = activeCanvasInstance.GetComponentInChildren<DialogueUIController>();
 
         Debug.Log($"uiController : {uiController.gameObject.name}");
-        AdvanceStroy();
+        AdvanceStory();
     }
 
-    public void AdvanceStroy()
+    public void AdvanceStory()
     {
         if (currentStory.canContinue)
         {
@@ -74,7 +74,7 @@ public class DialogueManager : MonoBehaviour
     public void SelectChoice(int choiceIndex)
     {
         currentStory.ChooseChoiceIndex(choiceIndex);
-        AdvanceStroy();
+        AdvanceStory();
     }
     public void EndStory()
     {

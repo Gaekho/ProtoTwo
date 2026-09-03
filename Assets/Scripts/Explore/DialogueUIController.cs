@@ -26,7 +26,7 @@ public class DialogueUIController : MonoBehaviour
             }
 
             Debug.Log("Clicked & Advance");
-            DialogueManager.Instance.AdvanceStroy();
+            DialogueManager.Instance.AdvanceStory();
         }
     }
     public void SetDialogueUI(string text, List<Ink.Runtime.Choice> choices, List<string> tags)
