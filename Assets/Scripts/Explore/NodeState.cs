@@ -9,7 +9,7 @@ public class NodeState
     public NodeDangerLevel DangerLevel {  get; private set; }
     public bool HasEncounter {  get; private set; }
 
-    private Dictionary<string, int> interactionCounts;
+    private Dictionary<string, int> interactionCounts;      // <Interaction ID(or Name), visited Count>
 
     // Basic Creator
     public NodeState()

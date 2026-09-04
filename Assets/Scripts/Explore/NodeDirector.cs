@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 // In NodeScene Root
@@ -10,6 +11,7 @@ public class NodeDirector : MonoBehaviour
     void Start()
     {
         currentNodeId = RuntimeState.Instance.GetCurrentNodeId();
+        Debug.Log($"{currentNodeId} / Visited={RuntimeState.Instance.GetNodeState(currentNodeId).Visited}");
 
         // Set Node Visited
         RuntimeState.Instance.GetNodeState(currentNodeId).VisitNode();
@@ -48,6 +50,8 @@ public class NodeDirector : MonoBehaviour
         {
             Debug.Log("Should Story Trigger");
         }
+
+        Debug.Log($"{currentNodeId} / Visited={nodeState.Visited} / Danger={nodeState.DangerLevel} / Encounter={nodeState.HasEncounter}");
     }
 
     

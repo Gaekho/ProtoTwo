@@ -152,8 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c1a9557104bdc144aa02f2b6b7b4a64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentRegionId: 
-  currentLocalId: 
+  currentRegionId: 00
+  currentLocalId: 00
   currentAreaType: 0
 --- !u!4 &49191623
 Transform:
