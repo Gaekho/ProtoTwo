@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class InkPathProvider
 {
-    public static string GetStoryKnot(int storyEventId) => $"story_{storyEventId : D3}";
+    public static string GetStoryKnot(int storyEventId) => $"story_{storyEventId:D3}";
 
     public static string GetNodeInteractionKnot(string nodeId, string interactionKey) => $"node_{nodeId}_{interactionKey}";
 

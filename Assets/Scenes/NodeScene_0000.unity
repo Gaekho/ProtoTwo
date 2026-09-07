@@ -353,6 +353,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentNodeId: 
+  nodeStoryEvents: 01000000
+  nodeInteractionInk: {fileID: 4900000, guid: 3ad0918c8ceb24647814c991208b9d18, type: 3}
 --- !u!1 &581432710
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,7 +828,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inkJson: {fileID: 4900000, guid: fec9fb4bb6e99f2448ae1942c3e2427a, type: 3}
-  startKnotName: ASH_02
+  interactionKey: tester
   sceneRoot: {fileID: 778859324}
 --- !u!1 &1287277994
 GameObject:
@@ -1229,7 +1231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inkJson: {fileID: 4900000, guid: fec9fb4bb6e99f2448ae1942c3e2427a, type: 3}
-  startKnotName: ASH_01
+  interactionKey: alchemy
   sceneRoot: {fileID: 778859324}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -18,21 +18,36 @@ public class StoryProgressManager : MonoBehaviour
         }
     }
 
-    private Dictionary<string, int> currentValue = new();
-    private Dictionary<string, int> lastShownValue = new();
+    //private Dictionary<string, int> currentValue = new();
+    //private Dictionary<string, int> lastShownValue = new();
+    //public void SetValue(string key, int value) => currentValue[key] = value;
 
-    public void SetValue(string key, int value) => currentValue[key] = value;
+    //public bool ShouldStoryTrigger(string key)
+    //{
+    //    int current = currentValue.TryGetValue(key, out var c) ? c : 0;
+    //    int lastShown = lastShownValue.TryGetValue(key, out var i) ? 1 : -1;
+    //    return current != lastShown;
+    //}
 
-    public bool ShouldStoryTrigger(string key)
+    //public void MarkShown(string key)
+    //{
+    //    lastShownValue[key] = currentValue.TryGetValue(key, out var c) ? c : 0;
+    //}
+
+    public bool ShouldStoryTrigger(int storyEventId)
     {
-        int current = currentValue.TryGetValue(key, out var c) ? c : 0;
-        int lastShown = lastShownValue.TryGetValue(key, out var i) ? 1 : -1;
-        return current != lastShown;
+        return storyEventId == RuntimeState.Instance.GetCurrentStoryStep() + 1;
     }
 
-    public void MarkShown(string key)
+    public bool TryTriggerStoryEvent(int storyEventId, out string startPath)
     {
-        lastShownValue[key] = currentValue.TryGetValue(key, out var c) ? c : 0;
+        if(ShouldStoryTrigger(storyEventId) == false)
+        {
+            startPath = null;
+            return false;
+        }
+        RuntimeState.Instance.SetCurrentStoryStep(storyEventId);
+        startPath = InkPathProvider.GetStoryKnot(storyEventId);
+        return true;
     }
-
 }

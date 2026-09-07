@@ -38,7 +38,7 @@ public class DialogueUIController : MonoBehaviour
         if (choices.Count > 0)
         {
             hasChoice = true;
-            Debug.Log($"count of choice : {choices.Count}");
+            //Debug.Log($"count of choice : {choices.Count}");
             SetChoice(choices);
         }
     }
@@ -64,12 +64,6 @@ public class DialogueUIController : MonoBehaviour
         else { dialogueText.text = string.Empty; }
     }
 
-    public void SetImage(string spriteName)
-    {
-        //Sprite[] sprites = Resources.LoadAll<Sprite>("Assets/Resources/DialogueSprite/{characterName}");   // 캐릭터 이름으로 시트 찾기
-        //Sprite specificSprite = System.Array.Find(sprites, x => x.name == mood);                           // 캐릭터 기분으로 상태 찾기
-        leftImage.sprite = Resources.Load<Sprite>($"Assets/Resources/DialogueSprite/{spriteName}");
-    }
 
     public void SetChoice(List<Ink.Runtime.Choice> choices)
     {
@@ -115,7 +109,7 @@ public class DialogueUIController : MonoBehaviour
 
             string key = splitTag[0].Trim().ToLower();
             string value = splitTag[1].Trim();
-            Debug.Log($"{key} : {value}");
+            //Debug.Log($"{key} : {value}");
 
             switch (key)
             {
@@ -136,10 +130,9 @@ public class DialogueUIController : MonoBehaviour
         SetSpeaker(characterName);
 
         //Sprite specialize
-        //Sprite characterSprite = Resources.Load<Sprite>("");
         Sprite[] sprites = Resources.LoadAll<Sprite>($"DialogueSprite/{characterSheet}");          // 캐릭터 이름으로 시트 찾기
 
-        Debug.Log("Length of Sheet :" + sprites.Length);
+        //Debug.Log("Length of Sheet :" + sprites.Length);
         Sprite specificSprite = System.Array.Find(sprites, x => x.name == characterMood);                           // 캐릭터 기분으로 상태 찾기
 
         //Debug.Log($"{specificSprite.name}");

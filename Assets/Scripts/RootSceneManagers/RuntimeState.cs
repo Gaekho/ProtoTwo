@@ -29,19 +29,22 @@ public class RuntimeState : MonoBehaviour
     [SerializeField] private AreaType currentAreaType;  // Village || Dungeon
 
     //Party State
-    private PartyState currentPartyState;
-    private DeckData currentDeck;
+    [SerializeField] private PartyState currentPartyState;
+    [SerializeField] private DeckData currentDeck;
     //HashSet<int> ownedCardIds;
 
     //Region State <RegionId, value>
-    private Dictionary<string, int> suspicion;
-    private Dictionary<string , int> affinity;
-    
+    [SerializeField] private Dictionary<string, int> suspicion;
+    [SerializeField] private Dictionary<string , int> affinity;
+
+    //Story State
+    [SerializeField] private int currentStoryStep;
+
     // Quest State
-    private Dictionary<int, bool> questFlags;
+    [SerializeField] private Dictionary<int, bool> questFlags;
 
     //Node State
-    private Dictionary<string, NodeState> nodeStates = new ();
+    [SerializeField] private Dictionary<string, NodeState> nodeStates = new ();
 
     #region Public Methods
 
@@ -95,5 +98,8 @@ public class RuntimeState : MonoBehaviour
         return state;
     }
 
+    // Story Step Get & Set
+    public int GetCurrentStoryStep() => currentStoryStep;
+    public void SetCurrentStoryStep(int step) => currentStoryStep = step;
     #endregion
 }

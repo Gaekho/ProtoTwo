@@ -155,6 +155,8 @@ MonoBehaviour:
   currentRegionId: 00
   currentLocalId: 00
   currentAreaType: 0
+  currentDeck: {fileID: 0}
+  currentStoryStep: 1
 --- !u!4 &49191623
 Transform:
   m_ObjectHideFlags: 0
@@ -619,6 +621,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueCanvas: {fileID: 4142668375188442903, guid: f4f298bb280aa2e488bd6d7b31ce2ef3, type: 3}
+--- !u!1 &1735657499
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1735657501}
+  - component: {fileID: 1735657500}
+  m_Layer: 0
+  m_Name: InkLibraryManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1735657500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735657499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b57839160c12cc49bfe70e85880f583, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storyInk: {fileID: 4900000, guid: 8f396c29c2aa12f4d8792e16520635f9, type: 3}
+  questInk: {fileID: 4900000, guid: 16612855453944446a019a13dbe51abd, type: 3}
+--- !u!4 &1735657501
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735657499}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1791198817
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,3 +800,4 @@ SceneRoots:
   - {fileID: 379296200}
   - {fileID: 49191623}
   - {fileID: 2020603897}
+  - {fileID: 1735657501}

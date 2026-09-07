@@ -170,6 +170,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentNodeId: 
+  nodeStoryEvents: 02000000
+  nodeInteractionInk: {fileID: 0}
 --- !u!1 &638493669
 GameObject:
   m_ObjectHideFlags: 0

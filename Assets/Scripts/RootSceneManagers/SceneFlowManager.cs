@@ -65,9 +65,11 @@ public class SceneFlowManager : MonoBehaviour
         RuntimeState.Instance.SetCurrentNode(targetNodeId);
 
         bool fadeInDone = false;
-        RootUiManager.Instance.OnFadeInDone += () => fadeInDone = true;
+        void HandleFadeInDone() => fadeInDone = true;
+        RootUiManager.Instance.OnFadeInDone += HandleFadeInDone;
         RootUiManager.Instance.FadeInTrigger();
         yield return new WaitUntil(() => fadeInDone);
+        RootUiManager.Instance.OnFadeInDone -= HandleFadeInDone;
 
         Debug.Log("Transition Finished");
         isTransitioning = false;
