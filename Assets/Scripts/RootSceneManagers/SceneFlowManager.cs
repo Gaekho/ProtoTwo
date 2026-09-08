@@ -77,7 +77,14 @@ public class SceneFlowManager : MonoBehaviour
 
     public IEnumerator RequestBattleEncounter()
     {
+        yield return SceneManager.UnloadSceneAsync("ExploreBaseScene");
         yield return SceneManager.LoadSceneAsync("NewBattleScene", LoadSceneMode.Additive);
+        yield return null;
+    }
+    public IEnumerator RequestBattleEnd()
+    {
+        yield return SceneManager.UnloadSceneAsync("NewBattleScene");
+        yield return SceneManager.LoadSceneAsync("ExploreBaseScene", LoadSceneMode.Additive);
         yield return null;
     }
 
