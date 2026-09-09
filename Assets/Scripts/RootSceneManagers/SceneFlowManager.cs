@@ -49,10 +49,12 @@ public class SceneFlowManager : MonoBehaviour
 
         bool fadeOutDone = false;
         void HandleFadeOutDone() => fadeOutDone = true;
-        RootUiManager.Instance.OnFadeOutDone += HandleFadeOutDone; 
+        //RootUiManager.Instance.OnFadeOutDone += HandleFadeOutDone;
+        GameEvents.OnFadeOutDone += HandleFadeOutDone;
         RootUiManager.Instance.FadeOutTrigger();
         yield return new WaitUntil(() => fadeOutDone);
-        RootUiManager.Instance.OnFadeOutDone -= HandleFadeOutDone;
+        //RootUiManager.Instance.OnFadeOutDone -= HandleFadeOutDone;
+        GameEvents.OnFadeOutDone -= HandleFadeOutDone;
 
         Scene regionMap = SceneManager.GetSceneByName("RegionMap");
         if (regionMap.IsValid() && regionMap.isLoaded)
@@ -66,10 +68,12 @@ public class SceneFlowManager : MonoBehaviour
 
         bool fadeInDone = false;
         void HandleFadeInDone() => fadeInDone = true;
-        RootUiManager.Instance.OnFadeInDone += HandleFadeInDone;
+        //RootUiManager.Instance.OnFadeInDone += HandleFadeInDone;
+        GameEvents.OnFadeInDone += HandleFadeInDone;
         RootUiManager.Instance.FadeInTrigger();
         yield return new WaitUntil(() => fadeInDone);
-        RootUiManager.Instance.OnFadeInDone -= HandleFadeInDone;
+        //RootUiManager.Instance.OnFadeInDone -= HandleFadeInDone;
+        GameEvents.OnFadeInDone -= HandleFadeInDone;
 
         Debug.Log("Transition Finished");
         isTransitioning = false;
@@ -81,10 +85,18 @@ public class SceneFlowManager : MonoBehaviour
         yield return SceneManager.LoadSceneAsync("NewBattleScene", LoadSceneMode.Additive);
         yield return null;
     }
-    public IEnumerator RequestBattleEnd()
+    public void RequestBattleEnd()
+    {
+        StartCoroutine(EndBattleRoutine());
+    }
+
+    public IEnumerator EndBattleRoutine()
     {
         yield return SceneManager.UnloadSceneAsync("NewBattleScene");
         yield return SceneManager.LoadSceneAsync("ExploreBaseScene", LoadSceneMode.Additive);
+
+        Debug.Log("Before BattleEnd Event");
+        GameEvents.RaiseBattleEnd();
         yield return null;
     }
 

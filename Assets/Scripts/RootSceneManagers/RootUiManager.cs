@@ -23,8 +23,8 @@ public class RootUiManager : MonoBehaviour
     public event Action OnFadeInDone;
     public event Action OnFadeOutDone;
 
-    public void FadeInDone() => OnFadeInDone?.Invoke();
-    public void FadeOutDone() => OnFadeOutDone?.Invoke();
+    public void FadeInDone() => GameEvents.RaiseFadeInDone();
+    public void FadeOutDone() => GameEvents.RaiseFadeOutDone();
     public void TransitionAnimTrigger()
     {
         rootAnimator.SetTrigger("Transition");
