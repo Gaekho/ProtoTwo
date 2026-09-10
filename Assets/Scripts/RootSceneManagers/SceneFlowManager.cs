@@ -64,7 +64,7 @@ public class SceneFlowManager : MonoBehaviour
 
         yield return SceneManager.UnloadSceneAsync("NodeScene_" + currentNodeId);
         yield return SceneManager.LoadSceneAsync("NodeScene_" + targetNodeId, LoadSceneMode.Additive);
-        RuntimeState.Instance.SetCurrentNode(targetNodeId);
+        RuntimeState.Instance.SetCurrentNodeId(targetNodeId);
 
         bool fadeInDone = false;
         void HandleFadeInDone() => fadeInDone = true;
@@ -79,7 +79,12 @@ public class SceneFlowManager : MonoBehaviour
         isTransitioning = false;
     }
 
-    public IEnumerator RequestBattleEncounter()
+    public void RequestBattleEncounter()
+    {
+        StartCoroutine(BattleEncounterTransition());
+    }
+
+    public IEnumerator BattleEncounterTransition()
     {
         yield return SceneManager.UnloadSceneAsync("ExploreBaseScene");
         yield return SceneManager.LoadSceneAsync("NewBattleScene", LoadSceneMode.Additive);
@@ -87,16 +92,30 @@ public class SceneFlowManager : MonoBehaviour
     }
     public void RequestBattleEnd()
     {
-        StartCoroutine(EndBattleRoutine());
+        StartCoroutine(BattleEndTransition());
     }
 
-    public IEnumerator EndBattleRoutine()
+    public IEnumerator BattleEndTransition()
     {
+        bool fadeOutDone = false;
+        void HandleFadeOutDone() => fadeOutDone = true;
+        GameEvents.OnFadeOutDone += HandleFadeOutDone;
+        RootUiManager.Instance.FadeOutTrigger();
+        yield return new WaitUntil(() => fadeOutDone);
+        GameEvents.OnFadeOutDone -= HandleFadeOutDone;
+
         yield return SceneManager.UnloadSceneAsync("NewBattleScene");
         yield return SceneManager.LoadSceneAsync("ExploreBaseScene", LoadSceneMode.Additive);
 
         Debug.Log("Before BattleEnd Event");
         GameEvents.RaiseBattleEnd();
+
+        bool fadeInDone = false;
+        void HandleFadeInDone() => fadeInDone = true;
+        GameEvents.OnFadeInDone += HandleFadeInDone;
+        RootUiManager.Instance.FadeInTrigger();
+        yield return new WaitUntil(() => fadeInDone);
+        GameEvents.OnFadeInDone -= HandleFadeInDone;
         yield return null;
     }
 

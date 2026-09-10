@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using Ink.Parsed;
 public class DialogueUIController : MonoBehaviour
 {
+    #region Field
     [SerializeField] private TMP_Text speakerText;
     [SerializeField] private TMP_Text dialogueText;
     [SerializeField] private Image leftImage;
@@ -15,10 +15,14 @@ public class DialogueUIController : MonoBehaviour
     [SerializeField] private Button choiceButton;
     [SerializeField] private Transform choiceParent;
 
+    private GameObject ownCanvasInstance;
+    private System.Action onDialogueCompleteCallback;
+    private bool isPlaying;
     private bool hasChoice = false;
+    #endregion
     private void Update()
     {
-        if (DialogueManager.Instance.DialoguePlaying() && Input.GetMouseButtonDown(0))
+        if (isPlaying && Input.GetMouseButtonDown(0))
         {
             if (hasChoice)
             {
@@ -26,9 +30,30 @@ public class DialogueUIController : MonoBehaviour
             }
 
             Debug.Log("Clicked & Advance");
-            DialogueManager.Instance.AdvanceStory();
+            Advance();
         }
     }
+
+    public void Initialize(GameObject canvasInstance, System.Action onComplete)
+    {
+        ownCanvasInstance = canvasInstance;
+        onDialogueCompleteCallback = onComplete;
+        isPlaying = true;
+        Advance();
+    }
+
+    private void Advance()
+    {
+        if(DialogueManager.Instance.AdvanceStory(out string nextLine, out var choices, out var tags)) 
+        {
+            SetDialogueUI(nextLine, choices, tags);
+        }
+        else
+        {
+            EndStory();
+        }
+    }
+
     public void SetDialogueUI(string text, List<Ink.Runtime.Choice> choices, List<string> tags)
     {
         RemoveChoice();
@@ -64,7 +89,6 @@ public class DialogueUIController : MonoBehaviour
         else { dialogueText.text = string.Empty; }
     }
 
-
     public void SetChoice(List<Ink.Runtime.Choice> choices)
     {
         for(int i = 0; i < choices.Count; i++)
@@ -83,6 +107,7 @@ public class DialogueUIController : MonoBehaviour
     {
         DialogueManager.Instance.SelectChoice(choiceIndex);
         hasChoice = false;
+        Advance();
     }
 
     private void RemoveChoice()
@@ -185,6 +210,18 @@ public class DialogueUIController : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void EndStory()
+    {
+        isPlaying = false;
+        onDialogueCompleteCallback?.Invoke();
+
+        if(ownCanvasInstance != null)
+        {
+            Destroy(ownCanvasInstance);
+        }
+        Debug.Log("Story End");
     }
 }
 

@@ -1,8 +1,5 @@
-using Ink.Parsed;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 // In NodeScene Root
@@ -18,24 +15,15 @@ public class NodeDirector : MonoBehaviour
     private void Start()
     {
         currentNodeId = RuntimeState.Instance.GetCurrentNodeId();
+        
+        var nodeState = RuntimeState.Instance.GetNodeState(currentNodeId);
+
         ownCanvas = GetComponentInChildren<Canvas>();
-        Debug.Log($"{currentNodeId} / Visited={RuntimeState.Instance.GetNodeState(currentNodeId).Visited}");
+        Debug.Log($"{currentNodeId} / Visited={nodeState.Visited}");
 
         // Set Node Visited
-        RuntimeState.Instance.GetNodeState(currentNodeId).VisitNode();
+        nodeState.VisitNode();
 
-        var nodeState = RuntimeState.Instance.GetNodeState(currentNodeId);
-        ////Check Battle Encounter
-        //if(nodeState.HasEncounter)
-        //{
-        //    Debug.Log("Battle Scene Start");
-        //    //Enabled Interaction Triggers
-        //    gameObject.GetComponentInChildren<Canvas>().gameObject.SetActive(false);
-        //    StartCoroutine(SceneFlowManager.Instance.RequestBattleEncounter());
-            
-        //    //Skip other lines
-        //    return;
-        //}
 
         //Update Suspicious
         switch (nodeState.DangerLevel)
@@ -60,12 +48,12 @@ public class NodeDirector : MonoBehaviour
         var nodeState = RuntimeState.Instance.GetNodeState(currentNodeId);
 
         // Check Battle Encounter
-        if (nodeState.HasEncounter) 
+        if (nodeState.Encounter) 
         { 
             Debug.Log("Battle Scene Start");
             //Enabled Interaction Triggers
             ownCanvas.gameObject.SetActive(false);
-            StartCoroutine(SceneFlowManager.Instance.RequestBattleEncounter());
+            SceneFlowManager.Instance.RequestBattleEncounter();
 
             GameEvents.OnBattleEnd += HandleBattleEnd;
             //Skip other lines
@@ -94,6 +82,14 @@ public class NodeDirector : MonoBehaviour
         GameEvents.OnBattleEnd -= HandleBattleEnd;
         
         CheckEntryCondition();
+    }
+
+    public void InteractionProcess(string interactionKey)
+    {
+        var nodeState = RuntimeState.Instance.GetNodeState(currentNodeId);
+        nodeState.IncreaseInteraction(interactionKey);
+
+        StartDialogue(InkPathProvider.GetNodeInteractionKnot(currentNodeId, interactionKey));
     }
     public void StartDialogue(string path)
     {

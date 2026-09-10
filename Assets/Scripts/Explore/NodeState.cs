@@ -7,7 +7,8 @@ public class NodeState
 {
     public bool Visited {  get; private set; }
     public NodeDangerLevel DangerLevel {  get; private set; }
-    public bool HasEncounter {  get; private set; }
+    public bool Encounter {  get; private set; }
+    public NodeAccessable Accessable { get; private set; }
 
     private Dictionary<string, int> interactionCounts;      // <Interaction ID(or Name), visited Count>
 
@@ -16,7 +17,7 @@ public class NodeState
     {
         Visited = false;
         DangerLevel = NodeDangerLevel.Safe;
-        HasEncounter = false;
+        Encounter = false;
         interactionCounts = new();
     }
 
@@ -32,7 +33,7 @@ public class NodeState
 
     public void SetEncounter(bool encounter)
     {
-        HasEncounter = encounter;
+        Encounter = encounter;
     }
 
     public int GetInteractionCount(string interactionKey)

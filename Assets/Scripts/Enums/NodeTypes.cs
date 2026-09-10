@@ -19,6 +19,14 @@ namespace Proto2.Enums
         Danger
     }
 
+    public enum NodeAccessable
+    {
+        None = 0,
+        CurrentNode,
+        Accessable,
+        Disable
+    }
+
     public enum AreaType
     {
         Village,

@@ -3,21 +3,16 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
+using Proto2.Enums;
 
-public enum NodeAccessable
-{
-    None = 0,
-    CurrentNode,
-    Accessable,
-    Disable
-}
 public class MapNode : MonoBehaviour
 {
+    #region Field
     [SerializeField] private string targetNodeId;
-    [SerializeField] private NodeState state;
-    [SerializeField] private NodeAccessable accessable;
     [SerializeField] private GameObject popUp;
     [SerializeField] private Button goButton;
+    #endregion
+    
     // Update Pop-up
     public void UpdatePopUp()
     {

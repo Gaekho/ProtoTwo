@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
+
 using UnityEngine;
 
 public class RootUiManager : MonoBehaviour
@@ -20,8 +20,6 @@ public class RootUiManager : MonoBehaviour
     #endregion
 
     [SerializeField] private Animator rootAnimator;
-    public event Action OnFadeInDone;
-    public event Action OnFadeOutDone;
 
     public void FadeInDone() => GameEvents.RaiseFadeInDone();
     public void FadeOutDone() => GameEvents.RaiseFadeOutDone();
@@ -39,8 +37,4 @@ public class RootUiManager : MonoBehaviour
         rootAnimator.SetTrigger("FadeIn");
     }
 
-    public void GetCurrentState()
-    {
-        rootAnimator.GetCurrentAnimatorClipInfo(0);
-    }
 }

@@ -46,10 +46,11 @@ public class RuntimeState : MonoBehaviour
     //Node State
     [SerializeField] private Dictionary<string, NodeState> nodeStates = new ();
 
+
     #region Public Methods
 
     // Node ID Get & Set
-    public void SetCurrentNode(string fullNodeId)
+    public void SetCurrentNodeId(string fullNodeId)
     {
         // Split by region number & Node Id
         (string region, string local) = SplitNodeId(fullNodeId);
@@ -69,24 +70,6 @@ public class RuntimeState : MonoBehaviour
         return (region, local);
     }
     
-    // Node State Get & Set
-    //public NodeDangerLevel GetNodeDangerLevel(string nodeId)
-    //{
-    //    return nodeDangerLevels[nodeId];
-    //}
-    //public void SetNodeDangerousLevel(string nodeId, NodeDangerLevel danger)
-    //{
-    //    nodeDangerLevels[nodeId] = danger;
-    //}
-    //public bool HasActiveEncounter(string nodeId)
-    //{
-    //    return nodeEncounterActive[nodeId];
-    //}
-    //public void SetNodeEncounter(string nodeId, bool active)
-    //{
-    //    nodeEncounterActive[nodeId] = active;
-    //}
-
     public NodeState GetNodeState(string nodeId)
     {
         if(!nodeStates.TryGetValue(nodeId, out var state))

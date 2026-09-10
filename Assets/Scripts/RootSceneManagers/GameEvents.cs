@@ -10,7 +10,6 @@ public static class GameEvents
     public static event Action OnFadeInDone;
 
     // Scene Flow
-    public static event Action OnSceneFlowEnd;
 
     // Battle
     public static event Action OnBattleEnd;

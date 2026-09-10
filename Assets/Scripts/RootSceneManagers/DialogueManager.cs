@@ -6,19 +6,9 @@ using System;
 
 public class DialogueManager : MonoBehaviour
 {
+    #region Singleton
     public static DialogueManager Instance { get; private set; }
     private DialogueManager() { }
-
-    [Header("Dialogue UI Prefab")]
-    [SerializeField] private GameObject dialogueCanvas;
-
-    private GameObject activeCanvasInstance;
-    private DialogueUIController uiController;
-    private Story currentStory;
-    private Action onDialogueCompleteCallback;
-    
-    private bool dialoguePlaying = false;
-
     private void Awake()
     {
         if (Instance == null)
@@ -30,62 +20,52 @@ public class DialogueManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public bool DialoguePlaying()
-    {
-        return dialoguePlaying;
-    }
+    #endregion
+
+    [Header("Dialogue UI Prefab")]
+    [SerializeField] private GameObject dialogueCanvas;
+
+    private Story currentStory;
+
     public void StartStory(TextAsset inkJson, string knotName, Transform parentTransform, Action onComplete = null)
     {
-        dialoguePlaying = true;
-        onDialogueCompleteCallback = onComplete;
         currentStory = new Story(inkJson.text);
 
-        //Debug.Log($"current Story : {currentStory}");
+        //Debug.Log($"current Story : {currentStory }");
 
         if (!string.IsNullOrEmpty(knotName))
         {
             currentStory.ChoosePathString(knotName);
         }
 
-        activeCanvasInstance = Instantiate(dialogueCanvas, parentTransform);
+        GameObject activeCanvasInstance = Instantiate(dialogueCanvas, parentTransform);
 
-        uiController = activeCanvasInstance.GetComponentInChildren<DialogueUIController>();
+        DialogueUIController uiController = activeCanvasInstance.GetComponentInChildren<DialogueUIController>();
 
+        uiController.Initialize(activeCanvasInstance, onComplete);
         //Debug.Log($"uiController : {uiController.gameObject.name}");
-        AdvanceStory();
+        //AdvanceStory();
     }
 
-    public void AdvanceStory()
+    public bool AdvanceStory(out string nextLine, out List<Choice> choices, out List<string> tags)
     {
         if (currentStory.canContinue)
         {
-            string nextLine = currentStory.Continue();
-            List<String> currentTags = currentStory.currentTags;
+            nextLine = currentStory.Continue();
+            choices = currentStory.currentChoices;
+            tags = currentStory.currentTags;
+            return true;
+        }
 
-            uiController.SetDialogueUI(nextLine, currentStory.currentChoices, currentTags);
-            //Debug.Log("Story Advanced!");
-        }
-        else
-        {
-            EndStory();
-        }
+        nextLine = null;
+        choices = null;
+        tags = null;
+        return false;
     }
 
     public void SelectChoice(int choiceIndex)
     {
         currentStory.ChooseChoiceIndex(choiceIndex);
-        AdvanceStory();
-    }
-    public void EndStory()
-    {
-        if (activeCanvasInstance != null)
-        {
-            Destroy(activeCanvasInstance);
-            activeCanvasInstance = null;
-            uiController = null;
-        }
-        dialoguePlaying = false;
-        Debug.Log("Story End");
     }
 
 }
