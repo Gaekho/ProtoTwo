@@ -18,6 +18,7 @@ public class NodeState
         Visited = false;
         DangerLevel = NodeDangerLevel.Safe;
         Encounter = false;
+        Accessable = NodeAccessable.Accessable;
         interactionCounts = new();
     }
 
@@ -50,5 +51,10 @@ public class NodeState
     {
         interactionCounts.TryGetValue(interactionKey, out var count);
         interactionCounts[interactionKey] = count + 1;
+    }
+
+    public void SetAccessable(NodeAccessable accessable)
+    {
+        Accessable = accessable;
     }
 }

@@ -21,13 +21,16 @@ public class RootUiManager : MonoBehaviour
 
     [SerializeField] private Animator rootAnimator;
 
-    public void FadeInDone() => GameEvents.RaiseFadeInDone();
-    public void FadeOutDone() => GameEvents.RaiseFadeOutDone();
+
+    // Binding with Unity Animation Clip Event : ScreenFadeOut & ScreenFadeIn
+    public void FadeInDone() => GameEventsLibrary.RaiseFadeInDone();
+    public void FadeOutDone() => GameEventsLibrary.RaiseFadeOutDone();
     public void TransitionAnimTrigger()
     {
         rootAnimator.SetTrigger("Transition");
     }
 
+    // Trigger Methods
     public void FadeOutTrigger()
     {
         rootAnimator.SetTrigger("FadeOut");

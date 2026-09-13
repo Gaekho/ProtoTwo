@@ -1,3 +1,4 @@
+using Proto2.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,17 +26,41 @@ public class SceneFlowManager : MonoBehaviour
 
     public bool isTransitioning;
 
-    // Only Way to Transition
+    #region Public Request Methods
     public void RequestNodeTransition(string targetNodeId)
     {
         if (isTransitioning) { }
         else
         {
             Debug.Log("Node Transition Start");
-            StartCoroutine(TransitionNode(targetNodeId));
+            StartCoroutine(NodeTransitionRoutine(targetNodeId));
         }
     }
-    private IEnumerator TransitionNode(string targetNodeId)
+
+    public void RequestBattleEncounter()
+    {
+        StartCoroutine(BattleEncounterTransition());
+    }
+
+    public void RequestBattleEnd()
+    {
+        StartCoroutine(BattleEndTransition());
+    }
+
+    public void RequestSceneOverload(string targetScene)
+    {
+        StartCoroutine(SceneOverloadRoutine(targetScene));
+    }
+
+    public void RequestSceneUnload(string targetScene)
+    {
+        StartCoroutine(SceneUnloadRoutine(targetScene));
+    }
+
+    #endregion
+
+    #region Private Routines
+    private IEnumerator NodeTransitionRoutine(string targetNodeId)
     {
         isTransitioning = true;
         string currentNodeId = RuntimeState.Instance.GetCurrentNodeId();
@@ -47,14 +72,9 @@ public class SceneFlowManager : MonoBehaviour
             yield break;
         }
 
-        bool fadeOutDone = false;
-        void HandleFadeOutDone() => fadeOutDone = true;
-        //RootUiManager.Instance.OnFadeOutDone += HandleFadeOutDone;
-        GameEvents.OnFadeOutDone += HandleFadeOutDone;
-        RootUiManager.Instance.FadeOutTrigger();
-        yield return new WaitUntil(() => fadeOutDone);
-        //RootUiManager.Instance.OnFadeOutDone -= HandleFadeOutDone;
-        GameEvents.OnFadeOutDone -= HandleFadeOutDone;
+        yield return PlayFadeOut();
+
+        RuntimeState.Instance.GetNodeState(currentNodeId).SetAccessable(NodeAccessable.Accessable);
 
         Scene regionMap = SceneManager.GetSceneByName("RegionMap");
         if (regionMap.IsValid() && regionMap.isLoaded)
@@ -66,62 +86,64 @@ public class SceneFlowManager : MonoBehaviour
         yield return SceneManager.LoadSceneAsync("NodeScene_" + targetNodeId, LoadSceneMode.Additive);
         RuntimeState.Instance.SetCurrentNodeId(targetNodeId);
 
-        bool fadeInDone = false;
-        void HandleFadeInDone() => fadeInDone = true;
-        //RootUiManager.Instance.OnFadeInDone += HandleFadeInDone;
-        GameEvents.OnFadeInDone += HandleFadeInDone;
-        RootUiManager.Instance.FadeInTrigger();
-        yield return new WaitUntil(() => fadeInDone);
-        //RootUiManager.Instance.OnFadeInDone -= HandleFadeInDone;
-        GameEvents.OnFadeInDone -= HandleFadeInDone;
+        yield return PlayFadeIn();
 
         Debug.Log("Transition Finished");
         isTransitioning = false;
     }
 
-    public void RequestBattleEncounter()
-    {
-        StartCoroutine(BattleEncounterTransition());
-    }
-
-    public IEnumerator BattleEncounterTransition()
+    private IEnumerator BattleEncounterTransition()
     {
         yield return SceneManager.UnloadSceneAsync("ExploreBaseScene");
         yield return SceneManager.LoadSceneAsync("NewBattleScene", LoadSceneMode.Additive);
         yield return null;
     }
-    public void RequestBattleEnd()
-    {
-        StartCoroutine(BattleEndTransition());
-    }
 
-    public IEnumerator BattleEndTransition()
+    private IEnumerator BattleEndTransition()
     {
-        bool fadeOutDone = false;
-        void HandleFadeOutDone() => fadeOutDone = true;
-        GameEvents.OnFadeOutDone += HandleFadeOutDone;
-        RootUiManager.Instance.FadeOutTrigger();
-        yield return new WaitUntil(() => fadeOutDone);
-        GameEvents.OnFadeOutDone -= HandleFadeOutDone;
+        yield return PlayFadeOut();
 
         yield return SceneManager.UnloadSceneAsync("NewBattleScene");
         yield return SceneManager.LoadSceneAsync("ExploreBaseScene", LoadSceneMode.Additive);
 
         Debug.Log("Before BattleEnd Event");
-        GameEvents.RaiseBattleEnd();
+        GameEventsLibrary.RaiseBattleEnd();
 
-        bool fadeInDone = false;
-        void HandleFadeInDone() => fadeInDone = true;
-        GameEvents.OnFadeInDone += HandleFadeInDone;
-        RootUiManager.Instance.FadeInTrigger();
-        yield return new WaitUntil(() => fadeInDone);
-        GameEvents.OnFadeInDone -= HandleFadeInDone;
-        yield return null;
+        yield return PlayFadeIn();
+
     }
 
-    public IEnumerator RequestSceneOverload(string targetScene)
+    private IEnumerator SceneOverloadRoutine(string targetScene)
     {
         yield return SceneManager.LoadSceneAsync(targetScene, LoadSceneMode.Additive);
         yield return null;
     }
+
+    private IEnumerator SceneUnloadRoutine(string targetScene)
+    {
+        yield return SceneManager.UnloadSceneAsync(targetScene);
+    }
+    #endregion
+
+    #region FadeInOut
+    private IEnumerator PlayFadeOut()
+    {
+        bool done = false;
+        void Handler() => done = true;
+        GameEventsLibrary.OnFadeOutDone += Handler;
+        RootUiManager.Instance.FadeOutTrigger();
+        yield return new WaitUntil(() => done);
+        GameEventsLibrary.OnFadeOutDone -= Handler;
+    }
+
+    private IEnumerator PlayFadeIn()
+    {
+        bool done = false;
+        void Handler() => done = true;
+        GameEventsLibrary.OnFadeInDone+= Handler;
+        RootUiManager.Instance.FadeInTrigger();
+        yield return new WaitUntil(() => done);
+        GameEventsLibrary.OnFadeInDone -= Handler;
+    }
+    #endregion
 }

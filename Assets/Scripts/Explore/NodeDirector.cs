@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Proto2.Enums;
 // In NodeScene Root
 public class NodeDirector : MonoBehaviour
 {
@@ -23,20 +23,20 @@ public class NodeDirector : MonoBehaviour
 
         // Set Node Visited
         nodeState.VisitNode();
-
+        nodeState.SetAccessable(NodeAccessable.CurrentNode);
 
         //Update Suspicious
         switch (nodeState.DangerLevel)
         {
-            case Proto2.Enums.NodeDangerLevel.Safe: 
+            case NodeDangerLevel.Safe: 
                
                 break;
 
-            case Proto2.Enums.NodeDangerLevel.Caution: 
+            case NodeDangerLevel.Caution: 
                 
                 break;
             
-            case Proto2.Enums.NodeDangerLevel.Danger: 
+            case NodeDangerLevel.Danger: 
                 
                 break;
         }
@@ -55,7 +55,7 @@ public class NodeDirector : MonoBehaviour
             ownCanvas.gameObject.SetActive(false);
             SceneFlowManager.Instance.RequestBattleEncounter();
 
-            GameEvents.OnBattleEnd += HandleBattleEnd;
+            GameEventsLibrary.OnBattleEnd += HandleBattleEnd;
             //Skip other lines
             return;
         }
@@ -63,7 +63,7 @@ public class NodeDirector : MonoBehaviour
         // Check Story Trigger
         foreach(int eventId in nodeStoryEvents)
         {
-            if(StoryProgressManager.Instance.TryTriggerStoryEvent(eventId, out string path))
+            if(StoryProgressLibrary.TryTriggerStoryEvent(eventId, out string path))
             {
                 StartDialogue(path);
                 break;
@@ -79,7 +79,7 @@ public class NodeDirector : MonoBehaviour
 
         ownCanvas.gameObject.SetActive(true);
 
-        GameEvents.OnBattleEnd -= HandleBattleEnd;
+        GameEventsLibrary.OnBattleEnd -= HandleBattleEnd;
         
         CheckEntryCondition();
     }
@@ -93,17 +93,7 @@ public class NodeDirector : MonoBehaviour
     }
     public void StartDialogue(string path)
     {
-        TextAsset inkFile = ResolveInkFiles(path);
-        DialogueManager.Instance.StartStory(inkFile, path, gameObject.transform);
+        DialogueManager.Instance.StartStory(path, gameObject.transform, nodeInteractionInk);
     }
 
-    private TextAsset ResolveInkFiles(string path)
-    {
-        if (path.StartsWith("node_")) return nodeInteractionInk;
-        if (path.StartsWith("story_")) return InkLibraryManager.Instance.StoryInk;
-        if (path.StartsWith("quest_")) return InkLibraryManager.Instance.QuestInk;
-
-        Debug.Log($"Wrong Ink Path : {path}");
-        return null;
-    }
 }

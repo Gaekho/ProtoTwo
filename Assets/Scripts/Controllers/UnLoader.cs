@@ -9,7 +9,7 @@ public class UnLoader : MonoBehaviour
     public void LoadAdditiveScene(string sceneName)
     {
         //NodeSceneManager.Instance.SceneLoad(sceneName);
-        StartCoroutine(SceneFlowManager.Instance.RequestSceneOverload(sceneName));
+        SceneFlowManager.Instance.RequestSceneOverload(sceneName);
     }
     public void UnLoadThisScene()
     {
