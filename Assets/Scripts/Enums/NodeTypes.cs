@@ -6,9 +6,30 @@ namespace Proto2.Enums
         Camp,
         Gift,
         Unknown,
-        //Æò¼Ò¿¡ ³ª¿À´Â ³ëÆ® Ãß°¡½Ã ÀÌ À§¿¡ Ãß°¡ÇÒ°Í
+        //í‰ì†Œì— ë‚˜ì˜¤ëŠ” ë…¸íŠ¸ ì¶”ê°€ì‹œ ì´ ìœ„ì— ì¶”ê°€í• ê²ƒ
         EliteBattle,
         BossBattle
-        //Æò¼Ò¿¡´Â ¾È³ª¿À´Â Æ¯¼ö ³ëÆ® Ãß°¡½Ã ¾ ³¡¿¡ Ãß°¡ÇÒ°Í
+        //í‰ì†Œì—ëŠ” ì•ˆë‚˜ì˜¤ëŠ” íŠ¹ìˆ˜ ë…¸íŠ¸ ì¶”ê°€ì‹œ ë§½ ëì— ì¶”ê°€í• ê²ƒ
+    }
+
+    public enum NodeDangerLevel
+    {
+        Safe = 0,
+        Caution,
+        Danger
+    }
+
+    public enum NodeAccessable
+    {
+        None = 0,
+        CurrentNode,
+        Accessable,
+        Disable
+    }
+
+    public enum AreaType
+    {
+        Village,
+        Dungeon
     }
 }
