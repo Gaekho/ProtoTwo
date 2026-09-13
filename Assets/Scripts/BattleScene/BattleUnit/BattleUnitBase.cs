@@ -11,8 +11,8 @@ public abstract class BattleUnitBase : MonoBehaviour
     #region Field
     [Header("Battle Unit")]
     [SerializeField] protected UnitTeam team;
-    [SerializeField] protected float currentHealth;
-    [SerializeField] protected float currentArmor;
+    [SerializeField] protected int currentHealth;
+    [SerializeField] protected int currentArmor;
     [SerializeField] protected bool isDead;
     [SerializeField] protected bool isTurn;
     [SerializeReference] protected List<BuffInstance> buffList = new();
@@ -26,27 +26,27 @@ public abstract class BattleUnitBase : MonoBehaviour
 
     #region Cache
     public UnitTeam Team => team;
-    public float CurrentHealth => currentHealth;
-    public float CurrentArmor => currentArmor;
+    public int CurrentHealth => currentHealth;
+    public int CurrentArmor => currentArmor;
     public bool IsDead => isDead;
     public List<BuffInstance> BuffList => buffList;
     
-    public virtual float CurrentSpeed => 0f;
+    public virtual int CurrentSpeed => 0;
 
     #endregion
 
     #region Virtual Methods
-    public virtual void SetProfile(UnitTeam myTeam, float maxHealth)
+    public virtual void SetProfile(UnitTeam myTeam, int hp)
     {
         team = myTeam;
         isDead = false;
-        currentHealth = maxHealth;
-        currentArmor = 0f;
+        currentHealth = hp;
+        currentArmor = 0;
 
         uiController.SetUpUI(this);
     }
 
-    public virtual void AddArmor(float value)
+    public virtual void AddArmor(int value)
     {
         if (value <= 0) return;
         currentArmor += value;
@@ -56,37 +56,37 @@ public abstract class BattleUnitBase : MonoBehaviour
 
     public virtual void ClearArmor()
     {
-        currentArmor = 0f;
-        uiController.SetArmor(0f);
+        currentArmor = 0;
+        uiController.SetArmor(0);
     }
 
-    public virtual void StatusChange(ConditionType statType, float amount)
+    public virtual void StatusChange(ConditionType statType, int amount)
     {
 
     }
 
-    public virtual void GetDamage(float value)
+    public virtual void GetDamage(int value)
     {
-        float previousHealth = currentHealth;           //데미지 받기 전 체력 저장.
+        int previousHealth = currentHealth;           //데미지 받기 전 체력 저장.
 
         if (value <= 0) return;
-        float remainDamage = value;
+        int remainDamage = value;
 
         if(currentArmor > 0f) 
         {
-            float absorbed = Mathf.Min(remainDamage, currentArmor);
+            int absorbed = Mathf.Min(remainDamage, currentArmor);
             remainDamage -= absorbed;
             currentArmor -= absorbed;
         }
 
-        if(remainDamage > 0f)
+        if(remainDamage > 0)
         {
             currentHealth -= remainDamage;
         }
 
-        if (currentHealth <= 0f && !isDead)
+        if (currentHealth <= 0 && !isDead)
         {
-            currentHealth = 0f;
+            currentHealth = 0;
             isDead = true;
             StartCoroutine(Die());
         }
@@ -203,7 +203,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 
     #endregion
 
-    #region Animation Wait
+    #region Animation Wait(Legacy)
     //public IEnumerator WaitForAnimationStateEnd(string stateName, int layer = 0)
     //{
     //    if (myAnimator == null) yield break;

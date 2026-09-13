@@ -1,12 +1,12 @@
 //v0.01 / 2026.03.11 / 17:18
-// ÃÖÃÊ »ı¼º
+// ìµœì´ˆ ìƒì„±
 
 namespace Proto2.Enums
 {
     public enum BuffTypes
     {
         None = 0,
-        //¹öÇÁ
+        //ë²„í”„
         Taunt,
         Regen,
         Addiction,
@@ -17,7 +17,7 @@ namespace Proto2.Enums
         Berserk,
         Strengthen,
        
-        //µğ¹öÇÁ
+        //ë””ë²„í”„
         Weakness,
         Vulnerable,
         Poison,
@@ -31,16 +31,16 @@ namespace Proto2.Enums
     {
         None = 0,
 
-        // ¼ÒÀ¯ÀÚ Áø¿µ ÅÏ ½ÃÀÛ ½Ã duration °¨¼Ò
+        // ì†Œìœ ì ì§„ì˜ í„´ ì‹œì‘ ì‹œ duration ê°ì†Œ
         StartOfOwnerTurn,
 
-        // ¼ÒÀ¯ÀÚ Áø¿µ ÅÏ Á¾·á ½Ã duration °¨¼Ò -> ±âº»
+        // ì†Œìœ ì ì§„ì˜ í„´ ì¢…ë£Œ ì‹œ duration ê°ì†Œ -> ê¸°ë³¸
         EndOfOwnerTurn,
 
-        // ¶ó¿îµå Á¾·á ½Ã duration °¨¼Ò
+        // ë¼ìš´ë“œ ì¢…ë£Œ ì‹œ duration ê°ì†Œ
         EndOfRound,
 
-        // ¿µ±¸ Áö¼Ó
+        // ì˜êµ¬ ì§€ì†
         Permanent
     }
 

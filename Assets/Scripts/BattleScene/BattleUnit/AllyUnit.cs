@@ -8,11 +8,11 @@ using UnityEngine.UI;
 public class AllyUnit : BattleUnitBase
 {
     #region Field
-    [Header("Ally Unit")]
+    [Header("\n\nAlly Unit")]
     [SerializeField] private CharacterData characterData;
-    [SerializeField] private float currentAttack;
-    [SerializeField] private float currentShield;
-    [SerializeField] private float currentSpeed;
+    [SerializeField] private int currentAttack;
+    [SerializeField] private int currentShield;
+    [SerializeField] private int currentSpeed;
     //[SerializeField] private AllyUnitUIcontroller uiController;
 
     [Header("Own UI")]
@@ -21,16 +21,19 @@ public class AllyUnit : BattleUnitBase
 
     #region Cache
     public CharacterData CharacterData => characterData;
-    public float CurrentAttack => currentAttack;
-    public float CurrentShield => currentShield;
-    public override float CurrentSpeed => currentSpeed;
+    public int CurrentAttack => currentAttack;
+    public int CurrentShield => currentShield;
+    public override int CurrentSpeed => currentSpeed;
     public bool IsTurn => isTurn;
     #endregion
 
-    public void SetProfile(CharacterData characterData)
+    public void SetProfile(CharacterData characterData, CharacterState state)
     {
         this.characterData = characterData;
-        base.SetProfile(UnitTeam.Ally, characterData.MaxHealth);
+
+        int startHp = state.CurrentHp > 0 ? state.CurrentHp : characterData.MaxHealth;
+        base.SetProfile(UnitTeam.Ally, startHp);
+
         mySprite.sprite = characterData.CharacterSprite;
         myAnimator.runtimeAnimatorController = characterData.AnimatorController;
 
@@ -49,7 +52,7 @@ public class AllyUnit : BattleUnitBase
     }
 
     #region Overrides
-    public override void GetDamage(float value)
+    public override void GetDamage(int value)
     {
         base.GetDamage(value);
         //UIManager 연결 후에 슬라이더 표시 기능 구현
@@ -57,13 +60,13 @@ public class AllyUnit : BattleUnitBase
         uiController.SetHealth(currentHealth);
     }
 
-    public override void AddArmor(float value)
+    public override void AddArmor(int value)
     {
         base.AddArmor(value);
         uiController.SetArmor(currentArmor);
     }
 
-    public override void StatusChange(ConditionType statType, float amount)
+    public override void StatusChange(ConditionType statType, int amount)
     {
         switch (statType)
         {

@@ -78,7 +78,7 @@ public abstract class PatternActionBase
 [Serializable]
 public class AttackPatternAction : PatternActionBase
 {
-    [SerializeField] private float damage = 1f;
+    [SerializeField] private int damage = 1;
 
     public override void DoAction(PatternActionParameters actionParameters)
     {
@@ -93,7 +93,7 @@ public class AttackPatternAction : PatternActionBase
 [Serializable]
 public class AddArmorPatternAction : PatternActionBase
 {
-    [SerializeField] private float armorAmount = 1f;
+    [SerializeField] private int armorAmount = 1;
 
     public override void DoAction(PatternActionParameters actionParameters)
     {

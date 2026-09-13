@@ -43,7 +43,7 @@ public class BuffUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         buffType = currentBuff.SourceBuff.BuffType;
 
         if(currentBuff.SourceBuff.ReduceTiming == ReduceTiming.Permanent)   
-            buffDuration.text = "¡Ä";
+            buffDuration.text = "âˆž";
 
         else 
             buffDuration.text = currentBuff.RemainTurn.ToString();

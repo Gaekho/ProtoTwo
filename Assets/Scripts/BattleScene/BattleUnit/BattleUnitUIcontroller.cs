@@ -36,12 +36,12 @@ public abstract class BattleUnitUIcontroller : MonoBehaviour
         SetArmor(0);
     }
 
-    public virtual void SetHealth(float currentHealth)
+    public virtual void SetHealth(int currentHealth)
     {
-        //ÇÏÀ§ ±¸Çö
+        //í•˜ìœ„ êµ¬í˜„
     }
 
-    public virtual void SetArmor(float amount)
+    public virtual void SetArmor(int amount)
     {
         armorTxt.text = amount.ToString();
     }

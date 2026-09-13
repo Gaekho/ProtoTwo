@@ -13,7 +13,7 @@ public class AllyUnitUIcontroller : BattleUnitUIcontroller
     [SerializeField] private Text spd;
 
     [Header("Health")]
-    [SerializeField] private float maxHealth;
+    [SerializeField] private int maxHealth;
 
     public override void SetUpUI(BattleUnitBase unit )
     {
@@ -26,14 +26,14 @@ public class AllyUnitUIcontroller : BattleUnitUIcontroller
         base.SetUpUI(unit);
     }
 
-    public override void SetHealth(float currentHealth)
+    public override void SetHealth(int currentHealth)
     {
         float sliderValue = currentHealth / maxHealth;
         healthSlider.value = sliderValue;
         healthTxt.text = $"{currentHealth} / {maxHealth}";
     }
 
-    public void SetStatTexts(float attack, float shield, float speed)
+    public void SetStatTexts(int attack, int shield, int speed)
     {
         atk.text = attack.ToString();
         shd.text = shield.ToString();

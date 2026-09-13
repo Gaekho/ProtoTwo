@@ -13,8 +13,8 @@ public class EnemyData : ScriptableObject
     //[Header("Character Profile")]
     [SerializeField] private string enemyName;
     [SerializeField] private string enemyDescription;
-    [SerializeField] private float maxHealth;
-    [SerializeField] private float baseSpeed;
+    [SerializeField] private int maxHealth;
+    [SerializeField] private int baseSpeed;
 
     //[Header("Visual")]
     [SerializeField] private Sprite enemySprite;
@@ -30,8 +30,8 @@ public class EnemyData : ScriptableObject
     #region cache
     public string EnemyName => enemyName;
     public string EnemyDescription => enemyDescription;
-    public float MaxHealth => maxHealth;
-    public float BaseSpeed => baseSpeed;
+    public int MaxHealth => maxHealth;
+    public int BaseSpeed => baseSpeed;
     public Sprite EnemySprite => enemySprite;
     public RuntimeAnimatorController AnimatorController => animatorController;
     public List<EnemyPatternData> PatternList => patternList;

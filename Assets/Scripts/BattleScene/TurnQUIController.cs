@@ -34,11 +34,11 @@ public class TurnQUIController : MonoBehaviour
 
         if (orderedUnits == null || orderedUnits.Count == 0) return;
 
-        //Ã¹¹øÂ° °íÁ¤
+        //ì²«ë²ˆì§¸ ê³ ì •
         SetQelement(turnQElement, orderedUnits[0]);
         turnQElement.transform.localScale = turnScale;
 
-        //µÎ¹øÂ°ºÎÅÍ »ı¼º
+        //ë‘ë²ˆì§¸ë¶€í„° ìƒì„±
         for(int i=1; i<orderedUnits.Count; i++)
         {
             CreateWaitingElement(orderedUnits[i]);

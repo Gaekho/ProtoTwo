@@ -11,7 +11,7 @@ public class EnemyUIController : BattleUnitUIcontroller
     [SerializeField] private Canvas myCanvas;
     [SerializeField] private Text armorText;
     [SerializeField] private Image intentIcon;
-    [SerializeField] private float maxHealth;
+    [SerializeField] private int maxHealth;
     [SerializeField] private EnemyPatternTooltip patternTooltip;
 
     public override  void SetUpUI(BattleUnitBase unit)
@@ -24,14 +24,14 @@ public class EnemyUIController : BattleUnitUIcontroller
 
     }
 
-    public override void SetHealth(float currentHealth)
+    public override void SetHealth(int currentHealth)
     {
         healthSlider.value = currentHealth / maxHealth;
-        healthTxt.text = $"{currentHealth.ToString()} / {maxHealth.ToString()}";
+        healthTxt.text = $"{currentHealth} / {maxHealth}";
     }
-    public void SetArmorText(float value)
+    public void SetArmorText(int value)
     {
-        armorText.text = value.ToString();
+        armorText.text = $"{value}";
     }
 
     public void SetPatternImage(EnemyPatternData data)

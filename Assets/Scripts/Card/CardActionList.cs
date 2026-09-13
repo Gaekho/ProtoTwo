@@ -8,16 +8,16 @@ using UnityEngine;
 [Serializable]
 public class AttackAction : CardActionBase
 {
-    [SerializeField] private float damage = 1f;
+    [SerializeField] private int damage = 1;
     public override void DoAction(CardActionParameters actionParameters)
     {
         foreach (BattleUnitBase target in ActionTargets(actionParameters))
         {
-            float totalDamage = damage;
+            int totalDamage = damage;
             if (actionParameters.owner.HasBuff(BuffTypes.Strengthen))
             {
                 StrengthenBuffInstance buff = actionParameters.owner.GetBuff(BuffTypes.Strengthen) as StrengthenBuffInstance;
-                totalDamage = buff.DamageIncreaseRate * damage;
+                totalDamage = (int) buff.DamageIncreaseRate * damage;
             }
 
             target.GetDamage(totalDamage);
@@ -48,7 +48,7 @@ public class HealAction : CardActionBase
 [Serializable]
 public class AddArmorAction : CardActionBase
 {
-    [SerializeField] private float armorAmount = 1f;
+    [SerializeField] private int armorAmount = 1;
 
     public override void DoAction(CardActionParameters actionParameters)
     {

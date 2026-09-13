@@ -49,6 +49,19 @@ public class RuntimeState : MonoBehaviour
 
     #region Public Methods
 
+    // Party State Get & Commit
+    public PartyState GetPartyState()
+    {
+        if(currentPartyState == null)
+        {
+            currentPartyState = new PartyState();
+        }
+        return currentPartyState;
+    }
+    
+    public void CommitPartyState(PartyState newState) => currentPartyState = newState;
+
+
     // Node ID Get & Set
     public void SetCurrentNodeId(string fullNodeId)
     {
@@ -57,9 +70,11 @@ public class RuntimeState : MonoBehaviour
         currentRegionId = region;
         currentLocalId = local;
     }
+
     public string GetCurrentNodeId() => currentRegionId + currentLocalId;
 
     public string GetCurrentRegionId() => currentRegionId;
+
     public string GetCurrentLocalId() => currentLocalId;
 
     private (string region, string local) SplitNodeId(string fullNodeId)
@@ -69,7 +84,7 @@ public class RuntimeState : MonoBehaviour
         string local = fullNodeId.Substring(2, 2);
         return (region, local);
     }
-    
+
     public NodeState GetNodeState(string nodeId)
     {
         if(!nodeStates.TryGetValue(nodeId, out var state))
@@ -81,8 +96,11 @@ public class RuntimeState : MonoBehaviour
         return state;
     }
 
+
     // Story Step Get & Set
     public int GetCurrentStoryStep() => currentStoryStep;
+
     public void SetCurrentStoryStep(int step) => currentStoryStep = step;
+
     #endregion
 }

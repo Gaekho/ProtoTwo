@@ -9,9 +9,9 @@ using Proto2.Enums;
 public class EnemyUnit : BattleUnitBase
 {
     #region Field
-    [Header("Enemy Unit")]
+    [Header("\n\nEnemy Unit")]
     [SerializeField] private EnemyData enemyData;
-    [SerializeField] private float baseSpeed => enemyData.BaseSpeed;
+    [SerializeField] private int currentSpeed;
 
     [Header("EnemyUI")]
     //[SerializeField] private EnemyUIController uiController;
@@ -21,7 +21,7 @@ public class EnemyUnit : BattleUnitBase
     #endregion
 
     public EnemyData EnemyData => enemyData;
-    public override float CurrentSpeed => baseSpeed;
+    public override int CurrentSpeed => currentSpeed;
 
     public void SetProfile(EnemyData enemyData)
     {
@@ -29,6 +29,7 @@ public class EnemyUnit : BattleUnitBase
         base.SetProfile(UnitTeam.Enemy, enemyData.MaxHealth);
         mySprite.sprite = enemyData.EnemySprite;
 
+        currentSpeed = enemyData.BaseSpeed;
         uiController.SetUpUI(this);
 
         //패턴 세팅
@@ -36,14 +37,14 @@ public class EnemyUnit : BattleUnitBase
     }
 
     #region Overrides
-    public override void GetDamage(float value)
+    public override void GetDamage(int value)
     {
         base.GetDamage(value);
         uiController.SetArmor(currentArmor);
         uiController.SetHealth(currentHealth);
     }
 
-    public override void AddArmor(float value)
+    public override void AddArmor(int value)
     {
         base.AddArmor(value);
         uiController.SetArmor(currentArmor);

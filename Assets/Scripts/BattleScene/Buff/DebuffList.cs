@@ -26,14 +26,14 @@ public class PoisonDebuff : BuffBase
 
     public override void OnTurnStart(BuffInstance instance)
     {
-        float damage = instance.Owner.CurrentHealth * 0.1f;
+        int damage = (int)(instance.Owner.CurrentHealth * 0.1f);
         if (damage > 30) damage = 30;
         instance.Owner.GetDamage(damage);
     }
 
     public override void UpdateTooltip()
     {
-        description = $"ÅÏ ½ÃÀÛ ½Ã ÃÖ´ë Ã¼·ÂÀÇ 10% ÇÇÇØ (ÃÖ´ë 30)À» ÀÔ´Â´Ù.";
+        description = $"í„´ ì‹œì‘ ì‹œ ìµœëŒ€ ì²´ë ¥ì˜ 10% í”¼í•´ (ìµœëŒ€ 30)ì„ ì…ëŠ”ë‹¤.";
     }
 }
 
@@ -58,7 +58,7 @@ public class BleedingDebuff : BuffBase
 
     public override void UpdateTooltip()
     {
-        description = $"ÅÏ ½ÃÀÛ ½Ã {duration} ÇÇÇØ¸¦ ÀÔ´Â´Ù.";
+        description = $"í„´ ì‹œì‘ ì‹œ {duration} í”¼í•´ë¥¼ ì…ëŠ”ë‹¤.";
     }
 }
 
@@ -89,7 +89,7 @@ public class OilDebuff : BuffBase
 
     public override void UpdateTooltip()
     {
-        description = "Áö¼Ó½Ã°£µ¿¾È ¼Óµµ ½ºÅÈÀÌ 1 °¨¼ÒÇÑ´Ù.";
+        description = "ì§€ì†ì‹œê°„ë™ì•ˆ ì†ë„ ìŠ¤íƒ¯ì´ 1 ê°ì†Œí•œë‹¤.";
     }
 }
 

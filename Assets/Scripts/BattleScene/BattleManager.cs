@@ -88,12 +88,16 @@ public class BattleManager : MonoBehaviour
     private void SetAlly()
     {
         playerParty.Clear();
-        AllyUnit [] allies = allyContainer.GetComponentsInChildren<AllyUnit>(); 
+        AllyUnit [] allies = allyContainer.GetComponentsInChildren<AllyUnit>();
+        PartyState partyState = RuntimeState.Instance.GetPartyState();
 
         for(int i=0; i<allies.Length; i++)
         {
+            CharacterData charData = deckData.Characters[i];
+            CharacterState charState = partyState.GetCharacterState(charData.CharacterName);
+
             playerParty.Add(allies[i]);
-            allies[i].SetProfile(deckData.Characters[i]);
+            allies[i].SetProfile(charData, charState);
         }
     }
 
@@ -244,6 +248,21 @@ public class BattleManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    private void CommitPartyOnVictory()
+    {
+        PartyState newState = new();
+
+        foreach (AllyUnit ally in playerParty)
+        {
+            CharacterState state = new CharacterState();
+            state.SetHp(ally.CurrentHealth);
+            // state.SetTalisman()
+            newState.SetCharacterState(ally.CharacterData.CharacterName, state);
+        }
+
+        RuntimeState.Instance.CommitPartyState(newState);
     }
     #endregion
 
