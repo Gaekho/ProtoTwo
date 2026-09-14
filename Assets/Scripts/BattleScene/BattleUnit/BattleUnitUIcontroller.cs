@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public abstract class BattleUnitUIcontroller : MonoBehaviour
 {
@@ -17,10 +18,11 @@ public abstract class BattleUnitUIcontroller : MonoBehaviour
 
     [Header("Health")]
     [SerializeField] protected Slider healthSlider;
-    [SerializeField] protected Text healthTxt;
+    [SerializeField] protected TMP_Text healthTxt;
 
-    [Header("Armor Text")]
-    [SerializeField] protected Text armorTxt;
+    [Header("Armor State")]
+    [SerializeField] protected Image armorState;
+    [SerializeField] protected TMP_Text armorTxt;
 
     [Header("Buff")]
     [SerializeField] protected Transform buffContainer;
@@ -42,7 +44,7 @@ public abstract class BattleUnitUIcontroller : MonoBehaviour
     }
 
     public virtual void SetArmor(int amount)
-    {
+    {   
         armorTxt.text = amount.ToString();
     }
 

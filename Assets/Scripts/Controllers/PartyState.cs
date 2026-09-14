@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class PartyState
 {
+    #region Field
     private Dictionary<string, CharacterState> characters = new();
-    public IReadOnlyDictionary<string, CharacterState> Characters => characters;
 
+    //소지한 재화나 아이템 등 또한 확장 가능. 추후 보상 시스템 확정 시
+    #endregion
+
+    #region Chache
+    public IReadOnlyDictionary<string, CharacterState> Characters => characters;
+    #endregion
     public CharacterState GetCharacterState(string name)
     {
         if(!characters.TryGetValue(name, out CharacterState state))

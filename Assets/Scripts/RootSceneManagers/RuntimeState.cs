@@ -61,6 +61,11 @@ public class RuntimeState : MonoBehaviour
     
     public void CommitPartyState(PartyState newState) => currentPartyState = newState;
 
+    public DeckData GetCurrentDeck()
+    {
+        return currentDeck;
+    }
+
 
     // Node ID Get & Set
     public void SetCurrentNodeId(string fullNodeId)

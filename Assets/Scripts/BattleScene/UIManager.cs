@@ -38,7 +38,15 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         turnChangePanel.SetActive(false);
         rewardPanel.SetActive(false);
     }

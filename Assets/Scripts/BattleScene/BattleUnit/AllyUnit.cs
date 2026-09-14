@@ -79,7 +79,8 @@ public class AllyUnit : BattleUnitBase
         }
         //AllyUnitUIcontroller allyUIC = uiController as AllyUnitUIcontroller;
         //allyUIC.SetStatTexts(currentAttack, currentShield, currentSpeed);
-        UIManager.Instance.UpdateStatUI(this, currentAttack, currentShield, currentSpeed);
+        //UIManager.Instance.UpdateStatUI(this, currentAttack, currentShield, currentSpeed);
+        //배틀 디렉터에게 UI 변경 요청
     }
     public override void ReceiveBuff(BuffBase buff, BattleUnitBase applier)
     {

@@ -20,7 +20,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private GameObject characterPrefab;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private HandController handContoller;
-    [SerializeField] private DeckData deckData;
+    //[SerializeField] private DeckData deckData;
 
     [Header("Units On Scene")]
     [SerializeField] private GameObject basicCharacter;
@@ -38,6 +38,9 @@ public class BattleManager : MonoBehaviour
 
     [Header("Temporary Fields")]
     [SerializeField] private List<EnemyData> tempEnemies;
+
+    // To Do:
+    // 인카운터 데이터에 보상 내역을 추가 및 배틀매니저에서 보상 임시로 보관. 이후 승리 시 PartyState에 커밋하는 로직까지 확장
     #endregion
 
     #region Cache
@@ -49,18 +52,19 @@ public class BattleManager : MonoBehaviour
     public IReadOnlyList<EnemyUnit > EnemyList => enemyList;
     public int QueueCount => queueCount;
     public int TotalTurnCount => totalTurnCount;
-    public bool IsResolving {   set; get; }
+    public bool IsResolving {  set; get; }
     #endregion        
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null) Instance = this;
+        else { Destroy(gameObject); return; }
 
         SetAlly();
         //SetEnemy();
         UIManager.Instance.SetupStatUI();
 
-        HandController.Instance.SetUp(GameManager.Instance.GetPlayerDeck());
+        HandController.Instance.SetUp(RuntimeState.Instance.GetCurrentDeck());
 
         TurnCharacter = null;
         CurrentTurnUnit = null;
@@ -73,10 +77,20 @@ public class BattleManager : MonoBehaviour
         TurnCharacter.EnterTurn();
         turn = 0;
 
-        BattleEncounter encounterData = (BattleEncounter)GameManager.Instance.GetEncounterData();
-        if(encounterData != null )
+        //BattleEncounter encounterData = (BattleEncounter)GameManager.Instance.GetEncounterData();
+        //if(encounterData != null )
+        //{
+        //    SpawnEnemies(encounterData.GetEnemies());
+        //}
+
+        EncounterData encounterData = SceneFlowManager.Instance.ConsumePendingEncounter();
+        if (encounterData != null)
         {
-            SpawnEnemies(encounterData.GetEnemies());
+            SpawnEnemies(encounterData.EnemyList);
+        }
+        else
+        {
+            Debug.Log("No EncounterData - 노드에 데이터 할당");
         }
     }
     private void Start()
@@ -90,6 +104,7 @@ public class BattleManager : MonoBehaviour
         playerParty.Clear();
         AllyUnit [] allies = allyContainer.GetComponentsInChildren<AllyUnit>();
         PartyState partyState = RuntimeState.Instance.GetPartyState();
+        DeckData deckData = RuntimeState.Instance.GetCurrentDeck();
 
         for(int i=0; i<allies.Length; i++)
         {
@@ -235,23 +250,39 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log($" count : {enemyList.Count}");
             CurrentState = TurnState.End;
-            HandController.Instance.TurnOffHand();
-            StartCoroutine(UIManager.Instance.BattleEnd("승리"));
+            OnVictory();
             return true;
         }
 
         if(allAllyDead)
         {
             CurrentState = TurnState.End;
-            HandController.Instance.TurnOffHand();
-            StartCoroutine(UIManager.Instance.BattleEnd("패배"));
+            OnDefeat();
             return true;
         }
         return false;
     }
 
+    private void OnVictory()
+    {
+        CommitPartyOnVictory();
+        HandController.Instance.TurnOffHand();
+        StartCoroutine(UIManager.Instance.BattleEnd("승리"));
+    }
+
+    private void OnDefeat()
+    {
+        HandController.Instance.TurnOffHand();
+        StartCoroutine(UIManager.Instance.BattleEnd("패배"));
+    }
+
     private void CommitPartyOnVictory()
     {
+
+        // 탈리스만 복구 기능. 근데 만약 썼으면?
+        //CharacterState prev = RuntimeState.Instance.GetPartyState().GetCharacterState(ally.CharacterData.CharacterName);
+        //state.SetTalisman(prev.Talisman);
+        
         PartyState newState = new();
 
         foreach (AllyUnit ally in playerParty)
@@ -261,6 +292,8 @@ public class BattleManager : MonoBehaviour
             // state.SetTalisman()
             newState.SetCharacterState(ally.CharacterData.CharacterName, state);
         }
+
+        // 인카운터 데이터에서 보상 획득 시 함께 커밋
 
         RuntimeState.Instance.CommitPartyState(newState);
     }
@@ -312,11 +345,7 @@ public class BattleManager : MonoBehaviour
 
         //ReBuildTurnQueue();
 
-        if(enemyList.Count == 0)
-        {
-            HandController.Instance.TurnOffHand();
-            StartCoroutine(UIManager.Instance.BattleEnd("승리"));
-        }
+        IsBattleEnd();
     }
 
     public void AllyDead(AllyUnit dead)
@@ -481,22 +510,30 @@ public class BattleManager : MonoBehaviour
 
     #region Buttons
     //Button OnClick 함수들. ScreenCanvas의 버튼에서 참조.
-    public void ChangeState(int state)
+
+    // Reffered By [ScreenCanvas/Down Panel/Buttons/Turn End]
+    public void ChangeState(TurnState state)
     {
-        CurrentState = (TurnState)state;
+        CurrentState = state;
         Debug.Log("Current Battle State : " + CurrentState);
     }
 
-    public void BackToMap()
+    // Reffered By [ScreenCanvas/Down Panel/Buttons/Deck & Graveyard]
+    public void OpenDeckListPopup(string type)
     {
-        SceneManager.LoadScene("MapScene");
+        switch (type)
+        {
+            case "deck": break;
+            case "graveYard": break;
+        }
     }
-    public void ChangeCharacter(int i)
+    
+    //Reffered By [ScreenCanvas/RewardPanel/Continue]
+    public void ConfirmRewardAndExit()
     {
-        TurnCharacter.ExitTurn();
-        TurnCharacter = playerParty[i];
-        TurnCharacter.EnterTurn();
+        SceneFlowManager.Instance.RequestBattleEnd();
     }
+
     #endregion
 
 }
