@@ -18,11 +18,13 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private Vector3 originalTransform;
     [SerializeField] private Canvas canvas;
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private AllyUnit owner;
+    [SerializeField] private AllyUnit primaryOwner;
+    [SerializeField] private AllyUnit secondaryOwner;
 
     [Header("Visual UI Field")]
     [SerializeField] private SpriteRenderer mySprite;
-    [SerializeField] private TMP_Text[] textList;
+    [SerializeField] private TMP_Text cardName;
+    [SerializeField] private TMP_Text cardText;
     //[SerializeField] private Text[] conditionList;
     [SerializeField] private Text atkTxt;
     [SerializeField] private Text shdTxt;
@@ -48,7 +50,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         originalTransform = transform.position;
         //canvas = GetComponentInChildren<Canvas>();
         //mySprite = GetComponent<SpriteRenderer>();
-        textList = canvas.GetComponentsInChildren<TMP_Text>();  //카드 이름, 카드 텍스트 순으로 가져온다.
+        //textList = canvas.GetComponentsInChildren<TMP_Text>();  //카드 이름, 카드 텍스트 순으로 가져온다.
         //conditionList = canvas.GetComponentsInChildren<Text>(); //ATK, DEF, SPD 순으로 가져온다.
         // How to Search Owner Character of this Card?
         SetUnPlayable();
@@ -64,8 +66,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         //비주얼 세팅
         mySprite.sprite =  data.CardSprite;
-        textList[0].text = data.CardName;
-        textList[1].text = data.CardText;
+        cardName.text = data.CardName;
+        cardText.text = data.CardText;
 
         //조건 텍스트 세팅
         foreach(ActiveConditionData conditionData in data.ActiveConditionList)
@@ -91,17 +93,17 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
 
         //주인 찾기
+        primaryOwner = FindOwnerByColor(data.Color);
+        secondaryOwner = data.SecondaryColor == CardColor.None ? null : FindOwnerByColor(data.SecondaryColor);
+    }
+
+    private AllyUnit FindOwnerByColor(CardColor color)
+    {
         foreach(AllyUnit ally in BattleManager.Instance.PlayerParty)
         {
-           if(ally.CharacterData.CardColor == data.Color)
-            {
-               owner = ally; break;
-            }
-           else if(data.Color == CardColor.Gray)
-            {
-                owner = BattleManager.Instance.TurnCharacter;
-            }
+            if (ally.CharacterData.CardColor == color) return ally;
         }
+        return null;
     }
 
     public void SetPlayable(BattleUnitBase turnUnit)
@@ -180,72 +182,52 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public IEnumerator CardUseRoutine()
     {
+        AllyUnit actor = BattleManager.Instance.CurrentRightHolder;
 
         switch (data.CardAnimTrigger)
         {
             case CardAnimTrigger.Attack:
-                owner.DoAttackAnim();
-                //yield return owner.WaitForAnimationStateEnd("Attack");
+                actor.DoAttackAnim();   
                 break;
 
             case CardAnimTrigger.AddArmor:
-                owner.DoArmorAnim();
-                //yield return owner.WaitForAnimationStateEnd("AddArmor");
+                actor.DoArmorAnim();
                 break;
 
             case CardAnimTrigger.ApplyBuff:
-                owner.DoApplyBuffAnim();
-                //yield return owner.WaitForAnimationStateEnd("ApplyBuff");
+                actor.DoApplyBuffAnim();
                 break;
 
             case CardAnimTrigger.ApplyDebuff:
-                owner.DoApplyDebuffAnim();
-                //yield return owner.WaitForAnimationStateEnd("ApplyDebuff");
+                actor.DoApplyDebuffAnim();
                 break;
 
             case CardAnimTrigger.Draw:
-                owner.DoDrawAnim();
-                //yield return owner.WaitForAnimationStateEnd("Draw");
+                actor.DoDrawAnim();
                 break;
         }
         foreach (var actionData in data.CarActionList)
         {
-            actionData.DoAction(new CardActionParameters(owner, target, data, cardInstance, this));
+            actionData.DoAction(new CardActionParameters(actor, target, data, cardInstance, this));
         }
 
         yield return new WaitForSeconds(0.1f);
-        //AfterUsed();
+
+        // 행동권 이전 규칙 (배틀 문서 4.3/4.5)
+        if (data.SecondaryColor != CardColor.None)
+        {
+            AllyUnit other = (actor == primaryOwner) ? secondaryOwner : primaryOwner;
+            BattleManager.Instance.SetActingRightHolder(other);   // 상대 캐릭터에게 재이전, 체인 유지
+        }
+        else
+        {
+            BattleManager.Instance.ReturnActingRight();   // 단색 카드 → 체인 종료
+        }
+
         HandController.Instance.AfterCardUse(this);
 
     }
     
-    public void Use()
-    {
-        switch (data.CardAnimTrigger)
-        {
-            case CardAnimTrigger.Attack:
-                owner.DoAttackAnim(); break;
-
-            case CardAnimTrigger.AddArmor:
-                owner.DoArmorAnim(); break;
-            
-            case CardAnimTrigger.ApplyBuff: 
-                owner.DoApplyBuffAnim(); break;
-
-            case CardAnimTrigger.ApplyDebuff: 
-                owner.DoApplyDebuffAnim(); break;
-
-            case CardAnimTrigger.Draw: 
-                owner.DoDrawAnim(); break;
-        }
-        foreach (var actionData in data.CarActionList)
-        {
-            actionData.DoAction(new CardActionParameters(owner, target, data, cardInstance, this));
-        }
-
-        //AfterUsed();
-        HandController.Instance.AfterCardUse(this);
-    }
 
     public void BackToHand()
     {
@@ -265,60 +247,35 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         originalTransform = transform.parent.TransformPoint(localPos);
     }
-    public bool CheckCondition(CardData myData, AllyUnit owner)
+    public bool CheckCondition()
     {
-        float val; 
-        float currentStat = 0f;
-        bool lastCheck = false;
 
         if (!isPlayable) return false;
 
-        //중립 카드 사용 시 참고할 캐릭터
-        if(data.Color == CardColor.Gray)
-        {
-            owner = BattleManager.Instance.TurnCharacter;
-            this.owner = BattleManager.Instance.TurnCharacter;
-        }
 
         //턴 캐릭터 체크
-        if(owner != BattleManager.Instance.TurnCharacter)
+        AllyUnit holder = BattleManager.Instance.CurrentRightHolder;
+        if (holder != primaryOwner && holder != secondaryOwner)
         {
-            Debug.Log("Not Turn Character");
+            Debug.Log("캐릭터 턴 아님.");
             return false;
         }
-        for(int i=0; i<myData.ActiveConditionList.Count; i++)
+
+        bool lastCheck = false;
+
+        foreach(var cond in data.ActiveConditionList)
         {
-            val = myData.ActiveConditionList[i].Value;
-
-            switch (myData.ActiveConditionList[i].Condition)
+            int currentStat = cond.Condition switch
             {
-                case ConditionType.Attack:
-                    currentStat = owner.CurrentAttack;
-                    break;
+                ConditionType.Attack => holder.CurrentAttack,
+                ConditionType.Shield => holder.CurrentShield,
+                ConditionType.Speed => holder.CurrentSpeed,
+                _ => 0
+            };
 
-                case ConditionType.Speed: 
-                    currentStat = owner.CurrentSpeed;
-                    break;
-
-                case ConditionType.Shield: 
-                    currentStat = owner.CurrentShield;
-                    break;
-            }
-            //Debug.Log("val" + val);
-            //Debug.Log("currentStat" + currentStat);
-            if (currentStat >= val)
-            {
-                lastCheck = true;
-                //Debug.Log(lastCheck);
-            }
-            else
-            {
-                lastCheck = false;
-                break;
-                //Debug.Log(lastCheck);
-            }
+            if (currentStat >= cond.Value) lastCheck = true;
+            else { lastCheck = false; break; }
         }
-        //Debug.Log("checked");
         return lastCheck;
     }
     
@@ -413,7 +370,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if(transform.position.y >= -0.8f)
         {
             //Debug.Log("used");
-            if(CheckCondition(data, owner))
+            if(CheckCondition())
             {
                 if (CheckTarget(data))
                 {

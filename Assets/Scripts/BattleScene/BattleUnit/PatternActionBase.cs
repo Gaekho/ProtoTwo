@@ -36,16 +36,8 @@ public abstract class PatternActionBase
                 result.Add(actionParameters.owner);
                 break;
 
-            case ActionTargetType.SelectedTarget:
-                if(actionParameters.target != null)
-                {
-                    result.Add(actionParameters.target);
-                }
-                else
-                {
-                    result.Add(BattleManager.Instance.TurnCharacter);
-                    //ResolvedSelectedTarget() 을 추가할 수 있다. 경우에 따라 도발 등이 필요하다면 함수를 추가로 생성할 것.
-                }
+            case ActionTargetType.LowestHealth: 
+                // PickAlly? Linq? 도발로직 추가
                 break;
 
             case ActionTargetType.AllUnits:
@@ -62,6 +54,7 @@ public abstract class PatternActionBase
                 break;
 
             case ActionTargetType.RandomAlly:
+                // 도발 로직 추가
                 int i = UnityEngine.Random.Range(0, BattleManager.Instance.PlayerParty.Count);
                 result.Add(BattleManager.Instance.PlayerParty[i]);        //한줄로 쓰면 가독성 개떨어질까봐 두줄로 씀.
                 break;

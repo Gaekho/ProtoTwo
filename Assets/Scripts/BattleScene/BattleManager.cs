@@ -45,7 +45,8 @@ public class BattleManager : MonoBehaviour
 
     #region Cache
     public AllyUnit TurnCharacter { private set; get; }
-    public BattleUnitBase ActingUnit; //{ private set; get; }
+    public AllyUnit CurrentRightHolder { private set; get; }
+    public BattleUnitBase ActingUnit{ private set; get; }
     public BattleUnitBase CurrentTurnUnit { private set; get; }
     public TurnState CurrentState { private set; get; }
     public IReadOnlyList<AllyUnit> PlayerParty => playerParty;
@@ -163,6 +164,14 @@ public class BattleManager : MonoBehaviour
         }
 
     }
+
+    public void SetActingRightHolder(AllyUnit holder) => CurrentRightHolder = holder;
+    public void ReturnActingRight()
+    {
+        CurrentRightHolder = ActingUnit as AllyUnit;
+    }
+
+    
     #endregion
 
     #region TurnQueue

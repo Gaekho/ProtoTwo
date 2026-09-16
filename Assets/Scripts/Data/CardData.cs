@@ -15,6 +15,7 @@ public class CardData : ScriptableObject
     [SerializeField] private string cardName;
     [SerializeField] private CardType type;
     [SerializeField] private CardColor color;
+    [SerializeField] private CardColor secondaryColor;  //단독카드면 None으로 처리
     [SerializeField] private string cardText;
 
     //[Header("visual")]
@@ -38,6 +39,7 @@ public class CardData : ScriptableObject
     public string CardName => cardName;
     public CardType Type => type;
     public CardColor Color => color;
+    public CardColor SecondaryColor => secondaryColor;
     public string CardText => cardText;
     public Sprite CardSprite => cardSprite;
     public Sprite DragIcon => dragIcon;
@@ -66,10 +68,10 @@ public class CardData : ScriptableObject
 public class ActiveConditionData
 {
     [SerializeField] private ConditionType condition;
-    [SerializeField] private float value;
+    [SerializeField] private int value;
 
     #region cache
     public ConditionType Condition => condition;
-    public float Value => value;
+    public int Value => value;
     #endregion
 }
