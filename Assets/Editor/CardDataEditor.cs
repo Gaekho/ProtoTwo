@@ -14,6 +14,7 @@ public class CardDataEditor : Editor
     private SerializedProperty cardNameProp;
     private SerializedProperty typeProp;
     private SerializedProperty colorProp;
+    private SerializedProperty secondarColorProp;
     private SerializedProperty cardTextProp;
 
     private SerializedProperty cardSpriteProp;
@@ -36,6 +37,7 @@ public class CardDataEditor : Editor
         cardNameProp = serializedObject.FindProperty("cardName");
         typeProp = serializedObject.FindProperty("type");
         colorProp = serializedObject.FindProperty("color");
+        secondarColorProp = serializedObject.FindProperty("secondaryColor");
         cardTextProp = serializedObject.FindProperty("cardText");
 
         cardSpriteProp = serializedObject.FindProperty("cardSprite");
@@ -75,6 +77,7 @@ public class CardDataEditor : Editor
         EditorGUILayout.PropertyField (cardNameProp);
         EditorGUILayout.PropertyField(typeProp);
         EditorGUILayout.PropertyField(colorProp);
+        EditorGUILayout.PropertyField(secondarColorProp);
         EditorGUILayout.PropertyField(cardTextProp);
 
         EditorGUILayout.Space(6);

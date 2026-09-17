@@ -6,13 +6,8 @@ using UnityEngine.UIElements;
 using TMPro;
 using Proto2.Enums;
 
-public class UIManager : MonoBehaviour
+public class BattleUiController : MonoBehaviour
 {
-    #region Singleton
-    private UIManager() { }
-    public static UIManager Instance { get; private set; }
-    #endregion
-
     #region Field
     [Header("Turn Change Panel")]
     [SerializeField] private GameObject turnChangePanel;
@@ -38,15 +33,6 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
         turnChangePanel.SetActive(false);
         rewardPanel.SetActive(false);
     }

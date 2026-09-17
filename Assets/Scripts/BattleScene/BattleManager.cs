@@ -20,6 +20,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private GameObject characterPrefab;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private HandController handContoller;
+    [SerializeField] private BattleUiController uiController;
     //[SerializeField] private DeckData deckData;
 
     [Header("Units On Scene")]
@@ -45,9 +46,8 @@ public class BattleManager : MonoBehaviour
 
     #region Cache
     public AllyUnit TurnCharacter { private set; get; }
-    public AllyUnit CurrentRightHolder { private set; get; }
-    public BattleUnitBase ActingUnit{ private set; get; }
-    public BattleUnitBase CurrentTurnUnit { private set; get; }
+    public AllyUnit CurrentRightHolder { private set; get; }    // 이후 ActingUnit으로 변경
+    public BattleUnitBase ActingUnit{ private set; get; }       // 이후 TurnUnit으로 변경
     public TurnState CurrentState { private set; get; }
     public IReadOnlyList<AllyUnit> PlayerParty => playerParty;
     public IReadOnlyList<EnemyUnit > EnemyList => enemyList;
@@ -63,26 +63,16 @@ public class BattleManager : MonoBehaviour
 
         SetAlly();
         //SetEnemy();
-        UIManager.Instance.SetupStatUI();
+        uiController.SetupStatUI();
 
         HandController.Instance.SetUp(RuntimeState.Instance.GetCurrentDeck());
 
-        TurnCharacter = null;
-        CurrentTurnUnit = null;
         CurrentState = TurnState.None;
         queueCount = 0;
         totalTurnCount = 0;
 
         Debug.Log(playerParty[0].CharacterData.name);
-        TurnCharacter = playerParty[0];
-        TurnCharacter.EnterTurn();
         turn = 0;
-
-        //BattleEncounter encounterData = (BattleEncounter)GameManager.Instance.GetEncounterData();
-        //if(encounterData != null )
-        //{
-        //    SpawnEnemies(encounterData.GetEnemies());
-        //}
 
         EncounterData encounterData = SceneFlowManager.Instance.ConsumePendingEncounter();
         if (encounterData != null)
@@ -165,10 +155,15 @@ public class BattleManager : MonoBehaviour
 
     }
 
-    public void SetActingRightHolder(AllyUnit holder) => CurrentRightHolder = holder;
+    public void SetActingRightHolder(AllyUnit holder)
+    {
+        CurrentRightHolder = holder;
+        // 만약 OnActingRightShifted 이벤트 생기면 추가.
+        HandController.Instance.RefreshHandVisual();
+    }
     public void ReturnActingRight()
     {
-        CurrentRightHolder = ActingUnit as AllyUnit;
+        SetActingRightHolder(ActingUnit as AllyUnit);
     }
 
     
@@ -213,7 +208,7 @@ public class BattleManager : MonoBehaviour
         queueCount++;
 
         //큐 UI 업데이트(UI Manager 호출)
-        UIManager.Instance.RefreshTurnQueueUI(queueCount, aliveUnits);
+       uiController.RefreshTurnQueueUI(queueCount, aliveUnits);
     }
 
     private float GetUnitSpeed(BattleUnitBase unit)
@@ -224,7 +219,7 @@ public class BattleManager : MonoBehaviour
     private IEnumerator RebuildQueueRoutine()
     {
         ReBuildTurnQueue();
-        yield return StartCoroutine(ResolveRoutine(UIManager.Instance.RoundStart(queueCount)));
+        yield return StartCoroutine(ResolveRoutine(uiController.RoundStart(queueCount)));
         yield return new WaitForSeconds(0.3f);
     }
 
@@ -245,7 +240,7 @@ public class BattleManager : MonoBehaviour
         }
         turnQ = newQ;
 
-        UIManager.Instance.RemoveUnitFromTurnQueueUI(deadUnit);
+        uiController.RemoveUnitFromTurnQueueUI(deadUnit);
     }
     #endregion
 
@@ -276,13 +271,13 @@ public class BattleManager : MonoBehaviour
     {
         CommitPartyOnVictory();
         HandController.Instance.TurnOffHand();
-        StartCoroutine(UIManager.Instance.BattleEnd("승리"));
+        StartCoroutine(uiController.BattleEnd("승리"));
     }
 
     private void OnDefeat()
     {
         HandController.Instance.TurnOffHand();
-        StartCoroutine(UIManager.Instance.BattleEnd("패배"));
+        StartCoroutine(uiController.BattleEnd("패배"));
     }
 
     private void CommitPartyOnVictory()
@@ -454,16 +449,12 @@ public class BattleManager : MonoBehaviour
             {
                 CurrentState = TurnState.AllyTurn;
 
-                if (TurnCharacter != null) { TurnCharacter.ExitTurn(); }
-
                 AllyUnit ally = ActingUnit as AllyUnit;
-
-                TurnCharacter = ally;
-                TurnCharacter.EnterTurn();
-                UIManager.Instance.AllyStatPanelTurn(ally);
+                SetActingRightHolder(ally);             // 턴 캐릭터에게 행동권 부여한 채 시작
+                uiController.AllyStatPanelTurn(ally);
 
                 name = ally.CharacterData.CharacterName;
-                yield return StartCoroutine(ResolveRoutine(UIManager.Instance.UnitTurnStart(totalTurnCount, name)));
+                yield return StartCoroutine(ResolveRoutine(uiController.UnitTurnStart(totalTurnCount, name)));
             }
 
             else if (ActingUnit.Team == UnitTeam.Enemy)
@@ -471,7 +462,7 @@ public class BattleManager : MonoBehaviour
                 CurrentState = TurnState.EnemyTurn;
                 EnemyUnit enemy = ActingUnit as EnemyUnit;
                 name = enemy.EnemyData.EnemyName;
-                yield return StartCoroutine(ResolveRoutine(UIManager.Instance.UnitTurnStart(totalTurnCount, name)));
+                yield return StartCoroutine(ResolveRoutine(uiController.UnitTurnStart(totalTurnCount, name)));
             }
 
             //버프 훅(턴 시작 시)
@@ -499,6 +490,8 @@ public class BattleManager : MonoBehaviour
             }
             // 턴 종료 버프 훅
             yield return StartCoroutine(ResolveRoutine(UnitBuffHook(BuffTriggerTiming.OnTurnEnd, ActingUnit)));
+                // 만약 OnUnitTurnEnd 등의 이벤트 생기면 추가.
+
 
             //턴 종료되면 턴이 시작하기 전에, 큐를 확인하고 비어있으면 ReBuildQueue
             if (turnQ.Count == 0)
@@ -507,9 +500,8 @@ public class BattleManager : MonoBehaviour
             }
             else
             {
-                UIManager.Instance.TransferTurnQueueUI();
+                uiController.TransferTurnQueueUI();
             }
-
 
         }
 

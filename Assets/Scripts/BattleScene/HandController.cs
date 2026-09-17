@@ -24,12 +24,16 @@ public class HandController : MonoBehaviour
     [SerializeField] private DeckData deckData;
 
     [Header("List of cards on Battle")]
-    [SerializeField] public List<CardData> currentDeck;
-    [SerializeField] public List<CardInstance> currentHand;
-    [SerializeField] public List<CardInstance> currentGraveyard;
-    [SerializeField] public List<CardInstance> currentBanished;
+    [SerializeField] private List<CardData> currentDeck;
+    [SerializeField] private List<CardInstance> currentHand;
+    [SerializeField] private List<CardInstance> currentGraveyard;
+    [SerializeField] private List<CardInstance> currentBanished;
     [SerializeField] private int nextId = 1;
 
+    public List<CardData> CurrentDeck => currentDeck;
+    public List<CardInstance> CurrentHand => currentHand;
+    public List<CardInstance> CurrentGraveyard => currentGraveyard;
+    public List<CardInstance> CurrentBanished => currentBanished;
     #endregion
     // Start is called before the first frame update
     private void Awake()
@@ -174,7 +178,7 @@ public class HandController : MonoBehaviour
         {
             //card.SetUnPlayable();
 
-            card.SetPlayable(BattleManager.Instance.ActingUnit);
+            card.SetPlayable(BattleManager.Instance.CurrentRightHolder);
         }
     }
     public void TurnOffHand()

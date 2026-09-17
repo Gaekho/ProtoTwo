@@ -22,14 +22,19 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private AllyUnit secondaryOwner;
 
     [Header("Visual UI Field")]
-    [SerializeField] private SpriteRenderer mySprite;
+    [SerializeField] private SpriteRenderer illust;
     [SerializeField] private TMP_Text cardName;
     [SerializeField] private TMP_Text cardText;
-    //[SerializeField] private Text[] conditionList;
+    [SerializeField] private TMP_Text flavorText;
+
+    [Header("")]
     [SerializeField] private Text atkTxt;
     [SerializeField] private Text shdTxt;
     [SerializeField] private Text spdTxt;
-    [SerializeField] private SpriteRenderer blackMask;
+
+    [Header("")]
+    [SerializeField] private Image blackMask;
+    [SerializeField] private Image cyanLine;
 
     [Header("Raycast")]
     [SerializeField] private LayerMask layerMask;
@@ -65,7 +70,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         isPlayable = false;
 
         //비주얼 세팅
-        mySprite.sprite =  data.CardSprite;
+        //To Do : Color 참조해서 카드 프레임 설정 기능 추가
+        illust.sprite =  data.CardSprite;
         cardName.text = data.CardName;
         cardText.text = data.CardText;
 
@@ -106,67 +112,62 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         return null;
     }
 
-    public void SetPlayable(BattleUnitBase turnUnit)
+    public void SetPlayable(AllyUnit actingRightHolder )
     {
-        if (turnUnit == null || turnUnit.Team == UnitTeam.Enemy)
+        if(actingRightHolder == null || (actingRightHolder != primaryOwner && actingRightHolder != secondaryOwner))
         {
             SetUnPlayable();
             return;
         }
 
-        AllyUnit tester = turnUnit as AllyUnit;
-        if(tester == owner || data.Color == CardColor.Gray)
+        isPlayable = true;        
+        blackMask.gameObject.SetActive(false);
+
+        if(!CheckCondition())
         {
-            isPlayable = true;
-            blackMask.gameObject.SetActive(false);
 
-            if(!CheckCondition(data, owner))
+            for(int i = 0; i<data.ActiveConditionList.Count; i++)
             {
-                for(int i = 0; i<data.ActiveConditionList.Count; i++)
+                switch (data.ActiveConditionList[i].Condition)
                 {
-                    switch (data.ActiveConditionList[i].Condition)
-                    {
-                        case ConditionType.Attack:
-                            if (data.ActiveConditionList[i].Value > owner.CurrentAttack)
-                            {
-                                atkTxt.color = Color.red; break;
-                            }
-                            break;
+                    case ConditionType.Attack:
+                        if (data.ActiveConditionList[i].Value > actingRightHolder.CurrentAttack)
+                        {
+                            atkTxt.color = Color.red; break;
+                        }
+                        break;
 
-                        case ConditionType.Shield:
-                            if (data.ActiveConditionList[i].Value > owner.CurrentShield)
-                            {
-                                shdTxt.color = Color.red; break;
-                            }
-                            break;
+                    case ConditionType.Shield:
+                        if (data.ActiveConditionList[i].Value > actingRightHolder.CurrentShield)
+                        {
+                             shdTxt.color = Color.red; break;
+                        }
+                        break;
 
-                        case ConditionType.Speed:
-                            if (data.ActiveConditionList[i].Value > owner.CurrentSpeed)
-                            {
-                                spdTxt.color = Color.red; break;
-                            }
-                            break;
-                    }
-
+                    case ConditionType.Speed:
+                        if (data.ActiveConditionList[i].Value > actingRightHolder.CurrentSpeed)
+                        {
+                            spdTxt.color = Color.red; break;
+                        }
+                        break;
                 }
-            }
-            else
-            {
-                atkTxt.color = Color.white;
-                shdTxt.color = Color.white;
-                spdTxt.color = Color.white;
+
             }
         }
+
         else
         {
-            SetUnPlayable();
+            atkTxt.color = Color.white;
+            shdTxt.color = Color.white;
+            spdTxt.color = Color.white;
+            cyanLine.gameObject.SetActive(true);
         }
-
     }
-    
+
     public void SetUnPlayable()
     {
         isPlayable = false;
+        cyanLine.gameObject.SetActive(false);
         blackMask.gameObject.SetActive(true);
     }
 
@@ -233,9 +234,9 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         transform.position = originalTransform;
         CardsizeSmall();
-        mySprite.sprite = data.CardSprite;
+        illust.sprite = data.CardSprite;
         canvas.gameObject.SetActive(true);
-        SetPlayable(BattleManager.Instance.ActingUnit);
+        SetPlayable(BattleManager.Instance.CurrentRightHolder);
         //Color color = Color.white;
         //color.a = 1f;
         //myImage.color = color;           OnDrag 참조
@@ -261,17 +262,23 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             return false;
         }
 
-        bool lastCheck = false;
+        bool lastCheck = true;
 
         foreach(var cond in data.ActiveConditionList)
         {
-            int currentStat = cond.Condition switch
+            int currentStat = 0;
+            switch(cond.Condition)
             {
-                ConditionType.Attack => holder.CurrentAttack,
-                ConditionType.Shield => holder.CurrentShield,
-                ConditionType.Speed => holder.CurrentSpeed,
-                _ => 0
-            };
+                case ConditionType.Attack: 
+                    currentStat = holder.CurrentAttack; break;
+                    
+
+                case ConditionType.Shield: 
+                    currentStat = holder.CurrentShield; break;
+
+                case ConditionType.Speed: 
+                    currentStat = holder.CurrentSpeed; break;
+            }
 
             if (currentStat >= cond.Value) lastCheck = true;
             else { lastCheck = false; break; }
@@ -337,7 +344,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         CardsizeSmall();
         originalTransform = transform.position;
-        mySprite.sprite = data.DragIcon;
+        illust.sprite = data.DragIcon;
         canvas.gameObject.SetActive(false);
         blackMask.gameObject.SetActive(false);
     }

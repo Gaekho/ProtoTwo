@@ -156,7 +156,7 @@ MonoBehaviour:
   currentLocalId: 00
   currentAreaType: 0
   currentDeck: {fileID: 11400000, guid: 17ccb2c6d621b894db1ef09b089b8b4d, type: 2}
-  currentStoryStep: 0
+  currentStoryStep: 21
 --- !u!4 &49191623
 Transform:
   m_ObjectHideFlags: 0

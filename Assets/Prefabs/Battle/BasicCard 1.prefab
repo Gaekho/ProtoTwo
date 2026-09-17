@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 4398085135873781355}
   - component: {fileID: 4301378077811029560}
   m_Layer: 0
-  m_Name: HighLight
+  m_Name: Cyan Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1005,13 +1005,17 @@ MonoBehaviour:
   originalTransform: {x: 0, y: 0, z: 0}
   canvas: {fileID: 4598688428315940244}
   mainCamera: {fileID: 0}
-  owner: {fileID: 0}
+  primaryOwner: {fileID: 0}
+  secondaryOwner: {fileID: 0}
   mySprite: {fileID: 5125572776164115171}
-  textList: []
+  cardName: {fileID: 6426818882034895739}
+  cardText: {fileID: 723979380993916720}
+  flavorText: {fileID: 7880186667268438817}
   atkTxt: {fileID: 1348245098643532375}
   shdTxt: {fileID: 4339026091134019784}
   spdTxt: {fileID: 8698150997450461784}
-  blackMask: {fileID: 0}
+  blackMask: {fileID: 5383001050106427076}
+  cyanLine: {fileID: 4398085135873781355}
   layerMask:
     serializedVersion: 2
     m_Bits: 128
