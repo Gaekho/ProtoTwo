@@ -34,6 +34,22 @@ public abstract class BattleUnitBase : MonoBehaviour
     public virtual int CurrentSpeed => 0;
 
     #endregion
+    #region Unity LIfecycle
+    protected virtual void OnEnable()
+    {
+        GameEventsLibrary.OnUnitTurnStart += HandleUnitTurnStart;
+    }
+    protected virtual void OnDisable()
+    {
+        GameEventsLibrary.OnUnitTurnStart -= HandleUnitTurnStart;
+    }
+
+    private void HandleUnitTurnStart(BattleUnitBase unit)
+    {
+        if (unit == this) EnterTurn();
+        else ExitTurn();
+    }
+    #endregion
 
     #region Virtual Methods
     public virtual void SetProfile(UnitTeam myTeam, int hp)
@@ -100,14 +116,15 @@ public abstract class BattleUnitBase : MonoBehaviour
     public virtual void EnterTurn()
     {
         isTurn = true;
-        myTransform.localScale = new Vector3(1.2f, 1.2f, 1f);
+        myTransform.localScale = new Vector3(1.5f, 1.5f, 1f);
         uiController.SetTurn(true);
+        ClearArmor();
     }
 
     public virtual void ExitTurn()
     {
         isTurn = false;
-        myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
+        myTransform.localScale = new Vector3(1f, 1f, 1f);
         uiController.SetTurn(false);
     }
 

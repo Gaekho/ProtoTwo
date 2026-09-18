@@ -6,11 +6,6 @@ using UnityEngine;
 //변경 요약 : BanishAfterUsed 참조 추가로 소멸 구현.
 public class HandController : MonoBehaviour
 {
-    #region Singleton
-    private HandController() { }
-    public static HandController Instance { get; private set; }
-    #endregion
-
     #region Field
     [Header("Card Prefab")]
     [SerializeField] private GameObject basicCard;
@@ -38,7 +33,7 @@ public class HandController : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        Instance = this;
+
     }
 
     private void Start()

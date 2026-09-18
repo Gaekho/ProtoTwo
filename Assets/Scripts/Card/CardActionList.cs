@@ -31,7 +31,7 @@ public class DrawAction : CardActionBase
     [SerializeField] private int drawCount = 1;
     public override void DoAction(CardActionParameters actionParameters)
     {
-        HandController.Instance.DrawCard(drawCount);
+        BattleManager.Instance.RequestDraw(drawCount);
     }
 }
 

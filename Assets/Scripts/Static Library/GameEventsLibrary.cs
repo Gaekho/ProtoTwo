@@ -12,8 +12,13 @@ public static class GameEventsLibrary
     // Scene Flow
 
     // Battle
+    public static event Action OnBattleStart;
     public static event Action OnBattleEnd;
 
+    public static event Action<BattleUnitBase> OnUnitTurnStart;
+    public static event Action OnUnitTurnEnd;
+    public static event Action<AllyUnit> OnActingRightShifted;
+    public static event Action<AllyUnit, int, int, int> OnUnitStatChanged;
 
     // **********************
     // *****Raise Events*****
@@ -24,5 +29,12 @@ public static class GameEventsLibrary
     public static void RaiseFadeInDone() => OnFadeInDone?.Invoke();
 
     // Battle
-    public static void RaiseBattleEnd() { Debug.Log("OnBattleEnd Invoked");  OnBattleEnd?.Invoke(); }
+    public static void RaiseBattleStart() => OnBattleStart?.Invoke();
+    public static void RaiseBattleEnd() => OnBattleEnd?.Invoke();
+
+    public static void RaiseUnitTurnStart(BattleUnitBase unit) => OnUnitTurnStart?.Invoke(unit);
+    public static void RaiseUnitTurnEnd() => OnUnitTurnEnd?.Invoke();
+    public static void RaiseActingRightShifted(AllyUnit holder) => OnActingRightShifted?.Invoke(holder);
+    public static void RaiseUnitStatChanged(AllyUnit unit, int atk, int shd, int spd) => OnUnitStatChanged?.Invoke(unit, atk, shd, spd);
+    
 }

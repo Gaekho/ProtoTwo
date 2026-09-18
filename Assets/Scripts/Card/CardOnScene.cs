@@ -225,7 +225,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             BattleManager.Instance.ReturnActingRight();   // 단색 카드 → 체인 종료
         }
 
-        HandController.Instance.AfterCardUse(this);
+        //HandController.Instance.AfterCardUse(this);
+        BattleManager.Instance.NotifyCardUsed(this);
 
     }
     
