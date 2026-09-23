@@ -519,7 +519,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1359624882352967}
   - component: {fileID: 2376170826361548394}
+  - component: {fileID: 7484999095583069282}
   - component: {fileID: 5254530201888206064}
+  - component: {fileID: 7590209957805472344}
   m_Layer: 0
   m_Name: WhiteKnight(CrossBow)
   m_TagString: Untagged
@@ -595,6 +597,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &7484999095583069282
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4960256811460129289}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5254530201888206064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -613,10 +636,10 @@ MonoBehaviour:
   isDead: 0
   isTurn: 0
   buffList: []
-  myTransform: {fileID: 0}
-  mySprite: {fileID: 0}
-  myAnimator: {fileID: 0}
-  uiController: {fileID: 0}
+  myTransform: {fileID: 1359624882352967}
+  mySprite: {fileID: 2376170826361548394}
+  myAnimator: {fileID: 7484999095583069282}
+  uiController: {fileID: 9067168341941098852}
   enemyData: {fileID: 0}
   currentSpeed: 0
   currentPattern:
@@ -628,6 +651,41 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!70 &7590209957805472344
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4960256811460129289}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.75}
+  m_Size: {x: 1, y: 1.5}
+  m_Direction: 0
 --- !u!1 &5101994351800628734
 GameObject:
   m_ObjectHideFlags: 0
@@ -963,8 +1021,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0000085829, y: -5.65}
-  m_SizeDelta: {x: 1800, y: 387.04}
+  m_AnchoredPosition: {x: -0, y: -5.12}
+  m_SizeDelta: {x: 1696.78, y: 303.56}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4920105348925884720
 CanvasRenderer:
@@ -1098,7 +1156,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000015259, y: 18.78}
+  m_AnchoredPosition: {x: 0.0000033381, y: 15.02}
   m_SizeDelta: {x: 1500, y: 102.39}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2458405259498015592
@@ -1378,7 +1436,7 @@ GameObject:
   - component: {fileID: 2165344735145438677}
   - component: {fileID: 4394728832286671018}
   - component: {fileID: 5523049152031995444}
-  - component: {fileID: 3098308150650600253}
+  - component: {fileID: 9067168341941098852}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -1474,7 +1532,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3098308150650600253
+--- !u!114 &9067168341941098852
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1483,22 +1541,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 8023842233948275712}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b04ee55d902a814bb135542be118724, type: 3}
+  m_Script: {fileID: 11500000, guid: a8929daac4c2f6e47ace8a20cde3d620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  owner: {fileID: 0}
+  owner: {fileID: 5254530201888206064}
   unitUICanvas: {fileID: 2165344735145438677}
   turnArrow: {fileID: 1291341091900368728}
   healthSlider: {fileID: 8172717969082874271}
-  healthTxt: {fileID: 0}
-  armorState: {fileID: 0}
-  armorTxt: {fileID: 0}
+  healthTxt: {fileID: 4608911085945093785}
+  armorState: {fileID: 9006930096928739354}
+  armorTxt: {fileID: 9219151804746903823}
+  turnTxt: {fileID: 0}
   buffContainer: {fileID: 9000699985376542846}
   buffUI: {fileID: 4561868982761045368, guid: 4b274d1325843164a96aeaab2182431d, type: 3}
-  atk: {fileID: 0}
-  shd: {fileID: 0}
-  spd: {fileID: 0}
+  myCanvas: {fileID: 0}
+  intentIcon: {fileID: 411226546561478024}
   maxHealth: 0
+  patternTooltip: {fileID: 7247813892255542364}
 --- !u!1 &8150666090213466409
 GameObject:
   m_ObjectHideFlags: 0
@@ -1526,7 +1585,7 @@ RectTransform:
   m_GameObject: {fileID: 8150666090213466409}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6036328142395977544}
@@ -1535,7 +1594,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.25}
+  m_AnchoredPosition: {x: 0, y: 25}
   m_SizeDelta: {x: 180, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4654622352467156173
@@ -1559,15 +1618,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0.9019608}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 707845689, guid: 04650722ee1d1f646b5fd3c10a68d82f, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

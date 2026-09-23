@@ -139,7 +139,7 @@ public class EnemyUnit : BattleUnitBase
 
         foreach(PatternActionBase patternAction in currentPattern.PatternActionList)
         {
-            patternAction.DoAction(new PatternActionParameters(this, BattleManager.Instance.TurnCharacter, currentPattern));
+            patternAction.DoAction(new PatternActionParameters(this, currentPattern));
         }
     }
 
@@ -170,7 +170,7 @@ public class EnemyUnit : BattleUnitBase
 
         foreach (PatternActionBase patternAction in currentPattern.PatternActionList)
         {
-            patternAction.DoAction(new PatternActionParameters(this, BattleManager.Instance.TurnCharacter, currentPattern));
+            patternAction.DoAction(new PatternActionParameters(this, currentPattern));
         }
 
         yield return new WaitForSeconds(0.7f);

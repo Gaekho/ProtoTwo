@@ -24,6 +24,9 @@ public abstract class BattleUnitUIcontroller : MonoBehaviour
     [SerializeField] protected Image armorState;
     [SerializeField] protected TMP_Text armorTxt;
 
+    [Header("Turn Count")]
+    [SerializeField] protected TMP_Text turnTxt;
+
     [Header("Buff")]
     [SerializeField] protected Transform buffContainer;
     [SerializeField] protected GameObject buffUI;

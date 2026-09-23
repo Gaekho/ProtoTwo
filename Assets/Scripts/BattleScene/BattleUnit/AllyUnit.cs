@@ -8,15 +8,15 @@ using UnityEngine.UI;
 public class AllyUnit : BattleUnitBase
 {
     #region Field
-    [Header("\n\nAlly Unit")]
+    [Header("Ally Unit")]
     [SerializeField] private CharacterData characterData;
     [SerializeField] private int currentAttack;
     [SerializeField] private int currentShield;
     [SerializeField] private int currentSpeed;
+    [SerializeField] private int currentGnosis;
     //[SerializeField] private AllyUnitUIcontroller uiController;
 
-    [Header("Own UI")]
-    [SerializeField] private Canvas ownUIcanvas;
+
     #endregion
 
     #region Cache

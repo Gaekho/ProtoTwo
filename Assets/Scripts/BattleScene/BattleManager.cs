@@ -16,9 +16,11 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     #region Field
-    [Header("Setting")]
+    [Header("Prefabs")]
     [SerializeField] private GameObject characterPrefab;
     [SerializeField] private GameObject enemyPrefab;
+
+    [Header("Controllers")]
     [SerializeField] private HandController handController;
     [SerializeField] private BattleUiController uiController;
     //[SerializeField] private DeckData deckData;
@@ -45,7 +47,6 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     #region Cache
-    public AllyUnit TurnCharacter { private set; get; }
     public AllyUnit CurrentRightHolder { private set; get; }    // 이후 ActingUnit으로 변경
     public BattleUnitBase ActingUnit{ private set; get; }       // 이후 TurnUnit으로 변경
     public TurnState CurrentState { private set; get; }
@@ -518,10 +519,13 @@ public class BattleManager : MonoBehaviour
     //Button OnClick 함수들. ScreenCanvas의 버튼에서 참조.
 
     // Reffered By [ScreenCanvas/Down Panel/Buttons/Turn End]
-    public void ChangeState(TurnState state)
+    public void ChangeState(string state)
     {
-        CurrentState = state;
-        Debug.Log("Current Battle State : " + CurrentState);
+        if(System.Enum.TryParse<TurnState>(state, out TurnState result))
+        {
+            CurrentState = result;
+            Debug.Log($"Current Turn State : {result}");
+        }
     }
 
     // Reffered By [ScreenCanvas/Down Panel/Buttons/Deck & Graveyard]

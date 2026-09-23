@@ -7,14 +7,11 @@ using System;
 public class PatternActionParameters
 {
     public readonly EnemyUnit owner;
-    public readonly BattleUnitBase target;
-
     public readonly EnemyPatternData patternData;
 
-    public PatternActionParameters(EnemyUnit owner, BattleUnitBase target, EnemyPatternData patternData)
+    public PatternActionParameters(EnemyUnit owner, EnemyPatternData patternData)
     {
         this.owner = owner;
-        this.target = target;
         this.patternData = patternData;
     }
 }

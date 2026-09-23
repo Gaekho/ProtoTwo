@@ -9,7 +9,6 @@ public class EnemyUIController : BattleUnitUIcontroller
     [Header("=============================== \n Own Field")]
     //[SerializeField] private EnemyUnit owner;
     [SerializeField] private Canvas myCanvas;
-    [SerializeField] private Text armorText;
     [SerializeField] private Image intentIcon;
     [SerializeField] private int maxHealth;
     [SerializeField] private EnemyPatternTooltip patternTooltip;
@@ -28,10 +27,6 @@ public class EnemyUIController : BattleUnitUIcontroller
     {
         healthSlider.value = currentHealth / maxHealth;
         healthTxt.text = $"{currentHealth} / {maxHealth}";
-    }
-    public void SetArmorText(int value)
-    {
-        armorText.text = $"{value}";
     }
 
     public void SetPatternImage(EnemyPatternData data)
