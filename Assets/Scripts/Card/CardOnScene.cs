@@ -292,6 +292,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (data.UsableWithoutTarget) return true;
 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
         Collider2D hit = Physics2D.OverlapCircle(mouseWorldPos, radius, layerMask);
 
         if (hit == null) { Debug.Log("Nothing Detected"); return false; }

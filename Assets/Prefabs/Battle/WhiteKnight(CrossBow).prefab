@@ -522,7 +522,7 @@ GameObject:
   - component: {fileID: 7484999095583069282}
   - component: {fileID: 5254530201888206064}
   - component: {fileID: 7590209957805472344}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WhiteKnight(CrossBow)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

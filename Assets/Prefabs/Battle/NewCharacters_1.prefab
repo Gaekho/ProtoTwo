@@ -1275,7 +1275,8 @@ GameObject:
   - component: {fileID: 1754075820321437788}
   - component: {fileID: 4930339836239564474}
   - component: {fileID: 8013643330683908279}
-  m_Layer: 0
+  - component: {fileID: 1887471131647734059}
+  m_Layer: 7
   m_Name: NewCharacters_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1291,7 +1292,7 @@ Transform:
   m_GameObject: {fileID: 4816765963097340269}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.7, y: -1, z: 0}
+  m_LocalPosition: {x: -1.505, y: -0.996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1376,7 +1377,7 @@ MonoBehaviour:
   currentAttack: 0
   currentShield: 0
   currentSpeed: 0
-  ownUIcanvas: {fileID: 0}
+  currentGnosis: 0
   references:
     version: 2
     RefIds: []
@@ -1401,6 +1402,41 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!70 &1887471131647734059
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4816765963097340269}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.5833333}
+  m_Size: {x: 1, y: 1.1666666}
+  m_Direction: 0
 --- !u!1 &4984928831352931791
 GameObject:
   m_ObjectHideFlags: 0
@@ -1894,6 +1930,7 @@ MonoBehaviour:
   healthTxt: {fileID: 1447819089517557550}
   armorState: {fileID: 6854595535043361062}
   armorTxt: {fileID: 7907376230643360814}
+  turnTxt: {fileID: 0}
   buffContainer: {fileID: 6529696442320706854}
   buffUI: {fileID: 4561868982761045368, guid: 4b274d1325843164a96aeaab2182431d, type: 3}
   atk: {fileID: 0}
