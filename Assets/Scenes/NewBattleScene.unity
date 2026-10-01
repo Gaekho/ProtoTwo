@@ -3201,6 +3201,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1020854454}
     m_Modifications:
+    - target: {fileID: 2023621261205354160, guid: b241941ca5a5bb64faff03a90ccabcf7, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2206085515702530259, guid: b241941ca5a5bb64faff03a90ccabcf7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -4250,6 +4254,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1020854454}
     m_Modifications:
+    - target: {fileID: 2023621261205354160, guid: b241941ca5a5bb64faff03a90ccabcf7, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2206085515702530259, guid: b241941ca5a5bb64faff03a90ccabcf7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3
@@ -12236,7 +12244,7 @@ Transform:
   m_GameObject: {fileID: 1020854453}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.5, y: -1.9, z: -3.63}
+  m_LocalPosition: {x: -2.5, y: -2.43, z: -3.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13714,6 +13722,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1020854454}
     m_Modifications:
+    - target: {fileID: 2023621261205354160, guid: b241941ca5a5bb64faff03a90ccabcf7, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2206085515702530259, guid: b241941ca5a5bb64faff03a90ccabcf7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2
@@ -23772,6 +23784,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1020854454}
     m_Modifications:
+    - target: {fileID: 2023621261205354160, guid: b241941ca5a5bb64faff03a90ccabcf7, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2206085515702530259, guid: b241941ca5a5bb64faff03a90ccabcf7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

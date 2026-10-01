@@ -22,6 +22,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private AllyUnit secondaryOwner;
 
     [Header("Visual UI Field")]
+    [SerializeField] private SpriteRenderer frame;
     [SerializeField] private SpriteRenderer illust;
     [SerializeField] private TMP_Text cardName;
     [SerializeField] private TMP_Text cardText;
@@ -70,10 +71,11 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         isPlayable = false;
 
         //비주얼 세팅
-        //To Do : Color 참조해서 카드 프레임 설정 기능 추가
+        frame.sprite = data.CardFrame;
         illust.sprite =  data.CardSprite;
         cardName.text = data.CardName;
         cardText.text = data.CardText;
+        flavorText.text = data.FlavorText;
 
         //조건 텍스트 세팅
         foreach(ActiveConditionData conditionData in data.ActiveConditionList)

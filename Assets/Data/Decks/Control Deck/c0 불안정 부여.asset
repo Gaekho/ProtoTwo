@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: "c0 \uBD88\uC548\uC815 \uBD80\uC5EC"
   m_EditorClassIdentifier: 
   id: 0
-  cardName: "\uBD88\uC548\uC815 \uBD80\uC5EC"
+  cardName: "\uB0B4\uB824\uCE58\uAE30"
   type: 1
-  color: 3
+  color: 1
+  secondaryColor: 0
   cardText: 
-  cardSprite: {fileID: 1593725169, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
+  flavorText: 
+  cardFrame: {fileID: 0}
+  cardSprite: {fileID: -208652653, guid: 648a9de45d54f9a45866e90a23ca1724, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 0
   usableWithoutTarget: 0
