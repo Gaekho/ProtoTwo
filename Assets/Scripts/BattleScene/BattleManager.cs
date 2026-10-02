@@ -63,7 +63,7 @@ public class BattleManager : MonoBehaviour
         else { Destroy(gameObject); return; }
 
         SetAlly();
-        uiController.SetupStatUI();
+        uiController.SetStatPanel();
 
         handController.SetUp(RuntimeState.Instance.GetCurrentDeck());
 
@@ -456,7 +456,7 @@ public class BattleManager : MonoBehaviour
 
                 AllyUnit ally = ActingUnit as AllyUnit;
                 SetActingRightHolder(ally);             // 턴 캐릭터에게 행동권 부여한 채 시작
-                uiController.AllyStatPanelTurn(ally);
+                
 
                 name = ally.CharacterData.CharacterName;
                 //yield return StartCoroutine(ResolveRoutine(uiController.UnitTurnStart(totalTurnCount, name)));

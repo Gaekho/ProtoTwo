@@ -41,6 +41,10 @@ public class CharacterState
     private int currentHp;
     private int talisman;
 
+    private int atk;
+    private int shd;
+    private int spd;
+
     // persistentBuffs
     // 전투 종료 후에도 유지되는 버프&디버프
     // 전투 중 사용되는 버프들(BuffInstance)로 쓸지, 전용버프로 정의할지 미정.
@@ -49,5 +53,13 @@ public class CharacterState
 
     public void SetHp(int value) => currentHp = value;
     public void SetTalisman(int value) => talisman = value;
+
+    public void GetStats(out int a, out int b, out int c)
+    {
+        a = atk;
+        b = shd;
+        c = spd;
+        
+    }
     
 }

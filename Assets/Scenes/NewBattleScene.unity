@@ -6689,6 +6689,16 @@ MonoBehaviour:
   qUIController: {fileID: 1527153320}
   grayPanel: {fileID: 0}
   allyStatUIs: []
+  statPanels:
+  - img: {fileID: 0}
+    atk: {fileID: 0}
+    shd: {fileID: 0}
+    spd: {fileID: 0}
+  sitaPanel:
+    img: {fileID: 0}
+    atk: {fileID: 0}
+    shd: {fileID: 0}
+    spd: {fileID: 0}
 --- !u!224 &618977368 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1753918280873130998, guid: 4b274d1325843164a96aeaab2182431d, type: 3}
@@ -9712,16 +9722,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TempBattleDirector, Assembly-CSharp
-        m_MethodName: BattleWin
-        m_Mode: 1
+      - m_Target: {fileID: 786526520}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: ChangeState
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: End
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &841347379
@@ -16870,6 +16880,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 463084061}
     m_Modifications:
+    - target: {fileID: 212816992857819832, guid: a59beb0887b937249970b42feede3a39, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212816992857819832, guid: a59beb0887b937249970b42feede3a39, type: 3}
+      propertyPath: m_Color.g
+      value: 0.96657693
+      objectReference: {fileID: 0}
+    - target: {fileID: 212816992857819832, guid: a59beb0887b937249970b42feede3a39, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 250505657447535720, guid: a59beb0887b937249970b42feede3a39, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

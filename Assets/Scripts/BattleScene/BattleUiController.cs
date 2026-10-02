@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
+//using UnityEngine.UIElements;
 using TMPro;
 using Proto2.Enums;
+using System.Runtime.CompilerServices;
+using System;
 
 public class BattleUiController : MonoBehaviour
 {
@@ -25,10 +27,41 @@ public class BattleUiController : MonoBehaviour
     [SerializeField] private TurnQUIController qUIController;
 
     [Header("Ally Stats")]
-    [SerializeField] private GameObject grayPanel;
-    [SerializeField] private List<AllyStatUI> allyStatUIs;
-    private Dictionary<Color, AllyStatUI> statUIDict;
+    [SerializeField] private AllyStatPanel sitaPanel;
+    [SerializeField] private AllyStatPanel solphurPanel;
+    [SerializeField] private AllyStatPanel rigelPanel;
+
+    [Serializable]
+    private class AllyStatPanel
+    {
+        [SerializeField] private Image outline;
+        [SerializeField] private Text atk, shd, spd;
+
+        public void SetStat(int atk, int shd, int spd)
+        {
+            outline.color = Color.white;
+            this.atk.text = $"{atk}";
+            this.shd.text = $"{shd}";
+            this.spd.text = $"{spd}";
+        }
+        public void UpdateStat(int atk, int shd, int spd)
+        {
+            this.atk.text = $"{atk}";
+            this.shd.text = $"{shd}";
+            this.spd.text = $"{spd}";
+        }
+        public void EnterTurn()
+        {
+            outline.color = Color.white;
+        }
+        public void ExitTurn()
+        {
+            outline.color = Color.white;
+        }
+    }
     #endregion
+
+     
     // Start is called before the first frame update
 
     private void Awake()
@@ -78,21 +111,7 @@ public class BattleUiController : MonoBehaviour
         yield break;
     }
 
-    public void AllyStatPanelTurn(AllyUnit ally)
-    {
-        foreach(AllyStatUI statUI in allyStatUIs)
-        {
-            if (ally.CharacterData.UIColor == statUI.GetColor())
-            {
-                grayPanel.transform.localPosition = new Vector3(grayPanel.transform.localPosition.x, statUI.transform.localPosition.y, 0);
-                statUI.EnterTurn();
-            }
-            else
-            {
-                statUI.ExitTurn();
-            }
-        }
-    }
+
     public IEnumerator UnitTurnEnd()
     {
         yield break;
@@ -137,23 +156,28 @@ public class BattleUiController : MonoBehaviour
         qUIController.RemoveUnitFromQueueUI(deadUnit);
     }
 
-    public void SetupStatUI()
+
+    #region Stat Panel
+    public void SetStatPanel()
     {
-        foreach(AllyStatUI statUI in allyStatUIs)
-        {
-            statUI.SetUp();
-        }
-    }
-    public void UpdateStatUI(AllyUnit unit, float atk, float shd, float spd)
-    {
-        foreach(AllyStatUI statUI in allyStatUIs)
-        {
-            if(unit.CharacterData.UIColor == statUI.GetColor())
-            {
-                statUI.SetStatText(atk, shd, spd);
-                return;
-            }
-        }
+
+        
     }
 
+    public void UpdateStatUI(AllyUnit unit, int atk, int shd, int spd)
+    {
+        switch (unit.CharacterData.CardColor)
+        {
+            case CardColor.Red:
+                sitaPanel.UpdateStat(atk, shd, spd); break;
+
+            case CardColor.Green:
+                solphurPanel.UpdateStat(atk, shd, spd); break;
+
+            case CardColor.Blue:
+                rigelPanel.UpdateStat(atk, shd, spd); break;
+        }
+
+    }
+    #endregion
 }
