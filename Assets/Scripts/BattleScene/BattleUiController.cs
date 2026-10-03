@@ -70,6 +70,11 @@ public class BattleUiController : MonoBehaviour
         rewardPanel.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        GameEventsLibrary.OnUnitTurnStart += UnitTurnChange;
+    }
+
     // NotUsed
     //public IEnumerator TurnStart(int turn, string who)
     //{
@@ -163,7 +168,29 @@ public class BattleUiController : MonoBehaviour
 
         
     }
+    public void UnitTurnChange(BattleUnitBase unit)
+    {
+        if(unit.Team == UnitTeam.Enemy)
+        {
+            sitaPanel.ExitTurn();
+            solphurPanel.ExitTurn();
+            rigelPanel.ExitTurn();
+        }
 
+        else
+        {
+            AllyUnit ally = unit as AllyUnit;
+            switch (ally.CharacterData.CardColor)
+            {
+                case CardColor.Red:
+                    sitaPanel.EnterTurn(); break;
+                case CardColor.Green:
+                    solphurPanel.EnterTurn(); break;
+                case CardColor.Blue:
+                    rigelPanel.EnterTurn(); break;
+            }
+        }
+    }
     public void UpdateStatUI(AllyUnit unit, int atk, int shd, int spd)
     {
         switch (unit.CharacterData.CardColor)
