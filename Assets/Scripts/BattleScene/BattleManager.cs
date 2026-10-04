@@ -442,7 +442,7 @@ public class BattleManager : MonoBehaviour
                 if (turnQ.Count == 0) { Debug.Log("TurnQ count 0"); yield break; }
             }
 
-            //캐릭터 턴 시작 : 패널 표시  --> actingUnit 저장
+            //유닛 턴 시작 : 패널 표시  --> actingUnit 저장
             totalTurnCount++;
 
             ActingUnit = turnQ.Dequeue();

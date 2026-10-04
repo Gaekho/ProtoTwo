@@ -25,7 +25,7 @@ public class EnemyUIController : BattleUnitUIcontroller
 
     public override void SetHealth(int currentHealth)
     {
-        healthSlider.value = currentHealth / maxHealth;
+        healthSlider.value = (float) currentHealth / maxHealth;
         healthTxt.text = $"{currentHealth} / {maxHealth}";
     }
 

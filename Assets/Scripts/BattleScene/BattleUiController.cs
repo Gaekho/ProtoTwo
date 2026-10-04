@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-//using UnityEngine.UIElements;
 using TMPro;
 using Proto2.Enums;
 using System.Runtime.CompilerServices;
@@ -25,6 +24,9 @@ public class BattleUiController : MonoBehaviour
 
     [Header("Turn Queue")]
     [SerializeField] private TurnQUIController qUIController;
+
+    [Header("Hand Board")]
+    [SerializeField] private GameObject handBoard;
 
     [Header("Ally Stats")]
     [SerializeField] private AllyStatPanel sitaPanel;
@@ -58,6 +60,10 @@ public class BattleUiController : MonoBehaviour
         {
             outline.color = Color.white;
         }
+        public void SetRight(bool hasRight)
+        {
+            outline.color = hasRight ? Color.yellow : Color.white;
+        }
     }
     #endregion
 
@@ -73,6 +79,13 @@ public class BattleUiController : MonoBehaviour
     private void OnEnable()
     {
         GameEventsLibrary.OnUnitTurnStart += UnitTurnChange;
+        GameEventsLibrary.OnActingRightShifted += ActingRightShifted;
+    }
+
+    private void OnDisable()
+    {
+        GameEventsLibrary.OnUnitTurnStart -= UnitTurnChange;
+        GameEventsLibrary.OnActingRightShifted -= ActingRightShifted;
     }
 
     // NotUsed
@@ -102,6 +115,7 @@ public class BattleUiController : MonoBehaviour
     //    yield break;
     //}
 
+    #region Screen Panels
     public IEnumerator UnitTurnStart(int turn, string who)
     {
         turnChangePanel.SetActive(true);
@@ -115,13 +129,10 @@ public class BattleUiController : MonoBehaviour
         turnChangePanel.SetActive(false);
         yield break;
     }
-
-
     public IEnumerator UnitTurnEnd()
     {
         yield break;
     }
-
     public IEnumerator BattleEnd(string winLose)
     {
         rewardPanel.SetActive(true);
@@ -129,7 +140,6 @@ public class BattleUiController : MonoBehaviour
         wl.text = "전투 " + winLose + "!";
         yield break;
     }
-
     public IEnumerator RoundStart(int queueCount)
     {
         turnChangePanel.SetActive(true);
@@ -146,21 +156,23 @@ public class BattleUiController : MonoBehaviour
         turnChangePanel.SetActive(false);
     }
 
+    #endregion
+
+    #region Queue
     public void RefreshTurnQueueUI(int queueCount, List<BattleUnitBase> aliveUnits)
     {
         qUIController.ReBuildQueue(queueCount, aliveUnits);
     }
-
     public void TransferTurnQueueUI()
     {
         qUIController.TransferQueueUI();
     }
-
     public void RemoveUnitFromTurnQueueUI(BattleUnitBase deadUnit)
     {
         qUIController.RemoveUnitFromQueueUI(deadUnit);
     }
 
+    #endregion
 
     #region Stat Panel
     public void SetStatPanel()
@@ -170,11 +182,13 @@ public class BattleUiController : MonoBehaviour
     }
     public void UnitTurnChange(BattleUnitBase unit)
     {
+        sitaPanel.ExitTurn();
+        solphurPanel.ExitTurn();
+        rigelPanel.ExitTurn();
+
         if(unit.Team == UnitTeam.Enemy)
         {
-            sitaPanel.ExitTurn();
-            solphurPanel.ExitTurn();
-            rigelPanel.ExitTurn();
+            return;
         }
 
         else
@@ -191,6 +205,25 @@ public class BattleUiController : MonoBehaviour
             }
         }
     }
+
+    public void ActingRightShifted(AllyUnit holder)
+    {
+        sitaPanel.SetRight(false);
+        solphurPanel.SetRight(false);
+        rigelPanel.SetRight(false);
+
+        if(holder != null)
+        {
+            switch (holder.CharacterData.CardColor)
+            {
+                case CardColor.Red: sitaPanel.SetRight(true); break;
+                case CardColor.Green:solphurPanel.SetRight(true); break;
+                case CardColor.Blue: rigelPanel.SetRight(true); break;
+            }
+        }
+
+        qUIController.SetFirstImage(holder);
+    }
     public void UpdateStatUI(AllyUnit unit, int atk, int shd, int spd)
     {
         switch (unit.CharacterData.CardColor)
@@ -206,5 +239,12 @@ public class BattleUiController : MonoBehaviour
         }
 
     }
+    #endregion
+
+    #region Buttons
+    // Turn End Button Reference (현재는 BattleDirector에서 참조)
+    // Deck Button -> 현재 덱 버튼 보여주는 버튼.
+    // Graveyard Button -> Show DeckLost Pane with Graveyard
+    // DeckList Off Button -> 덱리스트 패널 끄는 버튼 (DeckListPanel/Cancel Button)
     #endregion
 }

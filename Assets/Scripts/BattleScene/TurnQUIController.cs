@@ -120,4 +120,10 @@ public class TurnQUIController : MonoBehaviour
         }
     }
 
+    public void SetFirstImage(BattleUnitBase holder)
+    {
+        if (holder == null) return;
+        SetQelement(turnQElement, holder);
+    }
+
 }

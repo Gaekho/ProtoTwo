@@ -3943,7 +3943,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1569164818, guid: 04650722ee1d1f646b5fd3c10a68d82f, type: 3}
+  m_Sprite: {fileID: 187284018, guid: 04650722ee1d1f646b5fd3c10a68d82f, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6687,15 +6687,18 @@ MonoBehaviour:
   winOrLose: {fileID: 563621745}
   RewardContainer: {fileID: 250336446}
   qUIController: {fileID: 1527153320}
-  grayPanel: {fileID: 0}
-  allyStatUIs: []
-  statPanels:
-  - img: {fileID: 0}
+  sitaPanel:
+    outline: {fileID: 0}
     atk: {fileID: 0}
     shd: {fileID: 0}
     spd: {fileID: 0}
-  sitaPanel:
-    img: {fileID: 0}
+  solphurPanel:
+    outline: {fileID: 0}
+    atk: {fileID: 0}
+    shd: {fileID: 0}
+    spd: {fileID: 0}
+  rigelPanel:
+    outline: {fileID: 0}
     atk: {fileID: 0}
     shd: {fileID: 0}
     spd: {fileID: 0}
@@ -9523,7 +9526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.119318135, b: 0, a: 0.39215687}
+  m_Color: {r: 0.7176471, g: 0.22352941, b: 0.1882353, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
