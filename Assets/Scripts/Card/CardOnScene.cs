@@ -185,7 +185,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public IEnumerator CardUseRoutine()
     {
-        AllyUnit actor = BattleManager.Instance.CurrentRightHolder;
+        AllyUnit actor = BattleManager.Instance.ActingUnit;
 
         switch (data.CardAnimTrigger)
         {
@@ -239,7 +239,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         CardsizeSmall();
         illust.sprite = data.CardSprite;
         canvas.gameObject.SetActive(true);
-        SetPlayable(BattleManager.Instance.CurrentRightHolder);
+        SetPlayable(BattleManager.Instance.ActingUnit);
         //Color color = Color.white;
         //color.a = 1f;
         //myImage.color = color;           OnDrag 참조
@@ -258,7 +258,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
 
         //턴 캐릭터 체크
-        AllyUnit holder = BattleManager.Instance.CurrentRightHolder;
+        AllyUnit holder = BattleManager.Instance.ActingUnit;
         if (holder != primaryOwner && holder != secondaryOwner)
         {
             Debug.Log("캐릭터 턴 아님.");

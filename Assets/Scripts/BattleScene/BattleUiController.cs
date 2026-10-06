@@ -36,15 +36,21 @@ public class BattleUiController : MonoBehaviour
     [Serializable]
     private class AllyStatPanel
     {
-        [SerializeField] private Image outline;
+        [SerializeField] private Image panel;
+        [SerializeField] private Outline outline;
+        [SerializeField] private Color uiColor;
         [SerializeField] private Text atk, shd, spd;
 
-        public void SetStat(int atk, int shd, int spd)
+        public void SetStat(CharacterData chararcter)
         {
-            outline.color = Color.white;
-            this.atk.text = $"{atk}";
-            this.shd.text = $"{shd}";
-            this.spd.text = $"{spd}";
+            panel.color = Color.white;
+            uiColor = chararcter.UIColor;
+            outline.effectColor = uiColor;
+            this.atk.text = $"{chararcter.BaseAttack}";
+            this.shd.text = $"{chararcter.BaseShield}";
+            this.spd.text = $"{chararcter.BaseSpeed}";
+
+            // To Do : Set을 CharacterState로 변경하는 방안 + 탈리스만 확보해서 개수 표시.
         }
         public void UpdateStat(int atk, int shd, int spd)
         {
@@ -52,17 +58,10 @@ public class BattleUiController : MonoBehaviour
             this.shd.text = $"{shd}";
             this.spd.text = $"{spd}";
         }
-        public void EnterTurn()
-        {
-            outline.color = Color.white;
-        }
-        public void ExitTurn()
-        {
-            outline.color = Color.white;
-        }
+
         public void SetRight(bool hasRight)
         {
-            outline.color = hasRight ? Color.yellow : Color.white;
+            panel.color = hasRight ? Color.yellow : Color.white;
         }
     }
     #endregion
@@ -78,13 +77,11 @@ public class BattleUiController : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEventsLibrary.OnUnitTurnStart += UnitTurnChange;
         GameEventsLibrary.OnActingRightShifted += ActingRightShifted;
     }
 
     private void OnDisable()
     {
-        GameEventsLibrary.OnUnitTurnStart -= UnitTurnChange;
         GameEventsLibrary.OnActingRightShifted -= ActingRightShifted;
     }
 
@@ -158,10 +155,10 @@ public class BattleUiController : MonoBehaviour
 
     #endregion
 
-    #region Queue
-    public void RefreshTurnQueueUI(int queueCount, List<BattleUnitBase> aliveUnits)
+    #region QueueWrapper
+    public void RefreshTurnQueueUI( List<BattleUnitBase> aliveUnits)
     {
-        qUIController.ReBuildQueue(queueCount, aliveUnits);
+        qUIController.ReBuildQueue(aliveUnits);
     }
     public void TransferTurnQueueUI()
     {
@@ -171,39 +168,25 @@ public class BattleUiController : MonoBehaviour
     {
         qUIController.RemoveUnitFromQueueUI(deadUnit);
     }
-
+    public void SetFirstQueueElement(AllyUnit holder)
+    {
+        qUIController.SetFirstImage(holder);
+    }
     #endregion
 
     #region Stat Panel
-    public void SetStatPanel()
+    public void SetStatPanel(List<AllyUnit> allies)
     {
-
-        
-    }
-    public void UnitTurnChange(BattleUnitBase unit)
-    {
-        sitaPanel.ExitTurn();
-        solphurPanel.ExitTurn();
-        rigelPanel.ExitTurn();
-
-        if(unit.Team == UnitTeam.Enemy)
+        foreach(AllyUnit ally in allies)
         {
-            return;
-        }
-
-        else
-        {
-            AllyUnit ally = unit as AllyUnit;
-            switch (ally.CharacterData.CardColor)
+            CharacterData owner = ally.CharacterData;
+            switch (owner.CardColor)
             {
-                case CardColor.Red:
-                    sitaPanel.EnterTurn(); break;
-                case CardColor.Green:
-                    solphurPanel.EnterTurn(); break;
-                case CardColor.Blue:
-                    rigelPanel.EnterTurn(); break;
+                case CardColor.Red: sitaPanel.SetStat(owner); break;
+                case CardColor.Green: solphurPanel.SetStat(owner); break;
+                case CardColor.Blue: rigelPanel.SetStat(owner); break;
             }
-        }
+        }        
     }
 
     public void ActingRightShifted(AllyUnit holder)
@@ -222,7 +205,7 @@ public class BattleUiController : MonoBehaviour
             }
         }
 
-        qUIController.SetFirstImage(holder);
+        SetFirstQueueElement(holder);
     }
     public void UpdateStatUI(AllyUnit unit, int atk, int shd, int spd)
     {

@@ -4,11 +4,12 @@ using UnityEngine;
 using TMPro;
 using Proto2.Enums;
 using UnityEngine.UI;
+using System;
 
+[Serializable]
 public class TurnQUIController : MonoBehaviour
 {
     [Header("Fixed UI")]
-    [SerializeField] private TMP_Text queueCount;
     [SerializeField] private GameObject turnQElement;
 
     [Header("Q Element Prefab")]
@@ -27,10 +28,9 @@ public class TurnQUIController : MonoBehaviour
     [SerializeField] private List<BattleUnitBase> waitingUnits = new();
 
 
-    public void ReBuildQueue(int queueCount, List<BattleUnitBase> orderedUnits)
+    public void ReBuildQueue( List<BattleUnitBase> orderedUnits)
     {
         ClearQueueUI();
-        SetQueueCount(queueCount);
 
         if (orderedUnits == null || orderedUnits.Count == 0) return;
 
@@ -86,10 +86,6 @@ public class TurnQUIController : MonoBehaviour
         spawnedQElements.RemoveAt(idx);
     }
 
-    private void SetQueueCount(int count)
-    {
-        queueCount.text = $"[ {count} ]";
-    }
 
     private void CreateWaitingElement(BattleUnitBase unit)
     {

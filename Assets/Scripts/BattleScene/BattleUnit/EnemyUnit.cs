@@ -30,7 +30,6 @@ public class EnemyUnit : BattleUnitBase
         mySprite.sprite = enemyData.EnemySprite;
 
         currentSpeed = enemyData.BaseSpeed;
-        uiController.SetUpUI(this);
 
         //패턴 세팅
         SetRandomPattern();

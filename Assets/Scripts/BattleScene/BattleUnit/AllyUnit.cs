@@ -47,8 +47,6 @@ public class AllyUnit : BattleUnitBase
         myTransform = transform.parent;
         myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
 
-        //UI 세팅
-        uiController.SetUpUI(this);
     }
 
     #region Overrides

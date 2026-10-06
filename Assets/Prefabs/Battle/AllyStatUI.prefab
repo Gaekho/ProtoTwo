@@ -707,7 +707,6 @@ GameObject:
   - component: {fileID: 3838480896088444160}
   - component: {fileID: 8971275940443264387}
   - component: {fileID: 128701411551912436}
-  - component: {fileID: -7685429446831050606}
   m_Layer: 5
   m_Name: AllyStatUI
   m_TagString: Untagged
@@ -793,25 +792,6 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 0.2224788, b: 0, a: 1}
   m_EffectDistance: {x: 2, y: 2}
   m_UseGraphicAlpha: 1
---- !u!114 &-7685429446831050606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5143269747459722245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb775a3f66e1f074e8a662df146c44f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outLine: {fileID: 128701411551912436}
-  outLineImage: {fileID: 8971275940443264387}
-  thumbnail: {fileID: 4253264901312360064}
-  owner: {fileID: 0}
-  atkTxt: {fileID: 8251940558299986975}
-  shdTxt: {fileID: 4784208218261774}
-  spdTxt: {fileID: 8528333653991958046}
 --- !u!1 &7240684234966520040
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,7 +1227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.96657693, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
