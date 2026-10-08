@@ -26,7 +26,7 @@ public class BattleUiController : MonoBehaviour
     [SerializeField] private TurnQUIController qUIController;
 
     [Header("Hand Board")]
-    [SerializeField] private GameObject handBoard;
+    [SerializeField] private Image handBoard;
 
     [Header("Ally Stats")]
     [SerializeField] private AllyStatPanel sitaPanel;
@@ -206,6 +206,7 @@ public class BattleUiController : MonoBehaviour
         }
 
         SetFirstQueueElement(holder);
+        handBoard.color = holder.CharacterData.UIColor;
     }
     public void UpdateStatUI(AllyUnit unit, int atk, int shd, int spd)
     {

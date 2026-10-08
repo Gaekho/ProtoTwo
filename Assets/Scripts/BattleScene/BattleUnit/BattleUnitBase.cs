@@ -116,6 +116,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     public virtual void EnterTurn()
     {
         isTurn = true;
+        Debug.Log(this.name + "enter Turn");
         myTransform.localScale = new Vector3(1.5f, 1.5f, 1f);
         uiController.SetTurn(true);
         ClearArmor();

@@ -82,7 +82,7 @@ public class EnemyUnit : BattleUnitBase
         yield return null;                             //사망 애니메이션 발동 후 한 프레임 보장을 통해 버그 가능성 낮추기.
         yield return new WaitForSeconds(myAnimator.GetCurrentAnimatorStateInfo(0).length);
         yield return new WaitForSeconds(0.2f);
-        Destroy(transform.parent.gameObject);
+        Destroy(gameObject);
     }
 
     //Gpt가 짜준 Die 루틴. WaitUntil을 사용해서 애니메이션 종료를 감지한다.

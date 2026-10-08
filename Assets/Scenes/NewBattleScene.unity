@@ -6724,7 +6724,7 @@ MonoBehaviour:
   winOrLose: {fileID: 563621745}
   RewardContainer: {fileID: 250336446}
   qUIController: {fileID: 1527153320}
-  handBoard: {fileID: 0}
+  handBoard: {fileID: 838322760}
   sitaPanel:
     panel: {fileID: 1876643607}
     outline: {fileID: 236193243}
@@ -9119,7 +9119,7 @@ MonoBehaviour:
   basicCharacter: {fileID: 0}
   allyContainer: {fileID: 785738629}
   enemyContainer: {fileID: 425926875}
-  enemyGap: 1
+  enemyGap: 1.5
   playerParty: []
   enemyList: []
   roundCount: 0
@@ -12093,7 +12093,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &996533739
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12120,7 +12120,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 996533738}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -14051,9 +14051,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TempBattleDirector, Assembly-CSharp
-        m_MethodName: ContinueToNode
+      - m_Target: {fileID: 786526520}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: ConfirmRewardAndExit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -24666,6 +24666,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1754075820321437788, guid: cce910a53de6a204098b29a8b05c3cee, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -423184263, guid: 8f3205230bbf0a2438b1c991c9a107c4, type: 3}
     - target: {fileID: 2791500891812566895, guid: cce910a53de6a204098b29a8b05c3cee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -24804,6 +24808,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5334667225790397707, guid: cce910a53de6a204098b29a8b05c3cee, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6398545856273278662, guid: cce910a53de6a204098b29a8b05c3cee, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8507533564202064900, guid: cce910a53de6a204098b29a8b05c3cee, type: 3}

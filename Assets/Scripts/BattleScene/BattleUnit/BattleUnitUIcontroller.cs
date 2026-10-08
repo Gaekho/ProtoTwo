@@ -46,9 +46,18 @@ public abstract class BattleUnitUIcontroller : MonoBehaviour
         //하위 구현
     }
 
+    
     public virtual void SetArmor(int amount)
-    {   
+    {
+        if(!armorState.gameObject.activeSelf)   armorState.gameObject.SetActive(true);
+
+        if (amount == 0) NoArmor();
         armorTxt.text = amount.ToString();
+    }
+
+    public virtual void NoArmor()
+    {
+        armorState.gameObject.SetActive(false);
     }
 
     public virtual void SetTurn(bool isTurn)

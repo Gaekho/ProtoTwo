@@ -99,7 +99,7 @@ public class TurnQUIController : MonoBehaviour
 
     private void SetQelement(GameObject element, BattleUnitBase unit)
     {
-        Image image = element.GetComponent<Image>();
+        Image image = element.GetComponentInChildren<Image>();
         Outline outline = element.GetComponent<Outline>();
 
         if(unit.Team == UnitTeam.Ally)

@@ -138,18 +138,21 @@ public class BattleManager : MonoBehaviour
          * 적을 스폰하기 위해 BasicEnemy 프리팹을 사용한다.
          * 이후 SetEnemy() 를 통해 적절한 데이터를 주입한다.
          */
+        Vector3 enemyPos = new(0,0,0);
+        int enemyCount = encounterEnemy.Count;
+        // enemyGap = (EnemyGap 공식 적용(enemy Count에 따라서, 적절한 Gap을 생성. 2면 ~~ 3이면 ~~ 4면 ~~ 우선은 인스펙터 기본인 1.5로 고정)
 
-        for(int i = 0;  i < encounterEnemy.Count; i++)
+        for(int i = 0;  i < enemyCount; i++)
         {
-            GameObject created = Instantiate(enemyPrefab);
+            GameObject created = Instantiate(enemyPrefab, enemyContainer);
 
-            created.transform.position = enemyContainer.position;
+            created.transform.localPosition = enemyPos;
             EnemyUnit enemy = created.GetComponentInChildren<EnemyUnit>();
 
             if (enemy != null)
             {
                 enemy.SetProfile(encounterEnemy[i]);
-                enemyContainer.position += new Vector3(enemyGap, 0, 0);     
+                enemyPos += new Vector3(enemyGap, 0, 0);     
                 enemyList.Add(enemy);
             }
 
@@ -395,12 +398,13 @@ public class BattleManager : MonoBehaviour
         {
             if (IsBattleEnd()) { Debug.Log("Done"); yield break; }
 
-            if (turnQ == null || turnQ.Count == 0)
-            {
-                ReBuildTurnQueue();
-                Debug.Log("Rebuild Queue");
-                if (turnQ.Count == 0) { Debug.Log("TurnQ count 0"); yield break; }
-            }
+            // 문제 없음이 확인되면 삭제 대상
+            //if (turnQ == null || turnQ.Count == 0)
+            //{
+            //    ReBuildTurnQueue();
+            //    Debug.Log("Rebuild Queue");
+            //    if (turnQ.Count == 0) { Debug.Log("TurnQ count 0"); yield break; }
+            //}
 
             //유닛 턴 시작 : 패널 표시  --> TurnUnit 저장
             totalTurnCount++;

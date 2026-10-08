@@ -44,7 +44,6 @@ public class AllyUnit : BattleUnitBase
         
         //턴 세팅
         isTurn = false;
-        myTransform = transform.parent;
         myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
 
     }
