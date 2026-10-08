@@ -40,6 +40,7 @@ public class BattleManager : MonoBehaviour
 
     [Header("Temporary Fields")]
     [SerializeField] private List<EnemyData> tempEnemies;
+    [SerializeField] private bool isBattoleOver;
 
     // To Do:
     // 인카운터 데이터에 보상 내역을 추가 및 배틀매니저에서 보상 임시로 보관. 이후 승리 시 PartyState에 커밋하는 로직까지 확장
@@ -125,19 +126,7 @@ public class BattleManager : MonoBehaviour
 
     private void SpawnEnemies(List<EnemyData> encounterEnemy)
     {
-        /* 맵 데이터에서 적 인카운터의 조합을 확인, 적절한 위치에 배정한다.
-         * 
-         * 적절한 위치는 적의 수에 따라 달라져야 한다.
-         * 유닛 가로 크기는 1이다. 따라서 간격은 1.1 이상으로 한다.
-         * 위치는 x position 1.5 ~ 4.0 사이의 유동적이며, 기본적으로 평균이 2 가 되도록 배치한다.
-         * 모든 적 유닛의 x position은 (1~4)범위로 설정한다.(적 진영의 크기)
-         * 단독 적은 2
-         * 2개체는 1.2, 2.8
-         * 3개체는 1, 2.5, 4 명확하진 않은데, 적절한 거리 및 이유를 들어서 공식화 하면 좋을 것 같다. 
-         * 
-         * 적을 스폰하기 위해 BasicEnemy 프리팹을 사용한다.
-         * 이후 SetEnemy() 를 통해 적절한 데이터를 주입한다.
-         */
+
         Vector3 enemyPos = new(0,0,0);
         int enemyCount = encounterEnemy.Count;
         // enemyGap = (EnemyGap 공식 적용(enemy Count에 따라서, 적절한 Gap을 생성. 2면 ~~ 3이면 ~~ 4면 ~~ 우선은 인스펙터 기본인 1.5로 고정)
@@ -396,7 +385,7 @@ public class BattleManager : MonoBehaviour
         // 메인 배틀 진입
         while (true)
         {
-            if (IsBattleEnd()) { Debug.Log("Done"); yield break; }
+            if (isBattoleOver) { Debug.Log("Done"); yield break; }
 
             // 문제 없음이 확인되면 삭제 대상
             //if (turnQ == null || turnQ.Count == 0)

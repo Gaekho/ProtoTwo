@@ -37,18 +37,20 @@ public class BattleUiController : MonoBehaviour
     private class AllyStatPanel
     {
         [SerializeField] private Image panel;
+        [SerializeField] private Image thumbNail;
         [SerializeField] private Outline outline;
         [SerializeField] private Color uiColor;
         [SerializeField] private Text atk, shd, spd;
 
-        public void SetStat(CharacterData chararcter)
+        public void SetStat(CharacterData character)
         {
             panel.color = Color.white;
-            uiColor = chararcter.UIColor;
+            uiColor = character.UIColor;
+            thumbNail.sprite = character.ThumbNail;
             outline.effectColor = uiColor;
-            this.atk.text = $"{chararcter.BaseAttack}";
-            this.shd.text = $"{chararcter.BaseShield}";
-            this.spd.text = $"{chararcter.BaseSpeed}";
+            this.atk.text = $"{character.BaseAttack}";
+            this.shd.text = $"{character.BaseShield}";
+            this.spd.text = $"{character.BaseSpeed}";
 
             // To Do : Set을 CharacterState로 변경하는 방안 + 탈리스만 확보해서 개수 표시.
         }

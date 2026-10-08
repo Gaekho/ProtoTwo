@@ -22,20 +22,20 @@ MonoBehaviour:
   patternList:
   - patternName: "\uCC0C\uB974\uAE30"
     patternType: 0
-    intentIcon: {fileID: 585115608, guid: ea7de6defccb7054e830650d2736518a, type: 3}
+    intentIcon: {fileID: -497449512, guid: 0c7ac0fc980114145bfb90927911fecf, type: 3}
     patternDescription: "\uD53C\uD574\uB97C 10 \uC785\uD78C\uB2E4."
     patternActionList:
     - rid: 283199232281411587
   - patternName: "\uBC29\uC5B4 \uD0DC\uC138"
     patternType: 1
-    intentIcon: {fileID: 485272125, guid: ea7de6defccb7054e830650d2736518a, type: 3}
+    intentIcon: {fileID: 997859787, guid: 0c7ac0fc980114145bfb90927911fecf, type: 3}
     patternDescription: "\uBB34\uC791\uC704 \uC801\uC774 \uBC29\uC5B4\uB3C4\uB97C
       10 \uC5BB\uB294\uB2E4."
     patternActionList:
     - rid: 3789920056042586112
   - patternName: "\uC369\uC740 \uB098\uBB34\uC790\uB8E8"
     patternType: 3
-    intentIcon: {fileID: -1669946452, guid: ea7de6defccb7054e830650d2736518a, type: 3}
+    intentIcon: {fileID: -640635409, guid: 0c7ac0fc980114145bfb90927911fecf, type: 3}
     patternDescription: "\uC120\uD0DD\uB41C \uC544\uAD70\uC5D0\uAC8C '\uCD9C\uD608'
       5\uB97C \uBD80\uC5EC\uD55C\uB2E4."
     patternActionList:
