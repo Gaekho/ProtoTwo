@@ -79,6 +79,17 @@ public class AllyUnit : BattleUnitBase
         //UIManager.Instance.UpdateStatUI(this, currentAttack, currentShield, currentSpeed);
         //배틀 디렉터에게 UI 변경 요청
     }
+
+    public override void UpdateStat(ConditionType statType, int value)
+    {
+        switch (statType)
+        {
+            case ConditionType.Attack: currentAttack = value; break;
+            case ConditionType.Shield: currentShield = value; break;
+            case ConditionType.Speed: currentSpeed = value; break;
+        }
+        //배틀 디렉터에게 UI 변경 요청
+    }
     public override void ReceiveBuff(BuffBase buff, BattleUnitBase applier)
     {
         BuffInstance alreadyExist = buffList.Find(x => x.SourceBuff.BuffType == buff.BuffType);
@@ -116,7 +127,13 @@ public class AllyUnit : BattleUnitBase
     protected override IEnumerator Die()
     {
         //아직 미구현. 애니메이션 재생 및 자기 자신 파괴, BattleManager의 AllyList에서 삭제 등의 작업 추가.
-        yield break;
+        BattleManager.Instance.AllyDead(this);
+        isDead = true;
+        DoDieAnim();
+        yield return null;
+        yield return new WaitForSeconds(myAnimator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(0.2f);
+        Destroy(gameObject);
     }
     #endregion
 

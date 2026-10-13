@@ -16,9 +16,12 @@ MonoBehaviour:
   cardName: "\uBB34\uBAA8\uD55C \uC77C\uACA9"
   type: 1
   color: 1
+  secondaryColor: 0
   cardText: "\uC120\uD0DD\uB41C \uC801\uC5D0\uAC8C \uD53C\uD574\uB97C 12 \uC785\uD78C\uB2E4.
     \uC790\uC2E0\uC774 \uD53C\uD574\uB97C 3 \uC785\uB294\uB2E4."
-  cardSprite: {fileID: -993018294, guid: 3b434b7b9be38ad43a14b5693f993bfd, type: 3}
+  flavorText: 
+  cardFrame: {fileID: 963676758, guid: 64efcc16790d2244dae70d40c5824e71, type: 3}
+  cardSprite: {fileID: 21300000, guid: 9ea605ff69b3fcc4fa2f5afa4c3f431f, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 0
   usableWithoutTarget: 0

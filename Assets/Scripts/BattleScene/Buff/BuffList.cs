@@ -56,7 +56,8 @@ public class AtkStatPlusBuff : BuffBase
 
     public override void OnApply(BuffInstance instance)
     {
-        instance.Owner.StatusChange(ConditionType.Attack ,plusAmount);
+        if(!instance.Owner.HasBuff(BuffTypes.AtkStatPlus))
+            instance.Owner.StatusChange(ConditionType.Attack ,plusAmount);
     }
 
     public override void OnRemove(BuffInstance instance)
@@ -95,7 +96,8 @@ public class ShdStatPlusBuff : BuffBase
     }
     public override void OnApply(BuffInstance instance)
     {
-        instance.Owner.StatusChange(ConditionType.Shield, plusAmount);
+        if(!instance.Owner.HasBuff(BuffTypes.ShdStatPlus))
+            instance.Owner.StatusChange(ConditionType.Shield, plusAmount);
     }
 
     public override void OnRemove(BuffInstance instance)
@@ -135,7 +137,8 @@ public class SpdStatPlusBuff : BuffBase
 
     public override void OnApply(BuffInstance instance)
     {
-        instance.Owner.StatusChange(ConditionType.Speed, plusAmount);
+        if(instance.Owner.HasBuff(BuffTypes.SpdStatPlus))
+            instance.Owner.StatusChange(ConditionType.Speed, plusAmount);
     }
 
     public override void OnRemove(BuffInstance instance)

@@ -81,6 +81,11 @@ public abstract class BattleUnitBase : MonoBehaviour
 
     }
 
+    public virtual void UpdateStat(ConditionType statType, int value)
+    {
+        
+    }
+
     public virtual void GetDamage(int value)
     {
         int previousHealth = currentHealth;           //데미지 받기 전 체력 저장.

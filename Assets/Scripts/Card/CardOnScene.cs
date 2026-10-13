@@ -371,7 +371,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnEndDrag(PointerEventData eventdata)
     {
-        if (BattleManager.Instance.IsResolving)
+        if (BattleManager.Instance.IsResolving || BattleManager.Instance.CurrentState != TurnState.AllyTurn)
         {
             BackToHand();
             Debug.Log("Can't Use Card Now!");

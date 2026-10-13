@@ -78,6 +78,7 @@ public class EnemyUnit : BattleUnitBase
     protected override IEnumerator Die()
     {
         BattleManager.Instance.EnemyDead(this);       //에러 발생으로 잠시 주석처리. EnemyDead 수정 후 다시 사용.
+        isDead = true;
         DoDieAnim();
         yield return null;                             //사망 애니메이션 발동 후 한 프레임 보장을 통해 버그 가능성 낮추기.
         yield return new WaitForSeconds(myAnimator.GetCurrentAnimatorStateInfo(0).length);

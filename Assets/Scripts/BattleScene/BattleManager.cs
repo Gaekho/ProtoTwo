@@ -40,7 +40,8 @@ public class BattleManager : MonoBehaviour
 
     [Header("Temporary Fields")]
     [SerializeField] private List<EnemyData> tempEnemies;
-    [SerializeField] private bool isBattoleOver;
+    [SerializeField] private bool isBattleOver;
+    [SerializeField] private bool battleWin;
 
     // To Do:
     // 인카운터 데이터에 보상 내역을 추가 및 배틀매니저에서 보상 임시로 보관. 이후 승리 시 PartyState에 커밋하는 로직까지 확장
@@ -253,33 +254,34 @@ public class BattleManager : MonoBehaviour
 
         if (allEnemyDead)
         {
-            Debug.Log($" count : {enemyList.Count}");
             CurrentState = TurnState.End;
-            OnVictory();
+            isBattleOver = true;
+            battleWin = true;
             return true;
         }
 
         if(allAllyDead)
         {
             CurrentState = TurnState.End;
-            OnDefeat();
+            isBattleOver = true;
+            battleWin = false;
             return true;
         }
         return false;
     }
 
-    private void OnVictory()
-    {
-        CommitPartyOnVictory();
-        handController.TurnOffHand();
-        StartCoroutine(uiController.BattleEnd("승리"));
-    }
+    //private void OnVictory()
+    //{
+    //    CommitPartyOnVictory();
+    //    handController.TurnOffHand();
+    //    StartCoroutine(uiController.BattleEnd("승리"));
+    //}
 
-    private void OnDefeat()
-    {
-        handController.TurnOffHand();
-        StartCoroutine(uiController.BattleEnd("패배"));
-    }
+    //private void OnDefeat()
+    //{
+    //    handController.TurnOffHand();
+    //    StartCoroutine(uiController.BattleEnd("패배"));
+    //}
 
     private void CommitPartyOnVictory()
     {
@@ -301,6 +303,27 @@ public class BattleManager : MonoBehaviour
         // 인카운터 데이터에서 보상 획득 시 함께 커밋
 
         RuntimeState.Instance.CommitPartyState(newState);
+    }
+
+    private IEnumerator BattleEndRoutine(bool win)
+    {
+        //승리 애니메이션 추가 시 - 카메라 이동 및 확대 & 승리 애니메이션 재생 & 보상 패널 차례로 재생하는 애니메이션
+        handController.TurnOffHand();
+
+        if (win)
+        {
+            CommitPartyOnVictory();
+            StartCoroutine(uiController.BattleEndWin());
+
+            //보상 제공 로직 추가.
+        }
+
+        else
+        {
+            StartCoroutine(uiController.BattleEndLose());
+        }
+
+        yield break;
     }
     #endregion
 
@@ -385,7 +408,7 @@ public class BattleManager : MonoBehaviour
         // 메인 배틀 진입
         while (true)
         {
-            if (isBattoleOver) { Debug.Log("Done"); yield break; }
+            if (isBattleOver) { Debug.Log("Done"); break; }
 
             // 문제 없음이 확인되면 삭제 대상
             //if (turnQ == null || turnQ.Count == 0)
@@ -399,6 +422,7 @@ public class BattleManager : MonoBehaviour
             totalTurnCount++;
 
             TurnUnit = turnQ.Dequeue();
+            ActingUnit = null;
             //if(ActingUnit != null) { ActingUnit.EnterTurn(); }
             GameEventsLibrary.RaiseUnitTurnStart(TurnUnit);
 
@@ -444,8 +468,12 @@ public class BattleManager : MonoBehaviour
             {
                 EnemyUnit enemy = TurnUnit as EnemyUnit;
                 yield return new WaitForSeconds(0.5f);
-                yield return StartCoroutine(ResolveRoutine(enemy.UsePatternRoutine()));
-                enemy.SetRandomPattern();
+
+                if (!enemy.IsDead)
+                {
+                    yield return StartCoroutine(ResolveRoutine(enemy.UsePatternRoutine()));
+                    enemy.SetRandomPattern();
+                }
             }
             // 턴 종료 버프 훅
             yield return StartCoroutine(ResolveRoutine(UnitBuffHook(BuffTriggerTiming.OnTurnEnd, TurnUnit)));
@@ -463,6 +491,8 @@ public class BattleManager : MonoBehaviour
             }
 
         }
+
+        StartCoroutine(BattleEndRoutine(battleWin));
 
 
     }
@@ -495,6 +525,18 @@ public class BattleManager : MonoBehaviour
     public void ConfirmRewardAndExit()
     {
         SceneFlowManager.Instance.RequestBattleEnd();
+    }
+
+    //Reffered By [ScreenCanvas/DefeatPanel/BackToNode]
+    public void BackToPrevNode()
+    {
+
+    }
+
+    //Reffered By [ScreenCanvas/DefeatPanel/Retry]
+    public void RetryBattle()
+    {
+
     }
 
     #endregion

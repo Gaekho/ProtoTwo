@@ -22,6 +22,9 @@ public class BattleUiController : MonoBehaviour
     [SerializeField] private TMP_Text winOrLose;
     [SerializeField] private RectTransform RewardContainer;
 
+    [Header("Defeat Panel")]
+    [SerializeField] private GameObject defeatPanel;
+
     [Header("Turn Queue")]
     [SerializeField] private TurnQUIController qUIController;
 
@@ -32,6 +35,10 @@ public class BattleUiController : MonoBehaviour
     [SerializeField] private AllyStatPanel sitaPanel;
     [SerializeField] private AllyStatPanel solphurPanel;
     [SerializeField] private AllyStatPanel rigelPanel;
+
+    [Header("Buttons")]
+    [SerializeField] private GameObject turnEndButton;
+    [SerializeField] private GameObject returnActingRightButton;
 
     [Serializable]
     private class AllyStatPanel
@@ -75,16 +82,19 @@ public class BattleUiController : MonoBehaviour
     {
         turnChangePanel.SetActive(false);
         rewardPanel.SetActive(false);
+        defeatPanel.SetActive(false);
     }
 
     private void OnEnable()
     {
         GameEventsLibrary.OnActingRightShifted += ActingRightShifted;
+        GameEventsLibrary.OnActingRightShifted += SwapEndButton;
     }
 
     private void OnDisable()
     {
         GameEventsLibrary.OnActingRightShifted -= ActingRightShifted;
+        GameEventsLibrary.OnActingRightShifted -= SwapEndButton;
     }
 
     // NotUsed
@@ -132,11 +142,24 @@ public class BattleUiController : MonoBehaviour
     {
         yield break;
     }
-    public IEnumerator BattleEnd(string winLose)
+
+    //public IEnumerator BattleEnd(string winLose)
+    //{
+    //    rewardPanel.SetActive(true);
+    //    TMP_Text wl = rewardPanel.GetComponentInChildren<TMP_Text>();
+    //    wl.text = "전투 " + winLose + "!";
+    //    yield break;
+    //}
+
+    public IEnumerator BattleEndWin()
     {
         rewardPanel.SetActive(true);
-        TMP_Text wl = rewardPanel.GetComponentInChildren<TMP_Text>();
-        wl.text = "전투 " + winLose + "!";
+        yield break;
+    }
+
+    public IEnumerator BattleEndLose()
+    {
+        defeatPanel.SetActive(true);
         yield break;
     }
     public IEnumerator RoundStart(int queueCount)
@@ -222,6 +245,21 @@ public class BattleUiController : MonoBehaviour
 
             case CardColor.Blue:
                 rigelPanel.UpdateStat(atk, shd, spd); break;
+        }
+
+    }
+
+    public void SwapEndButton(AllyUnit holder)
+    {
+        if(BattleManager.Instance.TurnUnit == holder)
+        {
+            turnEndButton.SetActive(true);
+            returnActingRightButton.SetActive(false);
+        }
+        else
+        {
+            turnEndButton.SetActive(false);
+            returnActingRightButton.SetActive(true);
         }
 
     }
