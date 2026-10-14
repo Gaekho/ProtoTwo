@@ -78,6 +78,7 @@ public class AllyUnit : BattleUnitBase
         //allyUIC.SetStatTexts(currentAttack, currentShield, currentSpeed);
         //UIManager.Instance.UpdateStatUI(this, currentAttack, currentShield, currentSpeed);
         //배틀 디렉터에게 UI 변경 요청
+        GameEventsLibrary.RaiseUnitStatChanged(this, currentAttack, currentShield, CurrentSpeed);
     }
 
     public override void UpdateStat(ConditionType statType, int value)
@@ -89,6 +90,7 @@ public class AllyUnit : BattleUnitBase
             case ConditionType.Speed: currentSpeed = value; break;
         }
         //배틀 디렉터에게 UI 변경 요청
+        GameEventsLibrary.RaiseUnitStatChanged(this, currentAttack, currentShield, CurrentSpeed);
     }
     public override void ReceiveBuff(BuffBase buff, BattleUnitBase applier)
     {
@@ -133,7 +135,7 @@ public class AllyUnit : BattleUnitBase
         yield return null;
         yield return new WaitForSeconds(myAnimator.GetCurrentAnimatorStateInfo(0).length);
         yield return new WaitForSeconds(0.2f);
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
     #endregion
 

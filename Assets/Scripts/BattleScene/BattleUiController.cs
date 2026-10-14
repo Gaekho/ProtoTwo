@@ -89,12 +89,14 @@ public class BattleUiController : MonoBehaviour
     {
         GameEventsLibrary.OnActingRightShifted += ActingRightShifted;
         GameEventsLibrary.OnActingRightShifted += SwapEndButton;
+        GameEventsLibrary.OnUnitStatChanged += UpdateStatUI;
     }
 
     private void OnDisable()
     {
         GameEventsLibrary.OnActingRightShifted -= ActingRightShifted;
         GameEventsLibrary.OnActingRightShifted -= SwapEndButton;
+        GameEventsLibrary.OnUnitStatChanged -= UpdateStatUI;
     }
 
     // NotUsed
@@ -228,10 +230,12 @@ public class BattleUiController : MonoBehaviour
                 case CardColor.Green:solphurPanel.SetRight(true); break;
                 case CardColor.Blue: rigelPanel.SetRight(true); break;
             }
+
+            handBoard.color = holder.CharacterData.UIColor;
+
         }
 
         SetFirstQueueElement(holder);
-        handBoard.color = holder.CharacterData.UIColor;
     }
     public void UpdateStatUI(AllyUnit unit, int atk, int shd, int spd)
     {
@@ -251,6 +255,14 @@ public class BattleUiController : MonoBehaviour
 
     public void SwapEndButton(AllyUnit holder)
     {
+        if(holder == null)
+        {
+            turnEndButton.GetComponent<Button>().interactable = false;
+            returnActingRightButton.SetActive(false);
+            return;
+        }
+
+
         if(BattleManager.Instance.TurnUnit == holder)
         {
             turnEndButton.SetActive(true);

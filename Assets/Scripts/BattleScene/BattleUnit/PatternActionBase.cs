@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Proto2.Enums;
 using System;
+using System.Linq;
 
 public class PatternActionParameters
 {
@@ -38,12 +39,12 @@ public abstract class PatternActionBase
                 break;
 
             case ActionTargetType.AllUnits:
-                result.AddRange(BattleManager.Instance.PlayerParty);
+                result.AddRange(BattleManager.Instance.AliveAllies);
                 result.AddRange(BattleManager.Instance.EnemyList);
                 break;
 
             case ActionTargetType.AllAllies:
-                result.AddRange(BattleManager.Instance.PlayerParty);
+                result.AddRange(BattleManager.Instance.AliveAllies);
                 break;
 
             case ActionTargetType.AllEnemies:
@@ -52,8 +53,9 @@ public abstract class PatternActionBase
 
             case ActionTargetType.RandomAlly:
                 // 도발 로직 추가
-                int i = UnityEngine.Random.Range(0, BattleManager.Instance.PlayerParty.Count);
-                result.Add(BattleManager.Instance.PlayerParty[i]);        //한줄로 쓰면 가독성 개떨어질까봐 두줄로 씀.
+                var alive = BattleManager.Instance.AliveAllies.ToList();
+                int i = UnityEngine.Random.Range(0, alive.Count);
+                result.Add(alive[i]);        //한줄로 쓰면 가독성 개떨어질까봐 두줄로 씀.
                 break;
 
             case ActionTargetType.RandomEnemy:

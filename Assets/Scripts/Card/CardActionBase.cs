@@ -2,6 +2,7 @@ using Proto2.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //v0.04 / 2026.03.12 / 01:02
@@ -46,7 +47,7 @@ public abstract class CardActionBase
                 break;
 
             case ActionTargetType.AllAllies:
-                result.AddRange(BattleManager.Instance.PlayerParty);
+                result.AddRange(BattleManager.Instance.AliveAllies);
                 break;
 
             case ActionTargetType.AllEnemies:
@@ -54,8 +55,9 @@ public abstract class CardActionBase
                 break;
 
             case ActionTargetType.RandomAlly:
-                int i = UnityEngine.Random.Range(0, BattleManager.Instance.PlayerParty.Count);
-                result.Add(BattleManager.Instance.PlayerParty[i]);        //한줄로 쓰면 가독성 개떨어질까봐 두줄로 씀.
+                var alive = BattleManager.Instance.AliveAllies.ToList();
+                int i = UnityEngine.Random.Range(0, alive.Count);
+                result.Add(alive[i]);        //한줄로 쓰면 가독성 개떨어질까봐 두줄로 씀.
                 break;
 
             case ActionTargetType.RandomEnemy:

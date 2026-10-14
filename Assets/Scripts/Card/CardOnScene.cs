@@ -220,7 +220,11 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (data.SecondaryColor != CardColor.None)
         {
             AllyUnit other = (actor == primaryOwner) ? secondaryOwner : primaryOwner;
-            BattleManager.Instance.SetActingRightHolder(other);   // 상대 캐릭터에게 재이전, 체인 유지
+
+            if (!other.IsDead && other != null)                       // 상대 캐릭터가 있는데 죽어있으면 행동권 이전 X
+                BattleManager.Instance.SetActingRightHolder(other);   // 상대 캐릭터에게 재이전, 체인 유지
+            else
+                BattleManager.Instance.ReturnActingRight();           
         }
         else
         {

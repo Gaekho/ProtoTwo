@@ -53,6 +53,7 @@ public class BattleManager : MonoBehaviour
     public TurnState CurrentState { private set; get; }
     public IReadOnlyList<AllyUnit> PlayerParty => playerParty;
     public IReadOnlyList<EnemyUnit > EnemyList => enemyList;
+    public IEnumerable<AllyUnit> AliveAllies => playerParty.Where(a => a != null && !a.IsDead);
     public int RoundCount => roundCount;
     public int TotalTurnCount => totalTurnCount;
     public bool IsResolving {  set; get; }
@@ -295,7 +296,8 @@ public class BattleManager : MonoBehaviour
         foreach (AllyUnit ally in playerParty)
         {
             CharacterState state = new CharacterState();
-            state.SetHp(ally.CurrentHealth);
+            int health = Mathf.Max(1, ally.CurrentHealth);
+            state.SetHp(health);
             // state.SetTalisman()
             newState.SetCharacterState(ally.CharacterData.CharacterName, state);
         }
@@ -378,9 +380,7 @@ public class BattleManager : MonoBehaviour
 
     public void AllyDead(AllyUnit dead)
     {
-        int idx = playerParty.FindIndex(x=> x.gameObject == dead.gameObject);
-        if (idx < 0) return;
-        playerParty.RemoveAt(idx);
+
         RemoveDeadUnitFromQueue(dead);
 
         IsBattleEnd();
@@ -509,6 +509,14 @@ public class BattleManager : MonoBehaviour
             CurrentState = result;
             Debug.Log($"Current Turn State : {result}");
         }
+    }
+
+    // Reffered By [ScreenCanvas/Down Panel / Buttons / Return Acting Right]
+    public void RequestReturnActingRight()
+    {
+        if (CurrentState != TurnState.AllyTurn || IsResolving) return;
+        if (ActingUnit == TurnUnit) return;
+        ReturnActingRight();
     }
 
     // Reffered By [ScreenCanvas/Down Panel/Buttons/Deck & Graveyard]

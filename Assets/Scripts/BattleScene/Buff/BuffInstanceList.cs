@@ -20,3 +20,13 @@ public class StrengthenBuffInstance : BuffInstance
         this.damageIncreaseRate = rate;
     }
 }
+
+[Serializable]
+public class StatChangeBuffInstance : BuffInstance
+{
+    [SerializeField] private int amount;
+
+    public StatChangeBuffInstance(BuffBase sourceBuff, BattleUnitBase owner, BattleUnitBase applier) : base(sourceBuff, owner, applier)
+    {
+    }
+}

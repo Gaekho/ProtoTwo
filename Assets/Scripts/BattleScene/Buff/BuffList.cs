@@ -137,7 +137,7 @@ public class SpdStatPlusBuff : BuffBase
 
     public override void OnApply(BuffInstance instance)
     {
-        if(instance.Owner.HasBuff(BuffTypes.SpdStatPlus))
+        if(!instance.Owner.HasBuff(BuffTypes.SpdStatPlus))
             instance.Owner.StatusChange(ConditionType.Speed, plusAmount);
     }
 
