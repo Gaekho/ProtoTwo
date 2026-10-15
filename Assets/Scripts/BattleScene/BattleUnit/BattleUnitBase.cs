@@ -88,6 +88,8 @@ public abstract class BattleUnitBase : MonoBehaviour
 
     public virtual void GetDamage(int value)
     {
+        if (isDead) return;
+
         int previousHealth = currentHealth;           //데미지 받기 전 체력 저장.
 
         if (value <= 0) return;

@@ -232,10 +232,14 @@ public class BattleUiController : MonoBehaviour
             }
 
             handBoard.color = holder.CharacterData.UIColor;
-
+            
+            SetFirstQueueElement(holder);
+        }
+        else
+        {
+            handBoard.color = Color.gray;
         }
 
-        SetFirstQueueElement(holder);
     }
     public void UpdateStatUI(AllyUnit unit, int atk, int shd, int spd)
     {
@@ -257,7 +261,7 @@ public class BattleUiController : MonoBehaviour
     {
         if(holder == null)
         {
-            turnEndButton.GetComponent<Button>().interactable = false;
+            turnEndButton.SetActive(false);
             returnActingRightButton.SetActive(false);
             return;
         }

@@ -422,7 +422,7 @@ public class BattleManager : MonoBehaviour
             totalTurnCount++;
 
             TurnUnit = turnQ.Dequeue();
-            ActingUnit = null;
+            SetActingRightHolder(null);
             //if(ActingUnit != null) { ActingUnit.EnterTurn(); }
             GameEventsLibrary.RaiseUnitTurnStart(TurnUnit);
 
@@ -458,7 +458,7 @@ public class BattleManager : MonoBehaviour
             if (TurnUnit.Team == UnitTeam.Ally)
             {
                 handController.DrawCard(1);
-                while (CurrentState == TurnState.AllyTurn)
+                while (CurrentState == TurnState.AllyTurn && !TurnUnit.IsDead)
                 {
                     yield return null;
                     //씬에서 TurnEnd 버튼 클릭 시 ChangeState( End ) 호출
@@ -477,8 +477,10 @@ public class BattleManager : MonoBehaviour
             }
             // 턴 종료 버프 훅
             yield return StartCoroutine(ResolveRoutine(UnitBuffHook(BuffTriggerTiming.OnTurnEnd, TurnUnit)));
-                // 만약 OnUnitTurnEnd 등의 이벤트 생기면 추가.
+            // 만약 OnUnitTurnEnd 등의 이벤트 생기면 추가.
 
+            // 턴 종료 버프 훅으로 종료 검사
+            if (isBattleOver) break;
 
             //턴 종료되면 턴이 시작하기 전에, 큐를 확인하고 비어있으면 ReBuildQueue
             if (turnQ.Count == 0)
@@ -511,6 +513,13 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    // Reffered By [ScreenCanvas/Down Panel / Buttons / Turn End]
+    public void RequestTurnEnd()
+    {
+        if (CurrentState != TurnState.AllyTurn || IsResolving) return;
+        if (ActingUnit != TurnUnit) return;
+        CurrentState = TurnState.End;
+    }
     // Reffered By [ScreenCanvas/Down Panel / Buttons / Return Acting Right]
     public void RequestReturnActingRight()
     {

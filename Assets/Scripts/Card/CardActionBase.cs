@@ -43,6 +43,7 @@ public abstract class CardActionBase
                 break;
 
             case ActionTargetType.SelectedTarget:
+                if (actionParameters.target == null) break;
                 result.Add(actionParameters.target);
                 break;
 
@@ -56,13 +57,16 @@ public abstract class CardActionBase
 
             case ActionTargetType.RandomAlly:
                 var alive = BattleManager.Instance.AliveAllies.ToList();
+                if (alive.Count == 0) break;
                 int i = UnityEngine.Random.Range(0, alive.Count);
                 result.Add(alive[i]);        //한줄로 쓰면 가독성 개떨어질까봐 두줄로 씀.
                 break;
 
             case ActionTargetType.RandomEnemy:
-                int j = UnityEngine.Random.Range(0, BattleManager.Instance.EnemyList.Count);
-                result.Add(BattleManager.Instance.EnemyList[j]);
+                var enemies = BattleManager.Instance.EnemyList;
+                if (enemies.Count == 0) break;
+                int j = UnityEngine.Random.Range(0, enemies.Count);
+                result.Add(enemies[j]);
                 break;
         }
         return result;

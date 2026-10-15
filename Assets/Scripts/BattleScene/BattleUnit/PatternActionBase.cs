@@ -34,8 +34,17 @@ public abstract class PatternActionBase
                 result.Add(actionParameters.owner);
                 break;
 
-            case ActionTargetType.LowestHealth: 
+            case ActionTargetType.LowestHealth:
                 // PickAlly? Linq? 도발로직 추가
+                AllyUnit lowest = null;
+                foreach(AllyUnit ally in BattleManager.Instance.AliveAllies)
+                {
+                    if(lowest == null || lowest.CurrentHealth > ally.CurrentHealth)
+                    {
+                        lowest = ally;
+                    }
+                }
+                if (lowest != null) result.Add(lowest);
                 break;
 
             case ActionTargetType.AllUnits:
@@ -54,13 +63,16 @@ public abstract class PatternActionBase
             case ActionTargetType.RandomAlly:
                 // 도발 로직 추가
                 var alive = BattleManager.Instance.AliveAllies.ToList();
+                if (alive.Count == 0) break;
                 int i = UnityEngine.Random.Range(0, alive.Count);
                 result.Add(alive[i]);        //한줄로 쓰면 가독성 개떨어질까봐 두줄로 씀.
                 break;
 
             case ActionTargetType.RandomEnemy:
-                int j = UnityEngine.Random.Range(0, BattleManager.Instance.EnemyList.Count);
-                result.Add(BattleManager.Instance.EnemyList[j]);
+                var enemies = BattleManager.Instance.EnemyList;
+                if (enemies.Count == 0) break;
+                int j = UnityEngine.Random.Range(0, enemies.Count);
+                result.Add(enemies[j]);
                 break;
         }
         return result;

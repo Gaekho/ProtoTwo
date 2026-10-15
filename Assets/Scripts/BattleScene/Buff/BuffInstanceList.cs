@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Proto2.Enums;
 
 [Serializable]
 public class StrengthenBuffInstance : BuffInstance
@@ -24,9 +25,21 @@ public class StrengthenBuffInstance : BuffInstance
 [Serializable]
 public class StatChangeBuffInstance : BuffInstance
 {
+    [SerializeField] private ConditionType stat;
     [SerializeField] private int amount;
 
-    public StatChangeBuffInstance(BuffBase sourceBuff, BattleUnitBase owner, BattleUnitBase applier) : base(sourceBuff, owner, applier)
+    public StatChangeBuffInstance(BuffBase sourceBuff, BattleUnitBase owner, BattleUnitBase applier, ConditionType stat, int plusAmount) : base(sourceBuff, owner, applier)
     {
+        this.stat = stat;
+        this.amount = plusAmount;
+    }
+
+    public void SetAmount(int newAmount)
+    {
+        amount = newAmount;
+    }
+    public int GetAmount()
+    {
+        return amount;
     }
 }

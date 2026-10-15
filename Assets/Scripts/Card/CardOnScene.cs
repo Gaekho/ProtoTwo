@@ -116,7 +116,12 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void SetPlayable(AllyUnit actingRightHolder )
     {
-        if(actingRightHolder == null || (actingRightHolder != primaryOwner && actingRightHolder != secondaryOwner))
+        cyanLine.gameObject.SetActive(false);
+        atkTxt.color = Color.white;
+        shdTxt.color = Color.white;
+        spdTxt.color = Color.white;
+
+        if (actingRightHolder == null || (actingRightHolder != primaryOwner && actingRightHolder != secondaryOwner))
         {
             SetUnPlayable();
             return;
@@ -221,7 +226,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             AllyUnit other = (actor == primaryOwner) ? secondaryOwner : primaryOwner;
 
-            if (!other.IsDead && other != null)                       // 상대 캐릭터가 있는데 죽어있으면 행동권 이전 X
+            if (other != null && !other.IsDead)                       // 상대 캐릭터가 있는데 죽어있으면 행동권 이전 X
                 BattleManager.Instance.SetActingRightHolder(other);   // 상대 캐릭터에게 재이전, 체인 유지
             else
                 BattleManager.Instance.ReturnActingRight();           
@@ -263,6 +268,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         //턴 캐릭터 체크
         AllyUnit holder = BattleManager.Instance.ActingUnit;
+        if (holder == null || holder.IsDead) return false;
+
         if (holder != primaryOwner && holder != secondaryOwner)
         {
             Debug.Log("캐릭터 턴 아님.");
@@ -304,24 +311,24 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (hit == null) { Debug.Log("Nothing Detected"); return false; }
 
         target = hit.gameObject.GetComponentInParent<BattleUnitBase>();
-        if (target == null) 
-        { 
-            Debug.Log("target is null");  
+        if (target == null)
+        {
+            Debug.Log("target is null");
             Debug.Log($"hit = {hit.name}");
             Debug.Log($"parent battle unit = {hit.GetComponentInParent<BattleUnitBase>()}");
             Debug.Log($"self battle unit = {hit.GetComponent<BattleUnitBase>()}");
-            return false; 
+            return false;
         }
+        else if (target.IsDead) { Debug.Log("Target is Dead");  return false; }
 
+            switch (data.CardTarget)
+            {
+                case CardTargetType.Ally:
+                    return target.Team == UnitTeam.Ally;
 
-        switch (data.CardTarget)
-        {
-            case CardTargetType.Ally:
-                return target.Team == UnitTeam.Ally;
-
-            case CardTargetType.Enemy:
-                return target.Team == UnitTeam.Enemy;
-        }
+                case CardTargetType.Enemy:
+                    return target.Team == UnitTeam.Enemy;
+            }
 
         return false;
     }
