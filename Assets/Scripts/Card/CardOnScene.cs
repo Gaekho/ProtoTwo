@@ -382,34 +382,41 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnEndDrag(PointerEventData eventdata)
     {
-        if (BattleManager.Instance.IsResolving || BattleManager.Instance.CurrentState != TurnState.AllyTurn)
-        {
-            BackToHand();
-            Debug.Log("Can't Use Card Now!");
-            return;
-        }
+        // Request Use Card로 가드 이관
+        //if (BattleManager.Instance.IsResolving || BattleManager.Instance.CurrentState != TurnState.AllyTurn)
+        //{
+        //    BackToHand();
+        //    Debug.Log("Can't Use Card Now!");
+        //    return;
+        //}
 
-        if(transform.position.y >= -0.8f)
-        {
-            //Debug.Log("used");
-            if(CheckCondition())
-            {
-                if (CheckTarget(data))
-                {
-                    //Use();
-                    Debug.Log("Card Used Successfull");
-                    StartCoroutine(BattleManager.Instance.ResolveRoutine(CardUseRoutine()));
-                    //BackToHand();
-                }
-                else BackToHand();
-            }
-            else BackToHand();
-        }
+        // 3중 If문 도대체 뭐임 왜 이따구로 짬
+        //if(transform.position.y >= -0.8f)
+        //{
+            
+        //    if(CheckCondition())
+        //    {
+        //        if (CheckTarget(data))
+        //        {
+        //            //Use();
+        //            Debug.Log("Card Used Successfull");
+        //            StartCoroutine(BattleManager.Instance.ResolveRoutine(CardUseRoutine()));
+        //            //BackToHand();
+        //        }
+        //        else BackToHand();
+        //    }
+        //    else BackToHand();
+        //}
 
-        else
-            BackToHand();
+        //else
+        //    BackToHand();
+
+        if(transform.position.y >= -0.8f && CheckCondition() && CheckTarget(data))
+        {
+            if (BattleManager.Instance.RequestUseCard(this)) return;
+        }
+        BackToHand();
         
-        Debug.Log(transform.position.y);
     }
     #endregion
 }

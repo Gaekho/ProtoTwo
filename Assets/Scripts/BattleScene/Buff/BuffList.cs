@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using Proto2.Enums;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using Ink.Parsed;
 
 // v0.01 / 2026.03.12 / 01:04
 // 최초 생성
@@ -54,15 +55,28 @@ public class AtkStatPlusBuff : BuffBase
         plusAmount = 1;
     }
 
+    public override BuffInstance CreateInstance(BattleUnitBase owner, BattleUnitBase applier)
+    {
+        return new StatChangeBuffInstance(this, owner, applier, stat);
+
+    }
+
+    public override void MergeToSameBuff(BuffInstance originalBuff, BattleUnitBase newApplier)
+    {
+        base.MergeToSameBuff(originalBuff, newApplier);
+    }
+
     public override void OnApply(BuffInstance instance)
     {
-        if(!instance.Owner.HasBuff(BuffTypes.AtkStatPlus))
-            instance.Owner.StatusChange(ConditionType.Attack ,plusAmount);
+        instance.Owner.StatusChange(ConditionType.Attack ,plusAmount);
+        StatChangeBuffInstance sti = instance as StatChangeBuffInstance;
+        sti.MergeStatChange(plusAmount);
     }
 
     public override void OnRemove(BuffInstance instance)
     {
-        instance.Owner.StatusChange(ConditionType.Attack, -plusAmount);
+        StatChangeBuffInstance i = instance as StatChangeBuffInstance;
+        instance.Owner.StatusChange(ConditionType.Attack, -i.GetChangedAmount());
     }
 
     public override void UpdateTooltip()
@@ -94,15 +108,22 @@ public class ShdStatPlusBuff : BuffBase
         plusAmount = 1;
 
     }
+
+    public override BuffInstance CreateInstance(BattleUnitBase owner, BattleUnitBase applier)
+    {
+        return new StatChangeBuffInstance(this, owner, applier, stat);
+    }
     public override void OnApply(BuffInstance instance)
     {
-        if(!instance.Owner.HasBuff(BuffTypes.ShdStatPlus))
-            instance.Owner.StatusChange(ConditionType.Shield, plusAmount);
+        instance.Owner.StatusChange(ConditionType.Shield, plusAmount);
+        StatChangeBuffInstance sti = instance as StatChangeBuffInstance;
+        sti.MergeStatChange(plusAmount);
     }
 
     public override void OnRemove(BuffInstance instance)
     {
-        instance.Owner.StatusChange(ConditionType.Shield, -plusAmount);
+        StatChangeBuffInstance i = instance as StatChangeBuffInstance;
+        instance.Owner.StatusChange(ConditionType.Shield, -i.GetChangedAmount());
     }
 
     public override void UpdateTooltip()
@@ -135,15 +156,21 @@ public class SpdStatPlusBuff : BuffBase
         plusAmount = 1;
     }
 
+    public override BuffInstance CreateInstance(BattleUnitBase owner, BattleUnitBase applier)
+    {
+        return new StatChangeBuffInstance(this, owner, applier, stat);
+    }
     public override void OnApply(BuffInstance instance)
     {
-        if(!instance.Owner.HasBuff(BuffTypes.SpdStatPlus))
-            instance.Owner.StatusChange(ConditionType.Speed, plusAmount);
+        instance.Owner.StatusChange(ConditionType.Speed, plusAmount);
+        StatChangeBuffInstance sti = instance as StatChangeBuffInstance;
+        sti.MergeStatChange(plusAmount);
     }
 
     public override void OnRemove(BuffInstance instance)
     {
-        instance.Owner.StatusChange(ConditionType.Speed, -plusAmount);
+        StatChangeBuffInstance i = instance as StatChangeBuffInstance;
+        instance.Owner.StatusChange(ConditionType.Speed, -i.GetChangedAmount());
     }
 
     public override void UpdateTooltip()

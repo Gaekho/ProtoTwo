@@ -170,6 +170,13 @@ public class BattleManager : MonoBehaviour
     #region Controller Direct
     public void RequestDraw(int count) => handController.DrawCard(count);
     public void NotifyCardUsed(CardOnScene card) => handController.AfterCardUse(card);
+
+    public bool RequestUseCard(CardOnScene card)
+    {
+        if (card == null || CurrentState != TurnState.AllyTurn || IsResolving) return false;
+        StartCoroutine(ResolveRoutine(card.CardUseRoutine()));
+        return true;
+    }
     #endregion
 
     #region TurnQueue

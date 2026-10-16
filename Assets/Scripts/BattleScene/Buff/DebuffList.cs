@@ -73,18 +73,25 @@ public class OilDebuff : BuffBase
         description = "Speed -1 while duration";
         triggerTiming = BuffTriggerTiming.None;
 
-        duration = 1;
+        duration = 2;
         reduceTiming = ReduceTiming.EndOfOwnerTurn;
     }
 
+    public override BuffInstance CreateInstance(BattleUnitBase owner, BattleUnitBase applier)
+    {
+        return new StatChangeBuffInstance(this, owner, applier, ConditionType.Speed);
+    }
     public override void OnApply(BuffInstance instance)
     {
         instance.Owner.StatusChange(ConditionType.Speed, -1);
+        StatChangeBuffInstance sti = instance as StatChangeBuffInstance;
+        sti.MergeStatChange(-1);
     }
 
     public override void OnRemove(BuffInstance instance)
     {
-        instance.Owner.StatusChange(ConditionType.Speed, 1);
+        StatChangeBuffInstance i = instance as StatChangeBuffInstance;
+        instance.Owner.StatusChange(ConditionType.Speed, -i.GetChangedAmount());
     }
 
     public override void UpdateTooltip()

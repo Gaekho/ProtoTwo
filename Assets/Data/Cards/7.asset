@@ -19,6 +19,8 @@ MonoBehaviour:
   secondaryColor: 0
   cardText: "\uB300\uC0C1 \uC544\uAD70\uC758 \uACF5\uACA9\uB825\uC744 2\uD134\uAC04
     1 \uC99D\uAC00\uC2DC\uD0A8\uB2E4."
+  flavorText: 
+  cardFrame: {fileID: 0}
   cardSprite: {fileID: 662112569, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 2
@@ -28,7 +30,26 @@ MonoBehaviour:
   - condition: 0
     value: 0
   banishAfterUsed: 0
-  cardActionList: []
+  cardActionList:
+  - rid: 2880685648313581568
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 2880685648313581568
+      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        buff:
+          rid: 2880685648313581571
+    - rid: 2880685648313581571
+      type: {class: AtkStatPlusBuff, ns: , asm: Assembly-CSharp}
+      data:
+        buffType: 4
+        isDebuff: 0
+        buffName: "\uACF5\uACA9 \uC2A4\uD0EF \uAC15\uD654"
+        description: "1\uD134 \uB3D9\uC548 \uACF5\uACA9 \uC2A4\uD0EF\uC774 0\uC99D\uAC00\uD55C\uB2E4."
+        triggerTiming: 0
+        duration: 1
+        reduceTiming: 2
+        stat: 0
+        plusAmount: 1

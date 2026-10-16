@@ -103,12 +103,12 @@ public class HandController : MonoBehaviour
             currentGraveyard.Add(removed);
         }
 
-        //view.gameObject.SetActive(false);
-        //SortCard();
-        //Destroy(view.gameObject);
-        DestroyImmediate(view.gameObject);
-        BattleManager.Instance.IsResolving = false;
+        view.gameObject.SetActive(false);
         SortCard();
+        Destroy(view.gameObject);
+        
+        //DestroyImmediate(view.gameObject);
+        //SortCard();
     }
 
     public void RestoreCard()

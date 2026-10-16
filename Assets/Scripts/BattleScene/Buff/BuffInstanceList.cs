@@ -26,20 +26,25 @@ public class StrengthenBuffInstance : BuffInstance
 public class StatChangeBuffInstance : BuffInstance
 {
     [SerializeField] private ConditionType stat;
-    [SerializeField] private int amount;
+    [SerializeField] private int changedAmount;
 
-    public StatChangeBuffInstance(BuffBase sourceBuff, BattleUnitBase owner, BattleUnitBase applier, ConditionType stat, int plusAmount) : base(sourceBuff, owner, applier)
+    public StatChangeBuffInstance(BuffBase sourceBuff, BattleUnitBase owner, BattleUnitBase applier, ConditionType stat) : base(sourceBuff, owner, applier)
     {
         this.stat = stat;
-        this.amount = plusAmount;
+        this.changedAmount = 0;
     }
 
     public void SetAmount(int newAmount)
     {
-        amount = newAmount;
+        changedAmount = newAmount;
     }
-    public int GetAmount()
+
+    public void MergeStatChange(int amount)
     {
-        return amount;
+        changedAmount += amount;
+    }
+    public int GetChangedAmount()
+    {
+        return changedAmount;
     }
 }

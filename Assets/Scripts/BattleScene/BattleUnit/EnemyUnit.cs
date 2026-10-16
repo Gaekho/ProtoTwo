@@ -75,6 +75,11 @@ public class EnemyUnit : BattleUnitBase
             else DoReceiveBuffAnim();
         }
     }
+    public override void StatusChange(ConditionType statType, int amount)
+    {
+        if (statType != ConditionType.Speed) return;
+        currentSpeed += amount;
+    }
     protected override IEnumerator Die()
     {
         BattleManager.Instance.EnemyDead(this);       //에러 발생으로 잠시 주석처리. EnemyDead 수정 후 다시 사용.
