@@ -4798,6 +4798,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8013643330683908279, guid: cce910a53de6a204098b29a8b05c3cee, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8507533564202064900, guid: cce910a53de6a204098b29a8b05c3cee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7766,7 +7770,7 @@ PrefabInstance:
     - target: {fileID: 8013643330683908279, guid: cce910a53de6a204098b29a8b05c3cee, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 136b6274822449440bf85e88b2913292, type: 2}
+      objectReference: {fileID: 9100000, guid: 4201cc51bd781f04099930bbd759ea95, type: 2}
     - target: {fileID: 8507533564202064900, guid: cce910a53de6a204098b29a8b05c3cee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -9895,8 +9899,8 @@ MonoBehaviour:
   roundCount: 0
   totalTurnCount: 0
   tempEnemies:
-  - {fileID: 11400000, guid: f272231a9cde82c4186c5eabdaa28688, type: 2}
-  - {fileID: 11400000, guid: 1530b9c94d716b04c84a3e36393a8201, type: 2}
+  - {fileID: 11400000, guid: 361ce620f8e4528499301da12f3f709a, type: 2}
+  - {fileID: 11400000, guid: 361ce620f8e4528499301da12f3f709a, type: 2}
   isBattleOver: 0
   battleWin: 0
 --- !u!4 &786526521
@@ -26229,6 +26233,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8013643330683908279, guid: cce910a53de6a204098b29a8b05c3cee, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7114dd49f6237e54199a4bd34542b623, type: 2}
     - target: {fileID: 8507533564202064900, guid: cce910a53de6a204098b29a8b05c3cee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

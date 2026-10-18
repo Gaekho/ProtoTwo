@@ -262,7 +262,7 @@ public abstract class BattleUnitBase : MonoBehaviour
  
     public virtual void DoArmorAnim()
     {
-        myAnimator.SetTrigger("AddArmor");
+        myAnimator.SetTrigger("Guard");
     }
 
     public virtual void DoApplyBuffAnim()
@@ -271,17 +271,17 @@ public abstract class BattleUnitBase : MonoBehaviour
     }
     public virtual void DoReceiveBuffAnim()
     {
-        myAnimator.SetTrigger("ReceiveBuff");
+        myAnimator.SetTrigger("GetBuff");
     }
 
     public virtual void DoApplyDebuffAnim()
     {
-        myAnimator.SetTrigger("ApplyDebuff");
+        myAnimator.SetTrigger("ApplyBuff");
     }
 
     public virtual void DoReceiveDebuffAnim()
     {
-        myAnimator.SetTrigger("ReceiveDebuff");
+        myAnimator.SetTrigger("GetBuff");
     }
  
     public virtual void DoDamagedAnim()

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b576987f6a9b34292963a88d6e3f13, type: 3}
+  m_Name: Weak
+  m_EditorClassIdentifier: 
+  enemyName: "\uC57D\uC790"
+  enemyDescription: 
+  maxHealth: 5
+  baseSpeed: 1
+  enemySprite: {fileID: 21300000, guid: c0eb0895fddf3014fb6617e0bd25112f, type: 3}
+  animatorController: {fileID: 9100000, guid: 3d98b1882e4ee624ebd575e8cf8edcfc, type: 2}
+  thumbNail: {fileID: 21300000, guid: 360f98e6957afaf478d9360b5bfa5967, type: 3}
+  patternList:
+  - patternName: New Pattern 0
+    patternType: 0
+    intentIcon: {fileID: -1271357597, guid: 0c7ac0fc980114145bfb90927911fecf, type: 3}
+    patternDescription: "\uBB34\uC791\uC704 \uC801\uC5D0\uAC8C \uD53C\uD574\uB97C
+      1 \uC785\uD799\uB2C8\uB2E4."
+    patternActionList:
+    - rid: 2901168484448731136
+  references:
+    version: 2
+    RefIds:
+    - rid: 2901168484448731136
+      type: {class: AttackPatternAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 8
+        damage: 1

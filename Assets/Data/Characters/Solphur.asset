@@ -16,10 +16,10 @@ MonoBehaviour:
   characterDescription: 
   cardColor: 3
   maxHealth: 80
-  baseAttack: 4
-  baseShield: 2
+  baseAttack: 1
+  baseShield: 1
   baseSpeed: 2
   characterSprite: {fileID: -962739781, guid: 654359899cc01364489bd089e5dc9016, type: 3}
-  animatorController: {fileID: 9100000, guid: 29beee4321aed634bb546a6a572342d7, type: 2}
+  animatorController: {fileID: 9100000, guid: 7114dd49f6237e54199a4bd34542b623, type: 2}
   thumbNail: {fileID: -311539716, guid: e1c4383dab86f854e9c31f9624dfe320, type: 3}
   uiColor: {r: 0.3764706, g: 0.7411765, b: 0.34509805, a: 1}

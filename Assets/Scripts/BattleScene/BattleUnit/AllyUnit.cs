@@ -44,7 +44,7 @@ public class AllyUnit : BattleUnitBase
         
         //턴 세팅
         isTurn = false;
-        myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
+        myTransform.localScale = new Vector3(1f, 1f, 1f);
 
     }
 
@@ -149,7 +149,7 @@ public class AllyUnit : BattleUnitBase
     #region Original Animation Triggers
     public void DoDrawAnim()
     {
-        myAnimator.SetTrigger("Draw");
+        myAnimator.SetTrigger("Magical");
     }
     #endregion
 }
