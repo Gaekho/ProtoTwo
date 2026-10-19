@@ -44,6 +44,7 @@ public class EnemyPatternData
 {
     [SerializeField] private string patternName;
     [SerializeField] private EnemyPatternAnimTrigger patternType;  //애니메이션 재생용
+    [SerializeField] private List<EnemyPatternType> intents = new();
     [SerializeField] private Sprite intentIcon;
     [SerializeField] private string patternDescription;
 
@@ -53,6 +54,7 @@ public class EnemyPatternData
     #region Cache
     public string PatternName => patternName;
     public EnemyPatternAnimTrigger PatternType => patternType; //애니메이션 재생용
+    public bool HasIntent(EnemyPatternType type) => intents.Contains(type);
     public Sprite IntentIcon => intentIcon;
     public string PatternDescription => patternDescription;
     public List<PatternActionBase> PatternActionList => patternActionList;

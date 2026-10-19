@@ -3,6 +3,7 @@ using Proto2.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [Serializable]
@@ -80,10 +81,12 @@ public class BranchConditionData
     [SerializeField] private BranchActionCondition condition;
     [SerializeField] private float healthRate;
     [SerializeField] private BuffTypes buffType;
+    [SerializeField] private EnemyPatternType patternType;
 
     public BranchActionCondition Condition => condition;
     public float HealthRate => healthRate;
     public BuffTypes BuffType => buffType;
+    public EnemyPatternType PatternType;
 }
 #endregion
 [Serializable]
@@ -145,6 +148,16 @@ public class BranchingAction : CardActionBase
 
             case BranchActionCondition.TargetNotHasBuff:
                 if (actionParameters.target.HasBuff(branchCondition.BuffType)) return false;
+                else return true;
+
+            case BranchActionCondition.TargetIntent:
+                EnemyUnit enemy = actionParameters.target as EnemyUnit;
+                if(enemy.CurrentPattern.HasIntent(branchCondition.PatternType)) return true;
+                else return false;
+
+            case BranchActionCondition.TargetNotIntent:
+                EnemyUnit enemy1 = actionParameters.target as EnemyUnit;
+                if (enemy1.CurrentPattern.HasIntent(branchCondition.PatternType)) return false;
                 else return true;
         }
         return false;

@@ -22,6 +22,7 @@ public class EnemyUnit : BattleUnitBase
 
     public EnemyData EnemyData => enemyData;
     public override int CurrentSpeed => currentSpeed;
+    public EnemyPatternData CurrentPattern => currentPattern;
 
     public void SetProfile(EnemyData enemyData)
     {

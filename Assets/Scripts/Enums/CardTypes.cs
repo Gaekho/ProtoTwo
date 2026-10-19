@@ -108,7 +108,11 @@ namespace Proto2.Enums
         OwnerHasBuff,
         OwnerNotHasBuff,
         TargetHasBuff,
-        TargetNotHasBuff
+        TargetNotHasBuff,
+
+        //패턴 검사
+        TargetIntent,
+        TargetNotIntent
     }
 
 }
