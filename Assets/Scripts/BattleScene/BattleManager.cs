@@ -177,6 +177,9 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(ResolveRoutine(card.CardUseRoutine()));
         return true;
     }
+
+    public void RequestGainGnosis(AllyUnit ally, int amount) { }
+    public void NotifyCardDiscard(CardOnScene card) { }
     #endregion
 
     #region TurnQueue

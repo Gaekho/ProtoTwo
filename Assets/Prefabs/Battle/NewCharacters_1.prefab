@@ -364,6 +364,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4651940262426541867}
   - component: {fileID: 7451790501530880647}
+  - component: {fileID: 4264389212962158516}
+  - component: {fileID: 552029208565215118}
   m_Layer: 0
   m_Name: Gnosis Container
   m_TagString: Untagged
@@ -392,8 +394,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 9.5025, y: -2.523}
-  m_SizeDelta: {x: 80.995, y: 20}
+  m_AnchoredPosition: {x: 9.5025, y: -0.29000092}
+  m_SizeDelta: {x: 81, y: 24.46}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7451790501530880647
 MonoBehaviour:
@@ -410,9 +412,9 @@ MonoBehaviour:
   m_Padding:
     m_Left: 3
     m_Right: 0
-    m_Top: 0
+    m_Top: 6
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 3
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -421,6 +423,44 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!222 &4264389212962158516
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1530959606261936224}
+  m_CullTransparentMesh: 1
+--- !u!114 &552029208565215118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1530959606261936224}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.6650944, g: 1, b: 0.97882795, a: 0.5019608}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1916746755690448181
 GameObject:
   m_ObjectHideFlags: 0
