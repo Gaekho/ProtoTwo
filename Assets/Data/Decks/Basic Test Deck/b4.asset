@@ -16,12 +16,12 @@ MonoBehaviour:
   cardName: "\uD654\uC5FC \uAC00\uB974\uAE30"
   type: 1
   color: 1
-  secondaryColor: 2
+  secondaryColor: 3
   cardText: "\uCE74\uB4DC\uB97C 1\uC7A5 \uBF51\uB294\uB2E4. '\uB300\uC0C1'\uC5D0\uAC8C
     \uD53C\uD574\uB97C 10 \uC785\uD78C\uB2E4. '\uB300\uC0C1'\uC774 '\uAE30\uB984'
     \uC0C1\uD0DC\uB77C\uBA74 '\uCD9C\uD608'\uC744 5 \uBD80\uC5EC\uD55C\uB2E4."
   flavorText: "\uC5C6\uC74C"
-  cardFrame: {fileID: 815033829, guid: 76b24f99c062d3948974a93716c098ec, type: 3}
+  cardFrame: {fileID: -380168641, guid: 418b7310d6e6e834f889326603beb05c, type: 3}
   cardSprite: {fileID: 21300000, guid: 9ea605ff69b3fcc4fa2f5afa4c3f431f, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
   cardTarget: 2
   activeConditionList:
   - condition: 0
-    value: 2
+    value: 1
   - condition: 1
     value: 1
   - condition: 2
@@ -60,6 +60,8 @@ MonoBehaviour:
           condition: 7
           healthRate: 0
           buffType: 15
+          patternType: 0
+          PatternType: 0
         trueActions:
         - rid: 2901168484448731152
         falseActions: []

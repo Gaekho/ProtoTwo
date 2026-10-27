@@ -19,11 +19,11 @@ MonoBehaviour:
   secondaryColor: 0
   cardText: "'\uC2DC\uD0C0'\uB294 \uBC29\uC5B4\uB3C4\uB97C 12 \uC5BB\uB294\uB2E4."
   flavorText: "\uB0A0\uC774 \uBB34\uB514\uBA74 \uC801\uC744 \uC8FD\uC77C \uB54C \uD798\uB4E4\uB2E4."
-  cardFrame: {fileID: -208652653, guid: 648a9de45d54f9a45866e90a23ca1724, type: 3}
+  cardFrame: {fileID: -468224488, guid: 418b7310d6e6e834f889326603beb05c, type: 3}
   cardSprite: {fileID: 21300000, guid: 9ea605ff69b3fcc4fa2f5afa4c3f431f, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 1
-  usableWithoutTarget: 0
+  usableWithoutTarget: 1
   cardTarget: 0
   activeConditionList:
   - condition: 1

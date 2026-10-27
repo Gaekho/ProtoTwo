@@ -17,9 +17,10 @@ MonoBehaviour:
   type: 1
   color: 1
   secondaryColor: 0
-  cardText: "'\uB300\uC0C1'\uC5D0\uAC8C \uD53C\uD574\uB97C 8 \uC785\uD78C\uB2E4."
+  cardText: "'\uB300\uC0C1'\uC5D0\uAC8C \uD53C\uD574\uB97C 6 \uC785\uD788\uACE0,
+    '\uCD9C\uD608'\uC744 2 \uBD80\uC5EC\uD55C\uB2E4."
   flavorText: "\uAE30\uBCF8\uC801\uC778 \uB3C4\uB07C \uACF5\uACA9"
-  cardFrame: {fileID: 963676758, guid: 64efcc16790d2244dae70d40c5824e71, type: 3}
+  cardFrame: {fileID: -468224488, guid: 418b7310d6e6e834f889326603beb05c, type: 3}
   cardSprite: {fileID: 21300000, guid: 9ea605ff69b3fcc4fa2f5afa4c3f431f, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 0
@@ -31,6 +32,7 @@ MonoBehaviour:
   banishAfterUsed: 0
   cardActionList:
   - rid: 2901168484448731138
+  - rid: 2901168709246910466
   references:
     version: 2
     RefIds:
@@ -38,4 +40,20 @@ MonoBehaviour:
       type: {class: AttackAction, ns: , asm: Assembly-CSharp}
       data:
         actionTarget: 2
-        damage: 8
+        damage: 6
+    - rid: 2901168709246910466
+      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        buff:
+          rid: 2901168709246910467
+    - rid: 2901168709246910467
+      type: {class: BleedingDebuff, ns: , asm: Assembly-CSharp}
+      data:
+        buffType: 16
+        isDebuff: 1
+        buffName: Bleeding
+        description: Get 1 damages on start of turn.
+        triggerTiming: 3
+        duration: 2
+        reduceTiming: 2

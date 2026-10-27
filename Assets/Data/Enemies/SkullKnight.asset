@@ -21,22 +21,26 @@ MonoBehaviour:
   thumbNail: {fileID: 21300000, guid: bdf76fbf465e71e48b2d396d47681dce, type: 3}
   patternList:
   - patternName: "\uCC0C\uB974\uAE30"
-    patternType: 0
+    patternAnimType: 0
+    patternType: 00000000
     intentIcon: {fileID: -497449512, guid: 0c7ac0fc980114145bfb90927911fecf, type: 3}
-    patternDescription: "\uD53C\uD574\uB97C 10 \uC785\uD78C\uB2E4."
+    patternDescription: "\uCCB4\uB825\uC774 \uAC00\uC7A5 \uB0AE\uC740 \uC544\uAD70\uC5D0\uAC8C
+      \uD53C\uD574\uB97C 10 \uC785\uD78C\uB2E4."
     patternActionList:
     - rid: 283199232281411587
   - patternName: "\uBC29\uC5B4 \uD0DC\uC138"
-    patternType: 1
+    patternAnimType: 0
+    patternType: 
     intentIcon: {fileID: 997859787, guid: 0c7ac0fc980114145bfb90927911fecf, type: 3}
     patternDescription: "\uBB34\uC791\uC704 \uC801\uC774 \uBC29\uC5B4\uB3C4\uB97C
       10 \uC5BB\uB294\uB2E4."
     patternActionList:
     - rid: 3789920056042586112
   - patternName: "\uC369\uC740 \uB098\uBB34\uC790\uB8E8"
-    patternType: 3
+    patternAnimType: 0
+    patternType: 
     intentIcon: {fileID: -640635409, guid: 0c7ac0fc980114145bfb90927911fecf, type: 3}
-    patternDescription: "\uC120\uD0DD\uB41C \uC544\uAD70\uC5D0\uAC8C '\uCD9C\uD608'
+    patternDescription: "\uBB34\uC791\uC704 \uC544\uAD70\uC5D0\uAC8C '\uCD9C\uD608'
       5\uB97C \uBD80\uC5EC\uD55C\uB2E4."
     patternActionList:
     - rid: 3655606867736920064
@@ -51,7 +55,7 @@ MonoBehaviour:
     - rid: 3655606867736920064
       type: {class: ApplyBuffPatternAction, ns: , asm: Assembly-CSharp}
       data:
-        actionTarget: 2
+        actionTarget: 8
         buff:
           rid: 3655606867736920065
     - rid: 3655606867736920065
@@ -67,5 +71,5 @@ MonoBehaviour:
     - rid: 3789920056042586112
       type: {class: AddArmorPatternAction, ns: , asm: Assembly-CSharp}
       data:
-        actionTarget: 6
+        actionTarget: 7
         armorAmount: 10

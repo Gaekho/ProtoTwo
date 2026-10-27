@@ -128,7 +128,7 @@ public class EnemyUnit : BattleUnitBase
 
     public void UsePattern()
     {
-        switch (currentPattern.PatternType)
+        switch (currentPattern.PatternAnimType)
         {
             case EnemyPatternAnimTrigger.Attack:
                 DoAttackAnim(); break;
@@ -151,7 +151,7 @@ public class EnemyUnit : BattleUnitBase
 
     public IEnumerator UsePatternRoutine()
     {
-        switch (currentPattern.PatternType)
+        switch (currentPattern.PatternAnimType)
         {
             case EnemyPatternAnimTrigger.Attack:
                 DoAttackAnim();

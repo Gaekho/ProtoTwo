@@ -467,7 +467,8 @@ public class BattleManager : MonoBehaviour
             //적이면 패턴 쓰고 턴 종료
             if (TurnUnit.Team == UnitTeam.Ally)
             {
-                handController.DrawCard(1);
+                //handController.DrawCard(1);
+                RequestDraw(Mathf.Max(handController.HandNumber - handController.CurrentHand.Count));
                 while (CurrentState == TurnState.AllyTurn && !TurnUnit.IsDead)
                 {
                     yield return null;

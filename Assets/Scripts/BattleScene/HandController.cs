@@ -10,6 +10,9 @@ public class HandController : MonoBehaviour
     [Header("Card Prefab")]
     [SerializeField] private GameObject basicCard;
 
+    [Header("Hand Number")]
+    [SerializeField] private int handNumber;
+
     [Header("Hand Position")]
     [SerializeField] private Transform spawnParent;
     [SerializeField] private Vector3 startPoint;
@@ -29,6 +32,7 @@ public class HandController : MonoBehaviour
     public List<CardInstance> CurrentHand => currentHand;
     public List<CardInstance> CurrentGraveyard => currentGraveyard;
     public List<CardInstance> CurrentBanished => currentBanished;
+    public int HandNumber => handNumber;
     #endregion
     // Start is called before the first frame update
     private void Awake()
@@ -52,11 +56,13 @@ public class HandController : MonoBehaviour
         currentDeck = new List<CardData>(deckData.DeckList);
         Debug.Log("Deck Ready");
         ShuffleDeck();
-        DrawCard(3);
+        DrawCard(handNumber);
     }
 
     public void DrawCard(int value)
     {
+        if (value <= 0) { return; }
+
         for(int i = 0; i < value; i++)
         {
             if(currentDeck.Count == 0)

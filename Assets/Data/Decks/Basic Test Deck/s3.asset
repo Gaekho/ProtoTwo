@@ -20,7 +20,7 @@ MonoBehaviour:
   cardText: "\u2018\uB300\uC0C1\u2019\uC5D0\uAC8C \u2018\uAE30\uB984\u2019\uC744
     2\uD134\uAC04 \uBD80\uC5EC\uD55C\uB2E4."
   flavorText: "\uBBF8\uB04C\uBBF8\uB04C"
-  cardFrame: {fileID: 223829635, guid: 64efcc16790d2244dae70d40c5824e71, type: 3}
+  cardFrame: {fileID: -1970384611, guid: 418b7310d6e6e834f889326603beb05c, type: 3}
   cardSprite: {fileID: 21300000, guid: 9ea605ff69b3fcc4fa2f5afa4c3f431f, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 3
