@@ -28,7 +28,7 @@ public class PoisonDebuff : BuffBase
     {
         int damage = (int)(instance.Owner.CurrentHealth * 0.1f);
         if (damage > 30) damage = 30;
-        instance.Owner.GetDamage(damage);
+        instance.Owner.GetDamage(damage, DamageType.BuffDamage);
     }
 
     public override void UpdateTooltip()
@@ -53,7 +53,7 @@ public class BleedingDebuff : BuffBase
     }
     public override void OnTurnStart(BuffInstance instance)
     {
-        instance.Owner.GetDamage(duration);
+        instance.Owner.GetDamage(duration, DamageType.BuffDamage);
     }
 
     public override void UpdateTooltip()
@@ -121,7 +121,7 @@ public class UnstableDebuff : BuffBase
         int totalDamage;
         totalDamage = instance.RemainTurn * (instance.RemainTurn + 3);
         totalDamage /= totalDamage/2;
-        instance.Owner.GetDamage(totalDamage);
+        instance.Owner.GetDamage(totalDamage, DamageType.BuffDamage);
     }
 
     public override void UpdateTooltip()

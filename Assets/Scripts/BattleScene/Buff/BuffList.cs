@@ -218,4 +218,9 @@ public class StrengthenBuff : BuffBase
         description = $"지속시간 동안 피해량이 {(int)((additionalDamageRate - 1) * 100)}% 상승한다.";
     }
 
+    public override void ModifyOutgoingDamage(BuffInstance inst, ValueContext ctx, DamageType type)
+    {
+        ctx.multiplier *= additionalDamageRate;
+    }
+
 }

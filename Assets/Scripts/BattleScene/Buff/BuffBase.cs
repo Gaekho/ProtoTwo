@@ -20,6 +20,8 @@ public abstract class BuffBase
     [SerializeField] protected int duration = 1;
     [SerializeField] protected ReduceTiming reduceTiming = 0;
 
+    protected ValueContext ctx;
+
     #region Cache
     public BuffTypes BuffType => buffType;
     public bool IsDebuff => isDebuff;
@@ -55,6 +57,11 @@ public abstract class BuffBase
         return this.description;
     }
 
+    public virtual void ModifyIncomingDamage(BuffInstance inst, ValueContext ctx, DamageType type) { }
+    public virtual void ModifyOutgoingDamage(BuffInstance inst, ValueContext ctx, DamageType type) { }
+    public virtual void ModifyArmorGain(BuffInstance inst, ValueContext ctx) { }
+    public virtual void ModifyGetDamate(BuffInstance inst, int finalDamage, DamageType type) { }
+
     //버프가 실제로 추가된 직후 1회 호출
     public virtual void OnApply(BuffInstance instance) { }
 
@@ -67,4 +74,13 @@ public abstract class BuffBase
     //소유자 턴 종료 시 호출
     public virtual void OnTurnEnd(BuffInstance instance) { }
 
+}
+
+[Serializable]
+public class ValueContext
+{
+    public float multiplier = 1f;
+    public int flat = 0;
+
+    public int Resolve(int baseValue) => Mathf.Max(0, Mathf.CeilToInt((baseValue + flat) * multiplier));
 }

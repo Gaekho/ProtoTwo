@@ -89,7 +89,8 @@ public class AttackPatternAction : PatternActionBase
         foreach (BattleUnitBase target in ActionTargets(actionParameters))
         {
             if(target == null) continue;
-            target.GetDamage(damage);
+            int finalDamage = actionParameters.owner.CalcOutgoingDamage(damage, DamageType.AttackDamage);
+            target.GetDamage(finalDamage, DamageType.AttackDamage);
         }
     }
 }

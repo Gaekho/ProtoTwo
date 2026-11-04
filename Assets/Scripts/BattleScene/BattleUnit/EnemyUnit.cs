@@ -37,9 +37,9 @@ public class EnemyUnit : BattleUnitBase
     }
 
     #region Overrides
-    public override void GetDamage(int value)
+    public override void GetDamage(int value, DamageType type)
     {
-        base.GetDamage(value);
+        base.GetDamage(value, type);
         uiController.SetArmor(currentArmor);
         uiController.SetHealth(currentHealth);
     }

@@ -14,14 +14,8 @@ public class AttackAction : CardActionBase
     {
         foreach (BattleUnitBase target in ActionTargets(actionParameters))
         {
-            int totalDamage = damage;
-            if (actionParameters.owner.HasBuff(BuffTypes.Strengthen))
-            {
-                StrengthenBuffInstance buff = actionParameters.owner.GetBuff(BuffTypes.Strengthen) as StrengthenBuffInstance;
-                totalDamage = (int) buff.DamageIncreaseRate * damage;
-            }
-
-            target.GetDamage(totalDamage);
+            int totalDamage = actionParameters.owner.CalcOutgoingDamage(damage, DamageType.AttackDamage);
+            target.GetDamage(totalDamage, DamageType.AttackDamage);
         }
     }
 }

@@ -52,4 +52,10 @@ namespace Proto2.Enums
         OnTurnStart,
         OnTurnEnd
     }
+
+    public enum DamageType
+    {
+        AttackDamage,
+        BuffDamage
+    }
 }

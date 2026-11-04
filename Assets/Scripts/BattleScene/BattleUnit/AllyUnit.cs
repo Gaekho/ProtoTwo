@@ -49,9 +49,9 @@ public class AllyUnit : BattleUnitBase
     }
 
     #region Overrides
-    public override void GetDamage(int value)
+    public override void GetDamage(int value, DamageType type)
     {
-        base.GetDamage(value);
+        base.GetDamage(value, type);
         //UIManager 연결 후에 슬라이더 표시 기능 구현
         uiController.SetArmor(currentArmor);
         uiController.SetHealth(currentHealth);

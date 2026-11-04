@@ -86,14 +86,33 @@ public abstract class BattleUnitBase : MonoBehaviour
         
     }
 
-    public virtual void GetDamage(int value)
+    public virtual int CalcOutgoingDamage(int baseDamage, DamageType type)
+    {
+        ValueContext ctx = new ValueContext();
+        foreach (BuffInstance buff in new List<BuffInstance>(buffList))
+        {
+            buff.SourceBuff.ModifyOutgoingDamage(buff, ctx, type);
+        }
+        return ctx.Resolve(baseDamage);
+
+    }
+
+    public virtual void GetDamage(int value, DamageType type)
     {
         if (isDead) return;
 
+        ValueContext ctx = new();
+        foreach(BuffInstance buff in new List<BuffInstance>(buffList))  //버프 리스트 순회하며 추가 데미지 받을거 있으면 보정
+        {
+            buff.SourceBuff.ModifyIncomingDamage(buff, ctx, type);
+        }
+
+        int modified = ctx.Resolve(value);
+
         int previousHealth = currentHealth;           //데미지 받기 전 체력 저장.
 
-        if (value <= 0) return;
-        int remainDamage = value;
+        if (modified <= 0) return;
+        int remainDamage = modified;
 
         if(currentArmor > 0f) 
         {

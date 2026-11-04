@@ -28,7 +28,7 @@ MonoBehaviour:
   cardTarget: 2
   activeConditionList:
   - condition: 0
-    value: 3
+    value: 1
   banishAfterUsed: 0
   cardActionList:
   - rid: 3655606838914973697
