@@ -7,6 +7,7 @@ using Proto2.Enums;
 using System.Runtime.CompilerServices;
 using System;
 
+
 public class BattleUiController : MonoBehaviour
 {
     #region Field
@@ -32,6 +33,7 @@ public class BattleUiController : MonoBehaviour
     [SerializeField] private Image handBoard;
 
     [Header("Ally Stats")]
+    [SerializeField] private AllyStatPanel hoveredPanel;
     [SerializeField] private AllyStatPanel sitaPanel;
     [SerializeField] private AllyStatPanel solphurPanel;
     [SerializeField] private AllyStatPanel rigelPanel;
@@ -48,17 +50,21 @@ public class BattleUiController : MonoBehaviour
         [SerializeField] private Outline outline;
         [SerializeField] private Color uiColor;
         [SerializeField] private Text atk, shd, spd;
+        [SerializeField] private AllyUnit owner;
+        [SerializeField] private Image hoverLight;
+        public AllyUnit Owner => owner;
 
-        public void SetStat(CharacterData character)
+        public void SetStat(AllyUnit ally)
         {
             panel.color = Color.white;
-            uiColor = character.UIColor;
-            thumbNail.sprite = character.ThumbNail;
+            uiColor = ally.CharacterData.UIColor;
+            thumbNail.sprite = ally.CharacterData.ThumbNail;
             outline.effectColor = uiColor;
-            this.atk.text = $"{character.BaseAttack}";
-            this.shd.text = $"{character.BaseShield}";
-            this.spd.text = $"{character.BaseSpeed}";
+            this.atk.text = $"{ally.CharacterData.BaseAttack}";
+            this.shd.text = $"{ally.CharacterData.BaseShield}";
+            this.spd.text = $"{ally.CharacterData.BaseSpeed}";
 
+            owner = ally;
             // To Do : Set을 CharacterState로 변경하는 방안 + 탈리스만 확보해서 개수 표시.
         }
         public void UpdateStat(int atk, int shd, int spd)
@@ -71,6 +77,13 @@ public class BattleUiController : MonoBehaviour
         public void SetRight(bool hasRight)
         {
             panel.color = hasRight ? Color.yellow : Color.white;
+        }
+        public bool ContainsScreenPoint(Vector2 p, Camera cam) => RectTransformUtility.RectangleContainsScreenPoint(panel.rectTransform, p);
+
+        public void SetHover(bool on)
+        {
+            hoverLight.enabled = on;
+            //if(owner != null) owner.  //주인 쪽 시각 표시
         }
     }
     #endregion
@@ -206,12 +219,12 @@ public class BattleUiController : MonoBehaviour
     {
         foreach(AllyUnit ally in allies)
         {
-            CharacterData owner = ally.CharacterData;
-            switch (owner.CardColor)
+            CharacterData data = ally.CharacterData;
+            switch (data.CardColor)
             {
-                case CardColor.Red: sitaPanel.SetStat(owner); break;
-                case CardColor.Green: solphurPanel.SetStat(owner); break;
-                case CardColor.Blue: rigelPanel.SetStat(owner); break;
+                case CardColor.Red: sitaPanel.SetStat(ally); break;
+                case CardColor.Green: solphurPanel.SetStat(ally); break;
+                case CardColor.Blue: rigelPanel.SetStat(ally); break;
             }
         }        
     }
@@ -257,6 +270,39 @@ public class BattleUiController : MonoBehaviour
 
     }
 
+    public AllyUnit UpdateDropHover(Vector2 screenPos)
+    {
+        List<AllyStatPanel>panels = new() { sitaPanel, solphurPanel, rigelPanel };
+        Camera cam = screenCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : screenCanvas.worldCamera;
+
+        AllyStatPanel hit = null;
+        foreach(var p in panels)
+        {
+            if (p.Owner != null && !p.Owner.IsDead && p.ContainsScreenPoint(screenPos, cam)) { hit = p; break; }
+        }
+
+        if(hit != hoveredPanel)
+        {
+            hoveredPanel?.SetHover(false);
+            hit?.SetHover(true);
+            hoveredPanel = hit;
+        }
+        return hit?.Owner;
+    }
+
+    public void ClearDropHover()
+    {
+        hoveredPanel?.SetHover(false);
+        hoveredPanel = null;
+    }
+
+    #endregion
+
+    #region Buttons
+    // Turn End Button Reference (현재는 BattleDirector에서 참조)
+    // Deck Button -> 현재 덱 버튼 보여주는 버튼.
+    // Graveyard Button -> Show DeckLost Pane with Graveyard
+    // DeckList Off Button -> 덱리스트 패널 끄는 버튼 (DeckListPanel/Cancel Button)
     public void SwapEndButton(AllyUnit holder)
     {
         if(holder == null)
@@ -279,12 +325,5 @@ public class BattleUiController : MonoBehaviour
         }
 
     }
-    #endregion
-
-    #region Buttons
-    // Turn End Button Reference (현재는 BattleDirector에서 참조)
-    // Deck Button -> 현재 덱 버튼 보여주는 버튼.
-    // Graveyard Button -> Show DeckLost Pane with Graveyard
-    // DeckList Off Button -> 덱리스트 패널 끄는 버튼 (DeckListPanel/Cancel Button)
     #endregion
 }

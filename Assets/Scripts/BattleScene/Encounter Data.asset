@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Encounter Data
   m_EditorClassIdentifier: 
   enemyList:
-  - {fileID: 11400000, guid: f8d9b3447787b854799cb5f875f0b919, type: 2}
-  - {fileID: 11400000, guid: 05b8efdf9b8c67b47bc151cd98ea4b14, type: 2}
+  - {fileID: 11400000, guid: f272231a9cde82c4186c5eabdaa28688, type: 2}
+  - {fileID: 11400000, guid: 1530b9c94d716b04c84a3e36393a8201, type: 2}

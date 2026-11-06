@@ -1,15 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
-public class AllyStatUI : MonoBehaviour
+public class AllyStatUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [Header("Visual")]
-    [SerializeField] private Outline outLine;
-    [SerializeField] private Image outLineImage;
-    [SerializeField] private Image thumbnail;
+
+    [Header("Owner")]
     [SerializeField] private AllyUnit owner;
+
+    [Header("Visual")]
+    [SerializeField] private Image panel;
+    [SerializeField] private Outline outLine;
+    [SerializeField] private Image thumbnail;
+    [SerializeField] private Color uiColor;
 
     [Header("Text List")]
     [SerializeField] private Text atkTxt;
@@ -17,38 +24,27 @@ public class AllyStatUI : MonoBehaviour
     [SerializeField] private Text spdTxt;
     
     
-    public void SetUp()
+    public void SetUp(AllyUnit ally)
     {
-        if(owner.CharacterData == null) { Debug.Log("null"); }
-        outLine.enabled = false;
-        outLineImage.color = owner.CharacterData.UIColor;
-        thumbnail.sprite = owner.CharacterData.ThumbNail;
-        SetStatText(owner.CharacterData.BaseAttack, owner.CharacterData.BaseShield, owner.CharacterData.BaseSpeed);
+        panel.color = Color.white;
+        
+
+
+        // To Do : Set을 CharacterState로 변경하는 방안 + 탈리스만 확보해서 개수 표시.
     }
 
-    public void SetStatText(float atk, float shd, float spd)
+
+
+    public void OnPointerEnter(PointerEventData data)
     {
-        atkTxt.text = atk.ToString();
-        shdTxt.text = shd.ToString();
-        spdTxt.text = spd.ToString();
+        if (data.pointerDrag)
+        {
+
+        }
     }
 
-    public void EnterTurn()
+    public void OnPointerExit(PointerEventData data)
     {
-        outLine.enabled = true;
-        gameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1);
-    }
-
-    public void ExitTurn()
-    {
-        outLine.enabled = false;
-        gameObject.transform.localScale = Vector3.one;
 
     }
-
-    public Color GetColor()
-    {
-        return outLineImage.color;
-    }
-
 }
