@@ -144,6 +144,18 @@ public class AllyUnit : BattleUnitBase
     {
         uiController.RefreshAllBuffUI(buffList);
     }
+
+    public void ShowGnosisReady(bool ready)
+    {
+        AllyUnitUIcontroller allyUiController = uiController as AllyUnitUIcontroller;
+        allyUiController.ReadyGnosis(ready);
+    }
+
+    public void GainGnosis(int amount)
+    {
+        currentGnosis += amount;
+        if (currentGnosis >= 5) currentGnosis = 5;
+    }
     #endregion
 
     #region Original Animation Triggers

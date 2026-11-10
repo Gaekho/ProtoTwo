@@ -7,13 +7,14 @@ using UnityEngine.UI;
 public class AllyUnitUIcontroller : BattleUnitUIcontroller
 {
     [Header("Own Field \n =====================")]
-    [Header("Stat Texts")]
-    [SerializeField] private Text atk;
-    [SerializeField] private Text shd;
-    [SerializeField] private Text spd;
 
     [Header("Health")]
     [SerializeField] private int maxHealth;
+
+    [Header("Gnosis")]
+    [SerializeField] private Color originalColor = new (0.245283f, 0.245283f, 0.245283f);
+    [SerializeField] private Color cargedColor = Color.cyan;
+    [SerializeField] private Image containerImage;
 
     public override void SetUpUI(BattleUnitBase unit )
     {
@@ -33,11 +34,8 @@ public class AllyUnitUIcontroller : BattleUnitUIcontroller
         healthTxt.text = $"{currentHealth} / {maxHealth}";
     }
 
-    public void SetStatTexts(int attack, int shield, int speed)
+    public void ReadyGnosis(bool enabled)
     {
-        atk.text = attack.ToString();
-        shd.text = shield.ToString();
-        spd.text = speed.ToString();
+        containerImage.enabled = enabled;
     }
-
 }

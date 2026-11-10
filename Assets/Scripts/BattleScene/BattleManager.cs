@@ -179,7 +179,27 @@ public class BattleManager : MonoBehaviour
     }
 
     public void RequestGainGnosis(AllyUnit ally, int amount) { }
-    public void NotifyCardDiscard(CardOnScene card) { }
+    public bool TryDiscardForGnosis(CardOnScene card, AllyUnit target)
+    {
+        //성공하면
+        if (target != null)
+        {
+            target.GainGnosis(1);
+            NotifyCardDiscard(card);
+            return true;
+        }
+        else return false;
+    }
+    public void NotifyCardDiscard(CardOnScene card) => handController.AfterCardUse(card);
+
+    public void UpdateDropHover(Vector2 screenPos) => uiController.UpdateDropHover(screenPos);
+
+    public AllyUnit ResolveDropTarget(Vector2 screenPos)
+    {
+        AllyUnit target = uiController.UpdateDropHover(screenPos);
+        uiController.ClearDropHover();
+        return target;
+    }
     #endregion
 
     #region TurnQueue

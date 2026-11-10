@@ -33,7 +33,7 @@ public class BattleUiController : MonoBehaviour
     [SerializeField] private Image handBoard;
 
     [Header("Ally Stats")]
-    [SerializeField] private AllyStatPanel hoveredPanel;
+    private AllyStatPanel hoveredPanel;
     [SerializeField] private AllyStatPanel sitaPanel;
     [SerializeField] private AllyStatPanel solphurPanel;
     [SerializeField] private AllyStatPanel rigelPanel;
@@ -78,12 +78,19 @@ public class BattleUiController : MonoBehaviour
         {
             panel.color = hasRight ? Color.yellow : Color.white;
         }
-        public bool ContainsScreenPoint(Vector2 p, Camera cam) => RectTransformUtility.RectangleContainsScreenPoint(panel.rectTransform, p);
+        public bool ContainsScreenPoint(Vector2 p) 
+        {
+            Canvas canvas = panel.canvas;
+            Camera cam = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : (canvas.worldCamera != null ? canvas.worldCamera : Camera.main);
+            return RectTransformUtility.RectangleContainsScreenPoint(panel.rectTransform, p, cam); 
+        }
 
         public void SetHover(bool on)
         {
-            hoverLight.enabled = on;
-            //if(owner != null) owner.  //주인 쪽 시각 표시
+            if (hoverLight != null) hoverLight.enabled = on;
+            else Debug.LogWarning("hoverHighlight 미할당");
+
+            if (owner != null) owner.ShowGnosisReady(on);  //주인 쪽 시각 표시
         }
     }
     #endregion
@@ -278,7 +285,7 @@ public class BattleUiController : MonoBehaviour
         AllyStatPanel hit = null;
         foreach(var p in panels)
         {
-            if (p.Owner != null && !p.Owner.IsDead && p.ContainsScreenPoint(screenPos, cam)) { hit = p; break; }
+            if (p.Owner != null && !p.Owner.IsDead && p.ContainsScreenPoint(screenPos)) { hit = p; break; }
         }
 
         if(hit != hoveredPanel)

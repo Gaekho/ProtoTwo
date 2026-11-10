@@ -378,6 +378,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
          *나중에 핸드를 자동으로 정렬시킬 때 문제가 될 수 있음. */
         Vector3 worldPoint = mainCamera.ScreenToWorldPoint(new Vector3(eventdata.position.x, eventdata.position.y, 10f));
         transform.position = new Vector3(worldPoint.x, worldPoint.y, originalTransform.z);
+
+        BattleManager.Instance.UpdateDropHover(eventdata.position);
     }
 
     public void OnEndDrag(PointerEventData eventdata)
@@ -393,7 +395,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         // 3중 If문 도대체 뭐임 왜 이따구로 짬
         //if(transform.position.y >= -0.8f)
         //{
-            
+
         //    if(CheckCondition())
         //    {
         //        if (CheckTarget(data))
@@ -411,7 +413,17 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //else
         //    BackToHand();
 
-        if(transform.position.y >= -0.8f && CheckCondition() && CheckTarget(data))
+        AllyUnit discardTarget = BattleManager.Instance.ResolveDropTarget(eventdata.position);   // 가장 먼저
+
+        if (BattleManager.Instance.IsResolving) { BackToHand(); return; }
+
+        if (discardTarget != null)
+        {
+            if (!BattleManager.Instance.TryDiscardForGnosis(this, discardTarget)) BackToHand();
+            return;
+        }
+
+        if (transform.position.y >= -0.8f && CheckCondition() && CheckTarget(data))
         {
             if (BattleManager.Instance.RequestUseCard(this)) return;
         }
