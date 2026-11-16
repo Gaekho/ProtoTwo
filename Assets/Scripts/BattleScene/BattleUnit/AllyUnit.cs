@@ -14,7 +14,7 @@ public class AllyUnit : BattleUnitBase
     [SerializeField] private int currentShield;
     [SerializeField] private int currentSpeed;
     [SerializeField] private int currentGnosis;
-    //[SerializeField] private AllyUnitUIcontroller uiController;
+    [SerializeField] private AllyUnitUIcontroller allyUi;
 
 
     #endregion
@@ -36,6 +36,7 @@ public class AllyUnit : BattleUnitBase
 
         mySprite.sprite = characterData.CharacterSprite;
         myAnimator.runtimeAnimatorController = characterData.AnimatorController;
+        allyUi = uiController as AllyUnitUIcontroller;
 
         //스탯 저장
         currentAttack = characterData.BaseAttack;
@@ -147,14 +148,14 @@ public class AllyUnit : BattleUnitBase
 
     public void ShowGnosisReady(bool ready)
     {
-        AllyUnitUIcontroller allyUiController = uiController as AllyUnitUIcontroller;
-        allyUiController.ReadyGnosis(ready);
+        allyUi.ReadyGnosis(ready);
     }
 
     public void GainGnosis(int amount)
     {
         currentGnosis += amount;
-        if (currentGnosis >= 5) currentGnosis = 5;
+        currentGnosis = Mathf.Clamp(currentGnosis, 0, 5);
+        allyUi.GainGnosisUi(amount);
     }
     #endregion
 

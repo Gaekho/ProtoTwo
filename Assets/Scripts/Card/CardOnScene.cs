@@ -419,7 +419,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         if (discardTarget != null)
         {
-            if (!BattleManager.Instance.TryDiscardForGnosis(this, discardTarget)) BackToHand();
+            int a = secondaryOwner == null ? 1 : 2;
+            if (!BattleManager.Instance.TryDiscardForGnosis(this, a, discardTarget)) BackToHand();
             return;
         }
 

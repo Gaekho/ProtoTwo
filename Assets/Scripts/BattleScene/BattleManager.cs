@@ -179,12 +179,12 @@ public class BattleManager : MonoBehaviour
     }
 
     public void RequestGainGnosis(AllyUnit ally, int amount) { }
-    public bool TryDiscardForGnosis(CardOnScene card, AllyUnit target)
+    public bool TryDiscardForGnosis(CardOnScene card, int amount, AllyUnit target)
     {
         //성공하면
         if (target != null)
         {
-            target.GainGnosis(1);
+            target.GainGnosis(amount);
             NotifyCardDiscard(card);
             return true;
         }

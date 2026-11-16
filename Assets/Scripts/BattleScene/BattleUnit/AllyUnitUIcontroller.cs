@@ -15,11 +15,14 @@ public class AllyUnitUIcontroller : BattleUnitUIcontroller
     [SerializeField] private Color originalColor = new (0.245283f, 0.245283f, 0.245283f);
     [SerializeField] private Color cargedColor = Color.cyan;
     [SerializeField] private Image containerImage;
+    [SerializeField] private Image[] gnosisFill;
+    [SerializeField] private int nextGnosis;
 
     public override void SetUpUI(BattleUnitBase unit )
     {
         AllyUnit ally = unit as AllyUnit;
         maxHealth = ally.CharacterData.MaxHealth;
+        nextGnosis = 0;
         //atk.text = ally.CurrentAttack.ToString();
         //shd.text = ally.CurrentShield.ToString();
         //spd.text = ally.CurrentSpeed.ToString();
@@ -37,5 +40,20 @@ public class AllyUnitUIcontroller : BattleUnitUIcontroller
     public void ReadyGnosis(bool enabled)
     {
         containerImage.enabled = enabled;
+    }
+
+    public void GainGnosisUi(int amount)
+    {
+        for(int i = 0; i < amount; i++)
+        {
+            nextGnosis = Mathf.Clamp(nextGnosis, 0, gnosisFill.Length-1);
+            gnosisFill[nextGnosis].gameObject.SetActive(true);
+            nextGnosis++;
+        }
+    }
+
+    public void SpendGnosis(int amount)
+    {
+
     }
 }
