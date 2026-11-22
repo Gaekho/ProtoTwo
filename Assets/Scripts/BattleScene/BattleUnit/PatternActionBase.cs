@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Proto2.Enums;
 using System;
+using System.Linq;
 
 public class PatternActionParameters
 {
     public readonly EnemyUnit owner;
-    public readonly BattleUnitBase target;
-
     public readonly EnemyPatternData patternData;
 
-    public PatternActionParameters(EnemyUnit owner, BattleUnitBase target, EnemyPatternData patternData)
+    public PatternActionParameters(EnemyUnit owner, EnemyPatternData patternData)
     {
         this.owner = owner;
-        this.target = target;
         this.patternData = patternData;
     }
 }
@@ -36,25 +34,26 @@ public abstract class PatternActionBase
                 result.Add(actionParameters.owner);
                 break;
 
-            case ActionTargetType.SelectedTarget:
-                if(actionParameters.target != null)
+            case ActionTargetType.LowestHealth:
+                // PickAlly? Linq? 도발로직 추가
+                AllyUnit lowest = null;
+                foreach(AllyUnit ally in BattleManager.Instance.AliveAllies)
                 {
-                    result.Add(actionParameters.target);
+                    if(lowest == null || lowest.CurrentHealth > ally.CurrentHealth)
+                    {
+                        lowest = ally;
+                    }
                 }
-                else
-                {
-                    result.Add(BattleManager.Instance.TurnCharacter);
-                    //ResolvedSelectedTarget() 을 추가할 수 있다. 경우에 따라 도발 등이 필요하다면 함수를 추가로 생성할 것.
-                }
+                if (lowest != null) result.Add(lowest);
                 break;
 
             case ActionTargetType.AllUnits:
-                result.AddRange(BattleManager.Instance.PlayerParty);
+                result.AddRange(BattleManager.Instance.AliveAllies);
                 result.AddRange(BattleManager.Instance.EnemyList);
                 break;
 
             case ActionTargetType.AllAllies:
-                result.AddRange(BattleManager.Instance.PlayerParty);
+                result.AddRange(BattleManager.Instance.AliveAllies);
                 break;
 
             case ActionTargetType.AllEnemies:
@@ -62,13 +61,18 @@ public abstract class PatternActionBase
                 break;
 
             case ActionTargetType.RandomAlly:
-                int i = UnityEngine.Random.Range(0, BattleManager.Instance.PlayerParty.Count);
-                result.Add(BattleManager.Instance.PlayerParty[i]);        //한줄로 쓰면 가독성 개떨어질까봐 두줄로 씀.
+                // 도발 로직 추가
+                var alive = BattleManager.Instance.AliveAllies.ToList();
+                if (alive.Count == 0) break;
+                int i = UnityEngine.Random.Range(0, alive.Count);
+                result.Add(alive[i]);        //한줄로 쓰면 가독성 개떨어질까봐 두줄로 씀.
                 break;
 
             case ActionTargetType.RandomEnemy:
-                int j = UnityEngine.Random.Range(0, BattleManager.Instance.EnemyList.Count);
-                result.Add(BattleManager.Instance.EnemyList[j]);
+                var enemies = BattleManager.Instance.EnemyList;
+                if (enemies.Count == 0) break;
+                int j = UnityEngine.Random.Range(0, enemies.Count);
+                result.Add(enemies[j]);
                 break;
         }
         return result;
@@ -78,14 +82,15 @@ public abstract class PatternActionBase
 [Serializable]
 public class AttackPatternAction : PatternActionBase
 {
-    [SerializeField] private float damage = 1f;
+    [SerializeField] private int damage = 1;
 
     public override void DoAction(PatternActionParameters actionParameters)
     {
         foreach (BattleUnitBase target in ActionTargets(actionParameters))
         {
             if(target == null) continue;
-            target.GetDamage(damage);
+            int finalDamage = actionParameters.owner.CalcOutgoingDamage(damage, DamageType.AttackDamage);
+            target.GetDamage(finalDamage, DamageType.AttackDamage);
         }
     }
 }
@@ -93,7 +98,7 @@ public class AttackPatternAction : PatternActionBase
 [Serializable]
 public class AddArmorPatternAction : PatternActionBase
 {
-    [SerializeField] private float armorAmount = 1f;
+    [SerializeField] private int armorAmount = 1;
 
     public override void DoAction(PatternActionParameters actionParameters)
     {

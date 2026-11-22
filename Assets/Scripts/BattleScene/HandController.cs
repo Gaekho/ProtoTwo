@@ -6,14 +6,12 @@ using UnityEngine;
 //변경 요약 : BanishAfterUsed 참조 추가로 소멸 구현.
 public class HandController : MonoBehaviour
 {
-    #region Singleton
-    private HandController() { }
-    public static HandController Instance { get; private set; }
-    #endregion
-
     #region Field
     [Header("Card Prefab")]
     [SerializeField] private GameObject basicCard;
+
+    [Header("Hand Number")]
+    [SerializeField] private int handNumber;
 
     [Header("Hand Position")]
     [SerializeField] private Transform spawnParent;
@@ -24,17 +22,22 @@ public class HandController : MonoBehaviour
     [SerializeField] private DeckData deckData;
 
     [Header("List of cards on Battle")]
-    [SerializeField] public List<CardData> currentDeck;
-    [SerializeField] public List<CardInstance> currentHand;
-    [SerializeField] public List<CardInstance> currentGraveyard;
-    [SerializeField] public List<CardInstance> currentBanished;
+    [SerializeField] private List<CardData> currentDeck;
+    [SerializeField] private List<CardInstance> currentHand;
+    [SerializeField] private List<CardInstance> currentGraveyard;
+    [SerializeField] private List<CardInstance> currentBanished;
     [SerializeField] private int nextId = 1;
 
+    public List<CardData> CurrentDeck => currentDeck;
+    public List<CardInstance> CurrentHand => currentHand;
+    public List<CardInstance> CurrentGraveyard => currentGraveyard;
+    public List<CardInstance> CurrentBanished => currentBanished;
+    public int HandNumber => handNumber;
     #endregion
     // Start is called before the first frame update
     private void Awake()
     {
-        Instance = this;
+
     }
 
     private void Start()
@@ -53,11 +56,13 @@ public class HandController : MonoBehaviour
         currentDeck = new List<CardData>(deckData.DeckList);
         Debug.Log("Deck Ready");
         ShuffleDeck();
-        DrawCard(3);
+        DrawCard(handNumber);
     }
 
     public void DrawCard(int value)
     {
+        if (value <= 0) { return; }
+
         for(int i = 0; i < value; i++)
         {
             if(currentDeck.Count == 0)
@@ -104,12 +109,12 @@ public class HandController : MonoBehaviour
             currentGraveyard.Add(removed);
         }
 
-        //view.gameObject.SetActive(false);
-        //SortCard();
-        //Destroy(view.gameObject);
-        DestroyImmediate(view.gameObject);
-        BattleManager.Instance.IsResolving = false;
+        view.gameObject.SetActive(false);
         SortCard();
+        Destroy(view.gameObject);
+        
+        //DestroyImmediate(view.gameObject);
+        //SortCard();
     }
 
     public void RestoreCard()

@@ -11,10 +11,10 @@ public class CharacterData : ScriptableObject
     [SerializeField] private string characterName;
     [SerializeField] private string characterDescription;
     [SerializeField] private CardColor cardColor;
-    [SerializeField] private float maxHealth;
-    [SerializeField] private float baseAttack;
-    [SerializeField] private float baseShield;
-    [SerializeField] private float baseSpeed;
+    [SerializeField] private int maxHealth;
+    [SerializeField] private int baseAttack;
+    [SerializeField] private int baseShield;
+    [SerializeField] private int baseSpeed;
 
     [Header("Visual")]
     [SerializeField] private Sprite characterSprite;
@@ -28,10 +28,10 @@ public class CharacterData : ScriptableObject
     public string CharacterName => characterName;
     public string CharacterDescription => characterDescription;
     public CardColor CardColor => cardColor;
-    public float MaxHealth => maxHealth;
-    public float BaseAttack => baseAttack;
-    public float BaseShield => baseShield;
-    public float BaseSpeed => baseSpeed;
+    public int MaxHealth => maxHealth;
+    public int BaseAttack => baseAttack;
+    public int BaseShield => baseShield;
+    public int BaseSpeed => baseSpeed;
     public Sprite CharacterSprite => characterSprite;
     public RuntimeAnimatorController AnimatorController => animatorController;
     public Sprite ThumbNail => thumbNail;

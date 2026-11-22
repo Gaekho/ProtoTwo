@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //v0.02 / 2026.03.12 / 01:32
-// BuffInstance »ý¼º±â Ãß°¡.
+// BuffInstance ìƒì„±ê¸° ì¶”ê°€.
 [Serializable]
 public abstract class BuffBase 
 {
@@ -20,6 +20,8 @@ public abstract class BuffBase
     [SerializeField] protected int duration = 1;
     [SerializeField] protected ReduceTiming reduceTiming = 0;
 
+    protected ValueContext ctx;
+
     #region Cache
     public BuffTypes BuffType => buffType;
     public bool IsDebuff => isDebuff;
@@ -30,15 +32,15 @@ public abstract class BuffBase
     public ReduceTiming ReduceTiming => reduceTiming;
     #endregion
 
-    //BuffInstance »ý¼º±â. Ãß°¡ ÇÊµå¸¦ °¡Áö´Â BuffÀÇ InstanceµéÀº ÇØ´ç ÇÊµå¸¦ °¡Áö´Â Àü¿ë ÀÎ½ºÅÏ½º¸¦ Á¦ÀÛÇÑ µÚ, override ÇØ¾ß ÇÑ´Ù.
+    //BuffInstance ìƒì„±ê¸°. ì¶”ê°€ í•„ë“œë¥¼ ê°€ì§€ëŠ” Buffì˜ Instanceë“¤ì€ í•´ë‹¹ í•„ë“œë¥¼ ê°€ì§€ëŠ” ì „ìš© ì¸ìŠ¤í„´ìŠ¤ë¥¼ ì œìž‘í•œ ë’¤, override í•´ì•¼ í•œë‹¤.
     public virtual BuffInstance CreateInstance(BattleUnitBase owner, BattleUnitBase applier)
     {
         return new BuffInstance(this, owner, applier);
     }  
     
-    //Áßº¹ ¹öÇÁ ºÎ¿© ½Ãµµ ½Ã ÀÛµ¿.
-    //±âº»ÀûÀ¸·Î Áö¼Ó½Ã°£ °»½Å.
-    //½ºÅÃÀÌ ÇÊ¿äÇÑ °æ¿ì È¤Àº ´Ù¸¥ ·ÎÁ÷ÀÌ ÇÊ¿äÇÑ °æ¿ì ÇÏÀ§ Å¬·¡½º¿¡¼­ override ÇØ¼­ »ç¿ë.
+    //ì¤‘ë³µ ë²„í”„ ë¶€ì—¬ ì‹œë„ ì‹œ ìž‘ë™.
+    //ê¸°ë³¸ì ìœ¼ë¡œ ì§€ì†ì‹œê°„ ê°±ì‹ .
+    //ìŠ¤íƒì´ í•„ìš”í•œ ê²½ìš° í˜¹ì€ ë‹¤ë¥¸ ë¡œì§ì´ í•„ìš”í•œ ê²½ìš° í•˜ìœ„ í´ëž˜ìŠ¤ì—ì„œ override í•´ì„œ ì‚¬ìš©.
     public virtual void MergeToSameBuff(BuffInstance originalBuff, BattleUnitBase newApplier)
     {
         originalBuff.RenewalDuration(this.duration);
@@ -55,16 +57,30 @@ public abstract class BuffBase
         return this.description;
     }
 
-    //¹öÇÁ°¡ ½ÇÁ¦·Î Ãß°¡µÈ Á÷ÈÄ 1È¸ È£Ãâ
+    public virtual void ModifyIncomingDamage(BuffInstance inst, ValueContext ctx, DamageType type) { }
+    public virtual void ModifyOutgoingDamage(BuffInstance inst, ValueContext ctx, DamageType type) { }
+    public virtual void ModifyArmorGain(BuffInstance inst, ValueContext ctx) { }
+    public virtual void ModifyGetDamate(BuffInstance inst, int finalDamage, DamageType type) { }
+
+    //ë²„í”„ê°€ ì‹¤ì œë¡œ ì¶”ê°€ëœ ì§í›„ 1íšŒ í˜¸ì¶œ
     public virtual void OnApply(BuffInstance instance) { }
 
-    //¹öÇÁ Á¦°Å Á÷Àü 1È¸ È£Ãâ
+    //ë²„í”„ ì œê±° ì§ì „ 1íšŒ í˜¸ì¶œ
     public virtual void OnRemove(BuffInstance instance) { }
 
-    //¼ÒÀ¯ÀÚ ÅÏ ½ÃÀÛ ½Ã È£Ãâ
+    //ì†Œìœ ìž í„´ ì‹œìž‘ ì‹œ í˜¸ì¶œ
     public virtual void OnTurnStart(BuffInstance instance) { }
 
-    //¼ÒÀ¯ÀÚ ÅÏ Á¾·á ½Ã È£Ãâ
+    //ì†Œìœ ìž í„´ ì¢…ë£Œ ì‹œ í˜¸ì¶œ
     public virtual void OnTurnEnd(BuffInstance instance) { }
 
+}
+
+[Serializable]
+public class ValueContext
+{
+    public float multiplier = 1f;
+    public int flat = 0;
+
+    public int Resolve(int baseValue) => Mathf.Max(0, Mathf.CeilToInt((baseValue + flat) * multiplier));
 }

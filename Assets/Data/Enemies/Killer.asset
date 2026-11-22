@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b576987f6a9b34292963a88d6e3f13, type: 3}
+  m_Name: Killer
+  m_EditorClassIdentifier: 
+  enemyName: "\uD0AC\uB7EC"
+  enemyDescription: 
+  maxHealth: 50
+  baseSpeed: 4
+  enemySprite: {fileID: 21300000, guid: 5907c0657b845694ebda8ba88f010d88, type: 3}
+  animatorController: {fileID: 9100000, guid: 3d98b1882e4ee624ebd575e8cf8edcfc, type: 2}
+  thumbNail: {fileID: 21300000, guid: bdf76fbf465e71e48b2d396d47681dce, type: 3}
+  patternList:
+  - patternName: "\uC989\uC0AC\uAE30"
+    patternType: 0
+    intentIcon: {fileID: -568681366, guid: 0c7ac0fc980114145bfb90927911fecf, type: 3}
+    patternDescription: "\uD53C\uD574\uB97C 100 \uC785\uD78C\uB2E4."
+    patternActionList:
+    - rid: 2880685580839550976
+  references:
+    version: 2
+    RefIds:
+    - rid: 2880685580839550976
+      type: {class: AttackPatternAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 8
+        damage: 100

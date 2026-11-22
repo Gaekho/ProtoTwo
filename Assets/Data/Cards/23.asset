@@ -16,7 +16,10 @@ MonoBehaviour:
   cardName: "\uBD88\uC548\uC815 \uBD80\uC5EC"
   type: 1
   color: 3
+  secondaryColor: 0
   cardText: "\uC801\uC5D0\uAC8C \uBD88\uC548\uC815\uC744 1 \uBD80\uC5EC\uD569\uB2C8\uB2E4."
+  flavorText: 
+  cardFrame: {fileID: 0}
   cardSprite: {fileID: -176529788, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 0
@@ -30,9 +33,28 @@ MonoBehaviour:
   banishAfterUsed: 0
   cardActionList:
   - rid: 7424453399785766912
+  - rid: 2880685719094034432
   references:
     version: 2
     RefIds:
+    - rid: 2880685719094034432
+      type: {class: BranchingAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        condition:
+          condition: 9
+          healthRate: 0
+          buffType: 0
+          patternType: 0
+          PatternType: 0
+        trueActions:
+        - rid: 2880685719094034433
+        falseActions: []
+    - rid: 2880685719094034433
+      type: {class: AddArmorAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 1
+        armorAmount: 10
     - rid: 7424453399785766912
       type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
       data:

@@ -3,24 +3,19 @@ using Proto2.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [Serializable]
 public class AttackAction : CardActionBase
 {
-    [SerializeField] private float damage = 1f;
+    [SerializeField] private int damage = 1;
     public override void DoAction(CardActionParameters actionParameters)
     {
         foreach (BattleUnitBase target in ActionTargets(actionParameters))
         {
-            float totalDamage = damage;
-            if (actionParameters.owner.HasBuff(BuffTypes.Strengthen))
-            {
-                StrengthenBuffInstance buff = actionParameters.owner.GetBuff(BuffTypes.Strengthen) as StrengthenBuffInstance;
-                totalDamage = buff.DamageIncreaseRate * damage;
-            }
-
-            target.GetDamage(totalDamage);
+            int totalDamage = actionParameters.owner.CalcOutgoingDamage(damage, DamageType.AttackDamage);
+            target.GetDamage(totalDamage, DamageType.AttackDamage);
         }
     }
 }
@@ -31,7 +26,7 @@ public class DrawAction : CardActionBase
     [SerializeField] private int drawCount = 1;
     public override void DoAction(CardActionParameters actionParameters)
     {
-        HandController.Instance.DrawCard(drawCount);
+        BattleManager.Instance.RequestDraw(drawCount);
     }
 }
 
@@ -48,7 +43,7 @@ public class HealAction : CardActionBase
 [Serializable]
 public class AddArmorAction : CardActionBase
 {
-    [SerializeField] private float armorAmount = 1f;
+    [SerializeField] private int armorAmount = 1;
 
     public override void DoAction(CardActionParameters actionParameters)
     {
@@ -80,10 +75,12 @@ public class BranchConditionData
     [SerializeField] private BranchActionCondition condition;
     [SerializeField] private float healthRate;
     [SerializeField] private BuffTypes buffType;
+    [SerializeField] private EnemyPatternType patternType;
 
     public BranchActionCondition Condition => condition;
     public float HealthRate => healthRate;
     public BuffTypes BuffType => buffType;
+    public EnemyPatternType PatternType;
 }
 #endregion
 [Serializable]
@@ -145,6 +142,16 @@ public class BranchingAction : CardActionBase
 
             case BranchActionCondition.TargetNotHasBuff:
                 if (actionParameters.target.HasBuff(branchCondition.BuffType)) return false;
+                else return true;
+
+            case BranchActionCondition.TargetIntent:
+                EnemyUnit enemy = actionParameters.target as EnemyUnit;
+                if(enemy.CurrentPattern.HasIntent(branchCondition.PatternType)) return true;
+                else return false;
+
+            case BranchActionCondition.TargetNotIntent:
+                EnemyUnit enemy1 = actionParameters.target as EnemyUnit;
+                if (enemy1.CurrentPattern.HasIntent(branchCondition.PatternType)) return false;
                 else return true;
         }
         return false;

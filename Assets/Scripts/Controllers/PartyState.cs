@@ -1,34 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
 
 public class PartyState
 {
-    private DeckData currentDeck;
-    private readonly CharacterState sitaState;
-    private CharacterState rigel;
-    private CharacterState solphur;
+    #region Field
+    private Dictionary<string, CharacterState> characters = new();
 
-    public void GetState()
-    {
+    //소지한 재화나 아이템 등 또한 확장 가능. 추후 보상 시스템 확정 시
+    #endregion
 
-    }
-    public void CommitState()
+    #region Chache
+    public IReadOnlyDictionary<string, CharacterState> Characters => characters;
+    #endregion
+    public CharacterState GetCharacterState(string name)
     {
-        sitaState.sss = 0;
+        if(!characters.TryGetValue(name, out CharacterState state))
+        {
+            state = new CharacterState();
+            characters[name] = state;
+        }
+        return state;
     }
-    public void ChangeDeck(DeckData newDeck)
+    public void SetCharacterState(string name, CharacterState state)
     {
-        currentDeck = newDeck;
+        characters[name] = state;
+    }
+
+    public void GetRest()
+    {
+        // When Interact with RestPoint
+        // Restore Hp & Talisman
     }
 
 }
 
 public class CharacterState
 {
-    protected int hp;
-    private int power;
-    public int sss;
+    private int currentHp;
+    private int talisman;
+
+    private int atk;
+    private int shd;
+    private int spd;
+
+    // persistentBuffs
+    // 전투 종료 후에도 유지되는 버프&디버프
+    // 전투 중 사용되는 버프들(BuffInstance)로 쓸지, 전용버프로 정의할지 미정.
+    public int CurrentHp => currentHp;
+    public int Talisman => talisman;
+
+    public void SetHp(int value) => currentHp = value;
+    public void SetTalisman(int value) => talisman = value;
+
+    public void GetStats(out int a, out int b, out int c)
+    {
+        a = atk;
+        b = shd;
+        c = spd;
+        
+    }
     
 }

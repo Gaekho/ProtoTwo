@@ -171,8 +171,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentNodeId: 
   nodeStoryEvents: 02000000
-  nodeInteractionInk: {fileID: 0}
+  nodeInteractionInk: {fileID: 4900000, guid: 3ad0918c8ceb24647814c991208b9d18, type: 3}
   ownCanvas: {fileID: 0}
+  encounterData: {fileID: 11400000, guid: aa43a9d0840c57e44a630f0cbce29d54, type: 2}
 --- !u!1 &129251162
 GameObject:
   m_ObjectHideFlags: 0

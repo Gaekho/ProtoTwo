@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Proto2.Enums;
 
 [Serializable]
 public class StrengthenBuffInstance : BuffInstance
@@ -18,5 +19,32 @@ public class StrengthenBuffInstance : BuffInstance
     public void SetDamageRate(float rate)
     {
         this.damageIncreaseRate = rate;
+    }
+}
+
+[Serializable]
+public class StatChangeBuffInstance : BuffInstance
+{
+    [SerializeField] private ConditionType stat;
+    [SerializeField] private int changedAmount;
+
+    public StatChangeBuffInstance(BuffBase sourceBuff, BattleUnitBase owner, BattleUnitBase applier, ConditionType stat) : base(sourceBuff, owner, applier)
+    {
+        this.stat = stat;
+        this.changedAmount = 0;
+    }
+
+    public void SetAmount(int newAmount)
+    {
+        changedAmount = newAmount;
+    }
+
+    public void MergeStatChange(int amount)
+    {
+        changedAmount += amount;
+    }
+    public int GetChangedAmount()
+    {
+        return changedAmount;
     }
 }

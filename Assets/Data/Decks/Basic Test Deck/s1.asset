@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
+  m_Name: s1
+  m_EditorClassIdentifier: 
+  id: 8
+  cardName: "\uC0AC\uD608"
+  type: 1
+  color: 3
+  secondaryColor: 0
+  cardText: "\u2018\uB300\uC0C1\u2019\uC5D0\uAC8C 5\uD53C\uD574\uB97C \uC785\uD78C\uB2E4.
+    \u2018\uB300\uC0C1\u2019\uC774 \uC544\uAD70\uC774\uB77C\uBA74 \uBAA8\uB4E0 \uD574\uB85C\uC6B4
+    \uD6A8\uACFC\uB97C \uC81C\uAC70\uD55C\uB2E4."
+  flavorText: "\uD53C\uB97C \uB0B4\uC11C \uB3C5\uC744 \uC81C\uAC70\uD55C\uB2E4."
+  cardFrame: {fileID: 223829635, guid: 64efcc16790d2244dae70d40c5824e71, type: 3}
+  cardSprite: {fileID: 21300000, guid: 9ea605ff69b3fcc4fa2f5afa4c3f431f, type: 3}
+  dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
+  cardAnimTrigger: 2
+  usableWithoutTarget: 0
+  cardTarget: 1
+  activeConditionList:
+  - condition: 0
+    value: 1
+  - condition: 1
+    value: 1
+  - condition: 2
+    value: 2
+  banishAfterUsed: 0
+  cardActionList:
+  - rid: 2901168484448731157
+  - rid: 2901168484448731158
+  references:
+    version: 2
+    RefIds:
+    - rid: 2901168484448731157
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        damage: 5
+    - rid: 2901168484448731158
+      type: {class: RemoveBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        targetBuff: 12

@@ -1,0 +1,336 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using Proto2.Enums;
+using System.Runtime.CompilerServices;
+using System;
+
+
+public class BattleUiController : MonoBehaviour
+{
+    #region Field
+    [Header("Turn Change Panel")]
+    [SerializeField] private GameObject turnChangePanel;
+    [SerializeField] private TMP_Text whosTurn;
+    [SerializeField] private Text turnCount;
+
+    [SerializeField] private Canvas screenCanvas;
+
+    [Header("Reward Panel")]
+    [SerializeField] private GameObject rewardPanel;
+    [SerializeField] private TMP_Text winOrLose;
+    [SerializeField] private RectTransform RewardContainer;
+
+    [Header("Defeat Panel")]
+    [SerializeField] private GameObject defeatPanel;
+
+    [Header("Turn Queue")]
+    [SerializeField] private TurnQUIController qUIController;
+
+    [Header("Hand Board")]
+    [SerializeField] private Image handBoard;
+
+    [Header("Ally Stats")]
+    private AllyStatPanel hoveredPanel;
+    [SerializeField] private AllyStatPanel sitaPanel;
+    [SerializeField] private AllyStatPanel solphurPanel;
+    [SerializeField] private AllyStatPanel rigelPanel;
+
+    [Header("Buttons")]
+    [SerializeField] private GameObject turnEndButton;
+    [SerializeField] private GameObject returnActingRightButton;
+
+    [Serializable]
+    private class AllyStatPanel
+    {
+        [SerializeField] private Image panel;
+        [SerializeField] private Image thumbNail;
+        [SerializeField] private Outline outline;
+        [SerializeField] private Color uiColor;
+        [SerializeField] private Text atk, shd, spd;
+        [SerializeField] private AllyUnit owner;
+        [SerializeField] private Image hoverLight;
+        public AllyUnit Owner => owner;
+
+        public void SetStat(AllyUnit ally)
+        {
+            panel.color = Color.white;
+            uiColor = ally.CharacterData.UIColor;
+            thumbNail.sprite = ally.CharacterData.ThumbNail;
+            outline.effectColor = uiColor;
+            this.atk.text = $"{ally.CharacterData.BaseAttack}";
+            this.shd.text = $"{ally.CharacterData.BaseShield}";
+            this.spd.text = $"{ally.CharacterData.BaseSpeed}";
+
+            owner = ally;
+            // To Do : Set을 CharacterState로 변경하는 방안 + 탈리스만 확보해서 개수 표시.
+        }
+        public void UpdateStat(int atk, int shd, int spd)
+        {
+            this.atk.text = $"{atk}";
+            this.shd.text = $"{shd}";
+            this.spd.text = $"{spd}";
+        }
+
+        public void SetRight(bool hasRight)
+        {
+            panel.color = hasRight ? Color.yellow : Color.white;
+        }
+        public bool ContainsScreenPoint(Vector2 p) 
+        {
+            Canvas canvas = panel.canvas;
+            Camera cam = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : (canvas.worldCamera != null ? canvas.worldCamera : Camera.main);
+            return RectTransformUtility.RectangleContainsScreenPoint(panel.rectTransform, p, cam); 
+        }
+
+        public void SetHover(bool on)
+        {
+            if (hoverLight != null) hoverLight.enabled = on;
+            else Debug.LogWarning("hoverHighlight 미할당");
+
+            if (owner != null) owner.ShowGnosisReady(on);  //주인 쪽 시각 표시
+        }
+    }
+    #endregion
+
+     
+    // Start is called before the first frame update
+
+    private void Awake()
+    {
+        turnChangePanel.SetActive(false);
+        rewardPanel.SetActive(false);
+        defeatPanel.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        GameEventsLibrary.OnActingRightShifted += ActingRightShifted;
+        GameEventsLibrary.OnActingRightShifted += SwapEndButton;
+        GameEventsLibrary.OnUnitStatChanged += UpdateStatUI;
+    }
+
+    private void OnDisable()
+    {
+        GameEventsLibrary.OnActingRightShifted -= ActingRightShifted;
+        GameEventsLibrary.OnActingRightShifted -= SwapEndButton;
+        GameEventsLibrary.OnUnitStatChanged -= UpdateStatUI;
+    }
+
+    // NotUsed
+    //public IEnumerator TurnStart(int turn, string who)
+    //{
+    //    turnChangePanel.SetActive(true);
+    //    TMP_Text whosTurn = turnChangePanel.GetComponentInChildren<TMP_Text>();
+    //    Text turnCount = turnChangePanel.GetComponentInChildren<Text>();
+
+    //    whosTurn.text = who + " Turn";
+    //    turnCount.text = turn.ToString();
+    //    yield return new WaitForSeconds(1.5f);
+    //    turnChangePanel.SetActive(false);
+    //    yield break;
+    //}
+
+    //public IEnumerator TurnEnd()
+    //{
+    //    characterSelectPanel.SetActive(true);
+
+    //    while (BattleManager.Instance.CurrentState == TurnState.End)
+    //    {
+    //        yield return null;
+    //    }
+    //    //yield return new WaitForSeconds(0.5f);
+    //    characterSelectPanel.SetActive(false);
+    //    yield break;
+    //}
+
+    #region Screen Panels
+    public IEnumerator UnitTurnStart(int turn, string who)
+    {
+        turnChangePanel.SetActive(true);
+        //TMP_Text whosTurn = turnChangePanel.GetComponentInChildren<TMP_Text>();
+        //Text turnCount = turnChangePanel.GetComponentInChildren<Text>();
+
+        whosTurn.text = who + "의 차례";
+        turnCount.text = turn.ToString();
+
+        yield return new WaitForSeconds(0.8f);
+        turnChangePanel.SetActive(false);
+        yield break;
+    }
+    public IEnumerator UnitTurnEnd()
+    {
+        yield break;
+    }
+
+    //public IEnumerator BattleEnd(string winLose)
+    //{
+    //    rewardPanel.SetActive(true);
+    //    TMP_Text wl = rewardPanel.GetComponentInChildren<TMP_Text>();
+    //    wl.text = "전투 " + winLose + "!";
+    //    yield break;
+    //}
+
+    public IEnumerator BattleEndWin()
+    {
+        rewardPanel.SetActive(true);
+        yield break;
+    }
+
+    public IEnumerator BattleEndLose()
+    {
+        defeatPanel.SetActive(true);
+        yield break;
+    }
+    public IEnumerator RoundStart(int queueCount)
+    {
+        turnChangePanel.SetActive(true);
+
+        TMP_Text whosTurn = turnChangePanel.GetComponentInChildren<TMP_Text>();
+        Text turnCount = turnChangePanel.GetComponentInChildren<Text>();
+        qUIController.transform.localScale = new Vector3(1.5f, 1.5f);
+
+        whosTurn.text = $"{queueCount} 번째 라운드 진행";
+        turnCount.text = "";
+
+        yield return new WaitForSeconds(1.5f);
+        qUIController.transform.localScale = Vector3.one;
+        turnChangePanel.SetActive(false);
+    }
+
+    #endregion
+
+    #region QueueWrapper
+    public void RefreshTurnQueueUI( List<BattleUnitBase> aliveUnits)
+    {
+        qUIController.ReBuildQueue(aliveUnits);
+    }
+    public void TransferTurnQueueUI()
+    {
+        qUIController.TransferQueueUI();
+    }
+    public void RemoveUnitFromTurnQueueUI(BattleUnitBase deadUnit)
+    {
+        qUIController.RemoveUnitFromQueueUI(deadUnit);
+    }
+    public void SetFirstQueueElement(AllyUnit holder)
+    {
+        qUIController.SetFirstImage(holder);
+    }
+    #endregion
+
+    #region Stat Panel
+    public void SetStatPanel(List<AllyUnit> allies)
+    {
+        foreach(AllyUnit ally in allies)
+        {
+            CharacterData data = ally.CharacterData;
+            switch (data.CardColor)
+            {
+                case CardColor.Red: sitaPanel.SetStat(ally); break;
+                case CardColor.Green: solphurPanel.SetStat(ally); break;
+                case CardColor.Blue: rigelPanel.SetStat(ally); break;
+            }
+        }        
+    }
+
+    public void ActingRightShifted(AllyUnit holder)
+    {
+        sitaPanel.SetRight(false);
+        solphurPanel.SetRight(false);
+        rigelPanel.SetRight(false);
+
+        if(holder != null)
+        {
+            switch (holder.CharacterData.CardColor)
+            {
+                case CardColor.Red: sitaPanel.SetRight(true); break;
+                case CardColor.Green:solphurPanel.SetRight(true); break;
+                case CardColor.Blue: rigelPanel.SetRight(true); break;
+            }
+
+            handBoard.color = holder.CharacterData.UIColor;
+            
+            SetFirstQueueElement(holder);
+        }
+        else
+        {
+            handBoard.color = Color.gray;
+        }
+
+    }
+    public void UpdateStatUI(AllyUnit unit, int atk, int shd, int spd)
+    {
+        switch (unit.CharacterData.CardColor)
+        {
+            case CardColor.Red:
+                sitaPanel.UpdateStat(atk, shd, spd); break;
+
+            case CardColor.Green:
+                solphurPanel.UpdateStat(atk, shd, spd); break;
+
+            case CardColor.Blue:
+                rigelPanel.UpdateStat(atk, shd, spd); break;
+        }
+
+    }
+
+    public AllyUnit UpdateDropHover(Vector2 screenPos)
+    {
+        List<AllyStatPanel>panels = new() { sitaPanel, solphurPanel, rigelPanel };
+        Camera cam = screenCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : screenCanvas.worldCamera;
+
+        AllyStatPanel hit = null;
+        foreach(var p in panels)
+        {
+            if (p.Owner != null && !p.Owner.IsDead && p.ContainsScreenPoint(screenPos)) { hit = p; break; }
+        }
+
+        if(hit != hoveredPanel)
+        {
+            hoveredPanel?.SetHover(false);
+            hit?.SetHover(true);
+            hoveredPanel = hit;
+        }
+        return hit?.Owner;
+    }
+
+    public void ClearDropHover()
+    {
+        hoveredPanel?.SetHover(false);
+        hoveredPanel = null;
+    }
+
+    #endregion
+
+    #region Buttons
+    // Turn End Button Reference (현재는 BattleDirector에서 참조)
+    // Deck Button -> 현재 덱 버튼 보여주는 버튼.
+    // Graveyard Button -> Show DeckLost Pane with Graveyard
+    // DeckList Off Button -> 덱리스트 패널 끄는 버튼 (DeckListPanel/Cancel Button)
+    public void SwapEndButton(AllyUnit holder)
+    {
+        if(holder == null)
+        {
+            turnEndButton.SetActive(false);
+            returnActingRightButton.SetActive(false);
+            return;
+        }
+
+
+        if(BattleManager.Instance.TurnUnit == holder)
+        {
+            turnEndButton.SetActive(true);
+            returnActingRightButton.SetActive(false);
+        }
+        else
+        {
+            turnEndButton.SetActive(false);
+            returnActingRightButton.SetActive(true);
+        }
+
+    }
+    #endregion
+}

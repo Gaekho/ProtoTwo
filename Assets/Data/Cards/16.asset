@@ -15,16 +15,21 @@ MonoBehaviour:
   id: 16
   cardName: "\uACF5\uC911\uC81C\uBE44"
   type: 1
-  color: 4
+  color: 1
+  secondaryColor: 0
   cardText: "\uC801\uC758 \uACF5\uACA9\uC744 1\uD68C \uBB34\uD6A8\uB85C \uD55C\uB2E4."
   cardSprite: {fileID: 713353667, guid: c76d2f2c4f3b43b43a5626aba909657a, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
-  actionTargetType: 1
+  cardAnimTrigger: 0
+  usableWithoutTarget: 1
+  cardTarget: 0
   activeConditionList:
   - condition: 2
     value: 2
   - condition: 1
     value: 2
-  usableWithoutTarget: 1
   banishAfterUsed: 1
-  cardActionDataList: []
+  cardActionList: []
+  references:
+    version: 2
+    RefIds: []

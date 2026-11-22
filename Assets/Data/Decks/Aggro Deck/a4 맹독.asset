@@ -16,8 +16,11 @@ MonoBehaviour:
   cardName: "\uB9F9\uB3C5"
   type: 1
   color: 3
+  secondaryColor: 0
   cardText: "\uC120\uD0DD\uB41C \uC801\uC5D0\uAC8C '\uB9F9\uB3C5'\uC744 5 \uBD80\uC5EC\uD55C\uB2E4."
-  cardSprite: {fileID: -881700137, guid: 6df93a3cf36171b42add15d49f10550a, type: 3}
+  flavorText: 
+  cardFrame: {fileID: 223829635, guid: 64efcc16790d2244dae70d40c5824e71, type: 3}
+  cardSprite: {fileID: 21300000, guid: 9ea605ff69b3fcc4fa2f5afa4c3f431f, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
   cardAnimTrigger: 3
   usableWithoutTarget: 0
@@ -43,7 +46,8 @@ MonoBehaviour:
         buffType: 12
         isDebuff: 1
         buffName: Poison
-        description: Get 10% of current health (Max 30) damages 5 on start of turn.
+        description: "\uD134 \uC2DC\uC791 \uC2DC \uCD5C\uB300 \uCCB4\uB825\uC758
+          10% \uD53C\uD574 (\uCD5C\uB300 30)\uC744 \uC785\uB294\uB2E4."
         triggerTiming: 3
         duration: 5
         reduceTiming: 2

@@ -9,9 +9,9 @@ using Proto2.Enums;
 public class EnemyUnit : BattleUnitBase
 {
     #region Field
-    [Header("Enemy Unit")]
+    [Header("\n\nEnemy Unit")]
     [SerializeField] private EnemyData enemyData;
-    [SerializeField] private float baseSpeed => enemyData.BaseSpeed;
+    [SerializeField] private int currentSpeed;
 
     [Header("EnemyUI")]
     //[SerializeField] private EnemyUIController uiController;
@@ -21,7 +21,8 @@ public class EnemyUnit : BattleUnitBase
     #endregion
 
     public EnemyData EnemyData => enemyData;
-    public override float CurrentSpeed => baseSpeed;
+    public override int CurrentSpeed => currentSpeed;
+    public EnemyPatternData CurrentPattern => currentPattern;
 
     public void SetProfile(EnemyData enemyData)
     {
@@ -29,21 +30,21 @@ public class EnemyUnit : BattleUnitBase
         base.SetProfile(UnitTeam.Enemy, enemyData.MaxHealth);
         mySprite.sprite = enemyData.EnemySprite;
 
-        uiController.SetUpUI(this);
+        currentSpeed = enemyData.BaseSpeed;
 
         //패턴 세팅
         SetRandomPattern();
     }
 
     #region Overrides
-    public override void GetDamage(float value)
+    public override void GetDamage(int value, DamageType type)
     {
-        base.GetDamage(value);
+        base.GetDamage(value, type);
         uiController.SetArmor(currentArmor);
         uiController.SetHealth(currentHealth);
     }
 
-    public override void AddArmor(float value)
+    public override void AddArmor(int value)
     {
         base.AddArmor(value);
         uiController.SetArmor(currentArmor);
@@ -75,14 +76,20 @@ public class EnemyUnit : BattleUnitBase
             else DoReceiveBuffAnim();
         }
     }
+    public override void StatusChange(ConditionType statType, int amount)
+    {
+        if (statType != ConditionType.Speed) return;
+        currentSpeed += amount;
+    }
     protected override IEnumerator Die()
     {
         BattleManager.Instance.EnemyDead(this);       //에러 발생으로 잠시 주석처리. EnemyDead 수정 후 다시 사용.
+        isDead = true;
         DoDieAnim();
         yield return null;                             //사망 애니메이션 발동 후 한 프레임 보장을 통해 버그 가능성 낮추기.
         yield return new WaitForSeconds(myAnimator.GetCurrentAnimatorStateInfo(0).length);
         yield return new WaitForSeconds(0.2f);
-        Destroy(transform.parent.gameObject);
+        Destroy(gameObject);
     }
 
     //Gpt가 짜준 Die 루틴. WaitUntil을 사용해서 애니메이션 종료를 감지한다.
@@ -121,7 +128,7 @@ public class EnemyUnit : BattleUnitBase
 
     public void UsePattern()
     {
-        switch (currentPattern.PatternType)
+        switch (currentPattern.PatternAnimType)
         {
             case EnemyPatternAnimTrigger.Attack:
                 DoAttackAnim(); break;
@@ -138,13 +145,13 @@ public class EnemyUnit : BattleUnitBase
 
         foreach(PatternActionBase patternAction in currentPattern.PatternActionList)
         {
-            patternAction.DoAction(new PatternActionParameters(this, BattleManager.Instance.TurnCharacter, currentPattern));
+            patternAction.DoAction(new PatternActionParameters(this, currentPattern));
         }
     }
 
     public IEnumerator UsePatternRoutine()
     {
-        switch (currentPattern.PatternType)
+        switch (currentPattern.PatternAnimType)
         {
             case EnemyPatternAnimTrigger.Attack:
                 DoAttackAnim();
@@ -169,7 +176,7 @@ public class EnemyUnit : BattleUnitBase
 
         foreach (PatternActionBase patternAction in currentPattern.PatternActionList)
         {
-            patternAction.DoAction(new PatternActionParameters(this, BattleManager.Instance.TurnCharacter, currentPattern));
+            patternAction.DoAction(new PatternActionParameters(this, currentPattern));
         }
 
         yield return new WaitForSeconds(0.7f);

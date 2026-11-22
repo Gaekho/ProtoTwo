@@ -25,6 +25,7 @@ public class SceneFlowManager : MonoBehaviour
     #endregion
 
     public bool isTransitioning;
+    private EncounterData pendingEncounter;
 
     #region Public Request Methods
     public void RequestNodeTransition(string targetNodeId)
@@ -37,8 +38,9 @@ public class SceneFlowManager : MonoBehaviour
         }
     }
 
-    public void RequestBattleEncounter()
+    public void RequestBattleEncounter(EncounterData encounter)
     {
+        pendingEncounter = encounter;
         StartCoroutine(BattleEncounterTransition());
     }
 
@@ -125,7 +127,7 @@ public class SceneFlowManager : MonoBehaviour
     }
     #endregion
 
-    #region FadeInOut
+    #region Utilities
     private IEnumerator PlayFadeOut()
     {
         bool done = false;
@@ -144,6 +146,13 @@ public class SceneFlowManager : MonoBehaviour
         RootUiManager.Instance.FadeInTrigger();
         yield return new WaitUntil(() => done);
         GameEventsLibrary.OnFadeInDone -= Handler;
+    }
+
+    public EncounterData ConsumePendingEncounter()
+    {
+        EncounterData data = pendingEncounter;
+        pendingEncounter = null;
+        return data;
     }
     #endregion
 }

@@ -15,7 +15,8 @@ MonoBehaviour:
   id: 15
   cardName: "\uC8FC\uBA39\uC9C8"
   type: 1
-  color: 4
+  color: 1
+  secondaryColor: 0
   cardText: "\uD53C\uD574\uB97C 5 \uC785\uD78C\uB2E4."
   cardSprite: {fileID: 1400635668, guid: c76d2f2c4f3b43b43a5626aba909657a, type: 3}
   dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}

@@ -4,11 +4,12 @@ using UnityEngine;
 using TMPro;
 using Proto2.Enums;
 using UnityEngine.UI;
+using System;
 
+[Serializable]
 public class TurnQUIController : MonoBehaviour
 {
     [Header("Fixed UI")]
-    [SerializeField] private TMP_Text queueCount;
     [SerializeField] private GameObject turnQElement;
 
     [Header("Q Element Prefab")]
@@ -27,18 +28,17 @@ public class TurnQUIController : MonoBehaviour
     [SerializeField] private List<BattleUnitBase> waitingUnits = new();
 
 
-    public void ReBuildQueue(int queueCount, List<BattleUnitBase> orderedUnits)
+    public void ReBuildQueue( List<BattleUnitBase> orderedUnits)
     {
         ClearQueueUI();
-        SetQueueCount(queueCount);
 
         if (orderedUnits == null || orderedUnits.Count == 0) return;
 
-        //Ã¹¹øÂ° °íÁ¤
+        //ì²«ë²ˆì§¸ ê³ ì •
         SetQelement(turnQElement, orderedUnits[0]);
         turnQElement.transform.localScale = turnScale;
 
-        //µÎ¹øÂ°ºÎÅÍ »ı¼º
+        //ë‘ë²ˆì§¸ë¶€í„° ìƒì„±
         for(int i=1; i<orderedUnits.Count; i++)
         {
             CreateWaitingElement(orderedUnits[i]);
@@ -86,10 +86,6 @@ public class TurnQUIController : MonoBehaviour
         spawnedQElements.RemoveAt(idx);
     }
 
-    private void SetQueueCount(int count)
-    {
-        queueCount.text = $"[ {count} ]";
-    }
 
     private void CreateWaitingElement(BattleUnitBase unit)
     {
@@ -103,7 +99,7 @@ public class TurnQUIController : MonoBehaviour
 
     private void SetQelement(GameObject element, BattleUnitBase unit)
     {
-        Image image = element.GetComponent<Image>();
+        Image image = element.GetComponentInChildren<Image>();
         Outline outline = element.GetComponent<Outline>();
 
         if(unit.Team == UnitTeam.Ally)
@@ -118,6 +114,12 @@ public class TurnQUIController : MonoBehaviour
             image.sprite = enemy.EnemyData.ThumbNail;
             outline.effectColor = enemyColor;
         }
+    }
+
+    public void SetFirstImage(BattleUnitBase holder)
+    {
+        if (holder == null) return;
+        SetQelement(turnQElement, holder);
     }
 
 }

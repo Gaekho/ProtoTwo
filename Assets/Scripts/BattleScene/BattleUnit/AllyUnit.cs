@@ -10,29 +10,33 @@ public class AllyUnit : BattleUnitBase
     #region Field
     [Header("Ally Unit")]
     [SerializeField] private CharacterData characterData;
-    [SerializeField] private float currentAttack;
-    [SerializeField] private float currentShield;
-    [SerializeField] private float currentSpeed;
-    //[SerializeField] private AllyUnitUIcontroller uiController;
+    [SerializeField] private int currentAttack;
+    [SerializeField] private int currentShield;
+    [SerializeField] private int currentSpeed;
+    [SerializeField] private int currentGnosis;
+    [SerializeField] private AllyUnitUIcontroller allyUi;
 
-    [Header("Own UI")]
-    [SerializeField] private Canvas ownUIcanvas;
+
     #endregion
 
     #region Cache
     public CharacterData CharacterData => characterData;
-    public float CurrentAttack => currentAttack;
-    public float CurrentShield => currentShield;
-    public override float CurrentSpeed => currentSpeed;
+    public int CurrentAttack => currentAttack;
+    public int CurrentShield => currentShield;
+    public override int CurrentSpeed => currentSpeed;
     public bool IsTurn => isTurn;
     #endregion
 
-    public void SetProfile(CharacterData characterData)
+    public void SetProfile(CharacterData characterData, CharacterState state)
     {
         this.characterData = characterData;
-        base.SetProfile(UnitTeam.Ally, characterData.MaxHealth);
+
+        int startHp = state.CurrentHp > 0 ? state.CurrentHp : characterData.MaxHealth;
+        base.SetProfile(UnitTeam.Ally, startHp);
+
         mySprite.sprite = characterData.CharacterSprite;
         myAnimator.runtimeAnimatorController = characterData.AnimatorController;
+        allyUi = uiController as AllyUnitUIcontroller;
 
         //스탯 저장
         currentAttack = characterData.BaseAttack;
@@ -41,29 +45,26 @@ public class AllyUnit : BattleUnitBase
         
         //턴 세팅
         isTurn = false;
-        myTransform = transform.parent;
-        myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
+        myTransform.localScale = new Vector3(1f, 1f, 1f);
 
-        //UI 세팅
-        uiController.SetUpUI(this);
     }
 
     #region Overrides
-    public override void GetDamage(float value)
+    public override void GetDamage(int value, DamageType type)
     {
-        base.GetDamage(value);
+        base.GetDamage(value, type);
         //UIManager 연결 후에 슬라이더 표시 기능 구현
         uiController.SetArmor(currentArmor);
         uiController.SetHealth(currentHealth);
     }
 
-    public override void AddArmor(float value)
+    public override void AddArmor(int value)
     {
         base.AddArmor(value);
         uiController.SetArmor(currentArmor);
     }
 
-    public override void StatusChange(ConditionType statType, float amount)
+    public override void StatusChange(ConditionType statType, int amount)
     {
         switch (statType)
         {
@@ -76,7 +77,21 @@ public class AllyUnit : BattleUnitBase
         }
         //AllyUnitUIcontroller allyUIC = uiController as AllyUnitUIcontroller;
         //allyUIC.SetStatTexts(currentAttack, currentShield, currentSpeed);
-        UIManager.Instance.UpdateStatUI(this, currentAttack, currentShield, currentSpeed);
+        //UIManager.Instance.UpdateStatUI(this, currentAttack, currentShield, currentSpeed);
+        //배틀 디렉터에게 UI 변경 요청
+        GameEventsLibrary.RaiseUnitStatChanged(this, currentAttack, currentShield, CurrentSpeed);
+    }
+
+    public override void UpdateStat(ConditionType statType, int value)
+    {
+        switch (statType)
+        {
+            case ConditionType.Attack: currentAttack = value; break;
+            case ConditionType.Shield: currentShield = value; break;
+            case ConditionType.Speed: currentSpeed = value; break;
+        }
+        //배틀 디렉터에게 UI 변경 요청
+        GameEventsLibrary.RaiseUnitStatChanged(this, currentAttack, currentShield, CurrentSpeed);
     }
     public override void ReceiveBuff(BuffBase buff, BattleUnitBase applier)
     {
@@ -115,7 +130,13 @@ public class AllyUnit : BattleUnitBase
     protected override IEnumerator Die()
     {
         //아직 미구현. 애니메이션 재생 및 자기 자신 파괴, BattleManager의 AllyList에서 삭제 등의 작업 추가.
-        yield break;
+        BattleManager.Instance.AllyDead(this);
+        isDead = true;
+        DoDieAnim();
+        yield return null;
+        yield return new WaitForSeconds(myAnimator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(0.2f);
+        //Destroy(gameObject);
     }
     #endregion
 
@@ -124,12 +145,24 @@ public class AllyUnit : BattleUnitBase
     {
         uiController.RefreshAllBuffUI(buffList);
     }
+
+    public void ShowGnosisReady(bool ready)
+    {
+        allyUi.ReadyGnosis(ready);
+    }
+
+    public void GainGnosis(int amount)
+    {
+        currentGnosis += amount;
+        currentGnosis = Mathf.Clamp(currentGnosis, 0, 5);
+        allyUi.GainGnosisUi(amount);
+    }
     #endregion
 
     #region Original Animation Triggers
     public void DoDrawAnim()
     {
-        myAnimator.SetTrigger("Draw");
+        myAnimator.SetTrigger("Magical");
     }
     #endregion
 }

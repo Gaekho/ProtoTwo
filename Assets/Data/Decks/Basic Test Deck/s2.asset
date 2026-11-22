@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44a7abd8991bb5d4d871567721af4437, type: 3}
+  m_Name: s2
+  m_EditorClassIdentifier: 
+  id: 0
+  cardName: "\uC548\uC815 \uD658\uAC01"
+  type: 1
+  color: 3
+  secondaryColor: 0
+  cardText: "\u2018\uB300\uC0C1(\uC544\uAD70)\u2019\uC5D0\uAC8C \u2018\uBC29\uC5B4
+    \uC99D\uAC00 1\u2019, \u2018\uACF5\uACA9 \uC99D\uAC00 1\u2019 \uC744 2\uD134\uAC04
+    \uBD80\uC5EC\uD55C\uB2E4."
+  flavorText: "\uC548\uC815\uD558\uB2E4\uB294 \uCC29\uAC01\uC744 \uC2EC\uC5B4\uC8FC\uBA74
+    \uC804\uD22C\uB825\uC774 \uC624\uB978\uB2E4."
+  cardFrame: {fileID: 223829635, guid: 64efcc16790d2244dae70d40c5824e71, type: 3}
+  cardSprite: {fileID: 21300000, guid: 9ea605ff69b3fcc4fa2f5afa4c3f431f, type: 3}
+  dragIcon: {fileID: 21300000, guid: 9f47ecf7cb8629e48a5864397d8e73ad, type: 3}
+  cardAnimTrigger: 0
+  usableWithoutTarget: 0
+  cardTarget: 1
+  activeConditionList:
+  - condition: 0
+    value: 1
+  - condition: 1
+    value: 1
+  banishAfterUsed: 0
+  cardActionList:
+  - rid: 2901168484448731159
+  - rid: 2901168484448731161
+  references:
+    version: 2
+    RefIds:
+    - rid: 2901168484448731159
+      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        buff:
+          rid: 2901168484448731160
+    - rid: 2901168484448731160
+      type: {class: AtkStatPlusBuff, ns: , asm: Assembly-CSharp}
+      data:
+        buffType: 4
+        isDebuff: 0
+        buffName: "\uACF5\uACA9 \uC2A4\uD0EF \uAC15\uD654"
+        description: "1\uD134 \uB3D9\uC548 \uACF5\uACA9 \uC2A4\uD0EF\uC774 0\uC99D\uAC00\uD55C\uB2E4."
+        triggerTiming: 0
+        duration: 2
+        reduceTiming: 2
+        stat: 0
+        plusAmount: 1
+    - rid: 2901168484448731161
+      type: {class: ApplyBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        actionTarget: 2
+        buff:
+          rid: 2901168484448731162
+    - rid: 2901168484448731162
+      type: {class: ShdStatPlusBuff, ns: , asm: Assembly-CSharp}
+      data:
+        buffType: 5
+        isDebuff: 0
+        buffName: "\uBC29\uC5B4 \uC2A4\uD0EF \uAC15\uD654"
+        description: "1\uD134 \uB3D9\uC548 \uBC29\uC5B4 \uC2A4\uD0EF\uC774 0\uC99D\uAC00\uD55C\uB2E4."
+        triggerTiming: 0
+        duration: 2
+        reduceTiming: 2
+        stat: 1
+        plusAmount: 1

@@ -28,7 +28,6 @@ namespace Proto2.Enums
         Red, 
         Blue, 
         Green,
-        Gray
     }
 
     public enum CardAnimTrigger
@@ -57,7 +56,8 @@ namespace Proto2.Enums
     {
         None = 0,
         Owner,
-        SelectedTarget,
+        SelectedTarget, //카드 전용
+        LowestHealth,   // 패턴 전용
         AllAllies,
         AllEnemies,
         AllUnits,
@@ -108,7 +108,11 @@ namespace Proto2.Enums
         OwnerHasBuff,
         OwnerNotHasBuff,
         TargetHasBuff,
-        TargetNotHasBuff
+        TargetNotHasBuff,
+
+        //패턴 검사
+        TargetIntent,
+        TargetNotIntent
     }
 
 }

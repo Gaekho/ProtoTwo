@@ -14,8 +14,11 @@ public class CardDataEditor : Editor
     private SerializedProperty cardNameProp;
     private SerializedProperty typeProp;
     private SerializedProperty colorProp;
+    private SerializedProperty secondarColorProp;
     private SerializedProperty cardTextProp;
+    private SerializedProperty flavorTextProp;
 
+    private SerializedProperty cardFrameProp;
     private SerializedProperty cardSpriteProp;
     private SerializedProperty dragIconProp;
     private SerializedProperty cardAnimTriggerProp;
@@ -36,8 +39,11 @@ public class CardDataEditor : Editor
         cardNameProp = serializedObject.FindProperty("cardName");
         typeProp = serializedObject.FindProperty("type");
         colorProp = serializedObject.FindProperty("color");
+        secondarColorProp = serializedObject.FindProperty("secondaryColor");
         cardTextProp = serializedObject.FindProperty("cardText");
+        flavorTextProp = serializedObject.FindProperty("flavorText");
 
+        cardFrameProp = serializedObject.FindProperty("cardFrame");
         cardSpriteProp = serializedObject.FindProperty("cardSprite");
         dragIconProp = serializedObject.FindProperty("dragIcon");
         cardAnimTriggerProp = serializedObject.FindProperty("cardAnimTrigger");
@@ -75,10 +81,13 @@ public class CardDataEditor : Editor
         EditorGUILayout.PropertyField (cardNameProp);
         EditorGUILayout.PropertyField(typeProp);
         EditorGUILayout.PropertyField(colorProp);
+        EditorGUILayout.PropertyField(secondarColorProp);
         EditorGUILayout.PropertyField(cardTextProp);
+        EditorGUILayout.PropertyField(flavorTextProp);
 
         EditorGUILayout.Space(6);
         EditorGUILayout.LabelField("Visual", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(cardFrameProp);
         EditorGUILayout.PropertyField(cardSpriteProp);
         EditorGUILayout.PropertyField(dragIconProp);
         EditorGUILayout.PropertyField(cardAnimTriggerProp);

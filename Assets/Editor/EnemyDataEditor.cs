@@ -87,6 +87,7 @@ public class EnemyDataEditor : Editor
             SerializedProperty patternElement = patternListProp.GetArrayElementAtIndex(i);
 
             SerializedProperty patternNameProp = patternElement.FindPropertyRelative("patternName");
+            SerializedProperty patternAnimTypeProp = patternElement.FindPropertyRelative("patternAnimType");
             SerializedProperty patternTypeProp = patternElement.FindPropertyRelative("patternType");
             SerializedProperty intentIconProp = patternElement.FindPropertyRelative("intentIcon");
             SerializedProperty patternDescriptionProp = patternElement.FindPropertyRelative("patternDescription");
@@ -123,6 +124,7 @@ public class EnemyDataEditor : Editor
                 EditorGUI.indentLevel++;
 
                 EditorGUILayout.PropertyField(patternNameProp);
+                EditorGUILayout.PropertyField(patternAnimTypeProp);
                 EditorGUILayout.PropertyField(patternTypeProp);
                 EditorGUILayout.PropertyField(intentIconProp);
                 EditorGUILayout.PropertyField (patternDescriptionProp);

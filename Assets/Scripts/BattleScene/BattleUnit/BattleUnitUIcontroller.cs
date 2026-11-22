@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public abstract class BattleUnitUIcontroller : MonoBehaviour
 {
@@ -17,10 +18,14 @@ public abstract class BattleUnitUIcontroller : MonoBehaviour
 
     [Header("Health")]
     [SerializeField] protected Slider healthSlider;
-    [SerializeField] protected Text healthTxt;
+    [SerializeField] protected TMP_Text healthTxt;
 
-    [Header("Armor Text")]
-    [SerializeField] protected Text armorTxt;
+    [Header("Armor State")]
+    [SerializeField] protected Image armorState;
+    [SerializeField] protected TMP_Text armorTxt;
+
+    [Header("Turn Count")]
+    [SerializeField] protected TMP_Text turnTxt;
 
     [Header("Buff")]
     [SerializeField] protected Transform buffContainer;
@@ -36,14 +41,23 @@ public abstract class BattleUnitUIcontroller : MonoBehaviour
         SetArmor(0);
     }
 
-    public virtual void SetHealth(float currentHealth)
+    public virtual void SetHealth(int currentHealth)
     {
-        //ÇÏÀ§ ±¸Çö
+        //í•˜ìœ„ êµ¬í˜„
     }
 
-    public virtual void SetArmor(float amount)
+    
+    public virtual void SetArmor(int amount)
     {
+        if(!armorState.gameObject.activeSelf)   armorState.gameObject.SetActive(true);
+
+        if (amount == 0) NoArmor();
         armorTxt.text = amount.ToString();
+    }
+
+    public virtual void NoArmor()
+    {
+        armorState.gameObject.SetActive(false);
     }
 
     public virtual void SetTurn(bool isTurn)

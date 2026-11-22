@@ -11,8 +11,8 @@ public abstract class BattleUnitBase : MonoBehaviour
     #region Field
     [Header("Battle Unit")]
     [SerializeField] protected UnitTeam team;
-    [SerializeField] protected float currentHealth;
-    [SerializeField] protected float currentArmor;
+    [SerializeField] protected int currentHealth;
+    [SerializeField] protected int currentArmor;
     [SerializeField] protected bool isDead;
     [SerializeField] protected bool isTurn;
     [SerializeReference] protected List<BuffInstance> buffList = new();
@@ -26,27 +26,43 @@ public abstract class BattleUnitBase : MonoBehaviour
 
     #region Cache
     public UnitTeam Team => team;
-    public float CurrentHealth => currentHealth;
-    public float CurrentArmor => currentArmor;
+    public int CurrentHealth => currentHealth;
+    public int CurrentArmor => currentArmor;
     public bool IsDead => isDead;
     public List<BuffInstance> BuffList => buffList;
     
-    public virtual float CurrentSpeed => 0f;
+    public virtual int CurrentSpeed => 0;
 
+    #endregion
+    #region Unity LIfecycle
+    protected virtual void OnEnable()
+    {
+        GameEventsLibrary.OnUnitTurnStart += HandleUnitTurnStart;
+    }
+    protected virtual void OnDisable()
+    {
+        GameEventsLibrary.OnUnitTurnStart -= HandleUnitTurnStart;
+    }
+
+    private void HandleUnitTurnStart(BattleUnitBase unit)
+    {
+        if (unit == this) EnterTurn();
+        else ExitTurn();
+    }
     #endregion
 
     #region Virtual Methods
-    public virtual void SetProfile(UnitTeam myTeam, float maxHealth)
+    public virtual void SetProfile(UnitTeam myTeam, int hp)
     {
         team = myTeam;
         isDead = false;
-        currentHealth = maxHealth;
-        currentArmor = 0f;
+        currentHealth = hp;
+        currentArmor = 0;
 
         uiController.SetUpUI(this);
     }
 
-    public virtual void AddArmor(float value)
+    public virtual void AddArmor(int value)
     {
         if (value <= 0) return;
         currentArmor += value;
@@ -56,37 +72,63 @@ public abstract class BattleUnitBase : MonoBehaviour
 
     public virtual void ClearArmor()
     {
-        currentArmor = 0f;
-        uiController.SetArmor(0f);
+        currentArmor = 0;
+        uiController.SetArmor(0);
     }
 
-    public virtual void StatusChange(ConditionType statType, float amount)
+    public virtual void StatusChange(ConditionType statType, int amount)
     {
 
     }
 
-    public virtual void GetDamage(float value)
+    public virtual void UpdateStat(ConditionType statType, int value)
     {
-        float previousHealth = currentHealth;           //데미지 받기 전 체력 저장.
+        
+    }
 
-        if (value <= 0) return;
-        float remainDamage = value;
+    public virtual int CalcOutgoingDamage(int baseDamage, DamageType type)
+    {
+        ValueContext ctx = new ValueContext();
+        foreach (BuffInstance buff in new List<BuffInstance>(buffList))
+        {
+            buff.SourceBuff.ModifyOutgoingDamage(buff, ctx, type);
+        }
+        return ctx.Resolve(baseDamage);
+
+    }
+
+    public virtual void GetDamage(int value, DamageType type)
+    {
+        if (isDead) return;
+
+        ValueContext ctx = new();
+        foreach(BuffInstance buff in new List<BuffInstance>(buffList))  //버프 리스트 순회하며 추가 데미지 받을거 있으면 보정
+        {
+            buff.SourceBuff.ModifyIncomingDamage(buff, ctx, type);
+        }
+
+        int modified = ctx.Resolve(value);
+
+        int previousHealth = currentHealth;           //데미지 받기 전 체력 저장.
+
+        if (modified <= 0) return;
+        int remainDamage = modified;
 
         if(currentArmor > 0f) 
         {
-            float absorbed = Mathf.Min(remainDamage, currentArmor);
+            int absorbed = Mathf.Min(remainDamage, currentArmor);
             remainDamage -= absorbed;
             currentArmor -= absorbed;
         }
 
-        if(remainDamage > 0f)
+        if(remainDamage > 0)
         {
             currentHealth -= remainDamage;
         }
 
-        if (currentHealth <= 0f && !isDead)
+        if (currentHealth <= 0 && !isDead)
         {
-            currentHealth = 0f;
+            currentHealth = 0;
             isDead = true;
             StartCoroutine(Die());
         }
@@ -100,14 +142,16 @@ public abstract class BattleUnitBase : MonoBehaviour
     public virtual void EnterTurn()
     {
         isTurn = true;
-        myTransform.localScale = new Vector3(1.2f, 1.2f, 1f);
+        Debug.Log(this.name + "enter Turn");
+        myTransform.localScale = new Vector3(1.5f, 1.5f, 1f);
         uiController.SetTurn(true);
+        ClearArmor();
     }
 
     public virtual void ExitTurn()
     {
         isTurn = false;
-        myTransform.localScale = new Vector3(0.8f, 0.8f, 1f);
+        myTransform.localScale = new Vector3(1f, 1f, 1f);
         uiController.SetTurn(false);
     }
 
@@ -203,7 +247,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 
     #endregion
 
-    #region Animation Wait
+    #region Animation Wait(Legacy)
     //public IEnumerator WaitForAnimationStateEnd(string stateName, int layer = 0)
     //{
     //    if (myAnimator == null) yield break;
@@ -237,7 +281,7 @@ public abstract class BattleUnitBase : MonoBehaviour
  
     public virtual void DoArmorAnim()
     {
-        myAnimator.SetTrigger("AddArmor");
+        myAnimator.SetTrigger("Guard");
     }
 
     public virtual void DoApplyBuffAnim()
@@ -246,17 +290,17 @@ public abstract class BattleUnitBase : MonoBehaviour
     }
     public virtual void DoReceiveBuffAnim()
     {
-        myAnimator.SetTrigger("ReceiveBuff");
+        myAnimator.SetTrigger("GetBuff");
     }
 
     public virtual void DoApplyDebuffAnim()
     {
-        myAnimator.SetTrigger("ApplyDebuff");
+        myAnimator.SetTrigger("ApplyBuff");
     }
 
     public virtual void DoReceiveDebuffAnim()
     {
-        myAnimator.SetTrigger("ReceiveDebuff");
+        myAnimator.SetTrigger("GetBuff");
     }
  
     public virtual void DoDamagedAnim()

@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 379296199}
   - component: {fileID: 379296200}
   m_Layer: 0
-  m_Name: Scene Root
+  m_Name: Scene Root (Director)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -355,6 +355,8 @@ MonoBehaviour:
   currentNodeId: 
   nodeStoryEvents: 01000000
   nodeInteractionInk: {fileID: 4900000, guid: 3ad0918c8ceb24647814c991208b9d18, type: 3}
+  ownCanvas: {fileID: 0}
+  encounterData: {fileID: 0}
 --- !u!1 &581432710
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,9 +829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fcdbeb2dbbc564a9e3cd2c4e979fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkJson: {fileID: 4900000, guid: fec9fb4bb6e99f2448ae1942c3e2427a, type: 3}
   interactionKey: tester
-  sceneRoot: {fileID: 778859324}
 --- !u!1 &1287277994
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,7 +848,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1287277995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1230,12 +1230,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fcdbeb2dbbc564a9e3cd2c4e979fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkJson: {fileID: 4900000, guid: fec9fb4bb6e99f2448ae1942c3e2427a, type: 3}
   interactionKey: alchemy
-  sceneRoot: {fileID: 778859324}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 379296199}
   - {fileID: 305294035}
+  - {fileID: 379296199}

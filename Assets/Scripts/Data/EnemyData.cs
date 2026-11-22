@@ -13,8 +13,8 @@ public class EnemyData : ScriptableObject
     //[Header("Character Profile")]
     [SerializeField] private string enemyName;
     [SerializeField] private string enemyDescription;
-    [SerializeField] private float maxHealth;
-    [SerializeField] private float baseSpeed;
+    [SerializeField] private int maxHealth;
+    [SerializeField] private int baseSpeed;
 
     //[Header("Visual")]
     [SerializeField] private Sprite enemySprite;
@@ -30,8 +30,8 @@ public class EnemyData : ScriptableObject
     #region cache
     public string EnemyName => enemyName;
     public string EnemyDescription => enemyDescription;
-    public float MaxHealth => maxHealth;
-    public float BaseSpeed => baseSpeed;
+    public int MaxHealth => maxHealth;
+    public int BaseSpeed => baseSpeed;
     public Sprite EnemySprite => enemySprite;
     public RuntimeAnimatorController AnimatorController => animatorController;
     public List<EnemyPatternData> PatternList => patternList;
@@ -43,7 +43,8 @@ public class EnemyData : ScriptableObject
 public class EnemyPatternData
 {
     [SerializeField] private string patternName;
-    [SerializeField] private EnemyPatternAnimTrigger patternType;  //애니메이션 재생용
+    [SerializeField] private EnemyPatternAnimTrigger patternAnimType;  //애니메이션 재생용
+    [SerializeField] private List<EnemyPatternType> patternType = new();
     [SerializeField] private Sprite intentIcon;
     [SerializeField] private string patternDescription;
 
@@ -52,7 +53,8 @@ public class EnemyPatternData
 
     #region Cache
     public string PatternName => patternName;
-    public EnemyPatternAnimTrigger PatternType => patternType; //애니메이션 재생용
+    public EnemyPatternAnimTrigger PatternAnimType => patternAnimType; //애니메이션 재생용
+    public bool HasIntent(EnemyPatternType type) => patternType.Contains(type);
     public Sprite IntentIcon => intentIcon;
     public string PatternDescription => patternDescription;
     public List<PatternActionBase> PatternActionList => patternActionList;

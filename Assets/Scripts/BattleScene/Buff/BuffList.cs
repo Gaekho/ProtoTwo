@@ -6,9 +6,10 @@ using Unity.VisualScripting;
 using Proto2.Enums;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using Ink.Parsed;
 
 // v0.01 / 2026.03.12 / 01:04
-// ÃÖÃÊ »ı¼º
+// ìµœì´ˆ ìƒì„±
 [Serializable]
 public class TauntBuff : BuffBase
 {
@@ -35,17 +36,17 @@ public class TauntBuff : BuffBase
 public class AtkStatPlusBuff : BuffBase
 {
     [SerializeField] ConditionType stat;
-    [SerializeField] float plusAmount;
+    [SerializeField] int plusAmount;
 
     public ConditionType Stat => stat;
-    public float PlusAmount => plusAmount;
+    public int PlusAmount => plusAmount;
 
     public AtkStatPlusBuff()
     {
         buffType = BuffTypes.AtkStatPlus;
         isDebuff = false;
-        buffName = "°ø°İ ½ºÅÈ °­È­";
-        description = $"{duration}ÅÏ µ¿¾È °ø°İ ½ºÅÈÀÌ {plusAmount}Áõ°¡ÇÑ´Ù.";
+        buffName = "ê³µê²© ìŠ¤íƒ¯ ê°•í™”";
+        description = $"{duration}í„´ ë™ì•ˆ ê³µê²© ìŠ¤íƒ¯ì´ {plusAmount}ì¦ê°€í•œë‹¤.";
         triggerTiming = BuffTriggerTiming.None;
 
         duration = 1;
@@ -54,19 +55,33 @@ public class AtkStatPlusBuff : BuffBase
         plusAmount = 1;
     }
 
+    public override BuffInstance CreateInstance(BattleUnitBase owner, BattleUnitBase applier)
+    {
+        return new StatChangeBuffInstance(this, owner, applier, stat);
+
+    }
+
+    public override void MergeToSameBuff(BuffInstance originalBuff, BattleUnitBase newApplier)
+    {
+        base.MergeToSameBuff(originalBuff, newApplier);
+    }
+
     public override void OnApply(BuffInstance instance)
     {
         instance.Owner.StatusChange(ConditionType.Attack ,plusAmount);
+        StatChangeBuffInstance sti = instance as StatChangeBuffInstance;
+        sti.MergeStatChange(plusAmount);
     }
 
     public override void OnRemove(BuffInstance instance)
     {
-        instance.Owner.StatusChange(ConditionType.Attack, -plusAmount);
+        StatChangeBuffInstance i = instance as StatChangeBuffInstance;
+        instance.Owner.StatusChange(ConditionType.Attack, -i.GetChangedAmount());
     }
 
     public override void UpdateTooltip()
     {
-        description = $"{duration}ÅÏ µ¿¾È °ø°İ ½ºÅÈÀÌ {plusAmount}Áõ°¡ÇÑ´Ù.";
+        description = $"{duration}í„´ ë™ì•ˆ ê³µê²© ìŠ¤íƒ¯ì´ {plusAmount}ì¦ê°€í•œë‹¤.";
     }
 }
 
@@ -74,17 +89,17 @@ public class AtkStatPlusBuff : BuffBase
 public class ShdStatPlusBuff : BuffBase
 {
     [SerializeField] ConditionType stat;
-    [SerializeField] float plusAmount;
+    [SerializeField] int plusAmount;
 
     public ConditionType Stat => stat;
-    public float PlusAmount => plusAmount;
+    public int PlusAmount => plusAmount;
 
     public ShdStatPlusBuff()
     {
         buffType = BuffTypes.ShdStatPlus;
         isDebuff = false;
-        buffName = "¹æ¾î ½ºÅÈ °­È­";
-        description = $"{duration}ÅÏ µ¿¾È ¹æ¾î ½ºÅÈÀÌ {plusAmount}Áõ°¡ÇÑ´Ù.";
+        buffName = "ë°©ì–´ ìŠ¤íƒ¯ ê°•í™”";
+        description = $"{duration}í„´ ë™ì•ˆ ë°©ì–´ ìŠ¤íƒ¯ì´ {plusAmount}ì¦ê°€í•œë‹¤.";
         triggerTiming = BuffTriggerTiming.None;
 
         duration = 1;
@@ -93,19 +108,27 @@ public class ShdStatPlusBuff : BuffBase
         plusAmount = 1;
 
     }
+
+    public override BuffInstance CreateInstance(BattleUnitBase owner, BattleUnitBase applier)
+    {
+        return new StatChangeBuffInstance(this, owner, applier, stat);
+    }
     public override void OnApply(BuffInstance instance)
     {
         instance.Owner.StatusChange(ConditionType.Shield, plusAmount);
+        StatChangeBuffInstance sti = instance as StatChangeBuffInstance;
+        sti.MergeStatChange(plusAmount);
     }
 
     public override void OnRemove(BuffInstance instance)
     {
-        instance.Owner.StatusChange(ConditionType.Shield, -plusAmount);
+        StatChangeBuffInstance i = instance as StatChangeBuffInstance;
+        instance.Owner.StatusChange(ConditionType.Shield, -i.GetChangedAmount());
     }
 
     public override void UpdateTooltip()
     {
-        description = $"{duration}ÅÏ µ¿¾È ¹æ¾î ½ºÅÈÀÌ {plusAmount}Áõ°¡ÇÑ´Ù.";
+        description = $"{duration}í„´ ë™ì•ˆ ë°©ì–´ ìŠ¤íƒ¯ì´ {plusAmount}ì¦ê°€í•œë‹¤.";
     }
 
 }
@@ -114,17 +137,17 @@ public class ShdStatPlusBuff : BuffBase
 public class SpdStatPlusBuff : BuffBase
 {
     [SerializeField] ConditionType stat;
-    [SerializeField] float plusAmount;
+    [SerializeField] int plusAmount;
 
     public ConditionType Stat => stat;
-    public float PlusAmount => plusAmount;
+    public int PlusAmount => plusAmount;
 
     public SpdStatPlusBuff()
     {
         buffType = BuffTypes.SpdStatPlus;
         isDebuff = false;
-        buffName = "¼Óµµ ½ºÅÈ °­È­";
-        description = $"{duration}ÅÏ µ¿¾È ¼Óµµ ½ºÅÈÀÌ {plusAmount}Áõ°¡ÇÑ´Ù.";
+        buffName = "ì†ë„ ìŠ¤íƒ¯ ê°•í™”";
+        description = $"{duration}í„´ ë™ì•ˆ ì†ë„ ìŠ¤íƒ¯ì´ {plusAmount}ì¦ê°€í•œë‹¤.";
         triggerTiming = BuffTriggerTiming.None;
 
         duration = 1;
@@ -133,19 +156,26 @@ public class SpdStatPlusBuff : BuffBase
         plusAmount = 1;
     }
 
+    public override BuffInstance CreateInstance(BattleUnitBase owner, BattleUnitBase applier)
+    {
+        return new StatChangeBuffInstance(this, owner, applier, stat);
+    }
     public override void OnApply(BuffInstance instance)
     {
         instance.Owner.StatusChange(ConditionType.Speed, plusAmount);
+        StatChangeBuffInstance sti = instance as StatChangeBuffInstance;
+        sti.MergeStatChange(plusAmount);
     }
 
     public override void OnRemove(BuffInstance instance)
     {
-        instance.Owner.StatusChange(ConditionType.Speed, -plusAmount);
+        StatChangeBuffInstance i = instance as StatChangeBuffInstance;
+        instance.Owner.StatusChange(ConditionType.Speed, -i.GetChangedAmount());
     }
 
     public override void UpdateTooltip()
     {
-        description = $"{duration}ÅÏ µ¿¾È ¼Óµµ ½ºÅÈÀÌ {plusAmount}Áõ°¡ÇÑ´Ù.";
+        description = $"{duration}í„´ ë™ì•ˆ ì†ë„ ìŠ¤íƒ¯ì´ {plusAmount}ì¦ê°€í•œë‹¤.";
     }
 }
 
@@ -159,7 +189,7 @@ public class StrengthenBuff : BuffBase
         buffType = BuffTypes.Strengthen;
         isDebuff = false;
         buffName = "Strengthen";
-        description = $"Áö¼Ó½Ã°£ µ¿¾È ÇÇÇØ·®ÀÌ {(int)((additionalDamageRate-1)*100)}% »ó½ÂÇÑ´Ù.";
+        description = $"ì§€ì†ì‹œê°„ ë™ì•ˆ í”¼í•´ëŸ‰ì´ {(int)((additionalDamageRate-1)*100)}% ìƒìŠ¹í•œë‹¤.";
         triggerTiming = BuffTriggerTiming.None;
 
         duration = 1;
@@ -185,7 +215,12 @@ public class StrengthenBuff : BuffBase
 
     public override void UpdateTooltip()
     {
-        description = $"Áö¼Ó½Ã°£ µ¿¾È ÇÇÇØ·®ÀÌ {(int)((additionalDamageRate - 1) * 100)}% »ó½ÂÇÑ´Ù.";
+        description = $"ì§€ì†ì‹œê°„ ë™ì•ˆ í”¼í•´ëŸ‰ì´ {(int)((additionalDamageRate - 1) * 100)}% ìƒìŠ¹í•œë‹¤.";
+    }
+
+    public override void ModifyOutgoingDamage(BuffInstance inst, ValueContext ctx, DamageType type)
+    {
+        ctx.multiplier *= additionalDamageRate;
     }
 
 }

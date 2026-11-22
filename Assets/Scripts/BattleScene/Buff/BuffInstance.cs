@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //v0.02 / 2026.03.12 / 01:03
-// ReduceBuffDuration Ãß°¡
+// ReduceBuffDuration ì¶”ê°€
 [Serializable]
 public class BuffInstance 
 {

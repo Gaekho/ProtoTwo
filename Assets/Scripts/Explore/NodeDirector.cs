@@ -9,6 +9,7 @@ public class NodeDirector : MonoBehaviour
     [SerializeField] private List<int> nodeStoryEvents = new();
     [SerializeField] private TextAsset nodeInteractionInk;
     [SerializeField] private Canvas ownCanvas;
+    [SerializeField] private EncounterData encounterData;
 
     public string CurrentNodeId => currentNodeId;
     // Start is called before the first frame update
@@ -53,7 +54,7 @@ public class NodeDirector : MonoBehaviour
             Debug.Log("Battle Scene Start");
             //Enabled Interaction Triggers
             ownCanvas.gameObject.SetActive(false);
-            SceneFlowManager.Instance.RequestBattleEncounter();
+            SceneFlowManager.Instance.RequestBattleEncounter(encounterData);
 
             GameEventsLibrary.OnBattleEnd += HandleBattleEnd;
             //Skip other lines
