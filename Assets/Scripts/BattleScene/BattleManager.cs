@@ -174,6 +174,7 @@ public class BattleManager : MonoBehaviour
     public bool RequestUseCard(CardOnScene card)
     {
         if (card == null || CurrentState != TurnState.AllyTurn || IsResolving) return false;
+        //여기에 궁극기 충전 코드 삽입 구체적으로는 플레이어를 감지해서 궁극기 충전하도록 하기
         StartCoroutine(ResolveRoutine(card.CardUseRoutine()));
         return true;
     }

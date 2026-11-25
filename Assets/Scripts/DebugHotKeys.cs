@@ -11,6 +11,7 @@ public class DebugHotKeys : MonoBehaviour
         {
                 RuntimeState.Instance.GetNodeState("0001").SetEncounter(true);
                 Debug.Log("0001 노드에 인카운터 강제 설정 완료");
-            }
+        }
+
     }
 }
