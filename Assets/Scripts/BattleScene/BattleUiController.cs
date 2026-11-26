@@ -52,7 +52,18 @@ public class BattleUiController : MonoBehaviour
         [SerializeField] private Text atk, shd, spd;
         [SerializeField] private AllyUnit owner;
         [SerializeField] private Image hoverLight;
+        [SerializeField] private List<Image> ultimateChargeImages = new List<Image>(5);
         public AllyUnit Owner => owner;
+
+        public void SetUltimateCharge(int charge)
+        {
+            for (int i = 0; i < ultimateChargeImages.Count; i++)
+            {
+                Image image = ultimateChargeImages[i];
+                if (image != null)
+                    image.enabled = i < charge;
+            }
+        }
 
         public void SetStat(AllyUnit ally)
         {
@@ -65,6 +76,7 @@ public class BattleUiController : MonoBehaviour
             this.spd.text = $"{ally.CharacterData.BaseSpeed}";
 
             owner = ally;
+            SetUltimateCharge(ally.UltimateCharge);
             // To Do : Set을 CharacterState로 변경하는 방안 + 탈리스만 확보해서 개수 표시.
         }
         public void UpdateStat(int atk, int shd, int spd)
@@ -110,6 +122,7 @@ public class BattleUiController : MonoBehaviour
         GameEventsLibrary.OnActingRightShifted += ActingRightShifted;
         GameEventsLibrary.OnActingRightShifted += SwapEndButton;
         GameEventsLibrary.OnUnitStatChanged += UpdateStatUI;
+        GameEventsLibrary.OnUltimateChargeChanged += UpdateUltimateChargeUI;
     }
 
     private void OnDisable()
@@ -117,6 +130,7 @@ public class BattleUiController : MonoBehaviour
         GameEventsLibrary.OnActingRightShifted -= ActingRightShifted;
         GameEventsLibrary.OnActingRightShifted -= SwapEndButton;
         GameEventsLibrary.OnUnitStatChanged -= UpdateStatUI;
+        GameEventsLibrary.OnUltimateChargeChanged -= UpdateUltimateChargeUI;
     }
 
     // NotUsed
@@ -137,7 +151,7 @@ public class BattleUiController : MonoBehaviour
     //{
     //    characterSelectPanel.SetActive(true);
 
-    //    while (BattleManager.Instance.CurrentState == TurnState.End)
+    //    while (BattleDirector.Instance.CurrentState == TurnState.End)
     //    {
     //        yield return null;
     //    }
@@ -236,6 +250,16 @@ public class BattleUiController : MonoBehaviour
         }        
     }
 
+    private void UpdateUltimateChargeUI(AllyUnit ally, int charge)
+    {
+        if (sitaPanel?.Owner == ally)
+            sitaPanel.SetUltimateCharge(charge);
+        else if (solphurPanel?.Owner == ally)
+            solphurPanel.SetUltimateCharge(charge);
+        else if (rigelPanel?.Owner == ally)
+            rigelPanel.SetUltimateCharge(charge);
+    }
+
     public void ActingRightShifted(AllyUnit holder)
     {
         sitaPanel.SetRight(false);
@@ -320,7 +344,7 @@ public class BattleUiController : MonoBehaviour
         }
 
 
-        if(BattleManager.Instance.TurnUnit == holder)
+        if(BattleDirector.Instance.TurnUnit == holder)
         {
             turnEndButton.SetActive(true);
             returnActingRightButton.SetActive(false);

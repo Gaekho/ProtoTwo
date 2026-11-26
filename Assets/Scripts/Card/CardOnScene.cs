@@ -20,6 +20,8 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private Camera mainCamera;
     [SerializeField] private AllyUnit primaryOwner;
     [SerializeField] private AllyUnit secondaryOwner;
+    public AllyUnit PrimaryOwner => primaryOwner;
+    public AllyUnit SecondaryOwner => secondaryOwner;
 
     [Header("Visual UI Field")]
     [SerializeField] private SpriteRenderer frame;
@@ -107,7 +109,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private AllyUnit FindOwnerByColor(CardColor color)
     {
-        foreach(AllyUnit ally in BattleManager.Instance.PlayerParty)
+        foreach(AllyUnit ally in BattleDirector.Instance.PlayerParty)
         {
             if (ally.CharacterData.CardColor == color) return ally;
         }
@@ -190,7 +192,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public IEnumerator CardUseRoutine()
     {
-        AllyUnit actor = BattleManager.Instance.ActingUnit;
+        AllyUnit actor = BattleDirector.Instance.ActingUnit;
 
         switch (data.CardAnimTrigger)
         {
@@ -227,17 +229,17 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             AllyUnit other = (actor == primaryOwner) ? secondaryOwner : primaryOwner;
 
             if (other != null && !other.IsDead)                       // 상대 캐릭터가 있는데 죽어있으면 행동권 이전 X
-                BattleManager.Instance.SetActingRightHolder(other);   // 상대 캐릭터에게 재이전, 체인 유지
+                BattleDirector.Instance.SetActingRightHolder(other);   // 상대 캐릭터에게 재이전, 체인 유지
             else
-                BattleManager.Instance.ReturnActingRight();           
+                BattleDirector.Instance.ReturnActingRight();
         }
         else
         {
-            BattleManager.Instance.ReturnActingRight();   // 단색 카드 → 체인 종료
+            BattleDirector.Instance.ReturnActingRight();   // 단색 카드 → 체인 종료
         }
 
         //HandController.Instance.AfterCardUse(this);
-        BattleManager.Instance.NotifyCardUsed(this);
+        BattleDirector.Instance.NotifyCardUsed(this);
 
     }
     
@@ -248,7 +250,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         CardsizeSmall();
         illust.sprite = data.CardSprite;
         canvas.gameObject.SetActive(true);
-        SetPlayable(BattleManager.Instance.ActingUnit);
+        SetPlayable(BattleDirector.Instance.ActingUnit);
         //Color color = Color.white;
         //color.a = 1f;
         //myImage.color = color;           OnDrag 참조
@@ -267,7 +269,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
 
         //턴 캐릭터 체크
-        AllyUnit holder = BattleManager.Instance.ActingUnit;
+        AllyUnit holder = BattleDirector.Instance.ActingUnit;
         if (holder == null || holder.IsDead) return false;
 
         if (holder != primaryOwner && holder != secondaryOwner)
@@ -379,13 +381,13 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         Vector3 worldPoint = mainCamera.ScreenToWorldPoint(new Vector3(eventdata.position.x, eventdata.position.y, 10f));
         transform.position = new Vector3(worldPoint.x, worldPoint.y, originalTransform.z);
 
-        BattleManager.Instance.UpdateDropHover(eventdata.position);
+        BattleDirector.Instance.UpdateDropHover(eventdata.position);
     }
 
     public void OnEndDrag(PointerEventData eventdata)
     {
         // Request Use Card로 가드 이관
-        //if (BattleManager.Instance.IsResolving || BattleManager.Instance.CurrentState != TurnState.AllyTurn)
+        //if (BattleDirector.Instance.IsResolving || BattleDirector.Instance.CurrentState != TurnState.AllyTurn)
         //{
         //    BackToHand();
         //    Debug.Log("Can't Use Card Now!");
@@ -402,7 +404,7 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //        {
         //            //Use();
         //            Debug.Log("Card Used Successfull");
-        //            StartCoroutine(BattleManager.Instance.ResolveRoutine(CardUseRoutine()));
+        //            StartCoroutine(BattleDirector.Instance.ResolveRoutine(CardUseRoutine()));
         //            //BackToHand();
         //        }
         //        else BackToHand();
@@ -413,20 +415,20 @@ public class CardOnScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //else
         //    BackToHand();
 
-        AllyUnit discardTarget = BattleManager.Instance.ResolveDropTarget(eventdata.position);   // 가장 먼저
+        AllyUnit discardTarget = BattleDirector.Instance.ResolveDropTarget(eventdata.position);   // 가장 먼저
 
-        if (BattleManager.Instance.IsResolving) { BackToHand(); return; }
+        if (BattleDirector.Instance.IsResolving) { BackToHand(); return; }
 
         if (discardTarget != null)
         {
             int a = secondaryOwner == null ? 1 : 2;
-            if (!BattleManager.Instance.TryDiscardForGnosis(this, a, discardTarget)) BackToHand();
+            if (!BattleDirector.Instance.TryDiscardForGnosis(this, a, discardTarget)) BackToHand();
             return;
         }
 
         if (transform.position.y >= -0.8f && CheckCondition() && CheckTarget(data))
         {
-            if (BattleManager.Instance.RequestUseCard(this)) return;
+            if (BattleDirector.Instance.RequestUseCard(this)) return;
         }
         BackToHand();
         

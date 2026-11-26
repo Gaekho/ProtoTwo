@@ -48,22 +48,22 @@ public abstract class CardActionBase
                 break;
 
             case ActionTargetType.AllAllies:
-                result.AddRange(BattleManager.Instance.AliveAllies);
+                result.AddRange(BattleDirector.Instance.AliveAllies);
                 break;
 
             case ActionTargetType.AllEnemies:
-                result.AddRange(BattleManager.Instance.EnemyList);
+                result.AddRange(BattleDirector.Instance.EnemyList);
                 break;
 
             case ActionTargetType.RandomAlly:
-                var alive = BattleManager.Instance.AliveAllies.ToList();
+                var alive = BattleDirector.Instance.AliveAllies.ToList();
                 if (alive.Count == 0) break;
                 int i = UnityEngine.Random.Range(0, alive.Count);
                 result.Add(alive[i]);        //한줄로 쓰면 가독성 개떨어질까봐 두줄로 씀.
                 break;
 
             case ActionTargetType.RandomEnemy:
-                var enemies = BattleManager.Instance.EnemyList;
+                var enemies = BattleDirector.Instance.EnemyList;
                 if (enemies.Count == 0) break;
                 int j = UnityEngine.Random.Range(0, enemies.Count);
                 result.Add(enemies[j]);

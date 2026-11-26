@@ -32,7 +32,7 @@ public class MapManager : MonoBehaviour
     {
         //GameManager.Instance.CurrentEncounter = encounter     //DontDestroyOnLoad인 GameManager, CurrentRun 등의 데이터에 복사해두기.
         SceneManager.LoadScene("BattleScene");
-        //이후 BattleManager Awake에서 encounter에 필요한 데이터를 GameManager.Instance,CurrentEncounter에서 다시 복사하여 배틀세팅을 한다.
+        //이후 BattleDirector Awake에서 encounter에 필요한 데이터를 GameManager.Instance,CurrentEncounter에서 다시 복사하여 배틀세팅을 한다.
         //배틀이 로드 되는지, 로드 된 배틀이 인카운터 정보를 충실히 반영하고 있는지 테스트해야 한다.
     }
 }

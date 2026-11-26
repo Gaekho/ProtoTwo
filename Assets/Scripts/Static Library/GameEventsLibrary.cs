@@ -19,6 +19,7 @@ public static class GameEventsLibrary
     public static event Action OnUnitTurnEnd;
     public static event Action<AllyUnit> OnActingRightShifted;
     public static event Action<AllyUnit, int, int, int> OnUnitStatChanged;
+    public static event Action<AllyUnit, int> OnUltimateChargeChanged;
 
     // **********************
     // *****Raise Events*****
@@ -36,5 +37,7 @@ public static class GameEventsLibrary
     public static void RaiseUnitTurnEnd() => OnUnitTurnEnd?.Invoke();
     public static void RaiseActingRightShifted(AllyUnit holder) => OnActingRightShifted?.Invoke(holder);
     public static void RaiseUnitStatChanged(AllyUnit unit, int atk, int shd, int spd) => OnUnitStatChanged?.Invoke(unit, atk, shd, spd);
+    public static void RaiseUltimateChargeChanged(AllyUnit ally, int charge) =>
+        OnUltimateChargeChanged?.Invoke(ally, charge);
     
 }

@@ -37,7 +37,7 @@ public abstract class PatternActionBase
             case ActionTargetType.LowestHealth:
                 // PickAlly? Linq? 도발로직 추가
                 AllyUnit lowest = null;
-                foreach(AllyUnit ally in BattleManager.Instance.AliveAllies)
+                foreach(AllyUnit ally in BattleDirector.Instance.AliveAllies)
                 {
                     if(lowest == null || lowest.CurrentHealth > ally.CurrentHealth)
                     {
@@ -48,28 +48,28 @@ public abstract class PatternActionBase
                 break;
 
             case ActionTargetType.AllUnits:
-                result.AddRange(BattleManager.Instance.AliveAllies);
-                result.AddRange(BattleManager.Instance.EnemyList);
+                result.AddRange(BattleDirector.Instance.AliveAllies);
+                result.AddRange(BattleDirector.Instance.EnemyList);
                 break;
 
             case ActionTargetType.AllAllies:
-                result.AddRange(BattleManager.Instance.AliveAllies);
+                result.AddRange(BattleDirector.Instance.AliveAllies);
                 break;
 
             case ActionTargetType.AllEnemies:
-                result.AddRange(BattleManager.Instance.EnemyList);
+                result.AddRange(BattleDirector.Instance.EnemyList);
                 break;
 
             case ActionTargetType.RandomAlly:
                 // 도발 로직 추가
-                var alive = BattleManager.Instance.AliveAllies.ToList();
+                var alive = BattleDirector.Instance.AliveAllies.ToList();
                 if (alive.Count == 0) break;
                 int i = UnityEngine.Random.Range(0, alive.Count);
                 result.Add(alive[i]);        //한줄로 쓰면 가독성 개떨어질까봐 두줄로 씀.
                 break;
 
             case ActionTargetType.RandomEnemy:
-                var enemies = BattleManager.Instance.EnemyList;
+                var enemies = BattleDirector.Instance.EnemyList;
                 if (enemies.Count == 0) break;
                 int j = UnityEngine.Random.Range(0, enemies.Count);
                 result.Add(enemies[j]);

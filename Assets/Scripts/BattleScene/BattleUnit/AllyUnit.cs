@@ -14,6 +14,8 @@ public class AllyUnit : BattleUnitBase
     [SerializeField] private int currentShield;
     [SerializeField] private int currentSpeed;
     [SerializeField] private int currentGnosis;
+    private const int MaxUltimateCharge = 5;
+    [SerializeField] private int ultimateCharge;
     [SerializeField] private AllyUnitUIcontroller allyUi;
 
 
@@ -25,6 +27,8 @@ public class AllyUnit : BattleUnitBase
     public int CurrentShield => currentShield;
     public override int CurrentSpeed => currentSpeed;
     public bool IsTurn => isTurn;
+    public int UltimateCharge => ultimateCharge;
+    public bool IsUltimateCharged => ultimateCharge == MaxUltimateCharge;
     #endregion
 
     public void SetProfile(CharacterData characterData, CharacterState state)
@@ -129,8 +133,8 @@ public class AllyUnit : BattleUnitBase
     }
     protected override IEnumerator Die()
     {
-        //아직 미구현. 애니메이션 재생 및 자기 자신 파괴, BattleManager의 AllyList에서 삭제 등의 작업 추가.
-        BattleManager.Instance.AllyDead(this);
+        //아직 미구현. 애니메이션 재생 및 자기 자신 파괴, BattleDirector의 AllyList에서 삭제 등의 작업 추가.
+        BattleDirector.Instance.AllyDead(this);
         isDead = true;
         DoDieAnim();
         yield return null;
@@ -149,6 +153,16 @@ public class AllyUnit : BattleUnitBase
     public void ShowGnosisReady(bool ready)
     {
         allyUi.ReadyGnosis(ready);
+    }
+
+    public void GainUltimateCharge()
+    {
+        int nextCharge = Mathf.Min(ultimateCharge + 1, MaxUltimateCharge);
+        if (nextCharge == ultimateCharge)
+            return;
+
+        ultimateCharge = nextCharge;
+        GameEventsLibrary.RaiseUltimateChargeChanged(this, ultimateCharge);
     }
 
     public void GainGnosis(int amount)

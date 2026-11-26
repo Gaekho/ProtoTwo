@@ -179,7 +179,7 @@ public class HandController : MonoBehaviour
         {
             //card.SetUnPlayable();
 
-            card.SetPlayable(BattleManager.Instance.ActingUnit);
+            card.SetPlayable(BattleDirector.Instance.ActingUnit);
         }
     }
     public void TurnOffHand()

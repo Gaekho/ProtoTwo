@@ -8,11 +8,11 @@ using UnityEngine.SceneManagement;
 
 //v0.05 / 2026.03.26 
 //변경 요약 : SpawnEnemy 명세서 추가
-public class BattleManager : MonoBehaviour
+public class BattleDirector : MonoBehaviour
 {
     #region Singleton
-    private BattleManager() { }
-    public static BattleManager Instance {  get; private set; }
+    private BattleDirector() { }
+    public static BattleDirector Instance {  get; private set; }
     #endregion
 
     #region Field
@@ -173,8 +173,18 @@ public class BattleManager : MonoBehaviour
 
     public bool RequestUseCard(CardOnScene card)
     {
-        if (card == null || CurrentState != TurnState.AllyTurn || IsResolving) return false;
-        //여기에 궁극기 충전 코드 삽입 구체적으로는 플레이어를 감지해서 궁극기 충전하도록 하기
+        if (card == null || CurrentState != TurnState.AllyTurn || IsResolving)
+            return false;
+
+        AllyUnit primaryOwner = card.PrimaryOwner;
+        AllyUnit secondaryOwner = card.SecondaryOwner;
+
+        if (primaryOwner != null && !primaryOwner.IsDead)
+            primaryOwner.GainUltimateCharge();
+
+        if (secondaryOwner != null && secondaryOwner != primaryOwner && !secondaryOwner.IsDead)
+            secondaryOwner.GainUltimateCharge();
+
         StartCoroutine(ResolveRoutine(card.CardUseRoutine()));
         return true;
     }

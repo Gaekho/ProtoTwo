@@ -696,7 +696,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1761083817}
-        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: BattleDirector, Assembly-CSharp
         m_MethodName: ChangeState
         m_Mode: 3
         m_Arguments:
@@ -3558,7 +3558,7 @@ GameObject:
   - component: {fileID: 1761083816}
   - component: {fileID: 1761083817}
   m_Layer: 0
-  m_Name: BattleManager
+  m_Name: BattleDirector
   m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3693,7 +3693,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1761083817}
-        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: BattleDirector, Assembly-CSharp
         m_MethodName: BackToMap
         m_Mode: 1
         m_Arguments:
